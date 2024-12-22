@@ -41,7 +41,7 @@ $zaim_link =  '/zaimy/';
                                     <div class="row">
                                         <div class="col-12 col-sm-5 col-lg-6 col-xl-5">
                                             <div class="slider__item-img h-100 d-flex align-items-end justify-content-center justify-content-sm-end">
-                                                <img <?php if ($count_slider == 1 || $count_slider == 2): ?> fetchpriority="high" <?php else: ?> loading="lazy" <?php endif; ?> src="<?php echo $image ?>" alt="<?php
+                                                <img <?php if ($count_slider == 1 || $count_slider == 2): ?> fetchpriority="high" <?php else: ?> loading="lazy" <?php endif; ?> src="<?php echo $image ?>" alt="<?
                                                                                                                                                                                                                 $bank_id = get_sub_field('image', false, false);
                                                                                                                                                                                                                 $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                                                                                                                                                                 echo $bank_alt;
@@ -101,7 +101,7 @@ $zaim_link =  '/zaimy/';
                             <div class="range">
                                 <div class="d-flex justify-content-between">
                                     <div class="range__label">Кредитный лимит, ₽</div>
-                                    <input type="text" class="range__value" <?php echo $filter_price['credit_inputs_range']['attr_price']; ?>>
+                                    <input type="text" class="range__value" <?php echo  $filter_price['credit_inputs_range']['attr_price']; ?>>
                                 </div>
                                 <input class="range__input" name="cred_limit" type="range" <?php echo $filter_price['credit_inputs_range']['attr_price']; ?>>
                             </div>
@@ -332,7 +332,7 @@ $zaim_link =  '/zaimy/';
                                                     <div class="card__header-img">
                                                         <img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
                                    <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
-                                                            alt="<?php
+                                                            alt="<?
                                                                     $bank_id = get_field('bank_logo', $bank_choise_rel, false);
                                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                     echo $bank_alt;
@@ -365,19 +365,19 @@ $zaim_link =  '/zaimy/';
                                                 </div>
                                                 <div class="card__image my-3">
                                                     <a href="<?php echo the_permalink() ?>">
-                                                        <img loading="lazy" alt="<?php
+                                                        <img loading="lazy" alt="<?
                                                                                     $bank_id = get_field('card_logo', false, false);
                                                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                                     echo $bank_alt;
                                                                                     ?>"
-                                                            src="<?php echo the_field('card_logo') ?>"></a>
+                                                            src="<?php echo get_field('card_logo') ?>"></a>
                                                 </div>
 
                                                 <ul class="leaders">
                                                     <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Лимит</div>
-                                                            <div class="leaders__item-value"><?php number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
+                                                            <div class="leaders__item-value"><?php echo number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Без %</div>
@@ -388,11 +388,11 @@ $zaim_link =  '/zaimy/';
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Кэшбэк</div>
-                                                            <div class="leaders__item-value"><?php get_field('card_cashback'); ?></div>
+                                                            <div class="leaders__item-value"><?php echo get_field('card_cashback'); ?></div>
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Ставка</div>
-                                                            <div class="leaders__item-value">от <?php get_field('card_stavka') ?>%</div>
+                                                            <div class="leaders__item-value">от <?php echo get_field('card_stavka') ?>%</div>
                                                         </li>
                                                     </div>
                                                 </ul>
@@ -500,7 +500,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__image my-3">
                                                     <img loading="lazy"
                                                         src="<?php echo the_field('card_logo') ?>"
-                                                        alt="<?php
+                                                        alt="<?
                                                                 $bank_id = get_field('card_logo', get_the_ID(), false);
                                                                 $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                 echo $bank_alt;
@@ -511,7 +511,7 @@ $zaim_link =  '/zaimy/';
                                                     <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Снятие без %</div>
-                                                            <div class="leaders__item-value">До <?php number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
+                                                            <div class="leaders__item-value">До <?php echo number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">% на остаток</div>
@@ -604,7 +604,7 @@ $zaim_link =  '/zaimy/';
                                                     <div class="card__header-img">
                                                         <img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
                                    <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
-                                                            alt="<?php 
+                                                            alt="<?
                                                                     $bank_id = get_field('bank_logo', $bank_choise_rel, false);
                                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                     echo $bank_alt;
@@ -638,7 +638,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__image my-3">
                                                     <img loading="lazy"
                                                         src="<?php echo the_field('card_logo') ?>"
-                                                        alt="<?php
+                                                        alt="<?
                                                                 $bank_id = get_field('card_logo', false, false);
                                                                 $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                 echo $bank_alt;
@@ -649,7 +649,7 @@ $zaim_link =  '/zaimy/';
                                                     <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Лимит</div>
-                                                            <div class="leaders__item-value"><?php number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
+                                                            <div class="leaders__item-value"><?php echo number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Без %</div>
@@ -660,7 +660,7 @@ $zaim_link =  '/zaimy/';
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Кэшбэк</div>
-                                                            <div class="leaders__item-value"><?php get_field('card_cashback');    ?></div>
+                                                            <div class="leaders__item-value"><?php echo get_field('card_cashback');    ?></div>
                                                         </li>
                                                         <li class="leaders__item mb-1">
                                                             <div class="leaders__item-title">Ставка</div>
@@ -732,7 +732,7 @@ $zaim_link =  '/zaimy/';
                                                     <div class="card__header-img">
                                                         <?php $bank_choise_rel = get_field('product_bank', get_the_ID()) ?>
                                                         <img loading="lazy" src="<?php echo the_field('bank_logo', $bank_choise_rel) ?>"
-                                                            alt="<?php 
+                                                            alt="<?
                                                                     $bank_id = get_field('bank_logo', $bank_choise_rel, false);
                                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                     echo $bank_alt;
@@ -767,7 +767,7 @@ $zaim_link =  '/zaimy/';
                                                     <img loading="lazy"
                                                         src="<?php echo the_field('card_logo') ?>"
                                                         alt="
-                                    <?php
+                                    <?
                                         $bank_id = get_field('card_logo', false, false);
                                         $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                         echo $bank_alt;
@@ -776,15 +776,15 @@ $zaim_link =  '/zaimy/';
                                                 <ul class="leaders">
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">Макс. сумма</div>
-                                                        <div class="leaders__item-value"><?php number_format(get_field('credit_max_sum'), 0, '.', ' '); ?> ₽</div>
+                                                        <div class="leaders__item-value"><?php echo number_format(get_field('credit_max_sum'), 0, '.', ' '); ?> ₽</div>
                                                     </li>
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">Мин. сумма</div>
-                                                        <div class="leaders__item-value"><?php number_format(get_field('credit_min_sum'), 0, '.', ' '); ?> ₽</div>
+                                                        <div class="leaders__item-value"><?php echo number_format(get_field('credit_min_sum'), 0, '.', ' '); ?> ₽</div>
                                                     </li>
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">% ставка</div>
-                                                        <div class="leaders__item-value"><?php get_field('credit_stavka'); ?>%</div>
+                                                        <div class="leaders__item-value"><?php echo get_field('credit_stavka'); ?>%</div>
                                                     </li>
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">Срок кредита</div>
@@ -849,7 +849,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__header mb-2 d-flex">
                                                     <div class="card__header-img">
                                                         <img loading="lazy" src="<?php echo the_field('z_organization_logo') ?>"
-                                                            alt="<?php 
+                                                            alt="<?
                                                                     $logo_id = get_field('z_organization_logo',  get_the_ID(), false);
                                                                     $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
                                                                     echo $logo_alt;
@@ -884,7 +884,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__image my-3">
                                                     <img loading="lazy"
                                                         src="<?php echo the_field('card_logo') ?>"
-                                                        <?php
+                                                        <?
                                                         $bank_id = get_field('card_logo',  get_the_ID(), false);
                                                         $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                         ?>
@@ -893,19 +893,19 @@ $zaim_link =  '/zaimy/';
                                                 <ul class="leaders">
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">Сумма займа</div>
-                                                        <div class="leaders__item-value"><?php number_format(get_field('z_sum'), 0, '.', ' '); ?> ₽</div>
+                                                        <div class="leaders__item-value"><?php echo number_format(get_field('z_sum'), 0, '.', ' '); ?> ₽</div>
                                                     </li>
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">Срок займа</div>
-                                                        <div class="leaders__item-value">до <?php get_field('z_time') ?> дней</div>
+                                                        <div class="leaders__item-value">до <?php echo get_field('z_time') ?> дней</div>
                                                     </li>
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">% ставка</div>
-                                                        <div class="leaders__item-value">от <?php get_field('z_stavka'); ?>%</div>
+                                                        <div class="leaders__item-value">от <?php echo get_field('z_stavka'); ?>%</div>
                                                     </li>
                                                     <li class="leaders__item mb-1">
                                                         <div class="leaders__item-title">Кредитная история</div>
-                                                        <div class="leaders__item-value"><?php get_field('z_history') ?></div>
+                                                        <div class="leaders__item-value"><?php echo get_field('z_history') ?></div>
                                                     </li>
                                                 </ul>
                                                 <div class="card__actions mt-3 d-flex">
@@ -918,10 +918,9 @@ $zaim_link =  '/zaimy/';
                                                 </div>
                                                 <div class="card__footer mt-3">
                                                     <p>
-                                                    <span><?php echo the_field('bank_phone', $bank_choise_rel) ?></span>
-                                                        <span><?php echo the_field('bank_email', $bank_choise_rel) ?></span>
-                                                        <span>Лицензия: <?php echo the_field('bank_license', $bank_choise_rel) ?></span>
-                                                        <span><?php echo the_field('views', get_the_id()) ?> заявок</span>
+                                                        <span><?php echo get_field('z_organization_phone') ?></span>
+                                                        <span><?php echo get_field('z_organization_email') ?></span>
+                                                        <span><?php echo get_field('views', get_the_id()) ?> заявок</span>
                                                     </p>
                                                 </div>
                                             </div>
@@ -977,8 +976,8 @@ $zaim_link =  '/zaimy/';
                                 <div class="card-container p-2">
                                     <div class="d-flex">
                                         <div class="bank__item-img mr-2">
-                                            <img loading="lazy" src="<?php echo the_field('bank_logo') ?>"
-                                                alt="<?php 
+                                            <img loading="lazy" src="<?php echo get_field('bank_logo') ?>"
+                                                alt="<?
                                                         $bank_id = get_field('bank_logo', get_the_ID(), false);
                                                         $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                         echo $bank_alt;
@@ -991,7 +990,7 @@ $zaim_link =  '/zaimy/';
                                                     <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
                                                             <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
                                                         </svg></div>
-                                                    <?php get_field('ratings_average'); ?>
+                                                    <?php echo get_field('ratings_average'); ?>
                                                 </div>
                                                 <div class="position-relative card__icon d-flex align-items-center mr-3">
                                                     <div class="mr-2"><a href="<?php the_permalink() ?>#comments" data-target="comments" class="stretched-link"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
@@ -1054,7 +1053,7 @@ $zaim_link =  '/zaimy/';
                                     <?php if ($news_image != ''): ?>
                                         <div class="news__item-img mb-3 mb-xl-2">
                                             <img loading="lazy" src="<?php echo the_post_thumbnail_url() ?>"
-                                                alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
+                                                alt="<?php echo get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
                                         </div>
 
                                     <?php endif; ?>
@@ -1161,7 +1160,7 @@ $zaim_link =  '/zaimy/';
                                             <?php if (get_the_post_thumbnail_url()): ?>
                                                 <div class="card__image">
                                                     <img loading="lazy" src="<?php echo the_post_thumbnail_url() ?>"
-                                                        alt="<?php 
+                                                        alt="<?
                                                                 $bank_id = get_post_thumbnail_id(get_the_ID());
                                                                 $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                 echo $bank_alt;
@@ -1235,7 +1234,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__image">
                                                     <img loading="lazy"
                                                         src="<?php echo the_post_thumbnail_url() ?>"
-                                                        alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
+                                                        alt="<?php echo get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
                                                 </div>
                                             <?php endif; ?>
                                             <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
@@ -1305,7 +1304,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__image">
                                                     <img loading="lazy"
                                                         src="<?php echo the_post_thumbnail_url() ?>"
-                                                        alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
+                                                        alt="<?php echo get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
                                                 </div>
                                             <?php endif; ?>
                                             <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
@@ -1374,7 +1373,7 @@ $zaim_link =  '/zaimy/';
                                             <?php if (get_the_post_thumbnail_url()): ?>
                                                 <div class="card__image">
                                                     <img loading="lazy" src="<?php echo the_post_thumbnail_url() ?>"
-                                                        alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
+                                                        alt="<?php echo get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
                                                 </div>
                                             <?php endif; ?>
                                             <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
@@ -1443,7 +1442,7 @@ $zaim_link =  '/zaimy/';
                                             <?php if (get_the_post_thumbnail_url()): ?>
                                                 <div class="card__image">
                                                     <img loading="lazy" src="<?php echo the_post_thumbnail_url() ?>"
-                                                        alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
+                                                        alt="<?php echo get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
                                                 </div>
                                             <?php endif; ?>
                                             <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
@@ -1513,7 +1512,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__image">
                                                     <img loading="lazy"
                                                         src="<?php echo the_post_thumbnail_url() ?>"
-                                                        alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
+                                                        alt="<?php echo  get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true);  ?>">
                                                 </div>
                                             <?php endif; ?>
                                             <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
@@ -1715,7 +1714,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="reviews__header-logo">
                                                     <img loading="lazy"
                                                         src="<?php echo the_field('bank_logo', $comment_post_id) ?>"
-                                                        alt="<?php
+                                                        alt="<?
                                                                 $bank_id = get_field('bank_logo', $comment_post_id, false);
                                                                 $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                                 echo $bank_alt;
@@ -1905,7 +1904,7 @@ $zaim_link =  '/zaimy/';
                                 <div class="card-container pt-0 pb-3 pb-md-4">
                                     <div class="expert__card-img mt-n6 mx-auto mb-3">
                                         <img loading="lazy" src="<?php echo the_field('expert_logo') ?>"
-                                            alt="<?php 
+                                            alt="<?
                                                     $bank_id = get_field('expert_logo', get_the_ID(), false);
                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
                                                     echo $bank_alt;

@@ -143,7 +143,7 @@ if ($_SERVER['HTTP_HOST'] == 'dev.finabank.ru') {
 $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $main_link . $_SERVER['REQUEST_URI'];
 ?>
 
-<body class="<?= strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') ? 'webp' : '' ?>">
+<body class="<?php echo  strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') ? 'webp' : '' ?>">
     <?php
     if (empty($_SESSION['titlepage'])) {
         $_SESSION['titlepage'] = get_the_title();
