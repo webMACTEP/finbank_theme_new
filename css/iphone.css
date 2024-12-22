@@ -1,0 +1,43 @@
+.breadcrumb {
+    display: none !important;
+}
+.zaimy-new .breadcrumb{
+    display: flex !important;
+}
+.about.main__about {
+    padding: 50px 0;
+}
+
+@media (max-width: 370px) {
+    .about_custom_container{
+        padding-right: 30px;
+    }
+}
+
+.header {
+    z-index: 1300;
+}
+
+#subscribe_action .form-check-label{
+    display: flex;
+    align-items: baseline;
+}
+
+#subscribe_action .form-check-label input {
+    margin-right: 10px;
+}
+
+#subscribe_action .form-check-label a{
+    display: contents;
+}
+
+@media (max-width: 768px) {
+    .page__nav .horizontal__scroll-container {
+        scroll-snap-type: x mandatory;
+        scrollbar-width:thin;
+        padding-bottom: 7px;
+    }
+    .page__nav .horizontal__scroll-container::-webkit-scrollbar {
+        display: block !important;
+    }
+}

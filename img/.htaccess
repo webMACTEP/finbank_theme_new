@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+     RewriteEngine On
+     RewriteCond %{HTTP_ACCEPT} image/webp
+     RewriteCond %{REQUEST_URI}  (.*)(\.(jpe?g|png))$
+     RewriteCond %{DOCUMENT_ROOT}/%1\.webp -f
+     RewriteRule .* %1\.webp [L,T=image/webp]
+ </IfModule>
+ <IfModule mod_headers.c>
+     Header append Vary Accept env=REDIRECT_accept
+ </IfModule>
+ <IfModule mod_mime.c>
+   AddType image/webp .webp
+ </IfModule>
