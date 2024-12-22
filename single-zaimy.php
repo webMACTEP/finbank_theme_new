@@ -34,7 +34,7 @@ $tags = get_the_tags($ID);
                         <div class="credits__view-bank mt-3 mt-xl-0 mr-3">
                             <!--<?php $field = get_field('z_organization');
                                 echo $field['label'] ?> -->
-                            <?php get_field('z_organization_name') ?>
+                            <?= get_field('z_organization_name') ?>
                         </div>
                         <div class="rating d-flex align-items-center mt-3 mt-xl-n1 mr-3">
                             <?php echo do_shortcode('[ratings id="' . $ID . '"]'); ?>
@@ -94,7 +94,7 @@ $tags = get_the_tags($ID);
                                 <div class="field__img mr-2"><img src="<?php bloginfo('template_url'); ?>/img/icon__hand.png" alt="Возраст"></div>
                                 <div class="field__content">
                                     <div class="field__content-title">Возраст</div>
-                                    <div class="field__content-num">От <?php get_field('z_oldness', $ID) ?> <?php YearTextArg(get_field('z_oldness', $ID)) ?></div>
+                                    <div class="field__content-num">От <?= get_field('z_oldness', $ID) ?> <?= YearTextArg(get_field('z_oldness', $ID)) ?></div>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@ $tags = get_the_tags($ID);
                             <div class="credits__view-field field d-flex mt-3">
                                 <div class="field__img mr-2"><img src="<?php bloginfo('template_url'); ?>/img/icon__off.png" alt="Кредитная история<"></div>
                                 <div class="field__content">
-                                    <div class="field__content-title"><?php get_field_object('z_history', $ID)['label']; ?></div>
+                                    <div class="field__content-title"><?= get_field_object('z_history', $ID)['label']; ?></div>
                                     <div class="field__content-num">
                                         <?php $card_period = get_field('z_history', $ID);
                                         echo $card_period; ?>
@@ -139,10 +139,10 @@ $tags = get_the_tags($ID);
                             ?>
                             <?php if (reclink($ID)): ?>
                                 <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-light mx-3"
-                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Оформить сейчас</a>
+                                    onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Оформить сейчас</a>
                             <?php else: ?>
                                 <a href="#" class="btn btn-light mx-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Оформить сейчас</a>
+                                    onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Оформить сейчас</a>
                             <?php endif; ?>
 
                             <?php if (have_rows('product_tar', $ID)): ?>
@@ -157,7 +157,7 @@ $tags = get_the_tags($ID);
                 <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
                 <?php if ($date_actually): ?>
 
-                    <div class="date_actually date_actually-single-kredity">Обновлено: <?php $date_actually ?></div>
+                    <div class="date_actually date_actually-single-kredity">Обновлено: <?= $date_actually ?></div>
 
                 <?php endif; ?>
 
@@ -253,7 +253,7 @@ $tags = get_the_tags($ID);
                                         <?php if (get_field('z_organization_phone')): ?>
                                             <div class="sidebar__field mb-3">
                                                 <div class="sidebar__field-title">Телефон</div>
-                                                <div class="sidebar__field-content"><a href="tel:<?php preg_replace('![^0-9]+!', '', get_field('z_organization_phone')); ?>"><?php echo the_field('z_organization_phone') ?></a></div>
+                                                <div class="sidebar__field-content"><a href="tel:<?= preg_replace('![^0-9]+!', '', get_field('z_organization_phone')); ?>"><?php echo the_field('z_organization_phone') ?></a></div>
                                             </div>
                                         <?php endif; ?>
                                         <!--/div>
@@ -266,14 +266,14 @@ $tags = get_the_tags($ID);
                                                 <?php if (reclink($ID)): ?>
                                                     <a href="<?php echo the_field('card_bank_link', $ID) ?>"
                                                         target="_blank"
-                                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
+                                                        onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
                                                         class="off_site_link">
-                                                        <?php get_field('z_organization_site', $ID);  ?>
+                                                        <?= get_field('z_organization_site', $ID);  ?>
                                                     </a>
                                                 <?php else: ?>
                                                     <a class="off_site_link <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link <?php } ?>"
-                                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
-                                                        <?php get_field('z_organization_site', $ID);  ?>
+                                                        onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
+                                                        <?= get_field('z_organization_site', $ID);  ?>
                                                     </a>
                                                 <?php endif; ?>
 
@@ -295,7 +295,7 @@ $tags = get_the_tags($ID);
                                         <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
                                         <?php if ($date_actually): ?>
 
-                                            <div class=" text-left date_actually">Обновлено: <?php $date_actually ?></div>
+                                            <div class=" text-left date_actually">Обновлено: <?= $date_actually ?></div>
 
                                         <?php endif; ?>
 
@@ -304,11 +304,11 @@ $tags = get_the_tags($ID);
                                             ?>
                                             <?php if (reclink($ID)): ?>
                                                 <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank"
-                                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
+                                                    onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
                                                     class="btn btn-primary">Оформить сейчас</a>
                                             <?php else: ?>
                                                 <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
+                                                    onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
                                                     Оформить сейчас</a>
                                             <?php endif; ?>
 
@@ -321,7 +321,7 @@ $tags = get_the_tags($ID);
 
                             <?php if ($block_about_bank): ?>
 
-                                <div class="sidebar__section h3 text-center py-3"><?php get_field_object('block_about_bank', $ID)['label']; ?></div>
+                                <div class="sidebar__section h3 text-center py-3"><?= get_field_object('block_about_bank', $ID)['label']; ?></div>
                                 <div style="padding-top: 0 !important;" class="sidebar__links px-4 py-3">
 
                                     <?
@@ -368,15 +368,15 @@ $tags = get_the_tags($ID);
 
                                         <?php if ($item['name'] == 'Кредитные карты') { ?>
 
-                                            <a href="<?php $item['value'] ?>" class="sidebar__links-item "><?php $item['name'] ?> (<?php $count_cred ?>)</a>
+                                            <a href="<?= $item['value'] ?>" class="sidebar__links-item "><?= $item['name'] ?> (<?= $count_cred ?>)</a>
 
                                         <?php } elseif ($item['name'] == 'Дебетовые карты') { ?>
 
-                                            <a href="<?php $item['value'] ?>" class="sidebar__links-item "><?php $item['name'] ?> (<?php $count_debet ?>)</a>
+                                            <a href="<?= $item['value'] ?>" class="sidebar__links-item "><?= $item['name'] ?> (<?= $count_debet ?>)</a>
 
                                         <?php } else { ?>
 
-                                            <a href="<?php $item['value'] ?>" class="sidebar__links-item"><?php $item['name'] ?></a>
+                                            <a href="<?= $item['value'] ?>" class="sidebar__links-item"><?= $item['name'] ?></a>
 
                                         <?php } ?>
 
@@ -412,7 +412,7 @@ $tags = get_the_tags($ID);
                                             <div class="article__news-img">
                                                 <img style="width: 100%; height: 100%; object-fit: cover;"
                                                     src="<?php echo the_post_thumbnail_url() ?>"
-                                                    alt="<?php get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
+                                                    alt="<?= get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
                                             </div>
                                         <?php endif; ?>
                                         <div class="article__news-body">
@@ -492,7 +492,7 @@ $tags = get_the_tags($ID);
                                 <h2 class="title mb-4">Способ оформления</h2>
                             </div>
                             <div class="wysiwyg pb-4">
-                                <?php get_field('product_method', $ID) ?>
+                                <?= get_field('product_method', $ID) ?>
                             </div>
                         </div>
                         <!-- method -->
@@ -778,7 +778,7 @@ $tags = get_the_tags($ID);
                                     <div class="comment__one-img mr-3">
                                         <img src="<?php echo get_avatar_url($comment, array(
                                                         'default' => 'identicon',
-                                                    )); ?>" alt="<?php $comment->comment_author ?>">
+                                                    )); ?>" alt="<?= $comment->comment_author ?>">
                                     </div>
                                     <div class="d-md-flex justify-content-md-between w-100">
                                         <div class="comment__one-title mb-2 mb-md-0">
@@ -804,7 +804,7 @@ $tags = get_the_tags($ID);
                                                 //$label = $z_org['choices'][$value];
                                                 //echo $z_org['label'] 
                                                 ?>
-                                                <?php get_field('z_organization_name'); ?>
+                                                <?= get_field('z_organization_name'); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -881,7 +881,7 @@ $tags = get_the_tags($ID);
                                                                 <?php $bank_id = get_field('bank_choise', $comment_post_id); ?>
                                                                 <?php // echo get_the_title($bank_id); 
                                                                 ?>
-                                                                <?php get_field('z_organization_name'); ?>
+                                                                <?= get_field('z_organization_name'); ?>
 
                                                             </div>
                                                         </div>
