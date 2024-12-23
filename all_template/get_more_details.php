@@ -61,7 +61,7 @@ switch ($post_type) {
     <?php if($about_item): ?>
         <div class="tab-pane <?= $active_first?>" id="<?= $ID;?>tab1">
             <ul class="dop__tab-ul">
-                <? foreach($about_item as $item):?>
+                <?php foreach($about_item as $item):?>
                     <li>
                         <div class="dop__tab-li">
                             <div class="ul-first"><?= $item['name'] ?></div>
@@ -69,7 +69,7 @@ switch ($post_type) {
                             <div class="ul-three"><?= $item['value'] ?></div>
                         </div>
                     </li>
-                <? endforeach;?>
+                <?php endforeach;?>
             </ul>
         </div>
     <?php endif; ?>
@@ -114,31 +114,31 @@ switch ($post_type) {
                 </div>
                 <div class="content">
 
-                    <? foreach($plus_and_minus_tab as $item):?>
+                    <?php foreach($plus_and_minus_tab as $item):?>
 
                         <div class="item-wrap">
 
-                            <? if($item['plus']):?>
+                            <?php if($item['plus']):?>
                                 <div class="item item-plus show">
                                     <div data-click="0" class="btn__collmore_cat">
                                         <span class="btn__collmore-icon"></span>
                                     </div>
                                     <div><?= $item['plus']?></div>
                                 </div>
-                            <? endif;?>
+                            <?php endif;?>
 
-                            <? if($item['minus']):?>
+                            <?php if($item['minus']):?>
                                 <div class="item item-minus">
                                     <div data-click="0" class="btn__collmore_cat btn__collmore_visible">
                                         <span class="btn__collmore-icon"></span>
                                     </div>
                                     <div><?= $item['minus']?></div>
                                 </div>
-                            <? endif;?>
+                            <?php endif;?>
 
                         </div>
 
-                    <? endforeach;?>
+                    <?php endforeach;?>
 
 
                 </div>

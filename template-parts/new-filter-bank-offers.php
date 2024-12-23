@@ -128,11 +128,11 @@
 
                    <div class="card__actions d-flex">
                        <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                       <? if(!$apply_now):?>
+                       <?php if(!$apply_now):?>
                            <div class="col-9 px-1 px-md-2">
                                <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                            </div>
-                       <? else: ?>
+                       <?php else: ?>
                            <div class="col-9 px-1 px-md-2">
                                <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                            </div>
@@ -170,7 +170,7 @@
                                $show_btn_detail = true;
                            }
                            ?>
-                           <? if($show_btn_detail): ?>
+                           <?php if($show_btn_detail): ?>
                                <div data-id='<?= get_the_id()?>' data-close="Скрыть" data-open="Подробнее" class="show__detail_popup">
                                    <div class="svg">
                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -187,7 +187,7 @@
                                    </div>
                                    <div class="open__dop-btn-text">Подробнее</div>
                                </div>
-                           <? endif; ?>
+                           <?php endif; ?>
 
 
                            <div class="popup_detail_wrap popup popup_v1" style="display: none">
@@ -231,11 +231,11 @@
                                            <div class="col-12 col-md-7 col-lg-3 mt-4">
                                                <div class="d-flex">
                                                    <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                                                   <? if(!$apply_now):?>
+                                                   <?php if(!$apply_now):?>
                                                        <div class="col-10 px-1 px-md-2">
                                                            <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                                        </div>
-                                                   <? else: ?>
+                                                   <?php else: ?>
                                                        <div class="col-10 px-1 px-md-2">
                                                            <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                                        </div>
@@ -339,11 +339,11 @@
 
                     <div class="card__actions d-flex">
                         <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                        <? if(!$apply_now):?>
+                        <?php if(!$apply_now):?>
                             <div class="col-9 px-1 px-md-2">
                                 <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                             </div>
-                        <? else: ?>
+                        <?php else: ?>
                             <div class="col-9 px-1 px-md-2">
                                 <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                             </div>
@@ -384,7 +384,7 @@
                                 $show_btn_detail = true;
                             }
                             ?>
-                            <? if($show_btn_detail): ?>
+                            <?php if($show_btn_detail): ?>
                                 <div data-id='<?= get_the_id()?>' data-close="Скрыть" data-open="Подробнее" class="show__detail_popup">
                                     <div class="svg">
                                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -401,7 +401,7 @@
                                     </div>
                                     <div class="open__dop-btn-text">Подробнее</div>
                                 </div>
-                            <? endif; ?>
+                            <?php endif; ?>
 
 
                             <div class="popup_detail_wrap popup popup_v1" style="display: none">
@@ -446,11 +446,11 @@
                                             <div class="col-12 col-md-7 col-lg-3 mt-4">
                                                 <div class="d-flex">
                                                     <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                                                    <? if(!$apply_now):?>
+                                                    <?php if(!$apply_now):?>
                                                         <div class="col-10 px-1 px-md-2">
                                                             <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                                         </div>
-                                                    <? else: ?>
+                                                    <?php else: ?>
                                                         <div class="col-10 px-1 px-md-2">
                                                             <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                                         </div>
@@ -558,11 +558,11 @@
 
                         <div class="card__actions d-flex">
                             <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                            <? if(!$apply_now):?>
+                            <?php if(!$apply_now):?>
                                 <div class="col-9 px-1 px-md-2">
                                     <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                 </div>
-                            <? else: ?>
+                            <?php else: ?>
                                 <div class="col-9 px-1 px-md-2">
                                     <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                 </div>
@@ -600,7 +600,7 @@
                                     $show_btn_detail = true;
                                 }
                                 ?>
-                                <? if($show_btn_detail): ?>
+                                <?php if($show_btn_detail): ?>
                                     <div data-id='<?= get_the_id()?>' data-close="Скрыть" data-open="Подробнее" class="show__detail_popup">
                                         <div class="svg">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -617,7 +617,7 @@
                                         </div>
                                         <div class="open__dop-btn-text">Подробнее</div>
                                     </div>
-                                <? endif; ?>
+                                <?php endif; ?>
 
 
                                 <div class="popup_detail_wrap popup popup_v1" style="display: none">
@@ -665,11 +665,11 @@
                                                 <div class="col-12 col-md-7 col-lg-3 mt-4">
                                                     <div class="d-flex">
                                                         <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                                                        <? if(!$apply_now):?>
+                                                        <?php if(!$apply_now):?>
                                                             <div class="col-10 px-1 px-md-2">
                                                                 <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                                             </div>
-                                                        <? else: ?>
+                                                        <?php else: ?>
                                                             <div class="col-10 px-1 px-md-2">
                                                                 <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                                             </div>
@@ -769,11 +769,11 @@
 
                         <div class="card__actions d-flex">
                             <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                            <? if(!$apply_now):?>
+                            <?php if(!$apply_now):?>
                                 <div class="col-9 px-1 px-md-2">
                                     <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                 </div>
-                            <? else: ?>
+                            <?php else: ?>
                                 <div class="col-9 px-1 px-md-2">
                                     <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                 </div>
@@ -811,7 +811,7 @@
                                     $show_btn_detail = true;
                                 }
                                 ?>
-                                <? if($show_btn_detail): ?>
+                                <?php if($show_btn_detail): ?>
                                     <div data-id='<?= get_the_id()?>' data-close="Скрыть" data-open="Подробнее" class="show__detail_popup">
                                         <div class="svg">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -828,7 +828,7 @@
                                         </div>
                                         <div class="open__dop-btn-text">Подробнее</div>
                                     </div>
-                                <? endif; ?>
+                                <?php endif; ?>
 
 
                                 <div class="popup_detail_wrap popup popup_v1" style="display: none">
@@ -876,11 +876,11 @@
                                                 <div class="col-12 col-md-7 col-lg-3 mt-4">
                                                     <div class="d-flex">
                                                         <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                                                        <? if(!$apply_now):?>
+                                                        <?php if(!$apply_now):?>
                                                             <div class="col-10 px-1 px-md-2">
                                                                 <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                                             </div>
-                                                        <? else: ?>
+                                                        <?php else: ?>
                                                             <div class="col-10 px-1 px-md-2">
                                                                 <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                                             </div>
@@ -980,11 +980,11 @@
 
                         <div class="card__actions d-flex">
                             <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                            <? if(!$apply_now):?>
+                            <?php if(!$apply_now):?>
                                 <div class="col-9 px-1 px-md-2">
                                     <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                 </div>
-                            <? else: ?>
+                            <?php else: ?>
                                 <div class="col-9 px-1 px-md-2">
                                     <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                 </div>
@@ -1022,7 +1022,7 @@
                                     $show_btn_detail = true;
                                 }
                                 ?>
-                                <? if($show_btn_detail): ?>
+                                <?php if($show_btn_detail): ?>
                                     <div data-id='<?= get_the_id()?>' data-close="Скрыть" data-open="Подробнее" class="show__detail_popup">
                                         <div class="svg">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1039,7 +1039,7 @@
                                         </div>
                                         <div class="open__dop-btn-text">Подробнее</div>
                                     </div>
-                                <? endif; ?>
+                                <?php endif; ?>
 
 
                                 <div class="popup_detail_wrap popup popup_v1" style="display: none">
@@ -1087,11 +1087,11 @@
                                                 <div class="col-12 col-md-7 col-lg-3 mt-4">
                                                     <div class="d-flex">
                                                         <?php $apply_now = get_field('apply_now_select_products', get_the_id()); ?>
-                                                        <? if(!$apply_now):?>
+                                                        <?php if(!$apply_now):?>
                                                             <div class="col-10 px-1 px-md-2">
                                                                 <a href="<?php echo the_field('card_bank_link') ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                                                             </div>
-                                                        <? else: ?>
+                                                        <?php else: ?>
                                                             <div class="col-10 px-1 px-md-2">
                                                                 <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                                                             </div>

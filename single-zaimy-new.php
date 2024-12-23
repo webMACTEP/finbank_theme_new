@@ -173,7 +173,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                 <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary mx-3"
                                     onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Оформить сейчас</a>
                             <?php else: ?>
-                                <a href="#" class="btn btn-primary mx-3 <? if ($apply_now) { ?> apply_now_btm <? } else { ?>out_exit_link<? } ?>"
+                                <a href="#" class="btn btn-primary mx-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
                                     onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Оформить сейчас</a>
                             <?php endif; ?>
 
@@ -360,11 +360,11 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                         <?php endif; ?>
 
                                         <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-                                        <? if ($date_actually): ?>
+                                        <?php if ($date_actually): ?>
 
                                             <div class=" text-left date_actually">Обновлено: <?= $date_actually ?></div>
 
-                                        <? endif; ?>
+                                        <?php endif; ?>
 
 
                                         <div class="wm-fixed-button sidebar__field mb-3">
@@ -375,7 +375,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                                     onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
                                                     class="btn btn-primary">Оформить сейчас</a>
                                             <?php else: ?>
-                                                <a href="#" class="btn btn-primary <? if ($apply_now) { ?> apply_now_btm <? } else { ?>out_exit_link<? } ?>"
+                                                <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
                                                     onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
                                                     Оформить сейчас</a>
                                             <?php endif; ?>
@@ -585,7 +585,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                             <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary "
                                                 onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Перейти на сайт</a>
                                         <?php else: ?>
-                                            <a href="#" class="btn btn-primary  <? if ($apply_now) { ?> apply_now_btm <? } else { ?>out_exit_link<? } ?>"
+                                            <a href="#" class="btn btn-primary  <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
                                                 onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Перейти на сайт</a>
                                         <?php endif; ?>
                                     </div>
@@ -806,7 +806,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                                 <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary "
                                                     onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Подробнее</a>
                                             <?php else: ?>
-                                                <a href="#" class="btn btn-primary  <? if ($apply_now) { ?> apply_now_btm <? } else { ?>out_exit_link<? } ?>"
+                                                <a href="#" class="btn btn-primary  <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
                                                     onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Подробнее</a>
                                             <?php endif; ?>
                                         </div>
@@ -1460,7 +1460,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                             <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary"
                                                 onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Перейти на сайт</a>
                                         <?php else: ?>
-                                            <a href="#" class="btn btn-primary <? if ($apply_now) { ?> apply_now_btm <? } else { ?>out_exit_link<? } ?>"
+                                            <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
                                                 onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Перейти на сайт</a>
                                         <?php endif; ?>
 
@@ -1719,7 +1719,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                                             <?php $bank_choise_rel = get_field('bank_choise', get_the_ID()); ?>
 
                                                             <img loading="lazy"
-                                                                alt="<? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true); ?>"
+                                                                alt="<?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true); ?>"
                                                                 src="<?php echo the_field('bank_logo', $bank_choise_rel) ?>">
                                                         </div>
                                                         <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>

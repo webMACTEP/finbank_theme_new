@@ -262,9 +262,9 @@ if($_GET['test']){
                             </div>
 
                             <?php $date_actually = get_the_modified_date('d.m.Y', $ID);?>
-                            <? if($date_actually): ?>
+                            <?php if($date_actually): ?>
                                 <div style="margin-left: 15px;" class="date_actually-article">Обновлено: <?//= $date_actually?> <?php the_date('d.m.Y'); ?></div>
-                            <? endif; ?>
+                            <?php endif; ?>
 
                             <a href="<?php echo get_category_link($cat_current_id) ?>" class="article__category">
                                 <?php $cat_image = get_field('cat_image', 'category_'.$cat_current_id); ?>

@@ -961,7 +961,7 @@ wp_reset_query();
         </div>
     </div>
 </main>
-<? endif; ?>
+<?php endif; ?>
 <?php if($post_type == "kredity"): ?>
 <main>
     <div class="container">
@@ -1167,7 +1167,7 @@ wp_reset_postdata();
        </div>
     </div>
 </main>
-<? endif; ?>
+<?php endif; ?>
 <?php if($post_type == "zaimy"): ?>
 <main>
     <div class="container">
@@ -1360,7 +1360,7 @@ wp_reset_postdata();
        </div>
     </div>
 </main>
-<? endif; ?>
+<?php endif; ?>
 <?php endif; ?>
 
 

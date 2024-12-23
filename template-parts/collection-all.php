@@ -552,9 +552,9 @@ if ( $wp_query->have_posts() ) {
 	           <?php the_content(); ?>
 	        </div>
             <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-            <? if($date_actually): ?>
+            <?php if($date_actually): ?>
                 <div class="date_actually-article mb-2">Обновлено: <?= $date_actually;?></div>
-            <? endif; ?>
+            <?php endif; ?>
 
 
             <?php

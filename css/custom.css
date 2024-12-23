@@ -5415,6 +5415,10 @@ a.cld-like-dislike-trigger {
   color: #fff;
 }
 
+.credits.section {
+  position: relative;
+}
+
 .zaimy-new #openAdditionalCommentForm,
 .zaimy-new #openCommentForm {
   color: #fff;

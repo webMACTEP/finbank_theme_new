@@ -1028,7 +1028,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                 </div>
             </div>
         </main>
-    <? endif; ?>
+    <?php endif; ?>
     <?php if($post_type == "kredity"): ?>
         <main>
             <div class="container">
@@ -1182,7 +1182,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                 </div>
             </div>
         </main>
-    <? endif; ?>
+    <?php endif; ?>
     <?php if($post_type == "zaimy"): ?>
         <main>
             <div class="container">
@@ -1318,7 +1318,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                 </div>
             </div>
         </main>
-    <? endif; ?>
+    <?php endif; ?>
 <?php endif; ?>
 
 

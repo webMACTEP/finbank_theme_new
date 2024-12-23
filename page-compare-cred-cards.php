@@ -170,7 +170,7 @@ $cred_count = count($prods);
 
                                     <?php endif; ?>
 
-                                <? } ?>
+                                <?php } ?>
 
 
 
@@ -206,7 +206,7 @@ $cred_count = count($prods);
                                             <!-- / item -->
                                         <?php endif; ?>
 
-                                    <? } ?>
+                                    <?php } ?>
 
 	                            </div>
 	                        </div>

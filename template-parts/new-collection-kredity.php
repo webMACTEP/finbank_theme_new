@@ -824,7 +824,7 @@ if($main_type == 'debetcard' || $main_type == 'debatcard'){
     </div>
 
 
-    <? get_template_part( 'all_template/tags__main_v2_slider' ); ?>
+    <?php get_template_part( 'all_template/tags__main_v2_slider' ); ?>
 
 
     <!-- /banks   -->
@@ -1178,7 +1178,7 @@ if($main_type == 'debetcard' || $main_type == 'debatcard'){
                                         $current_id = $wp_query->get_queried_object_id(); ?>
 
 
-                                        <? get_template_part( 'all_template/filter_popular', null, ['cat' => $cat, 'query' => $query]); ?>
+                                        <?php get_template_part( 'all_template/filter_popular', null, ['cat' => $cat, 'query' => $query]); ?>
 
                                     <?php } wp_reset_query(); ?>
 
@@ -1748,9 +1748,9 @@ if($main_type == 'debetcard' || $main_type == 'debatcard'){
 	        </div>
 
             <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-            <? if($date_actually): ?>
+            <?php if($date_actually): ?>
                 <div class="date_actually-article mb-2">Обновлено: <?= $date_actually;?></div>
-            <? endif; ?>
+            <?php endif; ?>
 
 
             <?php

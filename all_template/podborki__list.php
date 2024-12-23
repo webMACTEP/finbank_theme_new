@@ -21,17 +21,17 @@ if($podborki){
     </div>
     <div class="tags__main mt-4 mb-5 pb-2 horizontal__scroll">
         <div class="horizontal__scroll-container justify-content-between">
-            <? foreach ($podborki1 as $item):?>
+            <?php foreach ($podborki1 as $item):?>
                 <a href="<?php echo the_permalink($item); ?>" class="tag__item"><span class="tag__item-title"><?= get_the_title($item) ?></span></a>
-            <? endforeach; ?>
+            <?php endforeach; ?>
 
-            <? if($podborki2): ?>
+            <?php if($podborki2): ?>
 
                 <a href="" class="tag__item primary btn__view-all"><span class="tag__item-title">ещё +</span></a>
 
-                <? foreach ($podborki2 as $item):?>
+                <?php foreach ($podborki2 as $item):?>
                     <a href="<?php echo the_permalink($item); ?>" class="tag__item"><span class="tag__item-title"><?= get_the_title($item) ?></span></a>
-                <? endforeach; ?>
+                <?php endforeach; ?>
 
             <?php endif; ?>
 

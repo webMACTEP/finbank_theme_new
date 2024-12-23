@@ -28,18 +28,18 @@ $plus_and_minus_tab = $args;
             </div>
             <div class="content">
 
-                <? foreach($plus_and_minus_tab as $item):?>
+                <?php foreach($plus_and_minus_tab as $item):?>
 
                     <div class="item-wrap">
 
-                        <? if(isset($item['plus'])):?>
+                        <?php if(isset($item['plus'])):?>
                             <div class="item item-plus show">
                                 <div data-click="0" class="btn__collmore_cat">
                                     <span class="btn__collmore-icon"></span>
                                 </div>
                                 <div><?= $item['plus']?></div>
                             </div>
-                        <? endif;?>
+                        <?php endif;?>
 
                         <?if(isset($item['minus'])):?>
                             <div class="item item-minus">
@@ -48,11 +48,11 @@ $plus_and_minus_tab = $args;
                                 </div>
                                 <div><?= $item['minus']?></div>
                             </div>
-                        <? endif;?>
+                        <?php endif;?>
 
                     </div>
 
-                <? endforeach;?>
+                <?php endforeach;?>
 
 
             </div>

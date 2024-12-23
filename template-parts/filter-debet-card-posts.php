@@ -31,7 +31,7 @@
 
                     <?php else: ?>
 
-                        <a data-popap-apply-id="<?= get_the_id(); ?>" class="off_site_link <?if($apply_now){ ?> apply_now_btm <? }else {?> out_exit_link <?}?>"
+                        <a data-popap-apply-id="<?= get_the_id(); ?>" class="off_site_link <?if($apply_now){ ?> apply_now_btm <?php }else {?> out_exit_link <?}?>"
                            onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;"
                         >
                                 <?= get_field('bank_email', $bank_id);  ?>
@@ -103,7 +103,7 @@
                              <div class="col-6 px-1 px-md-2">
                                  <a href="<?php echo the_field('card_bank_link'); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="btn btn-primary btn-block">Оформить</a>
                              </div>
-                         <? else: ?>
+                         <?php else: ?>
                              <div class="col-6 px-1 px-md-2">
                                  <a data-popap-apply-id="<?= get_the_id(); ?>" target="_blank" onclick="<?echo get_metrika_for_list(get_field('card_bank_link')); ?> return true;" class="apply_now_btm btn btn-primary btn-block">Оформить</a>
                              </div>
@@ -149,7 +149,7 @@
                      }
                      ?>
 
-                     <? if($show_btn_detail): ?>
+                     <?php if($show_btn_detail): ?>
                          <div data-id='<?= get_the_id()?>' data-close="Скрыть" data-open="Подробнее" class="open__dop-btn">
                              <div class="open__dop-btn-text">Подробнее</div>
                              <div class="navigation__item-arrow">
@@ -158,12 +158,12 @@
                                  </svg>
                              </div>
                          </div>
-                     <? endif; ?>
+                     <?php endif; ?>
 
                      <?php $date_actually =  get_the_modified_date('d.m.Y', $bank_id);  ?>
-                     <? if($date_actually): ?>
+                     <?php if($date_actually): ?>
                          <div class="date_actually">Обновлено: <?= $date_actually?></div>
-                     <? endif; ?>
+                     <?php endif; ?>
                  </div>
 
                  <div class="tabs">

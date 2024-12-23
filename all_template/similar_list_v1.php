@@ -16,10 +16,10 @@ if( $featured_posts ): ?>
                     // Setup this post for WP functions (variable must be named $post).
                     setup_postdata($post); ?>
 
-                    <?  $post_type = get_post_type(get_the_id()); ?>
+                    <?php  $post_type = get_post_type(get_the_id()); ?>
 
 
-                    <?  switch($post_type){
+                    <?php  switch($post_type){
                     case 'kredity':?>
                         <!-- item -->
                         <div class="card card__horizontal bank__item h-100 size4">
@@ -28,7 +28,7 @@ if( $featured_posts ): ?>
                                     <div class="bank__item-img mr-2">
                                         <img src="<?php $bank_choise_rel = get_field('product_bank', get_the_ID()) ?>
                                            <?php echo the_field('bank_logo', $bank_choise_rel) ?>" alt="
-                                        <? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
+                                        <?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
                                     </div>
                                     <div class="bank__item-content">
 
@@ -113,9 +113,9 @@ if( $featured_posts ): ?>
                             </div>
                         </div>
                         <!-- / item -->
-                        <? break;?>
+                        <?php break;?>
 
-                    <? case 'bankcard':?>
+                    <?php case 'bankcard':?>
                         <!-- item -->
                         <div class="card card__horizontal bank__item h-100 size4">
                             <div class="card-container p-2">
@@ -241,9 +241,9 @@ if( $featured_posts ): ?>
                             </div>
                         </div>
                         <!-- / item -->
-                        <? break;?>
+                        <?php break;?>
 
-                    <? case 'zaimy':?>
+                    <?php case 'zaimy':?>
                         <!-- item -->
                         <div class="card card__horizontal bank__item h-100 size4">
                             <div class="card-container position-relative p-2">
@@ -298,12 +298,12 @@ if( $featured_posts ): ?>
                             </div>
                         </div>
                         <!-- / item -->
-                        <? break;?>
+                        <?php break;?>
 
-                    <? default:?>
+                    <?php default:?>
 
 
-                    <? } // switch?>
+                    <?php } // switch?>
 
                 <?php endforeach; ?>
 

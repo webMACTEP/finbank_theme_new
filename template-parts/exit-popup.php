@@ -40,7 +40,7 @@
                                     <div class="exit1_offer_logo">
                                       <img src="<?php $bank_choise_rel = get_field('product_bank', $bank_exit_id) ?>
                                                          <?= get_field('bank_logo', $bank_choise_rel) ?>"
-                                           alt="<? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
+                                           alt="<?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
                                       <div class="exit1_offer_meta">
                                       <div class="exit1_offer_name"><?= get_the_title($bank_exit_id) ?></div>
 
@@ -96,7 +96,7 @@
                                                     <div class="exit1_offer_logo">
                                                       <img src="<?php $bank_choise_rel = get_field('bank_choise', $bank_exit_id) ?>
                                                                          <?= get_field('bank_logo', $bank_choise_rel) ?>"
-                                                           alt="<? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
+                                                           alt="<?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
                                                       <div class="exit1_offer_meta">
                                                       <div class="exit1_offer_name"><?= get_the_title($bank_exit_id) ?></div>
 
@@ -147,7 +147,7 @@
                                                     <div class="exit1_offer_logo">
                                                       <img src="<?php $bank_choise_rel = get_field('bank_choise', $bank_exit_id) ?>
                                                             <?= get_field('bank_logo', $bank_choise_rel) ?>"
-                                                           alt="<? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
+                                                           alt="<?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
                                                       <div class="exit1_offer_meta">
                                                       <div class="exit1_offer_name"><?= get_the_title($bank_exit_id) ?></div>
 
@@ -198,7 +198,7 @@
                                                     <div class="exit1_offer_logo">
                                                       <img src="<?php $bank_choise_rel = get_field('bank_choise', $bank_exit_id) ?>
                                                                          <?= get_field('bank_logo', $bank_choise_rel) ?>"
-                                                           alt="<? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>"
+                                                           alt="<?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>"
                                                       >
                                                       <div class="exit1_offer_meta">
                                                       <div class="exit1_offer_name"><?= get_the_title($bank_exit_id) ?></div>

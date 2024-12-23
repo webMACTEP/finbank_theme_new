@@ -547,7 +547,7 @@ if ( $wp_query->have_posts() ) {
 					);
 					$query = new WP_Query( $args_coll );
 					if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                        <? get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
+                        <?php get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
 					<?php } wp_reset_query(); ?>	
 
 					<?php		}	
@@ -671,7 +671,7 @@ if ( $wp_query->have_posts() ) {
 					);
 					$query = new WP_Query( $args_coll );
 					if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                        <? get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query, 'mobile' => 1]); ?>
+                        <?php get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query, 'mobile' => 1]); ?>
 					<?php } wp_reset_query(); ?>	
 
 					<?php		}	
@@ -961,9 +961,9 @@ wp_reset_postdata();
 	           <?php the_content(); ?>
 	        </div>
             <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-            <? if($date_actually): ?>
+            <?php if($date_actually): ?>
                 <div class="date_actually-article mb-2">Обновлено: <?= $date_actually;?></div>
-            <? endif; ?>
+            <?php endif; ?>
 
 
             <?php

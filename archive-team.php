@@ -282,7 +282,7 @@ if ( $wp_query->have_posts() ) {
                         'orderby' => array( 'meta_value_num' => 'desc', 'name' => 'desc' ),
                         'order' => 'DESC',
                     ); ?>
-                    <? $wp_query = new WP_Query( $args );
+                    <?php $wp_query = new WP_Query( $args );
                     if ( $wp_query->have_posts() ) {
                         while ( $wp_query->have_posts() ) {
                             $wp_query->the_post(); ?>

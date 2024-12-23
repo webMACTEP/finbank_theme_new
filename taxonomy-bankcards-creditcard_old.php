@@ -1018,9 +1018,9 @@ wp_reset_postdata();
 	           <?php echo the_field('type_desc', $term) ?>
 	        </div>
             <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-            <? if($date_actually): ?>
+            <?php if($date_actually): ?>
                 <div class="date_actually-article mb-2">Обновлено: <?= $date_actually;?></div>
-            <? endif; ?>
+            <?php endif; ?>
 	    </div>
 	    <!-- / wysiwyg text -->
 	</div>

@@ -39,9 +39,9 @@ $all_banks_rating = get_all_banks_rating();
                                         <?php $comments_count = wp_count_comments(get_the_ID()); echo $comments_count->approved ?>
                                     </div>
                                     <div class="card__header-num">
-                                        <? if($all_banks_rating[$bank_choise_rel]):?>
+                                        <?php if($all_banks_rating[$bank_choise_rel]):?>
                                             №<?= $all_banks_rating[$bank_choise_rel]; ?>
-                                        <? endif;?>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@ $all_banks_rating = get_all_banks_rating();
                             <div class="bank__item-img mr-2">
                                 <img src="<?php $bank_choise_rel = get_field('product_bank', get_the_ID()) ?>
                                    <?php echo the_field('bank_logo', $bank_choise_rel) ?>" alt="
-                     <? echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
+                     <?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true);?>">
                             </div>
                             <div class="bank__item-content">
                                 <a href="<?php echo the_permalink() ?>" class="card__header-title stretched-link mt-1 mb-2"><?php echo the_title() ?></a>
@@ -114,9 +114,9 @@ $all_banks_rating = get_all_banks_rating();
                                         <?php $comments_count = wp_count_comments(get_the_ID()); echo $comments_count->approved ?>
                                     </div>
                                     <div class="card__header-num">
-                                        <? if($all_banks_rating[$bank_choise_rel]):?>
+                                        <?php if($all_banks_rating[$bank_choise_rel]):?>
                                             №<?= $all_banks_rating[$bank_choise_rel]; ?>
-                                        <? endif;?>
+                                        <?php endif;?>
                                     </div>
                                 </div>
                             </div>
@@ -212,9 +212,9 @@ $all_banks_rating = get_all_banks_rating();
                                           <?php $comments_count = wp_count_comments(get_the_ID()); echo $comments_count->approved ?>
                                       </div>
                                    <div class="card__header-num">
-                                       <? if($all_banks_rating[$bank_choise_rel]):?>
+                                       <?php if($all_banks_rating[$bank_choise_rel]):?>
                                            №<?= $all_banks_rating[$bank_choise_rel]; ?>
-                                       <? endif;?>
+                                       <?php endif;?>
                                    </div>
                                </div>
                            </div>

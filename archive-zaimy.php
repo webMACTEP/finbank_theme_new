@@ -463,7 +463,7 @@ if($_REQUEST['change_template']){
                         );
                         $query = new WP_Query( $args_coll );
                         if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                            <? get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
+                            <?php get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
                         <?php } wp_reset_query(); ?>
                         <?php		}
                             }
@@ -597,7 +597,7 @@ if($_REQUEST['change_template']){
                         );
                         $query = new WP_Query( $args_coll );
                         if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                            <? get_template_part( 'all_template/filter_right', null, ['mobile' => 1, 'cat' => $cat, 'query' => $query]); ?>
+                            <?php get_template_part( 'all_template/filter_right', null, ['mobile' => 1, 'cat' => $cat, 'query' => $query]); ?>
                         <?php } wp_reset_query(); ?>
                         <?php		}
                             }
