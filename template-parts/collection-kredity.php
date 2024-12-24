@@ -355,7 +355,7 @@ $query_items = new WP_Query($items_args);
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>		
 	</div>
 	<!-- / page navigation -->
 	<div class="container">
