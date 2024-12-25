@@ -10,8 +10,48 @@
         }
     }
 }
-.credits .credits__list .credits__list-dropdown{
+.table_mfo{
+    margin: 0px 0px 2rem 0px;
+    ul{
+        margin: 0px 0px 0px 0px;
+    }
+    li{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+.card {
+    max-width: 100%;
+}
+.credits .credits__list .credits__list-dropdown {
     justify-content: flex-end;
+}
+.frecom{
+    text-wrap: nowrap;
+}
+.cld-like-dislike-wrap {
+    display: flex !important;
+   gap: 10px;
+    margin-bottom: 0 !important;
+    width: 100px;
+}
+.cld-common-wrap {
+
+    .cld-like-trigger {
+        width: 18px !important;
+        height: 18px;
+        background:url('../img/like.svg') no-repeat;
+    }
+    .cld-dislike-trigger {
+        width: 18px !important;
+        height: 18px;
+        background:url('../img/like2.svg') no-repeat;
+    }
+    i {
+        display: none;
+    }
+    min-width: auto !important;
+    display: flex !important;
 }
 .zaimy-new {
     #openAdditionalCommentForm,
@@ -845,6 +885,28 @@
 }
 
 @media (max-width: 768px) {
+    /* Отключение подсветки при касании для всех элементов */
+    * {
+        -webkit-tap-highlight-color: transparent; /* Safari, Chrome */
+        -moz-tap-highlight-color: transparent; /* Firefox (если поддерживается) */
+        tap-highlight-color: transparent; /* Будущее стандартное свойство */
+
+        /* Убираем стандартную обводку и тень при фокусе и активных состояниях */
+        outline: none;
+        box-shadow: none;
+
+        /* (Опционально) Сохраняем цвет текста и фона при активных состояниях */
+        color: inherit;
+        background-color: inherit;
+    }
+
+    /* Дополнительно можно убрать псевдоклассы для интерактивных элементов */
+    *:focus,
+    *:active {
+        outline: none;
+        box-shadow: none;
+    }
+
     .zaimy-new .tariffs-rows .head {
         gap: 16px;
     }

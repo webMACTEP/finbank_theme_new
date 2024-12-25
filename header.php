@@ -56,93 +56,8 @@
     }
     ?>
 
-    <!-- Оптимизированный Скрипт Метрик -->
-    <script>
-        (function() {
-            let fired = false;
 
-            const loadScripts = () => {
-                if (fired) return;
-                fired = true;
 
-                setTimeout(() => {
-                    // Яндекс.Метрика
-                    (function(m, e, t, r, i, k, a) {
-                        m[i] = m[i] || function() {
-                            (m[i].a = m[i].a || []).push(arguments);
-                        };
-                        m[i].l = 1 * new Date();
-                        for (var j = 0; j < document.scripts.length; j++) {
-                            if (document.scripts[j].src === r) {
-                                return;
-                            }
-                        }
-                        k = e.createElement(t), a = e.getElementsByTagName(t)[0];
-                        k.async = 1;
-                        k.src = r;
-                        a.parentNode.insertBefore(k, a);
-                    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-                    ym(35020350, "init", {
-                        clickmap: true,
-                        trackLinks: true,
-                        accurateTrackBounce: true,
-                        webvisor: true
-                    });
-
-                    // Google Analytics (gtag)
-                    window.dataLayer = window.dataLayer || [];
-
-                    function gtag() {
-                        dataLayer.push(arguments);
-                    }
-                    gtag('js', new Date());
-                    gtag('config', 'G-YBXNE6X5W1');
-
-                    // Yandex Experiments
-                    (function(e, x, pe, r, i, me, nt) {
-                        e[i] = e[i] || function() {
-                            (e[i].a = e[i].a || []).push(arguments);
-                        };
-                        me = x.createElement(pe);
-                        me.async = 1;
-                        me.src = r;
-                        nt = x.getElementsByTagName(pe)[0];
-                        nt.parentNode.insertBefore(me, nt);
-                    })(window, document, 'script', 'https://abt.s3.yandex.net/expjs/latest/exp.js', 'ymab');
-
-                    ymab('metrika.35020350', 'init');
-
-                    // Microsoft Clarity
-                    (function(c, l, a, r, i, t, y) {
-                        c[a] = c[a] || function() {
-                            (c[a].q = c[a].q || []).push(arguments);
-                        };
-                        t = l.createElement(r);
-                        t.async = 1;
-                        t.src = "https://www.clarity.ms/tag/" + i;
-                        y = l.getElementsByTagName(r)[0];
-                        y.parentNode.insertBefore(t, y);
-                    })(window, document, "clarity", "script", "mxcdy2lut5");
-                }, 1000);
-            };
-
-            // Слушатель события прокрутки
-            window.addEventListener('scroll', loadScripts, {
-                once: true
-            });
-
-            // Альтернативно, можно загрузить скрипты сразу при загрузке страницы
-            // window.addEventListener('load', loadScripts);
-        })();
-    </script>
-
-    <!-- Дополнительный noscript для Яндекс.Метрики -->
-    <noscript>
-        <div>
-            <img src="https://mc.yandex.ru/watch/35020350" style="position:absolute; left:-9999px;" alt="" />
-        </div>
-    </noscript>
 
     <style>
         @media only screen and (max-width: 400px) {
@@ -160,9 +75,97 @@
     } elseif ($_SERVER['HTTP_HOST'] == 'finabank.ru') {
         $main_link = 'dev.finabank.ru';
         $main_link_text = 'Тестовый сайт';
+    ?>
+        <script>
+            (function() {
+                let fired = false;
+
+                const loadScripts = () => {
+                    if (fired) return;
+                    fired = true;
+
+                    setTimeout(() => {
+                        // Яндекс.Метрика
+                        (function(m, e, t, r, i, k, a) {
+                            m[i] = m[i] || function() {
+                                (m[i].a = m[i].a || []).push(arguments);
+                            };
+                            m[i].l = 1 * new Date();
+                            for (var j = 0; j < document.scripts.length; j++) {
+                                if (document.scripts[j].src === r) {
+                                    return;
+                                }
+                            }
+                            k = e.createElement(t), a = e.getElementsByTagName(t)[0];
+                            k.async = 1;
+                            k.src = r;
+                            a.parentNode.insertBefore(k, a);
+                        })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+                        ym(35020350, "init", {
+                            clickmap: true,
+                            trackLinks: true,
+                            accurateTrackBounce: true,
+                            webvisor: true
+                        });
+
+                        // Google Analytics (gtag)
+                        window.dataLayer = window.dataLayer || [];
+
+                        function gtag() {
+                            dataLayer.push(arguments);
+                        }
+                        gtag('js', new Date());
+                        gtag('config', 'G-YBXNE6X5W1');
+
+                        // Yandex Experiments
+                        (function(e, x, pe, r, i, me, nt) {
+                            e[i] = e[i] || function() {
+                                (e[i].a = e[i].a || []).push(arguments);
+                            };
+                            me = x.createElement(pe);
+                            me.async = 1;
+                            me.src = r;
+                            nt = x.getElementsByTagName(pe)[0];
+                            nt.parentNode.insertBefore(me, nt);
+                        })(window, document, 'script', 'https://abt.s3.yandex.net/expjs/latest/exp.js', 'ymab');
+
+                        ymab('metrika.35020350', 'init');
+
+                        // Microsoft Clarity
+                        (function(c, l, a, r, i, t, y) {
+                            c[a] = c[a] || function() {
+                                (c[a].q = c[a].q || []).push(arguments);
+                            };
+                            t = l.createElement(r);
+                            t.async = 1;
+                            t.src = "https://www.clarity.ms/tag/" + i;
+                            y = l.getElementsByTagName(r)[0];
+                            y.parentNode.insertBefore(t, y);
+                        })(window, document, "clarity", "script", "mxcdy2lut5");
+                    }, 1000);
+                };
+
+                // Слушатель события прокрутки
+                window.addEventListener('scroll', loadScripts, {
+                    once: true
+                });
+
+                // Альтернативно, можно загрузить скрипты сразу при загрузке страницы
+                // window.addEventListener('load', loadScripts);
+            })();
+        </script>
+    <?php
     }
     $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $main_link . $_SERVER['REQUEST_URI'];
     ?>
+
+    <!-- Дополнительный noscript для Яндекс.Метрики -->
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/35020350" style="position:absolute; left:-9999px;" alt="" />
+        </div>
+    </noscript>
 
 
     <header class="header">

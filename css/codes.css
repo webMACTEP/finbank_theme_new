@@ -659,8 +659,12 @@ html[data-theme="dark"] .whiteback, html[data-theme="dark"] .code1.lightgray, ht
     margin-top:10px;
     margin-bottom:16px;
 }
-
-.code4block a{
+.code4block .code4v2-butt:hover {
+    background:#14B8AD;
+    color:#fff;
+    text-decoration: none !important;
+}
+.code4block .code4v2-butt{
     display:block;
     margin-bottom:4px;
     padding-top:8px;
@@ -956,11 +960,7 @@ html[data-theme="dark"] .whiteback, html[data-theme="dark"] .code1.lightgray, ht
     text-decoration: none !important;
 }
 
-.code4block a:hover {
-    background:#14B8AD;
-    color:#fff;
-    text-decoration: none !important;
-}
+
 
 .accordion__body a {
 	font-weight:600;
