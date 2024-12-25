@@ -188,6 +188,12 @@ function code_type_5v2($atts)
                          <div>Кред. лимит</div>
                      </div>';
             }
+            if (strlen($meta['card_stavka'][0]) > 0) {
+                $html .= '<div class="code5charblock">
+                         <span>От ' . $meta['card_stavka'][0] . ' %</span>
+                         <div>Cтавка</div>
+                     </div>';
+            }
             if (intval($meta['card_period'][0]) > 0) {
                 $value = get_field("card_period", $atts['id']);
                 $html .= '<div class="code5charblock">
@@ -195,61 +201,58 @@ function code_type_5v2($atts)
                          <div>Без процентов</div>
                      </div>';
             }
-            if (strlen($meta['card_cost'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                         <span>От ' . $meta['card_cost'][0] . ' ₽</span>
-                         <div>Стоимость</div>
-                     </div>';
-            }
-            if (strlen($meta['card_cashback'][0]) > 0) {
-                $value = get_field("card_cashback", $atts['id']);
-                $html .= '<div class="code5charblock">
-                         <span>' . $value . '</span>
-                         <div>Кэшбек</div>
-                     </div>';
-            }
-            if (strlen($meta['card_stavka'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                         <span>От ' . $meta['card_stavka'][0] . ' %</span>
-                         <div>Cтавка</div>
-                     </div>';
-            }
+            // if (strlen($meta['card_cost'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //              <span>От ' . $meta['card_cost'][0] . ' ₽</span>
+            //              <div>Стоимость</div>
+            //          </div>';
+            // }
+            // if (strlen($meta['card_cashback'][0]) > 0) {
+            //     $value = get_field("card_cashback", $atts['id']);
+            //     $html .= '<div class="code5charblock">
+            //              <span>' . $value . '</span>
+            //              <div>Кэшбек</div>
+            //          </div>';
+            // }
 
-            if (strlen($meta['card_answ'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                     <span>' . $meta['card_answ'][0] . '</span>
-                                     <div>Решение</div>
-                                 </div>';
-            }
+
+            // if (strlen($meta['card_answ'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['card_answ'][0] . '</span>
+            //                          <div>Решение</div>
+            //                      </div>';
+            // }
         }
 
         if ($type == 'zaim') {
+
+            // if (strlen($meta['z_history'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //              <span>' . $meta['z_history'][0] . '</span>
+            //              <div>Кредитная история</div>
+            //          </div>';
+            // }
+
+            // if (strlen($meta['z_oldness'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['z_oldness'][0] . '</span>
+            //                          <div>Возраст</div>
+            //                      </div>';
+            // }
+
+            // if (strlen($meta['z_answer'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['z_answer'][0] . '</span>
+            //                          <div>Решение</div>
+            //                      </div>';
+            // }
+
             if (strlen($meta['z_sum'][0]) > 0) {
                 $html .= '<div class="code5charblock">
                          <span>' . number_format($meta['z_sum'][0], 0, '', ' ') . ' ₽</span>
                          <div>Сумма</div>
                      </div>';
             }
-            if (strlen($meta['z_history'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                         <span>' . $meta['z_history'][0] . '</span>
-                         <div>Кредитная история</div>
-                     </div>';
-            }
-            if (strlen($meta['z_stavka'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                         <span>' . $meta['z_stavka'][0] . ' %</span>
-                         <div>% ставка</div>
-                     </div>';
-            }
-
-            if (strlen($meta['z_oldness'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                     <span>' . $meta['z_oldness'][0] . '</span>
-                                     <div>Возраст</div>
-                                 </div>';
-            }
-
             if (strlen($meta['z_time'][0]) > 0) {
 
                 $html .= '<div class="code5charblock">
@@ -257,12 +260,11 @@ function code_type_5v2($atts)
                          <div>Срок</div>
                      </div>';
             }
-
-            if (strlen($meta['z_answer'][0]) > 0) {
+            if (strlen($meta['z_stavka'][0]) > 0) {
                 $html .= '<div class="code5charblock">
-                                     <span>' . $meta['z_answer'][0] . '</span>
-                                     <div>Решение</div>
-                                 </div>';
+                         <span>' . $meta['z_stavka'][0] . ' %</span>
+                         <div>% ставка</div>
+                     </div>';
             }
         }
 

@@ -6221,6 +6221,28 @@ a.cld-like-dislike-trigger {
   color: var(--btn-primary-bg);
 }
 
+.code5more {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 12px 20px !important;
+}
+.code5more:hover {
+  text-decoration: none;
+}
+
+.code5chars {
+  gap: 20px;
+}
+
+.code5charblock {
+  width: auto !important;
+  text-align: left !important;
+}
+
+.code5charblock span {
+  text-wrap: nowrap;
+}
+
 @media (max-width: 768px) {
   /* Отключение подсветки при касании для всех элементов */
   * {
