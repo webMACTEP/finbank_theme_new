@@ -9,7 +9,6 @@
  *
  * @package finbank_theme
  */
-
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -17,11 +16,11 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?php bloginfo('template_url'); ?>/img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?php bloginfo('template_url'); ?>/img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?php bloginfo('template_url'); ?>/img/favicons/favicon-16x16.png">
-    <!-- <link rel="manifest" href="<?php bloginfo('template_url'); ?>/site.webmanifest"> -->
-    <link rel="mask-icon" href="<?php bloginfo('template_url'); ?>/img/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo get_template_directory_uri(); ?>/img/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo get_template_directory_uri(); ?>/img/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo get_template_directory_uri(); ?>/img/favicons/favicon-16x16.png">
+    <!-- <link rel="manifest" href="<?php echo get_template_directory_uri(); ?>/site.webmanifest"> -->
+    <link rel="mask-icon" href="<?php echo get_template_directory_uri(); ?>/img/favicons/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
@@ -29,96 +28,121 @@
 
     <?php
     $user_agent = $_SERVER["HTTP_USER_AGENT"];
-    if (strpos($user_agent, "Firefox") !== false) $browser = "Firefox";
-    elseif (strpos($user_agent, "Opera") !== false) $browser = "Opera";
-    elseif (strpos($user_agent, "Chrome") !== false) $browser = "Chrome";
-    elseif (strpos($user_agent, "MSIE") !== false) $browser = "Internet Explorer";
-    elseif (strpos($user_agent, "Safari") !== false) $browser = "Safari";
+    if (strpos($user_agent, "Firefox") !== false) {
+        $browser = "Firefox";
+    } elseif (strpos($user_agent, "Opera") !== false) {
+        $browser = "Opera";
+    } elseif (strpos($user_agent, "Chrome") !== false) {
+        $browser = "Chrome";
+    } elseif (strpos($user_agent, "MSIE") !== false) {
+        $browser = "Internet Explorer";
+    } elseif (strpos($user_agent, "Safari") !== false) {
+        $browser = "Safari";
+    }
 
     if ($browser == 'Safari' || (wp_is_mobile() && preg_match('/iPad|iPod|iPhone/', $_SERVER['HTTP_USER_AGENT']))) {
     ?>
-
-        <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/iphone.css">
-
+        <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/iphone.css">
     <?php } ?>
-
 </head>
 
+<body class="<?php echo strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') !== false ? 'webp' : ''; ?>">
+    <?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (empty($_SESSION['titlepage'])) {
+        $_SESSION['titlepage'] = get_the_title();
+    }
+    ?>
 
-
-<?php if (false): ?>
-
-
-
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-        (function(m, e, t, r, i, k, a) {
-            m[i] = m[i] || function() {
-                (m[i].a = m[i].a || []).push(arguments)
-            };
-            m[i].l = 1 * new Date();
-            for (var j = 0; j < document.scripts.length; j++) {
-                if (document.scripts[j].src === r) {
-                    return;
-                }
-            }
-            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
-        })
-        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-        ym(35020350, "init", {
-            clickmap: true,
-            trackLinks: true,
-            accurateTrackBounce: true,
-            webvisor: true
-        });
-    </script>
-    <noscript>
-        <div><img src="https://mc.yandex.ru/watch/35020350" style="position:absolute; left:-9999px;" alt="" /></div>
-    </noscript>
-    <!-- /Yandex.Metrika counter -->
-
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBXNE6X5W1"></script>
+    <!-- Оптимизированный Скрипт Метрик -->
     <script>
-        window.dataLayer = window.dataLayer || [];
+        (function() {
+            let fired = false;
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
+            const loadScripts = () => {
+                if (fired) return;
+                fired = true;
 
-        gtag('config', 'G-YBXNE6X5W1');
-    </script>
+                setTimeout(() => {
+                    // Яндекс.Метрика
+                    (function(m, e, t, r, i, k, a) {
+                        m[i] = m[i] || function() {
+                            (m[i].a = m[i].a || []).push(arguments);
+                        };
+                        m[i].l = 1 * new Date();
+                        for (var j = 0; j < document.scripts.length; j++) {
+                            if (document.scripts[j].src === r) {
+                                return;
+                            }
+                        }
+                        k = e.createElement(t), a = e.getElementsByTagName(t)[0];
+                        k.async = 1;
+                        k.src = r;
+                        a.parentNode.insertBefore(k, a);
+                    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    <!-- Varioqub experiments -->
-    <script type="text/javascript">
-        (function(e, x, pe, r, i, me, nt) {
-            e[i] = e[i] || function() {
-                    (e[i].a = e[i].a || []).push(arguments)
-                },
-                me = x.createElement(pe), me.async = 1, me.src = r, nt = x.getElementsByTagName(pe)[0], nt.parentNode.insertBefore(me, nt)
-        })
-        (window, document, 'script', 'https://abt.s3.yandex.net/expjs/latest/exp.js', 'ymab');
-        ymab('metrika.35020350', 'init' /*, {clientFeatures}, {callback}*/ );
-    </script>
+                    ym(35020350, "init", {
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true,
+                        webvisor: true
+                    });
 
-    <script type="text/javascript">
-        (function(c, l, a, r, i, t, y) {
-            c[a] = c[a] || function() {
-                (c[a].q = c[a].q || []).push(arguments)
+                    // Google Analytics (gtag)
+                    window.dataLayer = window.dataLayer || [];
+
+                    function gtag() {
+                        dataLayer.push(arguments);
+                    }
+                    gtag('js', new Date());
+                    gtag('config', 'G-YBXNE6X5W1');
+
+                    // Yandex Experiments
+                    (function(e, x, pe, r, i, me, nt) {
+                        e[i] = e[i] || function() {
+                            (e[i].a = e[i].a || []).push(arguments);
+                        };
+                        me = x.createElement(pe);
+                        me.async = 1;
+                        me.src = r;
+                        nt = x.getElementsByTagName(pe)[0];
+                        nt.parentNode.insertBefore(me, nt);
+                    })(window, document, 'script', 'https://abt.s3.yandex.net/expjs/latest/exp.js', 'ymab');
+
+                    ymab('metrika.35020350', 'init');
+
+                    // Microsoft Clarity
+                    (function(c, l, a, r, i, t, y) {
+                        c[a] = c[a] || function() {
+                            (c[a].q = c[a].q || []).push(arguments);
+                        };
+                        t = l.createElement(r);
+                        t.async = 1;
+                        t.src = "https://www.clarity.ms/tag/" + i;
+                        y = l.getElementsByTagName(r)[0];
+                        y.parentNode.insertBefore(t, y);
+                    })(window, document, "clarity", "script", "mxcdy2lut5");
+                }, 1000);
             };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "mxcdy2lut5");
+
+            // Слушатель события прокрутки
+            window.addEventListener('scroll', loadScripts, {
+                once: true
+            });
+
+            // Альтернативно, можно загрузить скрипты сразу при загрузке страницы
+            // window.addEventListener('load', loadScripts);
+        })();
     </script>
 
-<?php else: ?>
-
+    <!-- Дополнительный noscript для Яндекс.Метрики -->
+    <noscript>
+        <div>
+            <img src="https://mc.yandex.ru/watch/35020350" style="position:absolute; left:-9999px;" alt="" />
+        </div>
+    </noscript>
 
     <style>
         @media only screen and (max-width: 400px) {
@@ -128,28 +152,17 @@
         }
     </style>
 
-
-<?php endif; ?>
-
-<?php
-$main_link = '';
-if ($_SERVER['HTTP_HOST'] == 'dev.finabank.ru') {
-    $main_link = 'finabank.ru';
-    $main_link_text = 'Главный сайт';
-} elseif ($_SERVER['HTTP_HOST'] == 'finabank.ru') {
-    $main_link = 'dev.finabank.ru';
-    $main_link_text = 'Тестовый сайт';
-}
-$url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $main_link . $_SERVER['REQUEST_URI'];
-?>
-
-<body class="<?php echo  strpos($_SERVER['HTTP_ACCEPT'], 'image/webp') ? 'webp' : '' ?>">
     <?php
-    if (empty($_SESSION['titlepage'])) {
-        $_SESSION['titlepage'] = get_the_title();
+    $main_link = '';
+    if ($_SERVER['HTTP_HOST'] == 'dev.finabank.ru') {
+        $main_link = 'finabank.ru';
+        $main_link_text = 'Главный сайт';
+    } elseif ($_SERVER['HTTP_HOST'] == 'finabank.ru') {
+        $main_link = 'dev.finabank.ru';
+        $main_link_text = 'Тестовый сайт';
     }
+    $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $main_link . $_SERVER['REQUEST_URI'];
     ?>
-
 
 
     <header class="header">
@@ -1057,7 +1070,22 @@ $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $ma
                                             </div>
                                         </div>
                                     </li>
-
+                                    <!--li class="navigation__item">
+                                    <a class="navigation__item-link" href="">
+                                        <div class="navigation__item-icon">
+                                            <svg width="18" height="18" viewBox="0 0 18 18">
+                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#circledots" width="18" height="18" x="0" y="0"></use>
+                                            </svg>
+                                        </div>
+                                        Еще
+                                        <div class="navigation__item-arrow">
+                                            <svg width="12" height="6" viewBox="0 0 12 6">
+                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#arrow" width="12" height="6" x="0" y="0"></use>
+                                            </svg>
+                                        </div>
+                                    </a>
+                                    <div class="navigation__item-sub"></div>
+                                </li-->
                                 </ul>
                             </div>
                         </div>
@@ -1134,8 +1162,22 @@ $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $ma
                                 </div>
 
 
+
+                                <!--                                    <div class="header__links-icon mr-xl-2">-->
+                                <!--                                        <svg id="icon__light" width="18" height="21" viewBox="0 0 18 21" xmlns="http://www.w3.org/2000/svg"><path d="M8.064 11.427c2.021 3.547 4.94 4.8 6.69 5.5.445.18.78.309 1.024.431.12.06.191.107.232.14.041.035.016.028 0-.027-.048-.156.092-.181-.132.026-.194.178-.546.42-1.12.757l.504.863c.581-.34 1.014-.628 1.293-.885.249-.228.55-.595.411-1.052a.956.956 0 0 0-.319-.452 2.244 2.244 0 0 0-.42-.263c-.293-.147-.686-.299-1.102-.466-1.696-.679-4.345-1.825-6.192-5.067l-.87.495Zm6.693 6.827c-4.383 2.564-9.99 1.045-12.525-3.403l-.869.496c2.807 4.925 9.03 6.618 13.899 3.77l-.505-.863ZM2.232 14.851C-.305 10.401 1.203 4.711 5.59 2.146l-.505-.863C.22 4.128-1.442 10.425 1.363 15.347l.869-.495ZM5.59 2.146c.575-.336.958-.523 1.207-.604.29-.094.19.02.073-.106-.039-.043-.031-.069-.022-.013.008.054.012.141.003.277-.017.276-.074.636-.144 1.115-.275 1.883-.664 5.068 1.357 8.613l.869-.495C7.084 7.69 7.429 4.788 7.697 2.96c.065-.449.132-.869.153-1.198.01-.167.01-.339-.015-.497a.959.959 0 0 0-.227-.505c-.327-.357-.8-.272-1.119-.17-.36.117-.823.353-1.404.693l.505.864Z"></path></svg>-->
+                                <!--                                        <svg id="icon__dark" width="22" height="22" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 19.5 19.5" xml:space="preserve"><path d="M552.1 253.3c0 2.8-2.2 5-5 5s-5-2.2-5-5 2.2-5 5-5 5 2.2 5 5z" fill="none" stroke="#9ca3af" stroke-width="1.5"></path><path class="st1" d="M552.9 246.4c-.3.3-.3.8 0 1.1s.8.3 1.1 0l-1.1-1.1zm1.2 1c.3-.3.3-.8 0-1.1-.3-.3-.8-.3-1.1 0l1.1 1.1zm-13.9 11.8c-.3.3-.3.8 0 1.1.3.3.8.3 1.1 0l-1.1-1.1zm1.2.9c.3-.3.3-.8 0-1.1-.3-.3-.8-.3-1.1 0l1.1 1.1zm5-15.8c0 .4.3.8.8.8.4 0 .8-.3.8-.8h-1.6zm1.5 0c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8h1.6zm-1.5 18c0 .4.3.8.8.8.4 0 .8-.3.8-.8h-1.6zm1.5-.1c0-.4-.3-.8-.8-.8-.4 0-.8.3-.8.8h1.6zm-9.7-8.2c.4 0 .8-.3.8-.8s-.3-.8-.8-.8v1.6zm-.1-1.5c-.4 0-.8.3-.8.8s.3.8.8.8v-1.6zm18 1.5c.4 0 .8-.3.8-.8s-.3-.8-.8-.8v1.6zm0-1.5c-.4 0-.8.3-.8.8s.3.8.8.8v-1.6zm-15.8-5c.3.3.8.3 1.1 0 .3-.3.3-.8 0-1.1l-1.1 1.1zm.9-1.2c-.3-.3-.8-.3-1.1 0-.3.3-.3.8 0 1.1l1.1-1.1zm11.8 13.9c.3.3.8.3 1.1 0 .3-.3.3-.8 0-1.1l-1.1 1.1zm1-1.2c-.3-.3-.8-.3-1.1 0-.3.3-.3.8 0 1.1l1.1-1.1zm0-11.5.1-.1-1.1-1.1-.1.1 1.1 1.1zm-12.8 12.7.1-.1-1.1-1.1-.1.1 1.1 1.1zm6.7-15.9-1.5-.1v.1h1.5zm0 18-1.5-.1v.1h1.5zm-9.7-9.8-.1 1.5h.1v-1.5zm17.9 0-.1 1.5h.1v-1.5zm-14.7-6.1-.1-.1-1.1 1.1.1.1 1.1-1.1zm12.7 12.8-.1-.2-1.1 1.1.1.1 1.1-1zM9.8 15.5C6.6 15.5 4 12.9 4 9.8S6.6 4 9.8 4s5.8 2.6 5.8 5.8-2.7 5.7-5.8 5.7zm0-10c-2.3 0-4.2 1.9-4.2 4.2S7.4 14 9.8 14 14 12.1 14 9.8s-1.9-4.3-4.2-4.3zM4 16.6l-.1.1c-.3.3-.8.3-1.1 0-.3-.3-.3-.8 0-1.1l.1-.1c.3-.3.8-.3 1.1 0 .3.3.3.8 0 1.1zM10.5 18.7c0 .5-.3.8-.8.8-.4 0-.8-.3-.8-.8v-.1c0-.4.3-.8.8-.8.5.1.8.5.8.9zM16.7 16.7c-.3.3-.8.3-1.1 0l-.1-.1c-.3-.3-.3-.8 0-1.1.3-.3.8-.3 1.1 0l.1.1c.3.3.3.8 0 1.1zM19.5 9.8c0 .4-.3.8-.8.8h-.1c-.4 0-.8-.3-.8-.8 0-.4.3-.8.8-.8h.1c.5 0 .8.3.8.8zM16.7 3.8l-.1.2c-.3.3-.8.3-1.1 0-.3-.3-.3-.8 0-1.1l.1-.1c.3-.3.8-.3 1.1 0 .3.3.3.8 0 1zM10.5.8c0 .5-.3.8-.8.8-.4 0-.7-.4-.7-.8 0-.5.3-.8.8-.8.4 0 .7.3.7.8zM4 4c-.3.3-.8.3-1.1 0l-.1-.2c-.3-.3-.3-.8 0-1.1.3-.3.8-.3 1.1 0l.1.2c.3.3.3.8 0 1.1zM1.6 9.8c0 .4-.3.8-.8.8-.5-.1-.8-.4-.8-.8 0-.5.3-.8.8-.8h.1c.3 0 .7.3.7.8z"></path></svg>-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="header__links-txt">День/Ночь</div>-->
                             </div>
                         </div>
+                        <!-- <div class="header__links-item">
+                                <a href="" class="d-flex align-items-center">
+                                    <div class="header__links-icon mr-xl-2">
+                                        <svg width="15" height="21" viewBox="0 0 15 21" xmlns="http://www.w3.org/2000/svg"><path d="M11 5a3.5 3.5 0 0 1-3.5 3.5v1A4.5 4.5 0 0 0 12 5h-1ZM7.5 8.5A3.5 3.5 0 0 1 4 5H3a4.5 4.5 0 0 0 4.5 4.5v-1ZM4 5a3.5 3.5 0 0 1 3.5-3.5v-1A4.5 4.5 0 0 0 3 5h1Zm3.5-3.5A3.5 3.5 0 0 1 11 5h1A4.5 4.5 0 0 0 7.5.5v1Zm-3 11h6v-1h-6v1Zm6 7h-6v1h6v-1Zm-6 0A3.5 3.5 0 0 1 1 16H0a4.5 4.5 0 0 0 4.5 4.5v-1ZM14 16a3.5 3.5 0 0 1-3.5 3.5v1A4.5 4.5 0 0 0 15 16h-1Zm-3.5-3.5A3.5 3.5 0 0 1 14 16h1a4.5 4.5 0 0 0-4.5-4.5v1Zm-6-1A4.5 4.5 0 0 0 0 16h1a3.5 3.5 0 0 1 3.5-3.5v-1Z"></path></svg>
+                                    </div>
+                                    <div class="header__links-txt">Аккаунт</div>
+                                </a>
+                            </div> -->
                         <div id="btnMenu" class="header__burger d-md-none">
                             <span></span>
                             <span></span>
@@ -1153,7 +1195,18 @@ $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $ma
 
 
         <!-- / header bottom -->
-
+        <!-- header search -->
+        <!--            <div class="header__currency d-block d-md-none  horizontal__scroll">-->
+        <!--                <div class="horizontal__scroll-container d-flex justify-content-between">-->
+        <!--                    <div class="header__currency-item">usd/rub - --><?php //echo $currencies['USD'] ?? '' 
+                                                                                ?><!--</div>-->
+        <!--                    <div class="header__currency-item">eur/rub - --><?php //echo $currencies['EUR'] ?? '' 
+                                                                                ?><!--</div>-->
+        <!--                    <div class="header__currency-item">btc/usd - --><?php //echo $currencies['USDBTC'] ?? '' 
+                                                                                ?><!--</div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!-- / header search -->
         <!-- header region -->
 
         <div id="regionContainer" class="header__region">
@@ -1190,3 +1243,5 @@ $url_for_admins = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $ma
         <div id="backdrop" class="header__overlay"></div>
     </header>
     <div class="POPUP_APPLY_ALL"></div>
+    <? //php get_template_part( 'all_template/forms/help-become-better', null, ['show' => 'Y']); 
+    ?>
