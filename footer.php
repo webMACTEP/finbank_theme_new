@@ -230,7 +230,7 @@
                             <div class="form-check mt-1 pl-1">
                               <label class="form-check-label" for="checkpolicy">
                                   <input name="checkpolicy" required  type="checkbox" class="form-check-input required" id="checkpolicy" checked>
-                              Я принимаю условия обработки персональных данных, указанных в <a href="https://finabank.ru/privacy-policy/" target="_blank">Политике конфиденциальности</a></label>
+                              Я принимаю условия обработки персональных данных, указанных в <a href="https://finabank.ru/privacy-policy/" target="_blank"> Политике конфиденциальности</a></label>
                             </div>
                           </div>
                           <button type="submit" class="btn btn-primary ml-sm-4">Отправить</button>

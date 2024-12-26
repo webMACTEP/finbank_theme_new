@@ -72,6 +72,9 @@
     if ($_SERVER['HTTP_HOST'] == 'dev.finabank.ru') {
         $main_link = 'finabank.ru';
         $main_link_text = 'Главный сайт';
+    } elseif ($_SERVER['HTTP_HOST'] == 'devfinabank.local') {
+        $main_link = 'dev.finabank.ru';
+        $main_link_text = 'Dev сайт';
     } elseif ($_SERVER['HTTP_HOST'] == 'finabank.ru') {
         $main_link = 'dev.finabank.ru';
         $main_link_text = 'Тестовый сайт';
@@ -173,7 +176,7 @@
         <?php
 
         if (current_user_can('administrator')) {
-            echo "<a href='" . $url_for_admins . "' class='btn-danger btn mt-5'>" . $main_link_text . "</a>";
+            echo "<a target='_blank' href='" . $url_for_admins . "' class='btn-danger btn mt-5'>" . $main_link_text . "</a>";
         }
 
         ?>
