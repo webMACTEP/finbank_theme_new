@@ -6230,8 +6230,10 @@ a.cld-like-dislike-trigger {
   text-decoration: none;
 }
 
-.code5chars {
-  gap: 20px;
+.code5charblock-row {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
 }
 
 .code5charblock {
@@ -6239,8 +6241,23 @@ a.cld-like-dislike-trigger {
   text-align: left !important;
 }
 
+.code4block {
+  width: 200px !important;
+}
+
+.code5charblock-mini span {
+  font-size: 20px !important;
+}
+
 .code5charblock span {
   text-wrap: nowrap;
+}
+
+.code5chars {
+  gap: 20px;
+}
+.reviews__item-content p {
+  -webkit-line-clamp: 4;
 }
 
 @media (max-width: 768px) {

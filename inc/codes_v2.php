@@ -77,10 +77,10 @@ function code_type_1v2($atts)
                 $html .= '<div>% ставка : <span>' . $meta['credit_stavka'][0] . '</span></div>';
             }
             if (strlen($meta['credit_min_sum'][0]) > 0) {
-                $html .= '<div>Минимальная сумма: <span>' . $meta['credit_min_sum'][0] . ' ₽</span></div>';
+                $html .= '<div>Минимальная сумма: <span>' . number_format($meta['credit_min_sum'][0], 0, '', ' ') . ' ₽</span></div>';
             }
             if (strlen($meta['credit_max_sum'][0]) > 0) {
-                $html .= '<div>Максимальная сумма: <span>' . $meta['credit_max_sum'][0] . ' ₽</span></div>';
+                $html .= '<div>Максимальная сумма: <span>' . number_format($meta['credit_max_sum'][0], 0, '', ' ') . ' ₽</span></div>';
             }
             if (strlen($meta['credit_oldness'][0]) > 0) {
                 $html .= '<div>Возраст: <span>' . $meta['credit_oldness'][0] . '</span></div>';
@@ -180,27 +180,28 @@ function code_type_5v2($atts)
                  <div class="code5description">				
                      ' . $content . '
                  </div>
-                 <div class="code5chars">';
+                 <div class="code5chars ">';
         if ($type == 'credit_card') {
             if (strlen($meta['card_cred_limit'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                         <span>' . number_format($meta['card_cred_limit'][0], 0, '', ' ') . ' ₽</span>
+                $html .= '<div class="code5charblock code5charblock-mini">
+                        <div class="code5charblock-row"> <span>' . number_format($meta['card_cred_limit'][0], 0, '', ' ') . ' </span><span class="mini">₽</span> </div>
                          <div>Кред. лимит</div>
                      </div>';
             }
             if (strlen($meta['card_stavka'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                         <span>От ' . $meta['card_stavka'][0] . ' %</span>
+                $html .= '<div class="code5charblock code5charblock-mini">
+                <div class="code5charblock-row"> <span class="mini">От</span><span> ' . $meta['card_stavka'][0] . ' </span><span class="mini">%</span>  </div>
                          <div>Cтавка</div>
                      </div>';
             }
-            if (intval($meta['card_period'][0]) > 0) {
+            if (strlen($meta['card_period'][0]) > 0) {
                 $value = get_field("card_period", $atts['id']);
-                $html .= '<div class="code5charblock">
+                $html .= '<div class="code5charblock code5charblock-mini">
                          <span>' . $value['label'] . '</span>
                          <div>Без процентов</div>
                      </div>';
             }
+
             // if (strlen($meta['card_cost'][0]) > 0) {
             //     $html .= '<div class="code5charblock">
             //              <span>От ' . $meta['card_cost'][0] . ' ₽</span>
@@ -269,16 +270,24 @@ function code_type_5v2($atts)
         }
 
         if ($type == 'kredit') {
-            if (strlen($meta['credit_max_sum'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                 <span>' . number_format($meta['credit_max_sum'][0], 0, '', ' ') . ' ₽</span>
-                                 <div>Макс. сумма</div>
-                             </div>';
-            }
+            // if (strlen($meta['credit_max_sum'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                      <span>' . number_format($meta['credit_max_sum'][0], 0, '', ' ') . ' ₽</span>
+            //                      <div>Макс. сумма</div>
+            //                  </div>';
+            // }
             if (strlen($meta['credit_min_sum'][0]) > 0) {
                 $html .= '<div class="code5charblock">
                          <span>' . number_format($meta['credit_min_sum'][0], 0, '', ' ') . ' ₽</span>
                          <div>Минимальная сумма</div>
+                     </div>';
+            }
+            if (strlen($meta['credit_period'][0]) > 0) {
+                $value = get_field("credit_period", $atts['id']);
+
+                $html .= '<div class="code5charblock">
+                         <span>' . $value['label'] . '</span>
+                         <div>Срок</div>
                      </div>';
             }
 
@@ -289,35 +298,34 @@ function code_type_5v2($atts)
                      </div>';
             }
 
-            if (strlen($meta['credit_oldness'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                             <span>' . $meta['credit_oldness'][0] . '</span>
-                             <div>Возраст</div>
-                         </div>';
-            }
+            // if (strlen($meta['credit_oldness'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                  <span>' . $meta['credit_oldness'][0] . '</span>
+            //                  <div>Возраст</div>
+            //              </div>';
+            // }
 
-            if (strlen($meta['credit_period'][0]) > 0) {
-                $value = get_field("credit_period", $atts['id']);
 
-                $html .= '<div class="code5charblock">
-                         <span>' . $value['label'] . '</span>
-                         <div>Срок</div>
-                     </div>';
-            }
-
-            if (strlen($meta['credit_answer'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                     <span>' . $meta['credit_answer'][0] . '</span>
-                                     <div>Решение</div>
-                                 </div>';
-            }
+            // if (strlen($meta['credit_answer'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['credit_answer'][0] . '</span>
+            //                          <div>Решение</div>
+            //                      </div>';
+            // }
         }
 
         if ($type == 'debit_card') {
-            if (strlen($meta['non_pecent_money'][0]) > 0) {
+            // if (strlen($meta['non_pecent_money'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['non_pecent_money'][0] . '</span>
+            //                          <div>Снятие без %</div>
+            //                      </div>';
+            // }
+
+            if (strlen($meta['card_cost'][0]) > 0) {
                 $html .= '<div class="code5charblock">
-                                     <span>' . $meta['non_pecent_money'][0] . '</span>
-                                     <div>Снятие без %</div>
+                                     <span>' . $meta['card_cost'][0] . '</span>
+                                     <div>Стоимость</div>
                                  </div>';
             }
             if (strlen($meta['card_stavka_ostatok'][0]) > 0) {
@@ -326,7 +334,6 @@ function code_type_5v2($atts)
                                      <div>% на остаток</div>
                                  </div>';
             }
-
             if (strlen($meta['card_cashback'][0]) > 0) {
                 $value = get_field("card_cashback", $atts['id']);
                 $html .= '<div class="code5charblock">
@@ -336,24 +343,18 @@ function code_type_5v2($atts)
             }
 
 
-            if (strlen($meta['card_overdraft'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                     <span>' . $meta['card_overdraft'][0] . '</span>
-                                     <div>Овердрафт</div>
-                                 </div>';
-            }
-            if (strlen($meta['card_cost'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                     <span>' . $meta['card_cost'][0] . '</span>
-                                     <div>Стоимость</div>
-                                 </div>';
-            }
-            if (strlen($meta['card_answ'][0]) > 0) {
-                $html .= '<div class="code5charblock">
-                                     <span>' . $meta['card_answ'][0] . '</span>
-                                     <div>Решение</div>
-                                 </div>';
-            }
+            // if (strlen($meta['card_overdraft'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['card_overdraft'][0] . '</span>
+            //                          <div>Овердрафт</div>
+            //                      </div>';
+            // }
+            // if (strlen($meta['card_answ'][0]) > 0) {
+            //     $html .= '<div class="code5charblock">
+            //                          <span>' . $meta['card_answ'][0] . '</span>
+            //                          <div>Решение</div>
+            //                      </div>';
+            // }
         }
 
 
@@ -835,10 +836,35 @@ function code_type_4v2($atts)
                         <div>';
 
         $bank_choice = get_field('bank_choise', $id);
-        $img = get_field('bank_logo', $bank_choice);
+
+        switch ($type) {
+            case 'credit_card':
+            case 'debit_card':
+                $bank_choice = get_field('bank_choise', $id);
+                $img = $bank_choice ? get_field('bank_logo', $bank_choice) : '';
+                break;
+
+            case 'zaim':
+                 // Логотип хранится в текущем посте
+                 $img = get_field('z_organization_logo', $id);
+                 break;
+            case 'kredit':
+                // Логотип хранится в текущем посте
+                $img = get_field('card_logo', $id);
+                break;
+
+            default:
+                $img = '';
+        }
+
+        // Выводим, если логотип есть
         if ($img) {
             $html .= '<img src="' . esc_url($img) . '" alt="' . esc_attr(get_the_title($id)) . '" />';
         }
+
+
+
+
         $html .= '</div>
                   <div>' . esc_html(get_the_title($id)) . '</div>
                 </div>
@@ -851,29 +877,29 @@ function code_type_4v2($atts)
         // Обработка типов
         switch ($type) {
             case 'credit_card':
-                if (!empty($meta['card_period'][0])) {
-                    $value = get_field("card_period", $id);
-                    if ($value && isset($value['label'])) {
-                        $html .= '<div class="code4till">' . esc_html($value['label']) . '</div>';
-                    }
-                }
+                // if (!empty($meta['card_period'][0])) {
+                //     $value = get_field("card_period", $id);
+                //     if ($value && isset($value['label'])) {
+                //         $html .= '<div class="code4till">' . esc_html($value['label']) . '</div>';
+                //     }
+                // }
                 if (intval($meta['card_stavka'][0]) > 0) {
-                    $html .= '<div class="code4big">От ' . intval($meta['card_stavka'][0]) . ' %</div>';
+                    $html .= 'Ставка <div class="code4big">От ' . intval($meta['card_stavka'][0]) . ' %</div>';
                 }
                 break;
 
             case 'zaim':
             case 'kredit':
             case 'debit_card':
-                if (!empty($meta['card_period'][0])) {
-                    $value = get_field("card_period", $id);
-                    if ($value && isset($value['label'])) {
-                        $html .= '<div class="code4till">' . esc_html($value['label']) . '</div>';
-                    }
-                }
-                if (!empty($meta['from'][0])) {
-                    $html .= '<div class="code4big">От ' . esc_html($meta['from'][0]) . ' %</div>';
-                }
+                // if (!empty($meta['card_period'][0])) {
+                //     $value = get_field("card_period", $id);
+                //     if ($value && isset($value['label'])) {
+                //         $html .= '<div class="code4till">' . esc_html($value['label']) . '</div>';
+                //     }
+                // }
+                // if (!empty($meta['from'][0])) {
+                //     $html .= '<div class="code4big">От ' . esc_html($meta['from'][0]) . ' %</div>';
+                // }
                 break;
         }
 
@@ -887,26 +913,49 @@ function code_type_4v2($atts)
                 if (!empty($meta['card_period'][0])) {
                     $value = get_field("card_period", $id);
                     if ($value && isset($value['label'])) {
-                        $html .= '<div>Срок - ' . esc_html($value['label']) . '</div>';
+                        $html .= '<div>Период - ' . esc_html($value['label']) . '</div>';
                     }
                 }
                 break;
 
             case 'zaim':
-                if (!empty($meta['z_stavka'][0])) {
-                    $html .= '<div>Сумма - ' . number_format(floatval($meta['z_stavka'][0]), 0, '', ' ') . ' ₽</div>';
+                // if (!empty($meta['z_stavka'][0])) {
+                //     $html .= '<div>Сумма - ' . number_format(floatval($meta['z_stavka'][0]), 0, '', ' ') . ' ₽</div>';
+                // }
+                // if (!empty($meta['z_time'][0])) {
+                //     $value = get_field("z_time", $id);
+                //     if ($value && isset($value['label'])) {
+                //         $html .= '<div>Срок - ' . esc_html($value['label']) . '</div>';
+                //     }
+                // }
+
+                if (strlen($meta['z_sum'][0]) > 0) {
+                    $html .= '<div class="code5charblock">
+                    <div>Сумма 
+                    <span>' . number_format($meta['z_sum'][0], 0, '', ' ') . ' ₽</span>
+                         </div></div>';
                 }
-                if (!empty($meta['z_time'][0])) {
-                    $value = get_field("z_time", $id);
-                    if ($value && isset($value['label'])) {
-                        $html .= '<div>Срок - ' . esc_html($value['label']) . '</div>';
-                    }
+                if (strlen($meta['z_time'][0]) > 0) {
+
+                    $html .= '<div class="">
+                    <div>Срок - 
+                    <span>' . $meta['z_time'][0] . ' дней</span>
+                         </div></div>';
+                }
+                if (strlen($meta['z_stavka'][0]) > 0) {
+                    $html .= '<div class="">
+                     <div>% ставка - 
+                    <span>' . $meta['z_stavka'][0] . ' %</span>
+                         </div></div>';
                 }
                 break;
 
             case 'kredit':
-                if (!empty($meta['credit_stavka'][0])) {
-                    $html .= '<div>% ставка - ' . esc_html($meta['credit_stavka'][0]) . '</div>';
+                if (strlen($meta['credit_min_sum'][0]) > 0) {
+                    $html .= '<div class="code5charblock">
+                    <div>Минимальная сумма</div>
+                             <span>' . number_format($meta['credit_min_sum'][0], 0, '', ' ') . ' ₽</span>
+                         </div>';
                 }
                 if (!empty($meta['credit_period'][0])) {
                     $value = get_field("credit_period", $id);
@@ -914,18 +963,44 @@ function code_type_4v2($atts)
                         $html .= '<div>Срок - ' . esc_html($value['label']) . '</div>';
                     }
                 }
+                if (!empty($meta['credit_stavka'][0])) {
+                    $html .= '<div>% ставка - ' . esc_html($meta['credit_stavka'][0]) . ' %</div>';
+                }
                 break;
 
             case 'debit_card':
-                if (!empty($meta['non_pecent_money'][0])) {
-                    $html .= '<div>Снятие без % - ' . esc_html($meta['non_pecent_money'][0]) . '</div>';
+
+                if (strlen($meta['card_cost'][0]) > 0) {
+                    $html .= '<div>
+                    <div>Стоимость - 
+                    <span>' . $meta['card_cost'][0] . ' ₽</span>
+                                         
+                            </div></div>';
+                }
+                if (strlen($meta['card_stavka_ostatok'][0]) > 0) {
+                    $html .= '<div>
+                    <div>% на остаток - 
+                                         <span>' . $meta['card_stavka_ostatok'][0] . '%</span>
+                                         
+                                     </div></div>';
                 }
                 if (!empty($meta['card_cashback'][0])) {
                     $value = get_field("card_cashback", $id);
                     if ($value && isset($value['label'])) {
-                        $html .= '<div>Кэшбек - ' . esc_html($value['label']) . '</div>';
+                        // $html .= '<div>Кэшбек - ' . esc_html($value['label']) . '</div>';
+
+                        $html .= '<div class="code5charblock">
+                         <div>Кэшбек </div>
+                        <span>' . esc_html($value['label']) . '</span>
+                       
+                    </div>';
                     }
                 }
+
+                // if (!empty($meta['non_pecent_money'][0])) {
+                //     $html .= '<div>Снятие без % - ' . esc_html($meta['non_pecent_money'][0]) . '</div>';
+                // }
+
                 break;
         }
         $html .= '</div>'; // Закрытие code4limit

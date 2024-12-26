@@ -887,18 +887,38 @@
     border-radius: 8px;
     padding: 12px 20px !important;
     &:hover {
-      text-decoration: none;
+        text-decoration: none;
     }
 }
-.code5chars{
-    gap: 20px;
+.code5charblock-row {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
 }
-.code5charblock{
+.code5charblock {
     width: auto !important;
     text-align: left !important;
 }
-.code5charblock span{
+.code4block{
+    width: 200px !important;
+    
+}
+.code5charblock-mini span {
+    font-size: 20px !important;
+}
+.code5charblock span {
     text-wrap: nowrap;
+    // font-size: 24px !important;
+}
+.code5chars {
+    .mini {
+        // font-size: 12px !important;
+        // line-height: 24px;
+    }
+    gap: 20px;
+}
+.reviews__item-content p {
+    -webkit-line-clamp: 4;
 }
 
 @media (max-width: 768px) {
