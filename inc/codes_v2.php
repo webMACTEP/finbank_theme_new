@@ -151,236 +151,129 @@ add_shortcode('code2v2', 'code_type_2v2');
 
 function code_type_5v2($atts)
 {
-    if (!empty($atts['id']) && !empty($atts['type'])):
+    // Проверяем наличие необходимых атрибутов
+    if (!empty($atts['id']) && !empty($atts['type'])) {
+        // Получаем метаданные поста
         $meta = get_post_meta($atts['id']);
-        $back = $atts['back'];
+        $back = isset($atts['back']) ? $atts['back'] : '';
         $content_post = get_post($atts['id']);
         $content = $content_post->post_content;
         $content = apply_filters('the_content', $content);
         $content = str_replace(']]>', ']]&gt;', $content);
 
+        // Инициализируем переменные
         $oform = '';
         $more = '';
+        $html = ''; // Инициализация переменной $html
 
+        // Получаем ссылку на пост
         $url = get_the_permalink($atts['id']);
 
-        $oform .= '<a href="' . $url . '" class="oform" onclick="ym(35020350,\'reachGoal\',\'click_shortcode_CTA_product\'); return true;">Оформить</a>';
+        // Формируем кнопки
+        $oform .= '<a href="' . esc_url($url) . '" class="oform" onclick="ym(35020350,\'reachGoal\',\'click_shortcode_CTA_product\'); return true;">Оформить</a>';
+        $more .= '<a href="' . esc_url($url) . '" class="code5more">Подробнее</a>';
 
-        /*echo '<pre>'; 
- var_dump($meta);
- echo '</pre>';*/
+        // Определяем тип
+        $type = !empty($atts['type']) ? $atts['type'] : 'credit_card';
 
-        $more .= '<a href="' . $url . '" class="code5more">Подробнее</a>';
+        // Начинаем формировать HTML-контент
+        $html .= '<div class="code5wrapper"><span class="frecom">Финабанк рекомендует!</span><div class="code5block ' . esc_attr($back) . '">				            
+                 <div class="code5text">                 
+                     <div class="code5title">' . esc_html(get_the_title($atts['id'])) . '</div>
+                     <div class="code5description">				
+                         ' . $content . '
+                     </div>
+                     <div class="code5chars ">';
 
-        $type = $atts['type'] ?: 'credit_card';
-        //$html .= $type;
-        $html .= '<div class="code5wrapper"><span class="frecom">Финабанк рекомендует!</span><div class="code5block ' . $back . '">				            
-             <div class="code5text">                 
-                 <div class="code5title">' . get_the_title($atts['id']) . '</div>
-                 <div class="code5description">				
-                     ' . $content . '
-                 </div>
-                 <div class="code5chars ">';
+        // Обработка различных типов
         if ($type == 'credit_card') {
-            if (strlen($meta['card_cred_limit'][0]) > 0) {
+            if (!empty($meta['card_cred_limit'][0])) {
                 $html .= '<div class="code5charblock code5charblock-mini">
-                        <div class="code5charblock-row"> <span>' . number_format($meta['card_cred_limit'][0], 0, '', ' ') . ' </span><span class="mini">₽</span> </div>
-                         <div>Кред. лимит</div>
-                     </div>';
+                            <div class="code5charblock-row"> <span>' . number_format(intval($meta['card_cred_limit'][0]), 0, '', ' ') . ' </span><span class="mini">₽</span> </div>
+                             <div>Кред. лимит</div>
+                         </div>';
             }
-            if (strlen($meta['card_stavka'][0]) > 0) {
+            if (!empty($meta['card_stavka'][0])) {
                 $html .= '<div class="code5charblock code5charblock-mini">
-                <div class="code5charblock-row"> <span class="mini">От</span><span> ' . $meta['card_stavka'][0] . ' </span><span class="mini">%</span>  </div>
-                         <div>Cтавка</div>
-                     </div>';
+                            <div class="code5charblock-row"> <span class="mini">От</span><span> ' . esc_html($meta['card_stavka'][0]) . ' </span><span class="mini">%</span>  </div>
+                             <div>Cтавка</div>
+                         </div>';
             }
-            if (strlen($meta['card_period'][0]) > 0) {
+            if (!empty($meta['card_period'][0])) {
                 $value = get_field("card_period", $atts['id']);
                 $html .= '<div class="code5charblock code5charblock-mini">
-                         <span>' . $value['label'] . '</span>
+                         <span>' . esc_html($value['label']) . '</span>
                          <div>Без процентов</div>
                      </div>';
             }
-
-            // if (strlen($meta['card_cost'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //              <span>От ' . $meta['card_cost'][0] . ' ₽</span>
-            //              <div>Стоимость</div>
-            //          </div>';
-            // }
-            // if (strlen($meta['card_cashback'][0]) > 0) {
-            //     $value = get_field("card_cashback", $atts['id']);
-            //     $html .= '<div class="code5charblock">
-            //              <span>' . $value . '</span>
-            //              <div>Кэшбек</div>
-            //          </div>';
-            // }
-
-
-            // if (strlen($meta['card_answ'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['card_answ'][0] . '</span>
-            //                          <div>Решение</div>
-            //                      </div>';
-            // }
         }
 
         if ($type == 'zaim') {
-
-            // if (strlen($meta['z_history'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //              <span>' . $meta['z_history'][0] . '</span>
-            //              <div>Кредитная история</div>
-            //          </div>';
-            // }
-
-            // if (strlen($meta['z_oldness'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['z_oldness'][0] . '</span>
-            //                          <div>Возраст</div>
-            //                      </div>';
-            // }
-
-            // if (strlen($meta['z_answer'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['z_answer'][0] . '</span>
-            //                          <div>Решение</div>
-            //                      </div>';
-            // }
-
-            if (strlen($meta['z_sum'][0]) > 0) {
+            if (!empty($meta['z_sum'][0])) {
                 $html .= '<div class="code5charblock">
-                         <span>' . number_format($meta['z_sum'][0], 0, '', ' ') . ' ₽</span>
+                         <span>' . number_format(intval($meta['z_sum'][0]), 0, '', ' ') . ' ₽</span>
                          <div>Сумма</div>
                      </div>';
             }
-            if (strlen($meta['z_time'][0]) > 0) {
-
+            if (!empty($meta['z_time'][0])) {
                 $html .= '<div class="code5charblock">
-                         <span>' . $meta['z_time'][0] . '</span>
+                         <span>' . esc_html($meta['z_time'][0]) . '</span>
                          <div>Срок</div>
                      </div>';
             }
-            if (strlen($meta['z_stavka'][0]) > 0) {
+            if (!empty($meta['z_stavka'][0])) {
                 $html .= '<div class="code5charblock">
-                         <span>' . $meta['z_stavka'][0] . ' %</span>
+                         <span>' . esc_html($meta['z_stavka'][0]) . ' %</span>
                          <div>% ставка</div>
                      </div>';
             }
         }
 
         if ($type == 'kredit') {
-            // if (strlen($meta['credit_max_sum'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                      <span>' . number_format($meta['credit_max_sum'][0], 0, '', ' ') . ' ₽</span>
-            //                      <div>Макс. сумма</div>
-            //                  </div>';
-            // }
-            if (strlen($meta['credit_min_sum'][0]) > 0) {
+            if (!empty($meta['credit_min_sum'][0])) {
                 $html .= '<div class="code5charblock">
-                         <span>' . number_format($meta['credit_min_sum'][0], 0, '', ' ') . ' ₽</span>
+                         <span>' . number_format(intval($meta['credit_min_sum'][0]), 0, '', ' ') . ' ₽</span>
                          <div>Минимальная сумма</div>
                      </div>';
             }
-            if (strlen($meta['credit_period'][0]) > 0) {
+            if (!empty($meta['credit_period'][0])) {
                 $value = get_field("credit_period", $atts['id']);
-
                 $html .= '<div class="code5charblock">
-                         <span>' . $value['label'] . '</span>
+                         <span>' . esc_html($value['label']) . '</span>
                          <div>Срок</div>
                      </div>';
             }
-
-            if (strlen($meta['credit_stavka'][0]) > 0) {
+            if (!empty($meta['credit_stavka'][0])) {
                 $html .= '<div class="code5charblock">
-                         <span>' . $meta['credit_stavka'][0] . '</span>
+                         <span>' . esc_html($meta['credit_stavka'][0]) . '</span>
                          <div>% ставка</div>
                      </div>';
             }
-
-            // if (strlen($meta['credit_oldness'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                  <span>' . $meta['credit_oldness'][0] . '</span>
-            //                  <div>Возраст</div>
-            //              </div>';
-            // }
-
-
-            // if (strlen($meta['credit_answer'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['credit_answer'][0] . '</span>
-            //                          <div>Решение</div>
-            //                      </div>';
-            // }
         }
 
         if ($type == 'debit_card') {
-            // if (strlen($meta['non_pecent_money'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['non_pecent_money'][0] . '</span>
-            //                          <div>Снятие без %</div>
-            //                      </div>';
-            // }
-
-            if (strlen($meta['card_cost'][0]) > 0) {
+            if (!empty($meta['card_cost'][0])) {
                 $html .= '<div class="code5charblock">
-                                     <span>' . $meta['card_cost'][0] . '</span>
+                                     <span>' . esc_html($meta['card_cost'][0]) . '</span>
                                      <div>Стоимость</div>
                                  </div>';
             }
-            if (strlen($meta['card_stavka_ostatok'][0]) > 0) {
+            if (!empty($meta['card_stavka_ostatok'][0])) {
                 $html .= '<div class="code5charblock">
-                                     <span>' . $meta['card_stavka_ostatok'][0] . '</span>
+                                     <span>' . esc_html($meta['card_stavka_ostatok'][0]) . '</span>
                                      <div>% на остаток</div>
                                  </div>';
             }
-            if (strlen($meta['card_cashback'][0]) > 0) {
+            if (!empty($meta['card_cashback'][0])) {
                 $value = get_field("card_cashback", $atts['id']);
                 $html .= '<div class="code5charblock">
-                         <span>' . $value['label'] . '</span>
+                         <span>' . esc_html($value['label']) . '</span>
                          <div>Кэшбек</div>
                      </div>';
             }
-
-
-            // if (strlen($meta['card_overdraft'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['card_overdraft'][0] . '</span>
-            //                          <div>Овердрафт</div>
-            //                      </div>';
-            // }
-            // if (strlen($meta['card_answ'][0]) > 0) {
-            //     $html .= '<div class="code5charblock">
-            //                          <span>' . $meta['card_answ'][0] . '</span>
-            //                          <div>Решение</div>
-            //                      </div>';
-            // }
         }
 
-
-
-        /*if(strlen($meta['no_percents'][0]) > 0) {
-                         $html .= '<div class="code5charblock">
-                                         <span>От '.$meta['no_percents'][0].' ₽</span>
-                                         <div>Дней без процентов</div>
-                                     </div>';
-
-                     }
-                     if(strlen($meta['cashback'][0]) > 0) {
-                         $html .= '<div class="code5charblock">
-                                         <span>От '.$meta['cashback'][0].' ₽</span>
-                                         <div>Кэшбэк</div>
-                                     </div>';
-
-                     }
-                     if(strlen($meta['maintenance'][0]) > 0) {
-                         $html .= '<div class="code5charblock">
-                                         <span>От '.$meta['maintenance'][0].' ₽</span>
-                                         <div>Обслуживание</div>
-                                     </div>';
-
-                     }*/
-
+        // Закрываем divs и добавляем футер
         $html .= '			
                  </div>
                  <div class="code5footer">';
@@ -391,18 +284,11 @@ function code_type_5v2($atts)
         $html .=     '</div>
              </div>
              <div class="code5image">';
-        if (strlen($meta['card_logo'][0]) > 0) {
+        if (!empty($meta['card_logo'][0])) {
             $logo_alt = get_post_meta($meta['card_logo'][0], '_wp_attachment_image_alt', true);
             $image = wp_get_attachment_image_src($meta['card_logo'][0], 'large');
-            $html .= '<img alt="' . $logo_alt . '"  src="' . $image[0] . '" />';
+            $html .= '<img alt="' . esc_attr($logo_alt) . '" src="' . esc_url($image[0]) . '" />';
         }
-        /*if(strlen($meta['picture'][0]) > 0) {
-                 $image = wp_get_attachment_image_src($meta['picture'][0], 'large'); 
-                 $html .= '<img src="'.$image[0].'" />';
-             }*/
-        //$thumbnail_attributes = wp_get_attachment_image_src( get_post_thumbnail_id($atts['id']), 'medium' );             
-        //$html .= '<img src="'.$thumbnail_attributes[0].'" />';		
-
 
         $html .=     '</div>
              
@@ -413,10 +299,13 @@ function code_type_5v2($atts)
         $html .=     $more;
 
         $html .=     '</div></div>
-         </div></div>';
+             </div></div>';
 
         return $html;
-    endif;
+    }
+
+    // Возвращаем пустую строку, если условия не выполнены
+    return '';
 }
 
 add_shortcode('code5v2', 'code_type_5v2');
