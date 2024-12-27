@@ -1,14 +1,14 @@
 <?php
 
 //webmactep
-add_action('init', 'start_session', 1);
+// add_action('init', 'start_session', 1);
 
-function start_session()
-{
-	if (!session_id()) {
-		session_start();
-	}
-}
+// function start_session()
+// {
+// 	if (!session_id()) {
+// 		session_start();
+// 	}
+// }
 
 add_action('wp_logout', 'end_session');
 add_action('wp_login', 'end_session');
@@ -184,6 +184,9 @@ function finbank_theme_scripts()
 
 	wp_enqueue_style('custom',  get_template_directory_uri() . '/css/custom.css', array(), '2.0.0');
 
+	wp_enqueue_style('danil',  get_template_directory_uri() . '/css/danil.css', array(), '2.0.0');
+
+
 	//Для шорткодов
 	wp_enqueue_style('codes',  get_template_directory_uri() . '/css/codes.css?v=1');
 	//Для шорткодов
@@ -216,7 +219,7 @@ add_action('wp_enqueue_scripts', 'finbank_theme_scripts');
 
 function style_loader_tag_filter_preload_custom($html, $handle)
 {
-	if ($handle === 'style' || $handle === 'custom') {
+	if ($handle === 'style' || $handle === 'custom' || $handle === 'danil') {
 		$new_html = str_replace("text/css", "text/css", $html);
 		return str_replace("rel='stylesheet'", "rel='preload' as='style' onload='this.onload=null;this.rel=\"stylesheet\"'  ", $new_html);
 	}
@@ -878,13 +881,9 @@ function fix_svg_mime_type($data, $file, $filename, $mimes, $real_mime = '')
 }
 
 
-
 function my_pagination($total = '', $currentPage = '')
 {
-
-
 	global $wp_query;
-
 	if ($currentPage == '') {
 		if (is_front_page()) {
 			$currentPage = (get_query_var("page")) ? get_query_var("page") : 1;
@@ -903,8 +902,6 @@ function my_pagination($total = '', $currentPage = '')
 		$wp_query->max_num_pages = $total;
 	}
 
-
-
 	$pagination = paginate_links([
 		"base"      => str_replace(999999999, "%#%", get_pagenum_link(999999999)),
 		"format"    => "",
@@ -915,15 +912,17 @@ function my_pagination($total = '', $currentPage = '')
 		"next_text" => 'Вперед',
 	]);
 
-	if ($currentPage > $total) {
+
+
+	if ($currentPage !== 1 && $currentPage > $total) {
 		$url_clear = get_clear_url($_SERVER['REQUEST_URI']);
 		wp_redirect($url_clear, 301);
 	}
 
 
-
 	// ВОТ ТУТ УБИРАЕМ ссылку на 1 страницу, т.к серавно будет редирект
 	$pagination = preg_replace('~page/1/?([\'"])~', '\1', $pagination);
+
 
 
 	$pagination = str_replace("page-numbers", "pagination__links-item", $pagination);
@@ -933,6 +932,7 @@ function my_pagination($total = '', $currentPage = '')
 	//$pagination = preg_replace( '~/page/1/?([\'"])~', '', $pagination );
 	echo $pagination = str_replace("next", "pagination__links-last", $pagination);
 }
+
 
 function team_pagination()
 {
@@ -999,7 +999,7 @@ add_action('wp_enqueue_scripts', 'card_script_and_styles');
 function card_script_and_styles()
 {
 	// absolutely need it, because we will get $wp_query->query_vars and $wp_query->max_num_pages from it.
-	global $wp_query;
+	global $query, $wp_query;
 
 
 	wp_register_script(
@@ -1107,8 +1107,9 @@ function card_script_and_styles()
 
 
 
+
 	// passing parameters here
-	// actually the <script> tag will be created and the object "card_loadmore_params" will be inside it
+	// actually the <script> tag will be created and the object "card_loadmore_params" will be inside it 
 	wp_localize_script('card_scripts', 'card_loadmore_params', array(
 		'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php', // WordPress AJAX
 		'posts' => json_encode($wp_query->query_vars), // everything about your loop is here
@@ -1131,10 +1132,14 @@ function card_loadmore_ajax_handler()
 {
 
 	// prepare our arguments for the query
-	$params = json_decode(stripslashes($_POST['query']), true); // query_posts() takes care of the necessary sanitization
+	$params = json_decode(stripslashes($_POST['query']), true); // query_posts() takes care of the necessary sanitization 
 	$params['paged'] = $_POST['page'] + 1; // we need next page to be loaded
 	$params['post_status'] = 'publish';
-	$params['meta_key'] = $_POST['order'];
+
+	if (isset($_POST['order'])) {
+		$params['meta_key'] = $_POST['order'];
+	}
+
 	$term = $_POST['term'];
 
 	$view_template = null;
@@ -1440,19 +1445,19 @@ function card_filter_function()
 
 
 	// начало фильтра кредитов
-	
-	// $args['meta_query'][] = array(
-  	// 	'key' => 'archive',
-	// 	'value' => '1',
-	// 	'compare' => 'NOT EXISTS'
-	// );
+	/*	
+	$args['meta_query'][] = array(
+  		'key' => 'archive',
+		'value' => '1',
+		'compare' => 'NOT EXISTS'
+	);
 
-	// $args['meta_query'][] = array(
-  	// 	'key' => 'archive',
-	// 	'value' => true,
-	// 	'compare' => 'NOT EXISTS'
-	// );
-
+	$args['meta_query'][] = array(
+  		'key' => 'archive',
+		'value' => true,
+		'compare' => 'NOT EXISTS'
+	);
+*/
 	if (isset($summ_limit))
 		$args['meta_query'][] = array(
 			'key' => 'credit_max_sum',
@@ -2774,7 +2779,7 @@ function myown_comment($comment, $args, $depth)
 
 
 
-			<div class="code3wrapper new_table_collection_func" id="table_collection">
+			<div class="code3wrapper  new_table_collection_func" id="table_collection">
 
 				<?php if ($type == 'kredity') { ?>
 					<div class="code3">
@@ -2876,6 +2881,7 @@ function myown_comment($comment, $args, $depth)
 									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_shortcode_sheet'); return true;">
 										<img src="<?php echo get_field('z_organization_logo'); ?>" alt="<?php the_title(); ?>">
 										<?php the_title(); ?>
+
 									</a>
 								</div>
 								<div class="td text-center">
@@ -4127,13 +4133,22 @@ function myown_comment($comment, $args, $depth)
 	//return $title;
 	//}
 
+	// webmactep changes
 
-
+	
 
 	//Есть пагинация на страницах
 	function is_paginated()
 	{
 		global $wp_query;
+		//echo $wp_query->max_num_pages;
+		//echo $GLOBALS['wp_query']->max_num_pages;
+		//echo "NEW WP: ";
+		//print_r2($wp_query);
+		//echo 333;
+		//print_r2($GLOBALS['reviews']);
+
+
 		if ($wp_query->max_num_pages > 1) {
 			return $wp_query->max_num_pages;
 		} else {
@@ -4144,29 +4159,10 @@ function myown_comment($comment, $args, $depth)
 	function prefix_filter_title_example($title)
 	{
 
-
-		global $wp_query;
-
-		//print_r2($wp_query);
-
-		if (is_paginated() ||  is_reviews_page()) {
-
-			//print_r2($GLOBALS);
+		if (is_paginated() ||  is_reviews_page() || is_comments_page()) {
 
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-			$all_page_count = is_paginated();
-
-			//if($all_page_count == false){
-			//
-			//    if(isset($_SESSION['glob_max_num_pages'])) {
-			//          $all_page_count = $_SESSION['glob_max_num_pages'];
-			//    }
-			//
-			//}
-
-
-
-			$title = $title . ' — страница ' . $paged . ' из ' . $all_page_count;
+			$title = $title . ' — страница ' . $paged;
 		}
 
 		return $title;
@@ -4176,11 +4172,10 @@ function myown_comment($comment, $args, $depth)
 
 	function prefix_filter_description_example($description)
 	{
-		if (is_paginated() ||  is_reviews_page()) {
+		if (is_paginated() ||  is_reviews_page() || is_comments_page()) {
 
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-			$all_page_count = is_paginated();
-			$description = $description . ' — страница ' . $paged . ' из ' . $all_page_count;
+			$description = $description . ' — страница ' . $paged;
 		}
 
 		return $description;
@@ -4198,6 +4193,24 @@ function myown_comment($comment, $args, $depth)
 		return mb_substr_count($url, $findme);
 	}
 
+	function is_comments_page()
+	{
+		$url = $_SERVER['REQUEST_URI'];
+		$url = explode('?', $url);
+		$url = $url[0];
+		$findme   = 'comments';
+
+		return mb_substr_count($url, $findme);
+	}
+
 
 	require_once __DIR__ . '/roman-functions.php';
 	require_once __DIR__ . '/danil-functions.php';
+
+
+
+//function no_rows_found_function($query)
+//{
+//  $query->set('no_found_rows', true);
+//}
+//add_action('pre_get_posts', 'no_rows_found_function');
