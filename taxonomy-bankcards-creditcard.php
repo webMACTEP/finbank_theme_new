@@ -1,22 +1,32 @@
-<?php if($_GET['change_template']): ?>
+<?php
+// Начало PHP-кода
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-    <?php get_template_part( 'template-parts/new-collection-kredity' ); ?>
+// Проверка наличия параметра 'change_template' в URL
+if(isset($_GET['change_template']) && $_GET['change_template']):
+    get_template_part('template-parts/new-collection-kredity');
+else:
+    get_header();
 
-<?php else: ?>
+    // Получение текущего термина
+    $term = get_queried_object();
+    $ID = $term->ID;
 
-    <?php //session_start() ?>
-    <?php get_header(); ?>
-    <?php $term = get_queried_object();
-    $ID = get_queried_object()->ID;
-//$cred_limit = 700000;
+    // Инициализация переменных
+    $mt = false;
     $cred_limit = 0;
-//$cred_day_period = 500;
     $cred_day_period = 0;
+
+    // Проверка наличия фильтра в сессии
     if(isset($_SESSION['filter_credit_card']) && !empty($_SESSION['filter_credit_card'])):
         $mt = 1;
         $cred_limit = $_SESSION['filter_credit_card'][0];
         $cred_day_period = $_SESSION['filter_credit_card'][1];
     endif;
+
+    // Очистка фильтра из сессии
     unset($_SESSION['filter_credit_card']);
     ?>
 
@@ -878,11 +888,11 @@
                                 $query->the_post();
 
 
-                                if($_GET['test']){
-                                    $posttype = get_term(get_the_id());
-                                    print_r2($posttype);
-                                    echo 123;
-                                }
+                                // if($_GET['test']){
+                                //     $posttype = get_term(get_the_id());
+                                //     print_r2($posttype);
+                                //     echo 123;
+                                // }
 
                                 ?>
                                 <!-- item -->

@@ -1440,19 +1440,19 @@ function card_filter_function()
 
 
 	// начало фильтра кредитов
-	/*
-	$args['meta_query'][] = array(
-  		'key' => 'archive',
-		'value' => '1',
-		'compare' => 'NOT EXISTS'
-	);
+	
+	// $args['meta_query'][] = array(
+  	// 	'key' => 'archive',
+	// 	'value' => '1',
+	// 	'compare' => 'NOT EXISTS'
+	// );
 
-	$args['meta_query'][] = array(
-  		'key' => 'archive',
-		'value' => true,
-		'compare' => 'NOT EXISTS'
-	);
-*/
+	// $args['meta_query'][] = array(
+  	// 	'key' => 'archive',
+	// 	'value' => true,
+	// 	'compare' => 'NOT EXISTS'
+	// );
+
 	if (isset($summ_limit))
 		$args['meta_query'][] = array(
 			'key' => 'credit_max_sum',
