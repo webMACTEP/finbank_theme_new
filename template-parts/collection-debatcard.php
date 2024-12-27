@@ -24,8 +24,8 @@ unset($_SESSION['filter_debet_card']);
 			$tagslist .= ",".$tagslug;
 		}
 		$ipost++;
-	endforeach;	
-	endif;				
+	endforeach;
+	endif;
 	$postsarray = [];
 	if (!empty($tagslist)) {
 	$posts_arg = [
@@ -38,13 +38,13 @@ unset($_SESSION['filter_debet_card']);
 	            'field'    => 'slug',
 	            'terms'    => 'debetcard',
 	        ),
-	    )		
+	    )
 	];
-	
+
 	$posts = get_posts( $posts_arg );
 	foreach( $posts as $post ){
 		setup_postdata( $post );
-		$postsarray[] = $post->ID;			
+		$postsarray[] = $post->ID;
 	}
 	wp_reset_postdata();
 	}
@@ -54,50 +54,18 @@ unset($_SESSION['filter_debet_card']);
 	} else {
 		$products = [];
 	}
-	
+
 	$allposts = array_merge($postsarray, $products);
 
-	$allpostsjson = json_encode($allposts); 
+	$allpostsjson = json_encode($allposts);
 
 	global $allposts_collection;
 	global $type_collection;
 	$allposts_collection = $allposts;
 	$type_collection = 'debetcard';
-	
+
 	//var_dump($allpostsjson);
 
-
-$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-$items_args = array(
-    'post_type' => array('bankcard'),
-    'post__in' => $allposts,
-    'orderby' => 'name',
-    'order' => 'DESC',
-    'post_status' => 'publish',
-    'paged' => $paged,
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'bankcards',
-            'field'    => 'slug',
-            'terms'    => 'debetcard',
-        ),
-    )
-);
-$items_args['meta_query'][] = array(
-    'key' => 'archive',
-    'value' => '0'
-);
-$query_items = new WP_Query( $items_args );
-
-//if ( !$query_items->have_posts() ) {
-//    global $wp_query;
-//    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-//    wp_redirect( $url_clear, 301 );
-//    //$wp_query->set_404();
-//    //status_header( 404 );
-//    //nocache_headers();
-//    //require get_404_template();
-//}
 
 ?>
 
@@ -106,7 +74,7 @@ $query_items = new WP_Query( $items_args );
 	    <nav aria-label="breadcrumb" class="horizontal__scroll">
 	        <ol class="breadcrumb horizontal__scroll-container">
 	            <li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
-	            <li class="breadcrumb-item" aria-current="page"><a href="<?php echo get_term_link(7) ?>">Дебетовые карты</a></li> 
+	            <li class="breadcrumb-item" aria-current="page"><a href="<?php echo get_term_link(7) ?>">Дебетовые карты</a></li>
 	            <li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
 	        </ol>
 	    </nav>
@@ -119,31 +87,37 @@ $query_items = new WP_Query( $items_args );
 	            		<?= get_field('col-h1'); ?>
 	            	<?php else: ?>
 	            		<?php the_title(); ?>
-	            	<?php endif; ?>	
+	            	<?php endif; ?>
 	          </h1>
-<?php $args = array(
-					    'post_type'             => 'bankcard', 
-					    'posts_per_page'        => -1,
-					    'orderby' => 'date',
-					    'order' => 'ASC',
-					    'post__in' => $allposts,
-					    'tax_query' => array(
-						        array(
-						            'taxonomy' => 'bankcards',
-						            'field'    => 'slug',
-						            'terms'    =>  'debetcard',
-						        ),
-						    )
-					);
-$query = new WP_Query( $args );
+<?php
 
+$args = array(
+    'post_type'             => 'bankcard',
+    'posts_per_page'        => -1,
+    'orderby' => 'date',
+    'order' => 'ASC',
+    'post__in' => $allposts,
+    'tax_query' => array(
+            array(
+                'taxonomy' => 'bankcards',
+                'field'    => 'slug',
+                'terms'    =>  'debetcard',
+            ),
+        )
+);
+
+$query = new WP_Query( $args );
 // Цикл
 if ( $query->have_posts() ) {
     while ( $query->have_posts() ) {
         $query->the_post();
         $date = get_the_date('d.m.y');
-        ?>
-     <?php } } wp_reset_query() ?>
+    }
+}
+
+wp_reset_postdata();
+
+?>
 	            <div class="page__heading-date">Обновлено: <?php echo $date ?></div>
 	        </div>
 	        <div class="page__heading-description mt-2 mb-4">
@@ -192,7 +166,7 @@ if ( $query->have_posts() ) {
 	                            <label class="form-label" for="bankSelect">Банки</label>
 	                            <select name="bank" id="bankSelect" class="styledSelect" placeholder="">
 	                            	<option value="">Любой</option>
-	                        <?php 
+	                        <?php
 $args = array(
 	'posts_per_page' => -1,
 	'post_type' => 'banks',
@@ -200,20 +174,26 @@ $args = array(
 	'order' => 'DESC',
 );
 
-$wp_query = new WP_Query( $args );
+$query = new WP_Query( $args );
 
 // Цикл
-if ( $wp_query->have_posts() ) {
+if ( $query->have_posts() ) {
 	$counter = 0;
-	while ( $wp_query->have_posts() ) {
-		$wp_query->the_post();
+
+	while ( $query->have_posts() ) {
+		$query->the_post();
 		$counter +=1;
+
 		?>
 		<option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
 		<?php
+
 	}
-} ?>
-<?php wp_reset_query() ?>
+}
+
+wp_reset_postdata();
+
+?>
 	                            </select>
 	                        </div>
 	                        <div class="col-12 col-md-4 card_cat_select">
@@ -253,105 +233,7 @@ if ( $wp_query->have_posts() ) {
 	        </form>
 	    </div>
 	</div>
-	<!--div class="container">
-	    <div class="section">
-	       
-	        <div class="tags__main my-5 horizontal__scroll">
-	            <div class="horizontal__scroll-container">
-	                <a href="" class="tag__item"><span class="tag__item-title">Все карты</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Для наличных</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">кэшбэк</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Мили</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">кэшбэк</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Для наличных</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Все карты</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Мили</span></a>
-	                <a href="" class="tag__item btn__view-all"><span class="tag__item-title">ещё +</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Все карты</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Для наличных</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">кэшбэк</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Мили</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">кэшбэк</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Для наличных</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Все карты</span></a>
-	                <a href="" class="tag__item"><span class="tag__item-title">Мили</span></a>
-	            </div>
-	        </div>
-	        <div class="solution__links text-center">
-	            <div class="row">
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-1.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">Топ 5 ипотек с минимальной переплатой</span>
-	                    </a>
-	                </div>
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-3.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">Топ 20 лучших кредитных карт</span>
-	                    </a>
-	                </div>
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-4.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">5 Дебетовых карт с лучшим процентом на остаток</span>
-	                    </a>
-	                </div>
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-2.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">Топ 7 банков свыгодным процентом по вкладам</span>
-	                    </a>
-	                </div>
-	            </div>
-	            <a href="" class="btn btn-outline-alternative btn__view-all mt-3">
-	                Больше готовы решений
-	            </a>
-	            <div class="row">
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-1.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">Топ 5 ипотек с минимальной переплатой</span>
-	                    </a>
-	                </div>
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-3.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">Топ 20 лучших кредитных карт</span>
-	                    </a>
-	                </div>
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-4.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">5 Дебетовых карт с лучшим процентом на остаток</span>
-	                    </a>
-	                </div>
-	                <div class="col-12 col-sm-6 col-md-3 mb-3">
-	                    <a href="" class="tag__item tag__item-link d-flex align-items-center">
-	                        <span class="tag__item-img mr-3">
-	                            <img src="<?php bloginfo('template_url'); ?>/img/solution__img-2.png" alt="">
-	                        </span>
-	                        <span class="tag__item-title">Топ 7 банков свыгодным процентом по вкладам</span>
-	                    </a>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div-->
+
 	<!-- page navigation -->
 	<div class="page__nav">
 	    <div class="container">
@@ -540,61 +422,93 @@ if ( $wp_query->have_posts() ) {
 							'before' => '<div class="filter__section" id="collist">',
 							'after' => '</div>',
 							); ?>
-							<?php echo strip_tags(wp_nav_menu( $massiv_vhodnih_parametrov ), '<a>,' ); ?>	
+							<?php echo strip_tags(wp_nav_menu( $massiv_vhodnih_parametrov ), '<a>,' ); ?>
 		                </div-->
 
 					<div class="d-none d-lg-block">
-						<?php
-						$args = array(
-							'hide_empty' => true,
-							'taxonomy'     => 'tags-category',
-						);
+                    <?php
 
-						$cats = get_categories( $args ); 
-						if( $cats ){
-							foreach( $cats as $cat ){
-							$parent_category = array(81, 87, 99, 72);
-							if (in_array($cat->term_id, $parent_category)) continue;
+                    $args = array(
+                        'hide_empty' => true,
+                        'taxonomy'     => 'tags-category',
+                    );
 
-	                $args_coll = array(
-					    'post_type' => 'collection',
-					    'taxonomy' => 'tags-category',
-						'tax_query' => [
-							[
-								'taxonomy' => 'tags-category',
-								'terms' => $cat->term_id,
-								'field' => 'id',
-								'operator' => 'IN',
-							]
-						],					    	
-					    'posts_per_page' => -1,
-					    'orderby' => 'date',
-					    'order' => 'DESC',
-						'meta_query'    => array(
-						        array(
-						            'key'       => 'coll-type',
-						            'value'     => 'debatcard',
-						            'compare'   => '=',
-						        ),
-						    )					    
-					);
-					$query = new WP_Query( $args_coll );
-					if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                        <?php get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
-					<?php } wp_reset_query(); ?>	
+                    $cats = get_categories( $args );
+                    if( $cats ){
 
-					<?php		}	
-						}	
-						?>
+                        foreach( $cats as $cat ){
+                        $parent_category = array(81, 87, 99, 72);
+                        if (in_array($cat->term_id, $parent_category)) continue;
+
+
+                            $args_coll = array(
+                                'post_type' => 'collection',
+                                'taxonomy' => 'tags-category',
+                                'tax_query' => [
+                                    [
+                                        'taxonomy' => 'tags-category',
+                                        'terms' => $cat->term_id,
+                                        'field' => 'id',
+                                        'operator' => 'IN',
+                                    ]
+                                ],
+                                'posts_per_page' => -1,
+                                'orderby' => 'date',
+                                'order' => 'DESC',
+                                'meta_query'    => array(
+                                        array(
+                                            'key'       => 'coll-type',
+                                            'value'     => 'debatcard',
+                                            'compare'   => '=',
+                                        ),
+                                    )
+                            );
+
+                            $query = new WP_Query( $args_coll );
+                            if ( $query->have_posts() ) {
+                                $current_id = $query->get_queried_object_id();
+                                get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]);
+                            }
+
+                            wp_reset_query();
+                        }
+                    }
+
+                    ?>
+
 					</div>
 
 	                </div>
 	            </div>
 	            <!-- / filter -->
                     <?php
+                    $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+                    $args = array(
+                        'post_type' => array('bankcard'),
+                        'post__in' => $allposts,
+                        'orderby' => 'name',
+                        'order' => 'DESC',
+                        'post_status' => 'publish',
+                        'paged' => $paged,
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => 'bankcards',
+                                'field'    => 'slug',
+                                'terms'    => 'debetcard',
+                            ),
+                        )
+                    );
+
+                    $args['meta_query'][] = array(
+                        'key' => 'archive',
+                        'value' => '0'
+                    );
+
                     $counter = 0;
-                    if ( $query_items->have_posts() ) {
-                        $query = $query_items;
+                    $query = new WP_Query( $args );
+
+                    if ( $query->have_posts() ) {
+
                         $max_pages = $query->max_num_pages;
                         $found_posts = $query->found_posts;
 
@@ -615,6 +529,11 @@ if ( $wp_query->have_posts() ) {
                         $posts_html = '<p>Ничего не найдено по заданым фильтрам.</p>';
                     }
                     $GLOBALS['wp_query']->max_num_pages = $query->max_num_pages;
+                    // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    wp_reset_query();
+
+
+
 
                     //$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
                     ?>
@@ -644,22 +563,20 @@ if ( $wp_query->have_posts() ) {
 		                    <!-- pagination -->
 		                    <div class="pagination flex-column mb-5 mb-md-0">
 		                    	<?php if($paged < $max_pages): ?>
-		                        <button class="btn btn-outline-gray btn-block load_more_btn"
-		                         data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
-		                      		Больше решений
-		                   		</button>
-		                     <?php endif; ?>
+                                    <button class="btn btn-outline-gray btn-block load_more_btn1"
+                                     data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
+                                        Больше решений
+                                    </button>
+                                 <?php endif; ?>
+
 
 		                        <div class="pagination__container d-sm-flex justify-content-between align-items-center">
                                     <div class="pagination__links">
-                                        <?php my_pagination($max_pages); ?>
+                                        <?php my_pagination(); ?>
+
                                     </div>
-
-
-		                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
-		                            // wp_reset_query(); ?>
 		                            <div class="pagination__description mt-4 mt-sm-0">
-		                                Показано <span class="count_view"><?php echo $counter ?></span> 
+		                                Показано <span class="count_view"><?php echo $counter ?></span>
 		                                продуктов из <span class="count_all"><?php echo $query->found_posts;?></span>
 		                            </div>
 		                        </div>
@@ -673,51 +590,57 @@ if ( $wp_query->have_posts() ) {
 							'taxonomy'     => 'tags-category',
 						);
 
-						$cats = get_categories( $args ); 
+						$cats = get_categories( $args );
 						if( $cats ){
 							foreach( $cats as $cat ){
 							$parent_category = array(81, 87, 99, 72);
 							if (in_array($cat->term_id, $parent_category)) continue;
+                                $args_coll = array(
+                                    'post_type' => 'collection',
+                                    'taxonomy' => 'tags-category',
+                                    'tax_query' => [
+                                        [
+                                            'taxonomy' => 'tags-category',
+                                            'terms' => $cat->term_id,
+                                            'field' => 'id',
+                                            'operator' => 'IN',
+                                        ]
+                                    ],
+                                    'posts_per_page' => -1,
+                                    'orderby' => 'date',
+                                    'order' => 'DESC',
+                                    'meta_query'    => array(
+                                            array(
+                                                'key'       => 'coll-type',
+                                                'value'     => 'debatcard',
+                                                'compare'   => '=',
+                                            ),
+                                        )
+                                );
+                                $query = new WP_Query( $args_coll );
+                                if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id();
+                                    get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query, 'mobile' => 1]);
+                                }
 
-	                $args_coll = array(
-					    'post_type' => 'collection',
-					    'taxonomy' => 'tags-category',
-						'tax_query' => [
-							[
-								'taxonomy' => 'tags-category',
-								'terms' => $cat->term_id,
-								'field' => 'id',
-								'operator' => 'IN',
-							]
-						],					    	
-					    'posts_per_page' => -1,
-					    'orderby' => 'date',
-					    'order' => 'DESC',
-						'meta_query'    => array(
-						        array(
-						            'key'       => 'coll-type',
-						            'value'     => 'debatcard',
-						            'compare'   => '=',
-						        ),
-						    )					    
-					);
-					$query = new WP_Query( $args_coll );
-					if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                        <?php get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query, 'mobile' => 1]); ?>
-					<?php } wp_reset_query(); ?>	
+                                wp_reset_query();
 
-					<?php		}	
-						}	
-						?>
+                            }
+
+                        }
+                    ?>
 					</div>
-	                    
+
+
 	                </div>
 	            </div>
 	            <!-- / list -->
 	            <!-- / pagination -->
 	        </div>
 	    </div>
-	    <?php wp_reset_query(); ?>
+	    <?php //wp_reset_query(); ?>
+        <?php //wp_reset_postdata(); ?>
+
+
 	    <!-- / credits list -->
 	    <!-- articles -->
 	    <div class="section">
@@ -730,21 +653,22 @@ if ( $wp_query->have_posts() ) {
 	                </span>
 	            </a>
 	        </div>
-	        <div class="horizontal__scroll row mb-5 mb-md-6">        
+	        <div class="horizontal__scroll row mb-5 mb-md-6">
 	            <div class="horizontal__scroll-container">
-	                <?php 
+	                <?php
 $args = array(
     'post_type' => 'post',
     'cat' => 32,
     'posts_per_page' => 4,
-    //'meta_key' => 'views',
-    //'orderby' => array( 'meta_value_num' => 'desc', 'name' => 'desc' ),
-    //'order' => 'DESC',
 );
-$wp_query = new WP_Query( $args );
-if ( $wp_query->have_posts() ) {
-    while ( $wp_query->have_posts() ) {
-        $wp_query->the_post(); ?>
+
+$query = new WP_Query( $args );
+
+
+
+if ( $query->have_posts() ) {
+    while ( $query->have_posts() ) {
+        $query->the_post(); ?>
 		<!-- item -->
       <div class="article__item card card__vertical size4 offer h-100">
           <div class="card-container p-3 d-xl-flex flex-xl-column">
@@ -788,13 +712,16 @@ if ( $wp_query->have_posts() ) {
           </div>
       </div>
       <!-- / item -->
-     <?php }
-} ?>
-<?php wp_reset_query() ?>
+        <?php
+    }
+}
+wp_reset_postdata();
+                    ?>
 	            </div>
 	        </div>
 	    </div>
 	    <!-- / articles -->
+
 
 	    <!-- similar offers -->
 
@@ -812,7 +739,7 @@ if ( $wp_query->have_posts() ) {
 	        </div>
 	        <div class="horizontal__scroll row">
 	            <div class="horizontal__scroll-container">
-	                	        <?php 
+	                	        <?php
 
 $ppp = 3; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
 $custom_offset = 0;
@@ -832,22 +759,22 @@ if ( count( $comments_list ) > 0 ) {
 
  $comment_id = $comm->comment_ID;
  $comment = get_comment($comment_id);
- $comment_post_id = $comment->comment_post_ID; 
- $bank_id = get_field('bank_choise', $comment_post_id); 
+ $comment_post_id = $comment->comment_post_ID;
+ $bank_id = get_field('bank_choise', $comment_post_id);
  $user = get_userdata( $comment->user_id );
 
  $user_email = '';
  $user_role = '';
  if (!empty($user)) {
   $user_email = $user->user_email;
-  $user_role = $user->roles; 
- }  
- 
+  $user_role = $user->roles;
+ }
+
  $author = get_comment_author( $comment_id );
  $city = get_comment_meta( $comment_id, 'city', true ); ?>
  <!-- item -->
        <div class="reviews__item">
-           <div class="reviews__item-body">    
+           <div class="reviews__item-body">
                <div class="reviews__header d-flex align-items-center mb-2">
                    <div class="reviews__header-logo"><img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt=""></div>
                    <div class="reviews__header-meta ml-3">
@@ -855,7 +782,7 @@ if ( count( $comments_list ) > 0 ) {
                        <div class="d-flex">
                            <div class="card__rating d-flex align-items-center mr-3">
                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use></svg></div>
-                               <?php echo the_field('ratings_average', $bank_id); ?> 
+                               <?php echo the_field('ratings_average', $bank_id); ?>
                            </div>
                            <div class="card__icon d-flex align-items-center">
                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use></svg></div>
@@ -881,8 +808,8 @@ if ( count( $comments_list ) > 0 ) {
                                <div class="mr-2"><svg width="14" height="19" viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person" x="0" y="0"></use></svg></div>
                                <?php if(empty($user_role[0])):
                                     echo 'Гость';
-                                else: 
-                                    echo $user_role[0]; 
+                                else:
+                                    echo $user_role[0];
                                 endif; ?>
                            </div>
                            <?php if($city != ''): ?>
@@ -897,7 +824,7 @@ if ( count( $comments_list ) > 0 ) {
            </div>
        </div>
        <!-- / item -->
-<?php } 
+<?php }
 }else{ ?>
 <p class="col-12">Пока нет отзывов.</p>
 <?php } ?>
@@ -918,13 +845,13 @@ if ( count( $comments_list ) > 0 ) {
            </div>
            <div class="horizontal__scroll row">
                <div class="horizontal__scroll-container">
-                <?php 
+                <?php
 $args = array(
-    'post_type'             => 'bankcard', 
+    'post_type'             => 'bankcard',
     'posts_per_page'        => 4,
     'meta_key' => 'ratings_average',
     'orderby' => 'meta_value_num',
-    'order' => 'DESC', 
+    'order' => 'DESC',
     'tax_query' => array(
         array(
             'taxonomy' => 'bankcards',
@@ -946,15 +873,15 @@ wp_reset_postdata();
 	    <!-- / best offers -->
 	    <!-- faq -->
 
-	        
+
 	        <?php if( have_rows('type_faq', $term) ): ?>
 	        	  <div class="section">
 		        <div class="section__header d-flex justify-content-between align-items-center mb-4">
 		            <h2 class="title mb-0">Часто задавемые вопросы</h2>
 		        </div>
 			    <div class="accordion" id="accordion">
-			    <?php $counter = 0; ?> 
-			    <?php while( have_rows('type_faq', $term) ): the_row(); 
+			    <?php $counter = 0; ?>
+			    <?php while( have_rows('type_faq', $term) ): the_row();
 			        $question = get_sub_field('question');
 			        $answer = get_sub_field('answer');
 			        $counter += 1;
@@ -984,9 +911,9 @@ wp_reset_postdata();
 	        </div>
             <?php
             $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-            <?php if($date_actually): ?>
+            <? if($date_actually): ?>
                 <div class="date_actually-article mb-2">Обновлено: <?= $date_actually;?></div>
-            <?php endif; ?>
+            <? endif; ?>
 
 
             <?php
@@ -1013,6 +940,7 @@ wp_reset_postdata();
 	    <!-- / wysiwyg text -->
 	</div>
 </main>
+
 
 
 

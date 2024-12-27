@@ -125,7 +125,7 @@ if($TAX != '' && $DISPLAY == 'reviews'):
                     <?php if($TAX == 'banks'): ?>
                         <?php
 
-                        $ppp = 10000; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+                        $ppp = 10; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
                         $custom_offset = 0;
 
 // fetch posts in all those categories
@@ -210,7 +210,7 @@ if($TAX != '' && $DISPLAY == 'reviews'):
                         <?php } ?>
                     <?php elseif($TAX == 'zaimy'): ?>
                         <?php
-                        $ppp = 10000; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+                        $ppp = 10; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
                         $custom_offset = 0;
 
 // fetch posts in all those categories
@@ -294,7 +294,7 @@ if($TAX != '' && $DISPLAY == 'reviews'):
                     <?php elseif($TAX =='creditcard' || $TAX == 'debetcard' || $TAX == 'installmentcard'): ?>
                         <?php
 
-                        $ppp = 10000; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+                        $ppp = 10; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
                         $custom_offset = 0;
 
 // fetch posts in all those categories
@@ -381,7 +381,7 @@ if($TAX != '' && $DISPLAY == 'reviews'):
                     <?php elseif($TAX == 'kredity'): ?>
                         <?php
 
-                        $ppp = 10000; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+                        $ppp = 10; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
                         $custom_offset = 0;
 
 // fetch posts in all those categories
@@ -521,6 +521,7 @@ if($TAX != '' && $DISPLAY == 'reviews'):
 <?php
 
 
+
 $current_page_comments = (get_query_var('comments')) ? get_query_var('comments') : 1;
 $current_page_comments = str_replace('page/', '', $current_page_comments);
 $comments_per_page = 10;
@@ -565,6 +566,8 @@ $total_comments = get_comments(
 
 $max_page = ceil($total_comments / $comments_per_page);
 
+
+//$comments_per_page = count($comments);
 
 // Комментарии вариант 2
 if($ID != ''  && $DISPLAY == 'comments'): ?>
@@ -622,7 +625,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="count_view"><?php echo $comments_per_page; ?></span>
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
                                 отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
                             </div>
                         </div>
@@ -780,7 +783,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="count_view"><?php echo $comments_per_page; ?></span>
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
                                 отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
                             </div>
                         </div>
@@ -915,7 +918,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="count_view"><?php echo $comments_per_page; ?></span>
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
                                 отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
                             </div>
                         </div>
@@ -1028,7 +1031,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                 </div>
             </div>
         </main>
-    <?php endif; ?>
+    <? endif; ?>
     <?php if($post_type == "kredity"): ?>
         <main>
             <div class="container">
@@ -1064,22 +1067,13 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="count_view"><?php echo $comments_per_page; ?></span>
-                                продуктов из <span class="count_all"><?php echo $total_comments; ?></span>
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
                             </div>
                         </div>
                     </div>
                     <!-- / pagination -->
 
-                    <!-- pagination -->
-                    <div class="pagination flex-column">
-                        <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                            <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="review-count"> отзывов</span> из <?php echo get_comments_number($ID) ?>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- / pagination -->
 
 
 
@@ -1182,7 +1176,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                 </div>
             </div>
         </main>
-    <?php endif; ?>
+    <? endif; ?>
     <?php if($post_type == "zaimy"): ?>
         <main>
             <div class="container">
@@ -1218,7 +1212,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="count_view"><?php echo $comments_per_page; ?></span>
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
                                 отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
                             </div>
                         </div>
@@ -1312,13 +1306,13 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                                 'order' => 'DESC',
                             );
                             get_template_part( 'all_template/the_best_offers_list', null, $args); ?>
-                            ?>
+
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-    <?php endif; ?>
+    <? endif; ?>
 <?php endif; ?>
 
 
@@ -1384,7 +1378,7 @@ if($ID != ''  && $DISPLAY == 'comments'): ?>
                 <div class="row reviews-page-list" id="reviews">
                     <?php
 
-                    $ppp = 10000000; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+                    $ppp = 10; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
                     $custom_offset = 0;
 
                     // fetch posts in all those categories

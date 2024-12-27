@@ -1,15 +1,16 @@
 <?php
 
-//	$term = get_queried_object(); 
-//	$ID = get_queried_object()->ID; 
+	$term = get_queried_object();
+	$ID = get_queried_object()->ID;
 	$type = get_field('coll-type');
+
 
 //    if($_GET['test']){
 //        print_r2($type);
 //    }
 
     if( current_user_can('administrator')){
-        echo '<div style="margin-top: 3rem; color:red;">';
+        echo '<div style="margin-top: 3rem; color:reсd;">';
         echo $type . ' TYPE OF PAGE';
         echo '</div>';
     }

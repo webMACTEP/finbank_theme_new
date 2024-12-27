@@ -21,3 +21,4 @@ function  get_clear_url($url = '')
     $url_clear = implode('/', $url_arr);
     return $url_clear . '/';
 }
+

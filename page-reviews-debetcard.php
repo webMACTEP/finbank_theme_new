@@ -85,27 +85,16 @@ $link = get_term_link($tax_id, '');
                  comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1
                  ORDER by comment_date DESC LIMIT 0, 15");
                 $max_num_pages = ceil($sql_posts_total / $ppp);
-
-
                 $comments_list = $wpdb->get_results( $sql );
-                $count_items = count( $comments_list );
 
-                //if($count_items < 1){
-                //    global $wp_query;
-                //    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-                //    wp_redirect( $url_clear, 301 );
-                //    //$wp_query->set_404();
-                //    //status_header( 404 );
-                //    //nocache_headers();
-                //    //require get_404_template();
-                //}
-
+                $count_items = count($comments_list);
 
                 get_template_part('all_template/reviews_list', null,
                     ['TYPE' => 'bankcards', 'DATA' => $comments_list, 'bank_id__field_name' => 'bank_choise']); ?>
 
             </div>
             <!-- pagination -->
+
             <div class="pagination flex-column mb-5 mb-md-0">
 
                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
@@ -117,7 +106,7 @@ $link = get_term_link($tax_id, '');
                     wp_reset_query(); ?>
                     <div class="pagination__description mt-4 mt-sm-0">
                         Показано <span class="count_view"><?php echo $count_items; ?></span>
-                        из <span class="count_all"><?php echo $sql_posts_total;?></span>
+                        отзывов из <span class="count_all"><?php echo $sql_posts_total;?></span>
                     </div>
                 </div>
             </div>

@@ -297,6 +297,9 @@ jQuery(function($){
 
 		var parsedJson = $.parseJSON(card_loadmore_params.posts);
 
+		console.log(card_loadmore_params)
+
+
 		/// Зачем это было сделано ??
 		// if($('#response-cred-card').data('json')){
 		// 	card_loadmore_params.posts = JSON.stringify($('#response-cred-card').data('json'))
@@ -370,17 +373,25 @@ jQuery(function($){
 		return false;
 
 	});
+
  
 	$('.load_more_btn1').click(function(){
 		var order = $('.collection-order').find('option').attr('value');
 		//var term = $('main').attr('term');
 		var exclude_post = $('.btn__compare ').attr('data-id');
+
+
+		if($('#response-cred-card').data('json')){
+			card_loadmore_params.posts = JSON.stringify($('#response-cred-card').data('json'))
+		}
+
 		//console.log(exclude_post);
 		$.ajax({
 			url : card_loadmore_params.ajaxurl, // AJAX handler
 			data : {
 				'action': 'loadmorebutton', // the parameter for admin-ajax.php
 				'query': card_loadmore_params.posts, // loop parameters passed by wp_localize_script()
+				//'query': parsedJson, // loop parameters passed by wp_localize_script()
 				'page' : card_loadmore_params.current_page, // current page
 				'order' : order,
 				'term' : 'collection',
@@ -411,6 +422,14 @@ jQuery(function($){
 				$('.btn__compare').append('<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>');	
 			}
 		});
+
+
+		setTimeout(function() {
+			if(parseInt($('.count_view').text()) ==  parseInt($('.count_all').text())){
+				$('.load_more_btn1').hide();
+			}
+		}, 2000)
+
 		return false;
 	});
 
@@ -1997,9 +2016,7 @@ jQuery(document).ready(function ($) {
 				var exit = window.sessionStorage.getItem('exit_popup')
 
 
-				console.log('exit_popup ' + exit);
-
-
+				console.log(exit)
 
 
 				if ((e.clientY < 10) && (exit != '1')) {

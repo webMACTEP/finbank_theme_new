@@ -58,11 +58,10 @@ $term_id = $terms[0]->term_id;
             </div>
         </div>
     </div>
-    <!-- / page nav -->
-    <div class="container">
-        <div class="section">
-            <div class="row reviews-page-list" id="reviews">
+
+
 <?php
+//reviews_list
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
 $custom_offset = ($paged - 1)*$ppp;
@@ -80,40 +79,25 @@ $sql_posts_total =  $wpdb->get_var("SELECT COUNT(*)  FROM {$wpdb->comments} WHER
  ORDER by comment_date DESC");
 
 $max_num_pages = ceil($sql_posts_total / $ppp);
-$GLOBALS['wp_query']->max_num_pages = $max_num_pages;
-
-
-
-
 
 $comments_list = $wpdb->get_results( $sql );
 global $wp_query;
-
-
-
-
-
 $count_items = count( $comments_list );
+//reviews_list END
+?>
 
-//if($count_items < 1){
-//    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-//    wp_redirect( $url_clear, 301 );
-//    //$wp_query->set_404();
-//    //status_header( 404 );
-//    //nocache_headers();
-//    //require get_404_template();
-//}
+    <!-- / page nav -->
+    <div class="container">
+        <div class="section">
 
-get_template_part('all_template/reviews_list', null, ['TYPE' => 'kredity', 'DATA' => $comments_list]); ?>
-
-
-
-
-
+            <div class="row reviews-page-list" id="reviews">
+                <?php get_template_part('all_template/reviews_list', null, ['TYPE' => 'kredity', 'DATA' => $comments_list]); ?>
             </div>
+
+
+
             <!-- pagination -->
             <div class="pagination flex-column mb-5 mb-md-0">
-
                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
                     <div class="pagination__links">
                         <?php my_pagination($max_num_pages); ?>
@@ -123,11 +107,12 @@ get_template_part('all_template/reviews_list', null, ['TYPE' => 'kredity', 'DATA
                     wp_reset_query(); ?>
                     <div class="pagination__description mt-4 mt-sm-0">
                         Показано <span class="count_view"><?php echo $count_items; ?></span>
-                        из <span class="count_all"><?php echo $sql_posts_total;?></span>
+                        отзывов из <span class="count_all"><?php echo $sql_posts_total;?></span>
                     </div>
                 </div>
             </div>
             <!-- / pagination -->
+
         </div>
     </div>
 </main>

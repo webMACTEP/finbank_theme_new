@@ -67,38 +67,6 @@ unset($_SESSION['filter_installmentcard_card']);
 	
 	//var_dump($allpostsjson);
 
-$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-$items_args = array(
-    'post_type' => array('bankcard'),
-    'post__in' => $allposts,
-    'orderby' => 'name',
-    'order' => 'DESC',
-    'post_status' => 'publish',
-    'paged' => $paged,
-    'tax_query' => array(
-        array(
-            'taxonomy' => 'bankcards',
-            'field'    => 'slug',
-            'terms'    => 'installmentcard',
-        ),
-    )
-);
-
-$items_args['meta_query'][] = array(
-    'key' => 'archive',
-    'value' => '0'
-);
-$query_items = new WP_Query( $items_args );
-
-//if ( !$query_items->have_posts() ) {
-//    global $wp_query;
-//    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-//    wp_redirect( $url_clear, 301 );
-//    //$wp_query->set_404();
-//    //status_header( 404 );
-//    //nocache_headers();
-//    //require get_404_template();
-//}
 
 ?>
 
@@ -541,7 +509,7 @@ if ( $wp_query->have_posts() ) {
 					);
 					$query = new WP_Query( $args_coll );
 					if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                        <?php get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
+                        <? get_template_part( 'all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
 					<?php } wp_reset_query(); ?>	
 
 					<?php		}	
@@ -554,9 +522,33 @@ if ( $wp_query->have_posts() ) {
 	            </div>
 	            <!-- / filter -->
                 <?php
+                $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+                $args = array(
+                    'post_type' => array('bankcard'),
+                    'post__in' => $allposts,
+                    'orderby' => 'name',
+                    'order' => 'DESC',
+                    'post_status' => 'publish',
+                    'paged' => $paged,
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'bankcards',
+                            'field'    => 'slug',
+                            'terms'    => 'installmentcard',
+                        ),
+                    )
+                );
+
+                $args['meta_query'][] = array(
+                    'key' => 'archive',
+                    'value' => '0'
+                );
+
                 $counter = 0;
-                if ( $query_items->have_posts() ) {
-                    $query = $query_items;
+                $query = new WP_Query( $args );
+
+                if ( $query->have_posts() ) {
+
                     $max_pages = $query->max_num_pages;
                     $found_posts = $query->found_posts;
 
@@ -606,14 +598,14 @@ if ( $wp_query->have_posts() ) {
 		                    <!-- pagination -->
 		                    <div class="pagination flex-column mb-5 mb-md-0">
 		                    	<?php if($paged < $max_pages): ?>
-		                        <button class="btn btn-outline-gray btn-block load_more_btn"
+		                        <button class="btn btn-outline-gray btn-block load_more_btn1"
 		                         data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
 		                      		Больше решений
 		                   		</button>
 		                     <?php endif; ?>
 		                        <div class="pagination__container d-sm-flex justify-content-between align-items-center">
 		                        	<div class="pagination__links">
-		                        		<?php my_pagination($max_pages); ?>
+		                        		<?php my_pagination(); ?>
 		                        	</div>
 
 		                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
@@ -663,7 +655,7 @@ if ( $wp_query->have_posts() ) {
 					);
 					$query = new WP_Query( $args_coll );
 					if ( $query->have_posts() ) { $current_id = $wp_query->get_queried_object_id(); ?>
-                        <?php get_template_part( 'all_template/filter_right', null, ['mobile' => 1, 'cat' => $cat, 'query' => $query]); ?>
+                        <? get_template_part( 'all_template/filter_right', null, ['mobile' => 1, 'cat' => $cat, 'query' => $query]); ?>
 					<?php } wp_reset_query(); ?>	
 					<?php		}	
 						}	
@@ -1038,9 +1030,9 @@ wp_reset_postdata();
 	        </div>
 	    </div>
         <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
-        <?php if($date_actually): ?>
+        <? if($date_actually): ?>
             <div class="date_actually-article mb-2">Обновлено: <?= $date_actually;?></div>
-        <?php endif; ?>
+        <? endif; ?>
 
 
         <?php

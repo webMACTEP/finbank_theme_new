@@ -23,6 +23,7 @@ $term_id = $terms[0]->term_id;
        $link = get_post_type_archive_link('banks');
        $calc_link = get_page_link(149);
        $news_id = "16";
+
 ?>
 <main>
     <div class="container">
@@ -194,7 +195,7 @@ if ( count( $comments_list ) > 0 ) {
                     wp_reset_query(); ?>
                     <div class="pagination__description mt-4 mt-sm-0">
                         Показано <span class="count_view"><?php echo $count_items; ?></span>
-                        из <span class="count_all"><?php echo $sql_posts_total;?></span>
+                        отзывов из <span class="count_all"><?php echo $sql_posts_total;?></span>
                     </div>
                 </div>
             </div>
@@ -961,7 +962,7 @@ wp_reset_query();
         </div>
     </div>
 </main>
-<?php endif; ?>
+<? endif; ?>
 <?php if($post_type == "kredity"): ?>
 <main>
     <div class="container">
@@ -1167,7 +1168,7 @@ wp_reset_postdata();
        </div>
     </div>
 </main>
-<?php endif; ?>
+<? endif; ?>
 <?php if($post_type == "zaimy"): ?>
 <main>
     <div class="container">
@@ -1360,7 +1361,7 @@ wp_reset_postdata();
        </div>
     </div>
 </main>
-<?php endif; ?>
+<? endif; ?>
 <?php endif; ?>
 
 

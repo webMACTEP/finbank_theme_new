@@ -20,37 +20,6 @@ $summ_limit = $_SESSION['filter_kredity'][0];
 $cred_summ_period = $_SESSION['filter_kredity'][1];
 endif;
 unset($_SESSION['filter_kredity']);
-
-
-
-
-$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-
-$items_args = array(
-    'orderby' => 'name',
-    'order' => 'DESC',
-    'post_type' => 'kredity',
-    'post_status' => 'publish',
-    'paged' => $paged,
-);
-$items_args['meta_query'][] = array(
-    'key' => 'archive',
-    'value' => '0'
-);
-
-$query_items = new WP_Query( $items_args );
-
-
-//if ( !$query_items->have_posts() ) {
-//    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-//    wp_redirect( $url_clear, 301 );
-//    //$wp_query->set_404();
-//    //status_header( 404 );
-//    //nocache_headers();
-//    //require get_404_template();
-//}
-
-
 ?>
 
     <?php if($mt): ?>
@@ -420,11 +389,24 @@ if ( $wp_query->have_posts() ) {
 	            <!-- / filter -->
 
                 <?
+                $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+                $args = array(
+                    'orderby' => 'name',
+                    'order' => 'DESC',
+                    'post_type' => 'kredity',
+                    'post_status' => 'publish',
+                    'paged' => $paged,
+                );
+                $args['meta_query'][] = array(
+                    'key' => 'archive',
+                    'value' => '0'
+                );
 
                 $counter = 0;
-                if ( $query_items->have_posts() ) {
+                $query = new WP_Query( $args );
 
-                    $query = $query_items ;
+                if ( $query->have_posts() ) {
 
                     $max_pages = $query->max_num_pages;
                     $found_posts = $query->found_posts;
@@ -443,10 +425,6 @@ if ( $wp_query->have_posts() ) {
 
                 }else{
                     $posts_html = '<p>Ничего не найдено по заданым фильтрам.</p>';
-                    //$wp_query->set_404();
-                    //status_header( 404 );
-                    //nocache_headers();
-                    //require get_404_template();
                 }
 
                 ?>
@@ -456,7 +434,6 @@ if ( $wp_query->have_posts() ) {
 	                <div class="credits__list">
 <?php 
 //$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-$max_pages = $query->max_num_pages;
 //$counter = 0; ?>
     <div class="d-flex flex-wrap justify-content-between align-items-center mt-0 mt-md-5 mt-lg-0 mb-3">
       <div class="h2 mt-5 mb-4 mt-md-0 mb-md-0"><span class="variants_count"><?php echo  $query->found_posts; ?></span> вариантов</div>
@@ -488,7 +465,6 @@ $max_pages = $query->max_num_pages;
 		                        	<div class="pagination__links">
 		                        		<?php my_pagination($max_pages); ?>
 		                        	</div>
-
 
 
 		                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
