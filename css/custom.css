@@ -6246,6 +6246,10 @@ a.cld-like-dislike-trigger {
   text-align: left !important;
 }
 
+.code4title img {
+  max-width: 48px !important;
+}
+
 .code4block {
   width: 200px !important;
 }
