@@ -5,25 +5,25 @@ $filter_price = get_filter_price();
 
 ?>
 
-<?php if($type == 'creditcard'):?>
+<?php if ($type == 'creditcard'): ?>
 
     <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
         <div class="range">
             <div class="d-flex justify-content-between">
-                <div class="range__label">Кредитный лимит, ₽</div>
-                <input max="<?= $filter_price['install_inputs_range']['max']; ?>"  type="text" class="range__value cred_limit" min="0">
+                <div class="range__label">Кредитный лимит111, ₽</div>
+                <input max="<?= $filter_price['install_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" min="0">
             </div>
-            <input max="<?= $filter_price['install_inputs_range']['max']; ?>"  class="range__input" name="cred_limit" type="range" min="0" >
+            <input max="<?= $filter_price['install_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0">
         </div>
     </div>
 
     <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-2">
         <div class="range">
             <div class="d-flex justify-content-between">
-                <div class="range__label">Льготный период, дней</div>
-                <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>"  type="text" class="range__value cred_trat" value="" min="0">
+                <div class="range__label">Льготный период, дней222</div>
+                <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="" min="0">
             </div>
-            <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>"  class="range__input" name="cred_day_period" type="range" min="0" value="">
+            <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>" class="range__input" name="cred_day_period" type="range" min="0" value="">
         </div>
     </div>
 
@@ -42,17 +42,17 @@ $filter_price = get_filter_price();
                         'order' => 'DESC',
                     );
 
-                    $wp_query = new WP_Query( $args );
+                    $wp_query = new WP_Query($args);
 
                     // Цикл
-                    if ( $wp_query->have_posts() ) {
+                    if ($wp_query->have_posts()) {
                         $counter = 0;
-                        while ( $wp_query->have_posts() ) {
+                        while ($wp_query->have_posts()) {
                             $wp_query->the_post();
-                            $counter +=1;
-                            ?>
+                            $counter += 1;
+                    ?>
                             <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
-                            <?php
+                    <?php
                         }
                     } ?>
 
@@ -68,8 +68,8 @@ $filter_price = get_filter_price();
                     $field = get_field_object('card_category', 95);
                     //$value = $field['value'];
                     //$label = $field['choices'][ $value ];
-                    if(!empty($field['choices'])): ?>
-                        <?php foreach( $field['choices'] as $value => $label ): ?>
+                    if (!empty($field['choices'])): ?>
+                        <?php foreach ($field['choices'] as $value => $label): ?>
                             <option value="<?php echo $value ?>"><?php echo $label ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -93,7 +93,7 @@ $filter_price = get_filter_price();
 <?php endif; ?>
 
 
-<?php if($type == 'debetcard' || $type == 'debatcard'):?>
+<?php if ($type == 'debetcard' || $type == 'debatcard'): ?>
 
 
 
@@ -101,9 +101,9 @@ $filter_price = get_filter_price();
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Снятие без %, ₽</div>
-                <input max="<?= $filter_price['debet_inputs_range']['max']; ?>"  type="text" class="range__value cred_limit" min="0">
+                <input max="<?= $filter_price['debet_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" min="0">
             </div>
-            <input max="<?= $filter_price['debet_inputs_range']['max']; ?>"  class="range__input" name="percent_limit" type="range" min="0" >
+            <input max="<?= $filter_price['debet_inputs_range']['max']; ?>" class="range__input" name="percent_limit" type="range" min="0">
         </div>
     </div>
 
@@ -111,9 +111,9 @@ $filter_price = get_filter_price();
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Кэшбек, %</div>
-                <input max="<?= $filter_price['debet_inputs_range']['day_max']; ?>"  type="text" class="range__value cred_trat" value="0" min="0">
+                <input max="<?= $filter_price['debet_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="0" min="0">
             </div>
-            <input max="<?= $filter_price['debet_inputs_range']['day_max']; ?>"  class="range__input" name="cashback_number" type="range" min="0" value="0">
+            <input max="<?= $filter_price['debet_inputs_range']['day_max']; ?>" class="range__input" name="cashback_number" type="range" min="0" value="0">
         </div>
     </div>
 
@@ -132,17 +132,17 @@ $filter_price = get_filter_price();
                         'order' => 'DESC',
                     );
 
-                    $wp_query = new WP_Query( $args );
+                    $wp_query = new WP_Query($args);
 
                     // Цикл
-                    if ( $wp_query->have_posts() ) {
+                    if ($wp_query->have_posts()) {
                         $counter = 0;
-                        while ( $wp_query->have_posts() ) {
+                        while ($wp_query->have_posts()) {
                             $wp_query->the_post();
-                            $counter +=1;
-                            ?>
+                            $counter += 1;
+                    ?>
                             <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
-                            <?php
+                    <?php
                         }
                     } ?>
 
@@ -158,8 +158,8 @@ $filter_price = get_filter_price();
                     $field = get_field_object('card_category', 95);
                     //$value = $field['value'];
                     //$label = $field['choices'][ $value ];
-                    if(!empty($field['choices'])): ?>
-                        <?php foreach( $field['choices'] as $value => $label ): ?>
+                    if (!empty($field['choices'])): ?>
+                        <?php foreach ($field['choices'] as $value => $label): ?>
                             <option value="<?php echo $value ?>"><?php echo $label ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -175,8 +175,8 @@ $filter_price = get_filter_price();
                     $field = get_field_object('card_cashback', 167);
                     //$value = $field['value'];
                     //$label = $field['choices'][ $value ];
-                    if( !empty($field['choices']) ): ?>
-                        <?php foreach( $field['choices'] as $value => $label ): ?>
+                    if (!empty($field['choices'])): ?>
+                        <?php foreach ($field['choices'] as $value => $label): ?>
                             <option value="<?php echo $value ?>"><?php echo $label ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -189,16 +189,16 @@ $filter_price = get_filter_price();
 <?php endif; ?>
 
 
-<?php if($type == 'installmentcard'):?>
+<?php if ($type == 'installmentcard'): ?>
 
 
     <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Кредитный лимит, ₽</div>
-                <input max="<?= $filter_price['install_inputs_range']['max']; ?>"  type="text" class="range__value cred_limit" min="0">
+                <input max="<?= $filter_price['install_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" min="0">
             </div>
-            <input max="<?= $filter_price['install_inputs_range']['max']; ?>"  class="range__input" name="cred_limit" type="range" min="0" >
+            <input max="<?= $filter_price['install_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0">
         </div>
     </div>
 
@@ -206,9 +206,9 @@ $filter_price = get_filter_price();
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Льготный период, дней</div>
-                <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>"  type="text" class="range__value cred_trat" value="" min="0">
+                <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="" min="0">
             </div>
-            <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>"  class="range__input" name="cred_day_period" type="range" min="0" value="">
+            <input max="<?= $filter_price['install_inputs_range']['day_max']; ?>" class="range__input" name="cred_day_period" type="range" min="0" value="">
         </div>
     </div>
 
@@ -227,17 +227,17 @@ $filter_price = get_filter_price();
                         'order' => 'DESC',
                     );
 
-                    $wp_query = new WP_Query( $args );
+                    $wp_query = new WP_Query($args);
 
                     // Цикл
-                    if ( $wp_query->have_posts() ) {
+                    if ($wp_query->have_posts()) {
                         $counter = 0;
-                        while ( $wp_query->have_posts() ) {
+                        while ($wp_query->have_posts()) {
                             $wp_query->the_post();
-                            $counter +=1;
-                            ?>
+                            $counter += 1;
+                    ?>
                             <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
-                            <?php
+                    <?php
                         }
                     } ?>
 
@@ -253,8 +253,8 @@ $filter_price = get_filter_price();
                     $field = get_field_object('card_category', 95);
                     //$value = $field['value'];
                     //$label = $field['choices'][ $value ];
-                    if(!empty($field['choices'])): ?>
-                        <?php foreach( $field['choices'] as $value => $label ): ?>
+                    if (!empty($field['choices'])): ?>
+                        <?php foreach ($field['choices'] as $value => $label): ?>
                             <option value="<?php echo $value ?>"><?php echo $label ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -281,15 +281,17 @@ $filter_price = get_filter_price();
 <?php endif; ?>
 
 
-<?php if($type == 'kredity'):?>
+<?php if ($type == 'kredity'): ?>
 
     <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Сумма, ₽</div>
-                <input max="<?= $filter_price['kredity_inputs_range']['max']; ?>"  type="text" class="range__value cred_limit" value="<?//php echo $summ_limit ?>" min="0">
+                <input max="<?= $filter_price['kredity_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" value="<? //php echo $summ_limit 
+                                                                                                                                        ?>" min="0">
             </div>
-            <input max="<?= $filter_price['kredity_inputs_range']['max']; ?>"  class="range__input" name="summ_limit" type="range" min="0" value="<?//php echo $summ_limit ?>">
+            <input max="<?= $filter_price['kredity_inputs_range']['max']; ?>" class="range__input" name="summ_limit" type="range" min="0" value="<? //php echo $summ_limit 
+                                                                                                                                                    ?>">
         </div>
     </div>
 
@@ -297,9 +299,11 @@ $filter_price = get_filter_price();
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Срок, месяцев</div>
-                <input max="<?= $filter_price['kredity_inputs_range']['day_max']; ?>"  type="text" class="range__value cred_trat" value="<?//php echo $cred_summ_period ?>" min="0">
+                <input max="<?= $filter_price['kredity_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<? //php echo $cred_summ_period 
+                                                                                                                                        ?>" min="0">
             </div>
-            <input max="<?= $filter_price['kredity_inputs_range']['day_max']; ?>"  class="range__input" name="cred_summ_period" type="range" min="0" value="<?//php echo $cred_summ_period ?>">
+            <input max="<?= $filter_price['kredity_inputs_range']['day_max']; ?>" class="range__input" name="cred_summ_period" type="range" min="0" value="<? //php echo $cred_summ_period 
+                                                                                                                                                            ?>">
         </div>
     </div>
 
@@ -318,17 +322,17 @@ $filter_price = get_filter_price();
                         'order' => 'DESC',
                     );
 
-                    $wp_query = new WP_Query( $args );
+                    $wp_query = new WP_Query($args);
 
                     // Цикл
-                    if ( $wp_query->have_posts() ) {
+                    if ($wp_query->have_posts()) {
                         $counter = 0;
-                        while ( $wp_query->have_posts() ) {
+                        while ($wp_query->have_posts()) {
                             $wp_query->the_post();
-                            $counter +=1;
-                            ?>
+                            $counter += 1;
+                    ?>
                             <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
-                            <?php
+                    <?php
                         }
                     } ?>
 
@@ -344,8 +348,8 @@ $filter_price = get_filter_price();
                     $field = get_field_object('credit_porpose', 201);
                     //$value = $field['value'];
                     //$label = $field['choices'][ $value ];
-                    if(!empty($field['choices'])): ?>
-                        <?php foreach( $field['choices'] as $value => $label ): ?>
+                    if (!empty($field['choices'])): ?>
+                        <?php foreach ($field['choices'] as $value => $label): ?>
                             <option value="<?php echo $value ?>"><?php echo $label ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -361,8 +365,8 @@ $filter_price = get_filter_price();
                     $field = get_field_object('credit_zaemshik', 201);
                     //$value = $field['value'];
                     //$label = $field['choices'][ $value ];
-                    if(!empty($field['choices'])): ?>
-                        <?php foreach( $field['choices'] as $value => $label ): ?>
+                    if (!empty($field['choices'])): ?>
+                        <?php foreach ($field['choices'] as $value => $label): ?>
                             <option value="<?php echo $value ?>"><?php echo $label ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -376,15 +380,15 @@ $filter_price = get_filter_price();
 
 
 
-<?php if($type == 'zaimy'):?>
+<?php if ($type == 'zaimy'): ?>
 
     <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Сумма, ₽</div>
-                <input max="<?= $filter_price['zaimy_inputs_range']['max']; ?>"  type="text" class="range__value cred_limit" min="0">
+                <input max="<?= $filter_price['zaimy_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" min="0">
             </div>
-            <input max="<?= $filter_price['zaimy_inputs_range']['max']; ?>"  class="range__input" name="z_sum" type="range" min="0" >
+            <input max="<?= $filter_price['zaimy_inputs_range']['max']; ?>" class="range__input" name="z_sum" type="range" min="0">
         </div>
     </div>
 
@@ -392,17 +396,14 @@ $filter_price = get_filter_price();
         <div class="range">
             <div class="d-flex justify-content-between">
                 <div class="range__label">Срок, дней</div>
-                <input max="<?= $filter_price['zaimy_inputs_range']['day_max']; ?>"  type="text" class="range__value cred_trat" value="<?//php echo $cred_summ_period ?>" min="0">
+                <input max="<?= $filter_price['zaimy_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<? //php echo $cred_summ_period 
+                                                                                                                                        ?>" min="0">
             </div>
-            <input max="<?= $filter_price['zaimy_inputs_range']['day_max']; ?>"  class="range__input" name="z_time" type="range" min="0" value="<?//php echo $cred_summ_period ?>">
+            <input max="<?= $filter_price['zaimy_inputs_range']['day_max']; ?>" class="range__input" name="z_time" type="range" min="0" value="<? //php echo $cred_summ_period 
+                                                                                                                                                ?>">
         </div>
     </div>
 
 
 
 <?php endif; ?>
-
-
-
-
-

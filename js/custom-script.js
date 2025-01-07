@@ -815,7 +815,7 @@ function ajax_random_offers(after_item_count, page){
 
 
 	
-	$( '#credit-card-filter .submit-button' ).click(function(){
+	$( '#credit-card-filter .submit-button, #credit-card-filter-aside .submit-button' ).click(function(){
 		filter_main_start();
 	});
 

@@ -20,7 +20,7 @@
         justify-content: space-between;
     }
 }
-.form-check label{
+.form-check label {
     gap: 6px;
     align-items: center;
 }
@@ -903,14 +903,15 @@
     width: auto !important;
     text-align: left !important;
 }
-.code4title{
-    img{
+.code4title {
+    img {
         max-width: 48px !important;
+        max-height: 48px !important;
+        object-fit: cover;
     }
 }
-.code4block{
+.code4block {
     width: 200px !important;
-    
 }
 .code5charblock-mini span {
     font-size: 20px !important;
@@ -929,7 +930,156 @@
 .reviews__item-content p {
     -webkit-line-clamp: 4;
 }
+#credit-card-filter-aside {
+    .btn {
+        cursor: pointer;
+    }
+}
+.newlisting {
+    .bank-item{
+        font-size: 14px;
+        text-wrap: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        //padding: 0px 32px;
+        img{
+            border-radius: 4px;
+            max-height: 24px;
+        }
 
+    }
+    .banks-wrapper{
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        max-width: 100%;
+        overflow-x: auto;
+        position: relative;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+
+    }
+    .credits__list-buttons{
+        gap: 12px;
+        font-size: 14px;
+        color: var(--gray-700);
+        span{
+            color: var(--gray-700);
+        }
+    }
+    .filtr-butt,
+    .calc-butt{
+        border: 1px solid;
+        border-color: var(--btn-primary-border);
+        color: var(--gray-700);
+        cursor: pointer;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        height: 46px;
+        padding: 0px 32px;
+        background: var(--white);
+        border-radius: 50px;
+    }
+    .tags-list {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        justify-content: space-between;
+        position: relative;
+        &::before {
+            content: "";
+            position: absolute;
+            z-index: 99;
+            left: 40px;
+            top: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, var(--body-bg)  100%);
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            right: 40px;
+            top: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, var(--body-bg)  100%);
+        }
+    }
+    .tags-list_wrapper {
+       padding: 0px 0px 0px 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        max-width: 93%;
+        overflow-x: auto;
+        position: relative;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+
+    .tags-list_prev,
+    .tags-list_next {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        background: var(--white);
+        width: 36px;
+        height: 36px;
+
+        border-radius: 36px;
+        -webkit-box-shadow: 0 2px 4px var(--card-shadow);
+        box-shadow: 0 2px 4px var(--card-shadow);
+    }
+    .tags-list_prev:hover,
+    .tags-list_next:hover {
+        //background-color: #0056b3;
+    }
+
+    #credit-card-filter {
+        display: none;
+    }
+    .nav-link {
+        text-transform: none;
+        &.active {
+            background: var(--primary);
+        }
+        padding: 0px 16px;
+        background: var(--white);
+        height: 36px;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+    }
+    .page__heading {
+        background: none;
+        padding: 1.875rem 0 0 0;
+    }
+    .page__heading-description-more {
+        color: var(--primary);
+        cursor: pointer;
+    }
+    .page__heading-description {
+        &.active {
+            -webkit-line-clamp: 100;
+        }
+        //padding: 0px 0px 0px 0px;
+        font-size: 1rem;
+
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+    }
+    .page__heading-title {
+        font-size: 28px;
+    }
+}
 @media (max-width: 768px) {
     /* Отключение подсветки при касании для всех элементов */
     * {
