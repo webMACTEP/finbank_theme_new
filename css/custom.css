@@ -6276,6 +6276,94 @@ a.cld-like-dislike-trigger {
   cursor: pointer;
 }
 
+.newlisting .card .item-tags {
+  margin: 0px 0px 0px 0px;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.newlisting .card .item-tags li {
+  border-radius: 40px;
+  padding: 4px 12px;
+  text-wrap: nowrap;
+  font-size: 13px;
+  background: var(--gray-400);
+}
+.newlisting .card .open__dop-btn {
+  margin-left: auto;
+}
+.newlisting .card .item-footer {
+  margin: 16px 0px 0px 0px;
+  min-width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.newlisting .card .btn-sm {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+}
+.newlisting .card .item-buttons {
+  display: flex;
+  gap: 10px;
+}
+.newlisting .card .btn-block {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+.newlisting .card .item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.newlisting .card .item-info .item-title {
+  font-size: 14px;
+  max-width: 250px;
+}
+.newlisting .card .item-column {
+  display: flex;
+  flex-direction: column;
+}
+.newlisting .card .item-about {
+  display: flex;
+  gap: 16px;
+}
+.newlisting .card .item-image img {
+  max-height: 72px;
+}
+.newlisting .card .item-content {
+  display: flex;
+  justify-content: space-between;
+}
+.newlisting .card .card-container {
+  border-radius: 12px;
+}
+.newlisting .views-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.newlisting .views-buttons div {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.newlisting .views-buttons div.active svg path {
+  stroke: #14b8ad;
+}
+.newlisting .views-buttons div:hover svg path {
+  transition: 0.3s;
+  stroke: #14b8ad;
+}
+.newlisting .credits__list-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
 .newlisting .bank-item {
   font-size: 14px;
   text-wrap: nowrap;

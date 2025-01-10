@@ -936,20 +936,120 @@
     }
 }
 .newlisting {
-    .bank-item{
+    .card {
+        .item-tags {
+            li {
+                border-radius: 40px;
+                padding: 4px 12px;
+                text-wrap: nowrap;
+                font-size: 13px;
+                background: var(--gray-400);
+            }
+            margin: 0px 0px 0px 0px;
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .open__dop-btn {
+            margin-left: auto;
+        }
+        .item-footer {
+            margin: 16px 0px 0px 0px;
+            min-width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-sm {
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+        }
+        .item-buttons {
+            display: flex;
+            //align-items: center;
+            gap: 10px;
+        }
+        .btn-block {
+            min-width: fit-content;
+        }
+        .item-info {
+            .item-title{
+                font-size: 14px;
+                max-width: 250px;
+            }
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .item-column {
+            display: flex;
+            flex-direction: column;
+            //gap: 12px;
+        }
+        .item-about {
+            display: flex;
+            gap: 16px;
+        }
+        .item-image {
+            img {
+                max-height: 72px;
+            }
+        }
+        .item-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        .card-container {
+            border-radius: 12px;
+        }
+    }
+    .views-buttons {
+        div {
+            &.active {
+                svg {
+                    path {
+                        stroke: #14b8ad;
+                    }
+                }
+            }
+            &:hover {
+                svg {
+                    path {
+                        transition: 0.3s;
+                        stroke: #14b8ad;
+                    }
+                }
+            }
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .credits__list-right {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+    .bank-item {
         font-size: 14px;
         text-wrap: nowrap;
         display: flex;
         align-items: center;
         gap: 12px;
         //padding: 0px 32px;
-        img{
+        img {
             border-radius: 4px;
             max-height: 24px;
         }
-
     }
-    .banks-wrapper{
+    .banks-wrapper {
         display: flex;
         gap: 24px;
         align-items: center;
@@ -958,18 +1058,17 @@
         position: relative;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
-
     }
-    .credits__list-buttons{
+    .credits__list-buttons {
         gap: 12px;
         font-size: 14px;
         color: var(--gray-700);
-        span{
+        span {
             color: var(--gray-700);
         }
     }
     .filtr-butt,
-    .calc-butt{
+    .calc-butt {
         border: 1px solid;
         border-color: var(--btn-primary-border);
         color: var(--gray-700);
@@ -997,7 +1096,7 @@
             top: 0;
             width: 20px;
             height: 100%;
-            background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, var(--body-bg)  100%);
+            background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, var(--body-bg) 100%);
         }
         &::after {
             content: "";
@@ -1006,11 +1105,11 @@
             top: 0;
             width: 20px;
             height: 100%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, var(--body-bg)  100%);
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, var(--body-bg) 100%);
         }
     }
     .tags-list_wrapper {
-       padding: 0px 0px 0px 10px;
+        padding: 0px 0px 0px 10px;
         display: flex;
         gap: 10px;
         align-items: center;
