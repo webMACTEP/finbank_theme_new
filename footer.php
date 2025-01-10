@@ -341,7 +341,7 @@
   </footer>
 
   <div id="popup_compare" class="popup_compare" style="display:none;">
-    <div class="popup_compare_close"><img src="/wp-content/themes/finbank_theme/img/close.png" alt=Закрыть"></div>
+    <div class="popup_compare_close"><img src="/wp-content/themes/finbank_theme/img/close.png" alt="Закрыть"></div>
 
     <div class="popup_compare_body">
       <div class="popup_compare_icon">
