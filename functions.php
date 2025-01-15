@@ -554,6 +554,7 @@ function true_register_post_type_init()
 	$args = array(
 		'labels' => $labels,
 		'public' => true,
+		'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-star-empty', // иконка в меню
@@ -580,6 +581,7 @@ function true_register_post_type_init()
 	$args2 = array(
 		'labels' => $labels2,
 		'public' => true,
+		'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-star-empty', // иконка в меню
@@ -645,6 +647,7 @@ function true_register_post_type_init()
 	$args3 = array(
 		'labels' => $labels3,
 		'public' => true,
+		'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-star-empty', // иконка в меню
@@ -680,6 +683,7 @@ function true_register_post_type_init()
 	$args4 = array(
 		'labels' => $labels4,
 		'public' => true,
+		'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-universal-access', // иконка в меню
@@ -708,6 +712,7 @@ function true_register_post_type_init()
 	$args6 = array(
 		'labels' => $labels6,
 		'public' => true,
+		'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-universal-access', // иконка в меню
@@ -4135,7 +4140,7 @@ function myown_comment($comment, $args, $depth)
 
 	// webmactep changes
 
-	
+
 
 	//Есть пагинация на страницах
 	function is_paginated()

@@ -6195,6 +6195,12 @@ a.cld-like-dislike-trigger {
   margin-top: 0;
   max-width: 384px;
 }
+.zaimy-new .credits__view-img img {
+  max-height: 130px;
+  max-width: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
 .zaimy-new .credits__view-img .credits__view-buttons {
   position: relative;
 }

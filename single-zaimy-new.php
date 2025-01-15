@@ -17,7 +17,11 @@ $installment_link = get_term_link(8, '');
 $creditprod_link =  '/kredity/';
 $zaim_link =  '/zaimy/';
 
-$apply_now = get_field('apply_now_select_products', $ID); ?>
+$apply_now = get_field('apply_now_select_products', $ID);
+
+$current_url = get_permalink();
+
+?>
 <?php // get_template_part('all_template/popap_apply_now', null, ['DATA' => $apply_now]); 
 ?>
 
@@ -42,9 +46,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                 </div>
             </div>
             <h1 class="credits__view-title mb-1 mb-xl-4 heads-about active">Займ в <?php echo the_title() ?></h1>
-            <h1 class="credits__view-title mb-1 mb-xl-4 heads-lk">Личный кабинет <?php echo the_title() ?></h1>
-            <h1 class="credits__view-title mb-1 mb-xl-4 heads-contacts">Контакты <?php echo the_title() ?></h1>
-            <h1 class="credits__view-title mb-1 mb-xl-4 heads-promo">Промокоды, скидки в <?php echo the_title() ?></h1>
+
 
             <div class="credits__view-mob-description">
                 <?php echo the_field('product_text_desc_mob', $ID) ?>
@@ -192,7 +194,7 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
             </div>
         </div>
         <!-- / card info -->
-       
+
         <!-- similar -->
         <?php
         $featured_posts = get_field('related_products', $ID);
@@ -221,46 +223,59 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                                             Об МФО</a>
                                     </li>
                                     <li>
-                                        <?php
-                                        // Получаем значение телефона
-                                        $phone = get_field('z_organization_phone');
-                                        // Удаляем все символы, кроме цифр
-                                        $cleaned_phone = preg_replace('![^0-9]+!', '', $phone);
-                                        ?>
-                                        <a href="tel:<?php echo esc_attr($cleaned_phone); ?>"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                       
+                                        <a href="<?= esc_url($current_url); ?>goryachaya-liniya/"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.38028 8.85323C9.07627 10.3028 10.0251 11.6615 11.2266 12.8631C12.4282 14.0646 13.7869 15.0134 15.2365 15.7094C15.3612 15.7693 15.4235 15.7992 15.5024 15.8222C15.7828 15.904 16.127 15.8453 16.3644 15.6752C16.4313 15.6274 16.4884 15.5702 16.6027 15.4559C16.9523 15.1063 17.1271 14.9315 17.3029 14.8172C17.9658 14.3862 18.8204 14.3862 19.4833 14.8172C19.6591 14.9315 19.8339 15.1063 20.1835 15.4559L20.3783 15.6508C20.9098 16.1822 21.1755 16.448 21.3198 16.7333C21.6069 17.3009 21.6069 17.9712 21.3198 18.5387C21.1755 18.8241 20.9098 19.0898 20.3783 19.6213L20.2207 19.7789C19.6911 20.3085 19.4263 20.5733 19.0662 20.7756C18.6667 21 18.0462 21.1614 17.588 21.16C17.1751 21.1588 16.8928 21.0787 16.3284 20.9185C13.295 20.0575 10.4326 18.433 8.04466 16.045C5.65668 13.6571 4.03221 10.7947 3.17124 7.76131C3.01103 7.19687 2.93092 6.91464 2.9297 6.5017C2.92833 6.04347 3.08969 5.42298 3.31411 5.02348C3.51636 4.66345 3.78117 4.39863 4.3108 3.86901L4.46843 3.71138C4.99987 3.17993 5.2656 2.91421 5.55098 2.76987C6.11854 2.4828 6.7888 2.4828 7.35636 2.76987C7.64174 2.91421 7.90747 3.17993 8.43891 3.71138L8.63378 3.90625C8.98338 4.25585 9.15819 4.43065 9.27247 4.60643C9.70347 5.26932 9.70347 6.1239 9.27247 6.78679C9.15819 6.96257 8.98338 7.13738 8.63378 7.48698C8.51947 7.60129 8.46231 7.65845 8.41447 7.72526C8.24446 7.96269 8.18576 8.30695 8.26748 8.5873C8.29048 8.6662 8.32041 8.72854 8.38028 8.85323Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>Горячая линия</a>
                                     </li>
+                                    <?php
+                                    $current_page_id = get_the_ID();
+                                    $children = get_children(array(
+                                        'post_parent' => $current_page_id,
+                                        'post_type'   => 'zaimy',
+                                        'name'        => 'lichnyy-kabinet',
+                                        'numberposts' => 1
+                                    ));
+
+                                    if (!empty($children)) :
+                                        // Получаем первый (и единственный) дочерний объект
+                                        $child = array_shift($children);
+                                    ?>
+                                        <li>
+                                            <a href="<?= esc_url(get_permalink($child)); ?>" class="item-lk">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M3 20C5.33579 17.5226 8.50702 16 12 16C15.493 16 18.6642 17.5226 21 20M16.5 7.5C16.5 9.98528 14.4853 12 12 12C9.51472 12 7.5 9.98528 7.5 7.5C7.5 5.01472 9.51472 3 12 3C14.4853 3 16.5 5.01472 16.5 7.5Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                                Личный кабинет
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+
                                     <li>
-                                        <a href="#content-lk" class="item-lk"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M3 20C5.33579 17.5226 8.50702 16 12 16C15.493 16 18.6642 17.5226 21 20M16.5 7.5C16.5 9.98528 14.4853 12 12 12C9.51472 12 7.5 9.98528 7.5 7.5C7.5 5.01472 9.51472 3 12 3C14.4853 3 16.5 5.01472 16.5 7.5Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>Личный кабинет</a>
-                                    </li>
-                                    <li>
-                                        <a id="scroll-faq-button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <a href="#faq"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13M12 17H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>Вопросы</a>
                                     </li>
                                     <li>
-                                        <a id="scroll-comments-button"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <a href="#comments"> <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M7 8.5H12M7 12H15M9.68375 18H16.2C17.8802 18 18.7202 18 19.362 17.673C19.9265 17.3854 20.3854 16.9265 20.673 16.362C21 15.7202 21 14.8802 21 13.2V7.8C21 6.11984 21 5.27976 20.673 4.63803C20.3854 4.07354 19.9265 3.6146 19.362 3.32698C18.7202 3 17.8802 3 16.2 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V20.3355C3 20.8684 3 21.1348 3.10923 21.2716C3.20422 21.3906 3.34827 21.4599 3.50054 21.4597C3.67563 21.4595 3.88367 21.2931 4.29976 20.9602L6.68521 19.0518C7.17252 18.662 7.41617 18.4671 7.68749 18.3285C7.9282 18.2055 8.18443 18.1156 8.44921 18.0613C8.74767 18 9.0597 18 9.68375 18Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>Отзывы</a>
                                     </li>
                                     <li>
-                                        <a href="#content-contacts" class="item-contacts"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <a href="<?= esc_url($current_url); ?>kontakty/" class="item-contacts"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M14 2.26946V6.4C14 6.96005 14 7.24008 14.109 7.45399C14.2049 7.64215 14.3578 7.79513 14.546 7.89101C14.7599 8 15.0399 8 15.6 8H19.7305M20 9.98822V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V6.8C4 5.11984 4 4.27976 4.32698 3.63803C4.6146 3.07354 5.07354 2.6146 5.63803 2.32698C6.27976 2 7.11984 2 8.8 2H12.0118C12.7455 2 13.1124 2 13.4577 2.08289C13.7638 2.15638 14.0564 2.27759 14.3249 2.44208C14.6276 2.6276 14.887 2.88703 15.4059 3.40589L18.5941 6.59411C19.113 7.11297 19.3724 7.3724 19.5579 7.67515C19.7224 7.94356 19.8436 8.2362 19.9171 8.5423C20 8.88757 20 9.25445 20 9.98822Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>Контакты</a>
                                     </li>
                                     <li>
-                                        <a href="#content-promo" class="item-promo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <a href="<?= esc_url($current_url); ?>promokody-skidki/" class="item-promo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8 8V7M8 12.5V11.5M8 17V16M6.8 20H17.2C18.8802 20 19.7202 20 20.362 19.673C20.9265 19.3854 21.3854 18.9265 21.673 18.362C22 17.7202 22 16.8802 22 15.2V8.8C22 7.11984 22 6.27976 21.673 5.63803C21.3854 5.07354 20.9265 4.6146 20.362 4.32698C19.7202 4 18.8802 4 17.2 4H6.8C5.11984 4 4.27976 4 3.63803 4.32698C3.07354 4.6146 2.6146 5.07354 2.32698 5.63803C2 6.27976 2 7.11984 2 8.8V15.2C2 16.8802 2 17.7202 2.32698 18.362C2.6146 18.9265 3.07354 19.3854 3.63803 19.673C4.27976 20 5.11984 20 6.8 20Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>Промокоды, скидки</a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a href="/blog/"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M21 9.25H15M21 4H3M21 14.75H15M21 20H3M4.6 16H9.4C9.96005 16 10.2401 16 10.454 15.891C10.6422 15.7951 10.7951 15.6422 10.891 15.454C11 15.2401 11 14.9601 11 14.4V9.6C11 9.03995 11 8.75992 10.891 8.54601C10.7951 8.35785 10.6422 8.20487 10.454 8.10899C10.2401 8 9.96005 8 9.4 8H4.6C4.03995 8 3.75992 8 3.54601 8.10899C3.35785 8.20487 3.20487 8.35785 3.10899 8.54601C3 8.75992 3 9.03995 3 9.6V14.4C3 14.9601 3 15.2401 3.10899 15.454C3.20487 15.6422 3.35785 15.7951 3.54601 15.891C3.75992 16 4.03995 16 4.6 16Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>Новости и статьи</a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <a href="#best-offers"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M12 17C8.41015 17 5.5 14.0899 5.5 10.5V4.55556C5.5 4.03739 5.5 3.77831 5.59369 3.57738C5.69305 3.36431 5.86431 3.19305 6.07738 3.09369C6.27831 3 6.53739 3 7.05556 3H16.9444C17.4626 3 17.7217 3 17.9226 3.09369C18.1357 3.19305 18.3069 3.36431 18.4063 3.57738C18.5 3.77831 18.5 4.03739 18.5 4.55556V10.5C18.5 14.0899 15.5899 17 12 17ZM12 17V21M17 21H7M22 5V10M2 5V10" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -1294,240 +1309,10 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
                     <!-- /new-comments -->
 
                 </div>
-                <div id="content-lk" class="content-block content-lk col-12 col-md-9 col-lg-8 order-md-1">
-                    <div class="section">
-                        <div class="block-bg p-4">
-                            <div class="section__header d-flex justify-content-between align-items-center">
-                                <h2 class="title mb-4">Как войти в личный кабинет <?php echo the_title() ?></h2>
-                            </div>
-                            <?php echo the_field('about_lk', $ID) ?>
-                        </div>
-                    </div>
-                </div>
-                <div id="content-contacts" class="content-block content-contacts col-12 col-md-9 col-lg-8 order-md-1">
 
-                    <div class="section">
-                        <div class="content-contacts__head block-bg p-4">
-                            <div class="sidebar__header sidebar__section mb-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="bank__item-img mr-3">
-                                        <img src="<?php the_field('z_organization_logo', get_the_ID()); ?>"
-                                            alt="<?php
-                                                    $logo_id = get_field('z_organization_logo', get_the_ID(), false);
-                                                    $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                    echo esc_attr($logo_alt);
-                                                    ?>">
-                                    </div>
-                                    <div class="bank__item-content">
-                                        <div class="card__header-title mt-1 mb-2"><?php the_field('z_organization_name'); ?></div>
-                                        <div class="card__header-info d-flex align-items-center">
-                                            <div class="card__rating d-flex align-items-center mr-3">
-                                                <div class="mr-2">
-                                                    <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                                        <use xlink:href="<?php echo get_template_directory_uri(); ?>/img/icons.svg#starLine" x="0" y="0"></use>
-                                                    </svg>
-                                                </div>
-                                                <?php the_field('ratings_average'); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h2 class="title mb-4"><?php the_title(); ?> реквизиты и контакты</h2>
-                            <div class="text mb-4">
-                                <?php the_field('about_contacts', get_the_ID()); ?>
-                            </div>
-                            <div class="cc-row">
-                                <div class="credits__view-field field d-flex">
-                                    <div class="field__img mr-2">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/img/icon__speed.png" alt="Сумма займа">
-                                    </div>
-                                    <div class="field__content">
-                                        <div class="field__content-title">Сумма</div>
-                                        <div class="field__content-num"><?php the_field('cc_sum', get_the_ID()); ?></div>
-                                    </div>
-                                </div>
-                                <div class="credits__view-field field d-flex">
-                                    <div class="field__img mr-2">
-                                        <img src="<?php echo get_template_directory_uri(); ?>/img/icon__cashback.png" alt="Срок займа">
-                                    </div>
-                                    <div class="field__content">
-                                        <div class="field__content-title">Срок</div>
-                                        <div class="field__content-num">до <?php the_field('cc_srok', get_the_ID()); ?> дней</div>
-                                    </div>
-                                </div>
-                                <?php if (reclink(get_the_ID())): ?>
-                                    <a href="<?php the_field('card_bank_link', get_the_ID()); ?>" target="_blank" class="btn btn-primary"
-                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', get_the_ID())); ?> return true;">
-                                        Перейти на сайт
-                                    </a>
-                                <?php else: ?>
-                                    <a href="#" class="btn btn-primary <?php if (isset($apply_now) && $apply_now) { ?>apply_now_btm<?php } else { ?>out_exit_link<?php } ?>"
-                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', get_the_ID())); ?> return false;">
-                                        Перейти на сайт
-                                    </a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="section">
-                        <div class="block-bg p-4">
-                            <div class="section__header d-flex justify-content-between align-items-center">
-                                <h2 class="title mb-4"><?php the_title(); ?> реквизиты</h2>
-                            </div>
-                            <div class="content-contacts__wrapper">
-                                <?php if (have_rows('tab_details', get_the_ID())): ?>
-                                    <?php while (have_rows('tab_details', get_the_ID())): the_row();
-                                        $title = get_sub_field('title');
-                                        $text = get_sub_field('text');
-                                    ?>
-                                        <div class="item">
-                                            <div class="title"><?php echo esc_html($title); ?></div>
-                                            <div class="text"><?php echo esc_html($text); ?></div>
-                                        </div>
-                                    <?php endwhile; ?>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FAQ accordion -->
-                    <?php if (have_rows('product_faq', get_the_ID())): ?>
-                        <?php $counter_about = 0; // Инициализация переменной 
-                        ?>
-                        <div id="faq2" class="section">
-                            <div class="section__header d-flex justify-content-between align-items-center">
-                                <h2 class="title mb-4">Часто задаваемые вопросы</h2>
-                            </div>
-
-                            <div class="accordion mb-4" id="accordion">
-                                <?php while (have_rows('product_faq', get_the_ID())): the_row();
-                                    $question = get_sub_field('question');
-                                    $answer = get_sub_field('answer');
-                                    $counter_about += 1;
-                                ?>
-
-                                    <div class="accordion__item">
-                                        <div class="accordion__header">
-                                            <button class="accordion__button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse__item-<?php echo esc_attr($counter_about); ?>" aria-expanded="false">
-                                                <?php echo esc_html($question); ?>
-                                                <div class="accordion__button-icon">
-                                                    <svg width="12" height="6" viewBox="0 0 12 6">
-                                                        <use xlink:href="<?php echo get_template_directory_uri(); ?>/img/icons.svg#arrow" width="12" height="6" x="0" y="0"></use>
-                                                    </svg>
-                                                </div>
-                                            </button>
-                                        </div>
-                                        <div id="collapse__item-<?php echo esc_attr($counter_about); ?>" class="accordion__collapse collapse" data-bs-parent="#accordion">
-                                            <div class="accordion__body wysiwyg">
-                                                <p><?php echo esc_html($answer); ?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endwhile; ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <!-- /FAQ accordion -->
-
-                </div>
-                <div id="content-promo" class="content-block content-promo col-12 col-md-9 col-lg-8 order-md-1">
-                    <div class="section">
-                        <div class="section__header d-flex justify-content-between align-items-center">
-                            <h2 class="title mb-4"><?php echo the_field('promo_title', $ID) ?></h2>
-                        </div>
-                        <div class="items">
-                            <?php while (have_rows('tab_promo', $ID)): the_row();
-                                $title = get_sub_field('title');
-                                $text = get_sub_field('text');
-                                $time = get_sub_field('time');
-                            ?>
-                                <div class="item block-bg">
-                                    <div class="icon">
-                                        <img src="<?php echo the_field('card_logo', $ID) ?>" alt="<?php echo the_title() ?>">
-                                    </div>
-                                    <div class="info">
-                                        <h3><?php echo $title ?></h3>
-                                        <div class="text">
-                                            <p><?php echo $text ?></p>
-                                        </div>
-                                        <div class="oc-butt open active">Развернуть</div>
-                                        <div class="oc-butt close">Свернуть</div>
-                                    </div>
-                                    <div class="right">
-                                        <?php if (reclink($ID)): ?>
-                                            <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary"
-                                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Перейти на сайт</a>
-                                        <?php else: ?>
-                                            <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Перейти на сайт</a>
-                                        <?php endif; ?>
-
-                                        <span><?php echo $time ?></span>
-                                    </div>
-                                </div>
-                            <?php endwhile; ?>
-
-
-                        </div>
-                    </div>
-                    <!-- tariffs-rows  -->
-                    <?php if (have_rows('tarifs_new', $ID)): ?>
-                        <div class="section">
-                            <div class="section__header d-flex justify-content-between align-items-center">
-                                <h2 class="title mb-4">Тарифы <?php echo the_title() ?></h2>
-                            </div>
-
-                            <div class="tariffs-rows">
-                                <?php while (have_rows('tarifs_new', $ID)): the_row();
-                                    $title = get_sub_field('title');
-                                    $summa = get_sub_field('summa');
-                                    $time = get_sub_field('time');
-                                    $psk = get_sub_field('psk');
-                                    $text = get_sub_field('text');
-                                ?>
-                                    <div class="item p-4">
-                                        <div class="head">
-                                            <div class="organization">
-                                                <img src="<?php echo the_field('z_organization_logo', $ID) ?>"
-                                                    alt="<?
-                                                            $logo_id = get_field('z_organization_logo', $ID, false);
-                                                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                            echo $logo_alt;
-                                                            ?>">
-
-                                                <span><?php echo $title ?></span>
-                                            </div>
-                                            <div class="info-item">
-                                                <div class="info-title">Сумма</div>
-                                                <div class="info-text"> <?php echo $summa ?></div>
-                                            </div>
-                                            <div class="info-item">
-                                                <div class="info-title">Срок</div>
-                                                <div class="info-text"> <?php echo $time ?></div>
-                                            </div>
-
-                                            <a href="#" class="btn btn-primary">Подробнее</a>
-                                        </div>
-                                        <div class="info">
-                                            <?php echo $text ?>
-
-
-                                        </div>
-
-                                    </div>
-                                <?php endwhile; ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <!-- / tariffs-rows  -->
-                </div>
 
                 <!-- / page content -->
             </div>
-
-
         </div>
         <!-- / content -->
 
@@ -2149,133 +1934,133 @@ $apply_now = get_field('apply_now_select_products', $ID); ?>
         });
 
         // Получаем все элементы меню
-        const menuItems = document.querySelectorAll('.sidebar__menu > li > a');
+        // const menuItems = document.querySelectorAll('.sidebar__menu > li > a');
 
-        // Если есть дополнительные кнопки, получаем их (иначе удалите эти строки)
-        const additionalButton = document.getElementById('additional-button');
-        const scrollCommentsButton = document.getElementById('scroll-comments-button');
-        const scrollFaqButton = document.getElementById('scroll-faq-button');
+        // // Если есть дополнительные кнопки, получаем их (иначе удалите эти строки)
+        // const additionalButton = document.getElementById('additional-button');
+        // const scrollCommentsButton = document.getElementById('scroll-comments-button');
+        // const scrollFaqButton = document.getElementById('scroll-faq-button');
 
-        // Функция для удаления класса 'active' у всех пунктов меню, заголовков и контентных блоков
-        function removeActiveClasses() {
-            // Удаляем 'active' у пунктов меню
-            menuItems.forEach(item => item.classList.remove('active'));
+        // // Функция для удаления класса 'active' у всех пунктов меню, заголовков и контентных блоков
+        // function removeActiveClasses() {
+        //     // Удаляем 'active' у пунктов меню
+        //     menuItems.forEach(item => item.classList.remove('active'));
 
-            // Удаляем 'active' у всех heads-*
-            const allHeads = document.querySelectorAll('.heads-about, .heads-lk, .heads-contacts, .heads-promo');
-            allHeads.forEach(head => head.classList.remove('active'));
+        //     // Удаляем 'active' у всех heads-*
+        //     const allHeads = document.querySelectorAll('.heads-about, .heads-lk, .heads-contacts, .heads-promo');
+        //     allHeads.forEach(head => head.classList.remove('active'));
 
-            // Удаляем 'active' у контентных блоков
-            const contentBlocks = document.querySelectorAll('.content-block');
-            contentBlocks.forEach(block => block.classList.remove('active'));
-        }
+        //     // Удаляем 'active' у контентных блоков
+        //     const contentBlocks = document.querySelectorAll('.content-block');
+        //     contentBlocks.forEach(block => block.classList.remove('active'));
+        // }
 
-        // Функция для добавления класса 'active' выбранному пункту меню, соответствующему заголовку и контентному блоку
-        function setActive(itemClass) {
-            // Активируем соответствующий заголовок: заменим 'item-' на 'heads-'
-            const headsClass = itemClass.replace('item-', 'heads-');
-            const headsElement = document.querySelector('.' + headsClass);
-            if (headsElement) {
-                headsElement.classList.add('active');
-            }
+        // // Функция для добавления класса 'active' выбранному пункту меню, соответствующему заголовку и контентному блоку
+        // function setActive(itemClass) {
+        //     // Активируем соответствующий заголовок: заменим 'item-' на 'heads-'
+        //     const headsClass = itemClass.replace('item-', 'heads-');
+        //     const headsElement = document.querySelector('.' + headsClass);
+        //     if (headsElement) {
+        //         headsElement.classList.add('active');
+        //     }
 
-            // Активируем соответствующий контентный блок: заменим 'item-' на 'content-'
-            const contentClass = itemClass.replace('item-', 'content-');
-            const selectedContent = document.querySelector(`.${contentClass}`);
-            if (selectedContent) {
-                selectedContent.classList.add('active');
-            }
+        //     // Активируем соответствующий контентный блок: заменим 'item-' на 'content-'
+        //     const contentClass = itemClass.replace('item-', 'content-');
+        //     const selectedContent = document.querySelector(`.${contentClass}`);
+        //     if (selectedContent) {
+        //         selectedContent.classList.add('active');
+        //     }
 
-            // Подсвечиваем сам пункт меню
-            const selectedItem = document.querySelector(`.${itemClass}`);
-            if (selectedItem) {
-                selectedItem.classList.add('active');
-            }
-        }
+        //     // Подсвечиваем сам пункт меню
+        //     const selectedItem = document.querySelector(`.${itemClass}`);
+        //     if (selectedItem) {
+        //         selectedItem.classList.add('active');
+        //     }
+        // }
 
-        // Добавляем обработчик события клика на каждый пункт меню
-        menuItems.forEach(item => {
-            item.addEventListener('click', function(event) {
-                const classes = this.className.split(' ');
-                const itemClass = classes.find(cls => cls.startsWith('item-'));
+        // // Добавляем обработчик события клика на каждый пункт меню
+        // menuItems.forEach(item => {
+        //     item.addEventListener('click', function(event) {
+        //         const classes = this.className.split(' ');
+        //         const itemClass = classes.find(cls => cls.startsWith('item-'));
 
-                if (itemClass) {
-                    event.preventDefault();
-                    removeActiveClasses();
-                    setActive(itemClass);
-                }
-            });
-        });
+        //         if (itemClass) {
+        //             event.preventDefault();
+        //             removeActiveClasses();
+        //             setActive(itemClass);
+        //         }
+        //     });
+        // });
 
-        // Обработчик для additionalButton (при наличии)
-        if (additionalButton) {
-            additionalButton.addEventListener('click', function() {
-                removeActiveClasses();
-                setActive('item-lk');
-            });
-        }
+        // // Обработчик для additionalButton (при наличии)
+        // if (additionalButton) {
+        //     additionalButton.addEventListener('click', function() {
+        //         removeActiveClasses();
+        //         setActive('item-lk');
+        //     });
+        // }
 
-        // Обработчики для кнопок "Комментарии" и "FAQ" (при наличии)
-        if (scrollCommentsButton) {
-            scrollCommentsButton.addEventListener('click', function() {
-                activateFirstMenuItem();
-                scrollToSection('comments');
-            });
-        }
+        // // Обработчики для кнопок "Комментарии" и "FAQ" (при наличии)
+        // if (scrollCommentsButton) {
+        //     scrollCommentsButton.addEventListener('click', function() {
+        //         activateFirstMenuItem();
+        //         scrollToSection('comments');
+        //     });
+        // }
 
-        if (scrollFaqButton) {
-            scrollFaqButton.addEventListener('click', function() {
-                activateFirstMenuItem();
-                scrollToSection('faq');
-            });
-        }
+        // if (scrollFaqButton) {
+        //     scrollFaqButton.addEventListener('click', function() {
+        //         activateFirstMenuItem();
+        //         scrollToSection('faq');
+        //     });
+        // }
 
-        // Вспомогательная функция для активации первого пункта меню и контентного блока
-        function activateFirstMenuItem() {
-            const firstMenuItem = menuItems[0];
-            if (firstMenuItem) {
-                const classes = firstMenuItem.className.split(' ');
-                const firstItemClass = classes.find(cls => cls.startsWith('item-'));
-                if (firstItemClass) {
-                    removeActiveClasses();
-                    setActive(firstItemClass);
-                }
-            }
-        }
+        // // Вспомогательная функция для активации первого пункта меню и контентного блока
+        // function activateFirstMenuItem() {
+        //     const firstMenuItem = menuItems[0];
+        //     if (firstMenuItem) {
+        //         const classes = firstMenuItem.className.split(' ');
+        //         const firstItemClass = classes.find(cls => cls.startsWith('item-'));
+        //         if (firstItemClass) {
+        //             removeActiveClasses();
+        //             setActive(firstItemClass);
+        //         }
+        //     }
+        // }
 
-        // Вспомогательная функция для прокрутки до заданного раздела с учётом фиксированного хедера
-        function scrollToSection(sectionId) {
-            const targetSection = document.getElementById(sectionId);
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        }
+        // // Вспомогательная функция для прокрутки до заданного раздела с учётом фиксированного хедера
+        // function scrollToSection(sectionId) {
+        //     const targetSection = document.getElementById(sectionId);
+        //     if (targetSection) {
+        //         targetSection.scrollIntoView({
+        //             behavior: 'smooth',
+        //             block: 'start'
+        //         });
+        //     }
+        // }
 
         // Логика для кнопок "Открыть/Закрыть" внутри .content-promo .items .item
-        const items = document.querySelectorAll('.content-promo .items .item');
+        // const items = document.querySelectorAll('.content-promo .items .item');
 
-        items.forEach(function(item) {
-            const openBtn = item.querySelector('.open');
-            const closeBtn = item.querySelector('.close');
-            const textBlock = item.querySelector('.text');
+        // items.forEach(function(item) {
+        //     const openBtn = item.querySelector('.open');
+        //     const closeBtn = item.querySelector('.close');
+        //     const textBlock = item.querySelector('.text');
 
-            if (openBtn && closeBtn && textBlock) {
-                openBtn.addEventListener('click', function() {
-                    openBtn.classList.remove('active');
-                    closeBtn.classList.add('active');
-                    textBlock.classList.add('active');
-                });
+        //     if (openBtn && closeBtn && textBlock) {
+        //         openBtn.addEventListener('click', function() {
+        //             openBtn.classList.remove('active');
+        //             closeBtn.classList.add('active');
+        //             textBlock.classList.add('active');
+        //         });
 
-                closeBtn.addEventListener('click', function() {
-                    closeBtn.classList.remove('active');
-                    textBlock.classList.remove('active');
-                    openBtn.classList.add('active');
-                });
-            }
-        });
+        //         closeBtn.addEventListener('click', function() {
+        //             closeBtn.classList.remove('active');
+        //             textBlock.classList.remove('active');
+        //             openBtn.classList.add('active');
+        //         });
+        //     }
+        // });
     });
 </script>
 

@@ -24,11 +24,11 @@ $date_actually = get_the_modified_date('d.m.Y', get_the_ID());
 <div class="card card__horizontal mb-4 <?= esc_attr($query__card); ?>">
     <div class="card-container d-flex flex-wrap">
         <div class="card__header d-flex justify-content-between align-items-center mb-3 flex-grow-1 order-1">
-            <h4 class="mb-0">
-                <a href="<?= esc_url(get_the_permalink()); ?>">
+            <div class="mb-0">
+                <a class="h4" href="<?= esc_url(get_the_permalink()); ?>">
                     <?= esc_html(get_the_title()); ?>
                 </a>
-            </h4>
+</div>
             <div class="card__header_right">
                 <?php if (get_field('archive') === true): ?>
                     <div class="card__archive">Архив</div>

@@ -38,11 +38,11 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
     <div class="card-container d-flex flex-wrap">
         <!-- Заголовок карточки -->
         <div class="card__header d-flex justify-content-between align-items-center mb-3 flex-grow-1 order-1">
-            <h4 class="mb-0">
-                <a href="<?php echo esc_url(get_permalink()); ?>">
+            <div class="mb-0">
+                <a class="h4" href="<?php echo esc_url(get_permalink()); ?>">
                     <?php echo esc_html(get_the_title()); ?>
                 </a>
-            </h4>
+</div>
             <div class="card__header_right">
                 <?php if (get_field('archive') == true): ?>
                     <div class="card__archive">Архив</div>

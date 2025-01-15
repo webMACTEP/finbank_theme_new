@@ -29,6 +29,9 @@ $comments_count = wp_count_comments(get_the_ID());
 $about_item = get_field('about_item', get_the_ID());
 $if_in_tab = get_field('if_in_tab', get_the_ID());
 $plus_and_minus_tab = get_field('plus_and_minus_tab', get_the_ID());
+//$card_other_state = get_field('card_other_state');
+$card_other_state =  get_field('card_other_state', $ID);
+
 
 // Определение необходимости отображения кнопки "Подробнее"
 $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_in_tab || $plus_and_minus_tab;
@@ -160,6 +163,12 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     the_tags('<ul class="item-tags"><li>', '</li><li>', '</li></ul>');
                 }
                 ?>
+
+                <div class="">Прочие: <?php echo esc_html($card_other_state); ?>
+                <?php foreach ($card_other_state as $item): ?>
+                                    <a href="#" class="btn calc__page-nav btn-light"><?php echo $item; ?></a>
+                                <?php endforeach; ?>
+            </div>
 
            
 

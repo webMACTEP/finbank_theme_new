@@ -845,6 +845,11 @@
         display: none;
     }
     .credits__view-img {
+        img{
+            max-height: 130px;
+            max-width: auto;
+            object-fit: contain;
+        }
         .credits__view-buttons {
             position: relative;
         }
@@ -937,9 +942,7 @@
 }
 .newlisting {
     .card {
-        .111111{
-            display: none;
-        }
+       
         .item-tags {
             li {
                 border-radius: 40px;

@@ -96,7 +96,7 @@ $parent_cat_id = $current_cat->parent;
 	                            	$popular_name = get_category_parents($parent_cat_id, '', '');
 	                            	$popular_id = $category->parent;
 	                            endif; ?>
-	                        <h3 class="article__news-title article__container-title mb-3">Популярные <?php echo $popular_name ?></h3>
+	                        <div class="article__news-title article__container-title mb-3">Популярные <?php echo $popular_name ?></div>
 	                        <?php 
 										$args = array(
 										    'posts_per_page' => 5,
@@ -143,7 +143,7 @@ $parent_cat_id = $current_cat->parent;
 	                    // var_dump($featured_posts);
         								if( $featured_posts ): ?>
         									<div class="article__offers">
-	                        			<h3 class="article__offers-title article__container-title">Лучшие предложения</h3>
+	                        			<div class="article__offers-title article__container-title mb-3">Лучшие предложения</div>
 	                        			<?php foreach( $featured_posts as $post ): 
 								                setup_postdata($post); 
 								                $loop_id = get_the_id(); 
@@ -449,7 +449,7 @@ $parent_cat_id = $current_cat->parent;
 						                <div class="article__bnr-mob article__bnr d-block d-md-flex">
 						                    <div class="article__bnr-img ml-md-2 order-md-2 text-center"><img src="<?= $img; ?>" alt="<?php echo $title ?>"></div>
 						                    <div class="article__bnr-content order-md-1">
-						                        <h4 class="article__bnr-title"><?php echo $title ?></h4>
+						                        <div class="article__bnr-title"><?php echo $title ?></div>
 						                        <p class="article__bnr-description"><?php echo $subtitle ?></p>
 												    <div class="article__counter mb-4 d-flex">
 												    <?php foreach( $description as $row ): 

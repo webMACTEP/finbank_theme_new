@@ -24,7 +24,7 @@
                             <!-- form -->
                             <div class="contacts__form">
                                 <h1>Наши <?php echo the_title(); ?></h1>
-                                <h4 class="font-weight-semibold">Задайте нам вопрос</h4>
+                                <div class="font-weight-semibold">Задайте нам вопрос</div>
                                 <?//php echo do_shortcode('[contact-form-7 id="46" title="Форма на странице контактов"]'); ?>
 
                                 <div class="wpcf7 js" id="wpcf7-f46-o1" lang="ru-RU" dir="ltr">

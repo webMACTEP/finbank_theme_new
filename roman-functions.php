@@ -449,3 +449,22 @@ function handle_like_dislike_ajax()
 add_action('wp_ajax_handle_like_dislike_ajax', 'handle_like_dislike_ajax');
 add_action('wp_ajax_nopriv_handle_like_dislike_ajax', 'handle_like_dislike_ajax');
 
+/**
+ * Фильтр для модификации sitemap_index в Yoast SEO
+ * Название хука может меняться в зависимости от версии плагина.
+ * В старых версиях он назывался 'wpseo_sitemap_index', 
+ * в новых — 'wpseo_sitemap_index_xml'
+ */
+add_filter('wpseo_sitemap_index', 'add_comments_sitemap');
+
+function add_comments_sitemap($sitemap_index)
+{
+    // Вставляем нужную строку со своей картой
+    // Важно: синтаксис XML должен быть корректен.
+    $new_sitemap = "\n<sitemap>\n<loc>" . home_url('comments-sitemap.xml') . "</loc>\n</sitemap>\n";
+
+    // Добавляем в конец существующего индекса
+    $sitemap_index .= $new_sitemap;
+
+    return $sitemap_index;
+}

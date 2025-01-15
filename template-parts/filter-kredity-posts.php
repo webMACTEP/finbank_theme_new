@@ -11,9 +11,9 @@ $ID = get_the_ID();
 <div data-id="<?php echo esc_attr($ID); ?>" class="123 card card__horizontal mb-4 <?php echo esc_attr($query__card); ?>">
     <div class="card-container d-flex flex-wrap">
         <div class="card__header d-flex justify-content-between align-items-center mb-3 flex-grow-1 order-1">
-            <h4 class="mb-0">
-                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-            </h4>
+            <div class="mb-0">
+                <a class="h4" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+</div>
             <div class="card__header_right">
                 <?php if (get_field('archive')): ?>
                     <div class="card__archive">Архив</div>
