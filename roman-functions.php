@@ -191,33 +191,41 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
             $likes = intval(get_field('likes', $comment_id));
             $dislikes = intval(get_field('dislikes', $comment_id));
 
-            echo '<li class="additional-comment">';
-            echo '<div class="additional-comment__header">';
-            echo '<div class="comment__one-title mb-2 mb-md-0">' . esc_html($author_name) . '</div> <div class="comment__one-date mr-md-4 order-md-1">' . esc_html($comment_date) . '</div>';
-            echo '</div>';
-            echo '<div class="additional-comment__content">' . esc_html($comment_content) . '</div>';
+?>
+            <li class="additional-comment">
+                <div class="additional-comment__header">
+                    <div class="additional-comment__avatar"></div>
+                    <div class="">
 
-            // Добавляем кнопки "Лайк" и "Дизлайк"
-            echo '<div class="additional-comment__actions">';
-            echo '<button class="like-button btn btn-sm btn-outline-success" data-comment-id="' . esc_attr($comment_id) . '"><svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.75 4.5L2.32258 2.84722C3.57668 1.52915 4.20373 0.870122 4.968 0.768647C5.15526 0.743785 5.34474 0.743785 5.532 0.768647C6.29627 0.870122 6.92332 1.52915 8.17742 2.84722L9.75 4.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round"/>
-</svg>
-
- <span class="like-count">' . $likes . '</span></button> ';
-            echo '<button class="dislike-button btn btn-sm btn-outline-danger" data-comment-id="' . esc_attr($comment_id) . '"><svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10.25 1.5L8.67742 3.15278C7.42332 4.47085 6.79627 5.12988 6.032 5.23135C5.84474 5.25621 5.65526 5.25621 5.468 5.23135C4.70373 5.12988 4.07668 4.47085 2.82258 3.15278L1.25 1.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round"/>
-</svg>
- <span class="dislike-count">' . $dislikes . '</span></button> ';
-            echo '<button class="reply-button btn" data-comment-id="' . esc_attr($comment_id) . '">Ответить</button>';
-            echo '</div>';
-
-            // Контейнер для формы ответа
-            echo '<div class="reply-form-container" id="reply-form-container-' . esc_attr($comment_id) . '" style="display: none; margin-top: 15px;"></div>';
-
-            // Рекурсивный вызов для отображения ответов
-            display_additional_comments($post_id, $comment_id, $level + 1);
-
-            echo '</li>';
+                        <div class="comment__one-title mb-2 mb-md-0"><?php echo esc_html($author_name); ?></div>
+                        <div class="comment__one-date mr-md-4 order-md-1"><?php echo esc_html($comment_date); ?></div>
+                    </div>
+                </div>
+                <div class="additional-comment__content"><?php echo esc_html($comment_content); ?></div>
+                <div class="additional-comment__actions">
+                    <button class="like-button btn btn-sm btn-outline-success" data-comment-id="<?php echo esc_attr($comment_id); ?>">
+                        <!-- SVG иконка "Лайк" -->
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0.75 4.5L2.32258 2.84722C3.57668 1.52915 4.20373 0.870122 4.968 0.768647C5.15526 0.743785 5.34474 0.743785 5.532 0.768647C6.29627 0.870122 6.92332 1.52915 8.17742 2.84722L9.75 4.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
+                        </svg>
+                        <span class="like-count"><?php echo $likes; ?></span>
+                    </button>
+                    <button class="dislike-button btn btn-sm btn-outline-danger" data-comment-id="<?php echo esc_attr($comment_id); ?>">
+                        <!-- SVG иконка "Дизлайк" -->
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.25 1.5L8.67742 3.15278C7.42332 4.47085 6.79627 5.12988 6.032 5.23135C5.84474 5.25621 5.65526 5.25621 5.468 5.23135C4.70373 5.12988 4.07668 4.47085 2.82258 3.15278L1.25 1.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
+                        </svg>
+                        <span class="dislike-count"><?php echo $dislikes; ?></span>
+                    </button>
+                    <button class="reply-button btn" data-comment-id="<?php echo esc_attr($comment_id); ?>">Ответить</button>
+                </div>
+                <div class="reply-form-container" id="reply-form-container-<?php echo esc_attr($comment_id); ?>" style="display: none; margin-top: 15px;"></div>
+                <?php
+                // Рекурсивный вызов для отображения ответов
+                display_additional_comments(get_the_ID(), $comment_id, $level + 1);
+                ?>
+            </li>
+<?php
         }
         echo '</ul>';
         wp_reset_postdata();

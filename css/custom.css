@@ -5557,6 +5557,18 @@ a.cld-like-dislike-trigger {
   flex-direction: column;
   gap: 1rem;
 }
+.zaimy-new .additional-comment__avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #14b8ad;
+}
+.zaimy-new .additional-comment__header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
 .zaimy-new .additional-comments .reply-button {
   font-size: 14px;
   color: var(--gray-600);
@@ -6009,6 +6021,9 @@ a.cld-like-dislike-trigger {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+.zaimy-new .tariffs-cards .item h3 {
+  margin-bottom: 0;
 }
 .zaimy-new .how {
   background: var(--white);

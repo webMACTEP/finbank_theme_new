@@ -153,6 +153,20 @@
         min-width: 100%;
         gap: 12px;
     }
+    .additional-comment {
+        &__avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #14b8ad;
+        }
+        &__header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+    }
     .additional-comments {
         .reply-button {
             font-size: 14px;
@@ -627,6 +641,9 @@
             gap: 1rem;
         }
         .item {
+            h3 {
+                margin-bottom: 0;
+            }
             min-width: calc(33.33% - 24px);
             background: var(--white);
             border-radius: 12px;
@@ -845,7 +862,7 @@
         display: none;
     }
     .credits__view-img {
-        img{
+        img {
             max-height: 130px;
             max-width: auto;
             object-fit: contain;
@@ -942,7 +959,6 @@
 }
 .newlisting {
     .card {
-       
         .item-tags {
             li {
                 border-radius: 40px;
@@ -980,7 +996,7 @@
             min-width: fit-content;
         }
         .item-info {
-            .item-title{
+            .item-title {
                 font-size: 14px;
                 max-width: 250px;
             }
