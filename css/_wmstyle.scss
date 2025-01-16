@@ -1467,17 +1467,25 @@
     .zaimy-new .tariffs-rows .head {
         flex-direction: column;
     }
+    .zaimy-new .nav-tabs{
+        scrollbar-width: none ;
+        padding-bottom: 0;
+    }
+    .horizontal__scroll-container{
+        scrollbar-width: thin ;
+        padding-bottom: 24px;
+    }
     .zaimy-new .reviews,
     .zaimy-new .tariffs-rows,
     .zaimy-new .tariffs-cards {
         margin: 0px -14px;
         flex-direction: row;
-        padding: 0px 14px 6px 14px;
+        padding: 0px 14px 24px 14px;
         overflow-x: auto;
         position: relative;
-        -ms-scroll-snap-type: x mandatory;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
+        // -ms-scroll-snap-type: x mandatory;
+        // scroll-snap-type: x mandatory;
+        // scrollbar-width: none;
     }
     .zaimy-new .reviews .comment__one,
     .zaimy-new .tariffs-cards .item {
