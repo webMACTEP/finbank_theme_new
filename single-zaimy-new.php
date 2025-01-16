@@ -1333,24 +1333,26 @@ $current_url = get_permalink();
                     </a>
                 </div>
                 <div class="tabs offer-tabs">
-                    <div class="horizontal__scroll">
-                        <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mainOffers1" aria-selected="true" data-link="<?php echo $credit_link ?>">Кредитные карты</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers2" aria-selected="false" data-link="<?php echo $debet_link ?>">Дебетовые карты</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers3" aria-selected="false" data-link="<?php echo $installment_link ?>">Карты рассрочки</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers4" aria-selected="false" data-link="<?php echo $creditprod_link ?>">Кредиты</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers5" aria-selected="false" data-link="<?php echo $zaim_link ?>">Займы</button>
-                            </li>
-                        </ul>
+                    <div class="forline">
+                        <div class="horizontal__scroll">
+                            <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">
+                                <li class="nav-item">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mainOffers1" aria-selected="true" data-link="<?php echo $credit_link ?>">Кредитные карты</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers2" aria-selected="false" data-link="<?php echo $debet_link ?>">Дебетовые карты</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers3" aria-selected="false" data-link="<?php echo $installment_link ?>">Карты рассрочки</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers4" aria-selected="false" data-link="<?php echo $creditprod_link ?>">Кредиты</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers5" aria-selected="false" data-link="<?php echo $zaim_link ?>">Займы</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active" id="mainOffers1">
@@ -1416,7 +1418,7 @@ $current_url = get_permalink();
 
 
                                                     <ul class="leaders">
-                                                        <div class="bank__item-footer text-center  pb-2 mx-n2 mt-2">
+                                                        <div class="bank__item-footer text-center  pb-2 mt-2">
                                                             <li class="leaders__item mb-1">
                                                                 <div class="leaders__item-title">Лимит</div>
                                                                 <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
@@ -1512,7 +1514,7 @@ $current_url = get_permalink();
 
 
                                                     <ul class="leaders">
-                                                        <div class="bank__item-footer text-center pb-2 mx-n2 mt-2">
+                                                        <div class="bank__item-footer text-center pb-2 mt-2">
                                                             <!-- <li class="leaders__item mb-1">
                                                                 <div class="leaders__item-title">Снятие без %</div>
                                                                 <div class="leaders__item-value">До <?= number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
@@ -1613,7 +1615,7 @@ $current_url = get_permalink();
 
 
                                                     <ul class="leaders">
-                                                        <div class="bank__item-footer text-center pb-2 mx-n2 mt-2">
+                                                        <div class="bank__item-footer text-center pb-2 mt-2">
                                                             <li class="leaders__item mb-1">
                                                                 <div class="leaders__item-title">Лимит</div>
                                                                 <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>

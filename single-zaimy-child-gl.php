@@ -35,6 +35,8 @@ $block_about_bank = get_field('block_about_bank', $data_source_id);
 
 $acf_source_id = $parent_id;
 
+$bank_link = get_field('card_bank_link', $data_source_id);
+
 ?>
 
 
@@ -222,17 +224,8 @@ $acf_source_id = $parent_id;
                     <div class="credits__view-img">
                         <img src="<?php echo the_field('card_logo', $parent_id) ?>" alt="<?php echo $parent_title ?>">
                         <div class="credits__view-buttons d-flex justify-content-center py-3 py-sm-4">
-                            <?php //if(get_field('card_bank_link', $parent_id)):
-                            ?>
-                            <?php if (reclink($ID)): ?>
-                                <a href="<?php echo the_field('card_bank_link', $parent_id) ?>" target="_blank" class="btn btn-primary mx-3"
-                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
-                            <?php else: ?>
-                                <a href="#" class="btn btn-primary mx-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return false;">Оформить сейчас</a>
-                            <?php endif; ?>
-
-
+                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary mx-3"
+                            onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
                         </div>
                     </div>
                 </div>
@@ -421,21 +414,16 @@ $acf_source_id = $parent_id;
                                             <div class="sidebar__field-title">Официальный сайт</div>
                                             <div class="sidebar__field-content">
                                                 <?php
-                                                $bank_link = get_field('card_bank_link', $data_source_id);
+                                                
                                                 $organization_site = get_field('z_organization_site', $data_source_id);
                                                 ?>
-                                                <?php if (reclink($current_post_id)): ?>
-                                                    <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
-                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
-                                                        class="off_site_link">
-                                                        <?php echo esc_html($organization_site); ?>
-                                                    </a>
-                                                <?php else: ?>
-                                                    <a href="#" class="off_site_link <?php echo ($apply_now) ? 'apply_now_btm' : 'out_exit_link'; ?>"
-                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return false;">
-                                                        <?php echo esc_html($organization_site); ?>
-                                                    </a>
-                                                <?php endif; ?>
+
+                                                <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
+                                                    class="off_site_link">
+                                                    <?php echo esc_html($organization_site); ?>
+                                                </a>
+
                                             </div>
                                         </div>
 
@@ -465,18 +453,11 @@ $acf_source_id = $parent_id;
 
                                         <!-- Кнопка Оформить сейчас -->
                                         <div class="wm-fixed-button sidebar__field mb-3">
-                                            <?php if (reclink($current_post_id)): ?>
-                                                <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
-                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
-                                                    class="btn btn-primary">
-                                                    Оформить сейчас
-                                                </a>
-                                            <?php else: ?>
-                                                <a href="#" class="btn btn-primary <?php echo ($apply_now) ? 'apply_now_btm' : 'out_exit_link'; ?>"
-                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;">
-                                                    Оформить сейчас
-                                                </a>
-                                            <?php endif; ?>
+                                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
+                                                class="btn btn-primary">
+                                                Оформить сейчас
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -624,7 +605,30 @@ $acf_source_id = $parent_id;
 
                 <div id="content-contacts" class="content-block content-contacts col-12 col-md-9 col-lg-8 order-md-1 active">
 
-                    
+                    <!-- support -->
+                    <div class="section">
+                        <div class="block-bg p-4">
+                            <div class="section__header d-flex justify-content-between align-items-center">
+                                <h2 class="title mb-4">Служба поддержки</h2>
+                            </div>
+                            <div class="content-contacts__wrapper">
+                                <?php if (have_rows('supp_details', $acf_source_id)): ?>
+                                    <?php while (have_rows('supp_details', $acf_source_id)): the_row(); ?>
+                                        <?php
+                                        $title = get_sub_field('title');
+                                        $text = get_sub_field('text');
+                                        ?>
+                                        <div class="item">
+                                            <div class="title"><?php echo esc_html($title); ?></div>
+                                            <div class="text"><?php echo ($text); ?></div>
+                                        </div>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- / support -->
                     <!-- tariffs-cards  -->
                     <?php if (have_rows('tarifs_new', $data_source_id)): ?>
                         <div class="section">
@@ -675,17 +679,17 @@ $acf_source_id = $parent_id;
 
                                         <?php
                                         // Получаем ссылку на банк из родительской записи
-                                        $bank_link = get_field('card_bank_link', $data_source_id);
+                                        $bank_link2 = get_field('card_bank_link', $data_source_id);
                                         ?>
 
                                         <?php if (reclink($data_source_id)): ?>
-                                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary"
-                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;">
+                                            <a href="<?php echo esc_url($bank_link2); ?>" target="_blank" class="btn btn-primary"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link2)); ?> return true;">
                                                 Перейти на сайт
                                             </a>
                                         <?php else: ?>
                                             <a href="#" class="btn btn-primary <?php echo ($apply_now) ? 'apply_now_btm' : 'out_exit_link'; ?>"
-                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return false;">
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link2)); ?> return false;">
                                                 Перейти на сайт
                                             </a>
                                         <?php endif; ?>
@@ -760,24 +764,26 @@ $acf_source_id = $parent_id;
                     </a>
                 </div>
                 <div class="tabs offer-tabs">
-                    <div class="horizontal__scroll">
-                        <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mainOffers1" aria-selected="true" data-link="<?php echo $credit_link ?>">Кредитные карты</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers2" aria-selected="false" data-link="<?php echo $debet_link ?>">Дебетовые карты</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers3" aria-selected="false" data-link="<?php echo $installment_link ?>">Карты рассрочки</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers4" aria-selected="false" data-link="<?php echo $creditprod_link ?>">Кредиты</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers5" aria-selected="false" data-link="<?php echo $zaim_link ?>">Займы</button>
-                            </li>
-                        </ul>
+                    <div class="forline">
+                        <div class="horizontal__scroll">
+                            <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">
+                                <li class="nav-item">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mainOffers1" aria-selected="true" data-link="<?php echo $credit_link ?>">Кредитные карты</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers2" aria-selected="false" data-link="<?php echo $debet_link ?>">Дебетовые карты</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers3" aria-selected="false" data-link="<?php echo $installment_link ?>">Карты рассрочки</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers4" aria-selected="false" data-link="<?php echo $creditprod_link ?>">Кредиты</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mainOffers5" aria-selected="false" data-link="<?php echo $zaim_link ?>">Займы</button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane active" id="mainOffers1">
@@ -837,13 +843,13 @@ $acf_source_id = $parent_id;
                                                                         echo $bank_alt;
                                                                         ?>">
                                                         </div>
-                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo $parent_title ?></a></div>
+                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
                                                     </div>
 
 
 
                                                     <ul class="leaders">
-                                                        <div class="bank__item-footer text-center  pb-2 mx-n2 mt-2">
+                                                        <div class="bank__item-footer text-center  pb-2 mt-2">
                                                             <li class="leaders__item mb-1">
                                                                 <div class="leaders__item-title">Лимит</div>
                                                                 <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
@@ -934,12 +940,12 @@ $acf_source_id = $parent_id;
                                                                 alt="<?php echo get_post_meta(get_field('bank_logo', $bank_choise_rel, false), '_wp_attachment_image_alt', true); ?>"
                                                                 src="<?php echo the_field('bank_logo', $bank_choise_rel) ?>">
                                                         </div>
-                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo $parent_title ?></a></div>
+                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
                                                     </div>
 
 
                                                     <ul class="leaders">
-                                                        <div class="bank__item-footer text-center pb-2 mx-n2 mt-2">
+                                                        <div class="bank__item-footer text-center pb-2 mt-2">
                                                             <!-- <li class="leaders__item mb-1">
                                                                 <div class="leaders__item-title">Снятие без %</div>
                                                                 <div class="leaders__item-value">До <?= number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
@@ -1035,12 +1041,12 @@ $acf_source_id = $parent_id;
                                                                         echo $bank_alt;
                                                                         ?>">
                                                         </div>
-                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo $parent_title ?></a></div>
+                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
                                                     </div>
 
 
                                                     <ul class="leaders">
-                                                        <div class="bank__item-footer text-center pb-2 mx-n2 mt-2">
+                                                        <div class="bank__item-footer text-center pb-2 mt-2">
                                                             <li class="leaders__item mb-1">
                                                                 <div class="leaders__item-title">Лимит</div>
                                                                 <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
@@ -1125,7 +1131,7 @@ $acf_source_id = $parent_id;
                                                                         echo $bank_alt;
                                                                         ?>">
                                                         </div>
-                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo $parent_title ?></a></div>
+                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
                                                     </div>
 
                                                     <ul class="leaders">
@@ -1203,7 +1209,7 @@ $acf_source_id = $parent_id;
                                                                         ?>">
 
                                                         </div>
-                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo $parent_title ?></a></div>
+                                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
                                                     </div>
 
                                                     <ul class="leaders">
