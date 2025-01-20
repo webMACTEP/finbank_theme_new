@@ -10,6 +10,36 @@
         }
     }
 }
+.comment-form-rating {
+    margin-bottom: 1em;
+}
+
+#rating-stars {
+    direction: rtl; /* “Переворачиваем” порядок звезд, чтобы при наведении заполнялись слева направо */
+    display: inline-flex;
+}
+
+#rating-stars input {
+    display: none;
+}
+
+#rating-stars label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    padding: 0 2px;
+}
+
+/* Подсвечиваем звёзды, которые выбраны, и все звёзды левее них */
+#rating-stars input:checked ~ label {
+    color: #f5b301;
+}
+
+#rating-stars label:hover,
+#rating-stars label:hover ~ label {
+    color: #f5b301;
+}
+
 .table_mfo {
     margin: 0px 0px 2rem 0px;
     ul {
@@ -917,11 +947,18 @@
     .credits__view-buttons:before {
         display: none;
     }
+    .credits__view-buttons{
+        .btn{
+            width: 100%;
+            margin: 0px 0px 0px 0px !important;
+        }
+    }
     .credits__view-img {
         img {
             max-height: 130px;
             max-width: auto;
-            object-fit: contain;
+            object-fit: cover;
+            border-radius: 12px;
         }
         .credits__view-buttons {
             position: relative;

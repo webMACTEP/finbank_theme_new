@@ -44,6 +44,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 <?php // get_template_part('all_template/popap_apply_now', null, ['DATA' => $apply_now]); 
 ?>
 
+<script src="https://api-maps.yandex.ru/2.1/?apikey=4ad7f538-4346-46e7-b2ef-137eb4fb1b01&lang=ru_RU" type="text/javascript"></script>
 
 <main class="zaimy-new">
     <!-- page head -->
@@ -627,8 +628,52 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                             </div>
                         </div>
                     </div>
-
                     <!-- / support -->
+
+                    <!-- yandexmap -->
+                <?php
+                // Получаем введённый адрес из ACF
+                $address = get_field('address', $parent_id); // То самое поле, куда редактор вбивает адрес
+                ?>
+                <!-- <?= $address ?> -->
+                <div class="section" id="map" style="width: 100%; height: 400px;"></div>
+
+                <script>
+                    // Когда загрузится JS API Яндекс и DOM
+                    ymaps.ready(init);
+
+                    function init() {
+                        // Создаём карту (координаты пока любые, их заменим после геокодинга)
+                        var myMap = new ymaps.Map("map", {
+                            center: [55.76, 37.64], // Москва как «заглушка»
+                            zoom: 10
+                        });
+
+                        // Обращаемся к геокодеру, чтобы найти координаты по адресу
+                        ymaps.geocode('<?php echo esc_js($address); ?>', {
+                            results: 1
+                        }).then(function(res) {
+                            // Выбираем первый результат геокодирования
+                            var firstGeoObject = res.geoObjects.get(0);
+                            if (firstGeoObject) {
+                                // Получаем координаты
+                                var coords = firstGeoObject.geometry.getCoordinates();
+                                // Устанавливаем центр карты на эти координаты
+                                myMap.setCenter(coords, 15);
+                                // Создаём метку
+                                var placemark = new ymaps.Placemark(coords, {
+                                    balloonContent: '<?php echo esc_js($address); ?>'
+                                });
+                                myMap.geoObjects.add(placemark);
+                            } else {
+                                console.log('Адрес не найден геокодером');
+                            }
+                        });
+                    }
+                </script>
+
+
+
                     <!-- tariffs-cards  -->
                     <?php if (have_rows('tarifs_new', $data_source_id)): ?>
                         <div class="section">

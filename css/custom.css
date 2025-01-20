@@ -5415,6 +5415,36 @@ a.cld-like-dislike-trigger {
   color: #fff;
 }
 
+.comment-form-rating {
+  margin-bottom: 1em;
+}
+
+#rating-stars {
+  direction: rtl; /* “Переворачиваем” порядок звезд, чтобы при наведении заполнялись слева направо */
+  display: inline-flex;
+}
+
+#rating-stars input {
+  display: none;
+}
+
+#rating-stars label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+/* Подсвечиваем звёзды, которые выбраны, и все звёзды левее них */
+#rating-stars input:checked ~ label {
+  color: #f5b301;
+}
+
+#rating-stars label:hover,
+#rating-stars label:hover ~ label {
+  color: #f5b301;
+}
+
 .table_mfo {
   margin: 0px 0px 2rem 0px;
 }
@@ -6250,6 +6280,10 @@ a.cld-like-dislike-trigger {
 .zaimy-new .credits__view-buttons:before {
   display: none;
 }
+.zaimy-new .credits__view-buttons .btn {
+  width: 100%;
+  margin: 0px 0px 0px 0px !important;
+}
 .zaimy-new .credits__view-img {
   max-height: none;
   display: flex;
@@ -6262,8 +6296,9 @@ a.cld-like-dislike-trigger {
 .zaimy-new .credits__view-img img {
   max-height: 130px;
   max-width: auto;
-  -o-object-fit: contain;
-     object-fit: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 12px;
 }
 .zaimy-new .credits__view-img .credits__view-buttons {
   position: relative;

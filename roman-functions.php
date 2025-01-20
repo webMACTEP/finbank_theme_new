@@ -476,3 +476,77 @@ function add_comments_sitemap($sitemap_index)
 
     return $sitemap_index;
 }
+
+/**
+ * Добавляем поле рейтинга (5 звёзд) к форме комментариев
+ */
+function mytheme_add_comment_rating_field() {
+    // Выводим блок звёзд. В данном случае используем обычные HTML-символы ★/☆,
+    // но можно подставить иконки, SVG, Dashicons и т.д.
+    // Также используем radio input, чтобы отловить конкретное числовое значение (1–5).
+    ?>
+    <p class="comment-form-rating">
+        <label for="rating"><?php _e('Ваш рейтинг'); ?></label>
+        <span id="rating-stars">
+            <input type="radio" name="comment_rating" value="5" id="rating-5">
+            <label for="rating-5" title="5 звёзд">★</label>
+            
+            <input type="radio" name="comment_rating" value="4" id="rating-4">
+            <label for="rating-4" title="4 звезды">★</label>
+            
+            <input type="radio" name="comment_rating" value="3" id="rating-3">
+            <label for="rating-3" title="3 звезды">★</label>
+            
+            <input type="radio" name="comment_rating" value="2" id="rating-2">
+            <label for="rating-2" title="2 звезды">★</label>
+            
+            <input type="radio" name="comment_rating" value="1" id="rating-1">
+            <label for="rating-1" title="1 звезда">★</label>
+        </span>
+    </p>
+    <?php
+}
+// Подключаем поле для авторизованных пользователей
+add_action( 'comment_form_logged_in_after', 'mytheme_add_comment_rating_field' );
+// И для неавторизованных (форма с полями «Имя», «Почта» и т.д.)
+add_action( 'comment_form_after_fields', 'mytheme_add_comment_rating_field' );
+
+/**
+ * Сохраняем рейтинг комментария
+ */
+function mytheme_save_comment_rating( $comment_id ) {
+    if ( isset($_POST['comment_rating']) && !empty($_POST['comment_rating']) ) {
+        $rating = intval($_POST['comment_rating']);
+        // Сохраняем рейтинг (число от 1 до 5) в метаполе comment_rating
+        update_comment_meta( $comment_id, 'comment_rating', $rating );
+    }
+}
+add_action( 'comment_post', 'mytheme_save_comment_rating' );
+
+/**
+ * Выводим звёзды перед текстом комментария
+ */
+function mytheme_display_comment_rating( $comment_text, $comment ) {
+    // Получаем значение рейтинга из метаполя
+    $rating = get_comment_meta( $comment->comment_ID, 'comment_rating', true );
+
+    if ( $rating ) {
+        // Генерируем HTML для звёзд
+        // (можно заменить HTML-символы другими иконками, например Dashicons)
+        $stars_html = '<div class="comment-rating">';
+        for ( $i = 1; $i <= 5; $i++ ) {
+            if ( $i <= $rating ) {
+                $stars_html .= '<span style="color: #f5b301;">★</span>';
+            } else {
+                $stars_html .= '<span style="color: #ccc;">★</span>';
+            }
+        }
+        $stars_html .= '</div>';
+
+        // Приклеиваем блок со звёздами к тексту комментария
+        $comment_text = $stars_html . $comment_text;
+    }
+
+    return $comment_text;
+}
+add_filter( 'comment_text', 'mytheme_display_comment_rating', 10, 2 );

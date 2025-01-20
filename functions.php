@@ -581,7 +581,7 @@ function true_register_post_type_init()
 	$args2 = array(
 		'labels' => $labels2,
 		'public' => true,
-		'hierarchical' => true,
+		//'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-star-empty', // иконка в меню
@@ -647,7 +647,6 @@ function true_register_post_type_init()
 	$args3 = array(
 		'labels' => $labels3,
 		'public' => true,
-		'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-star-empty', // иконка в меню
@@ -683,7 +682,7 @@ function true_register_post_type_init()
 	$args4 = array(
 		'labels' => $labels4,
 		'public' => true,
-		'hierarchical' => true,
+		//'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-universal-access', // иконка в меню
@@ -712,7 +711,7 @@ function true_register_post_type_init()
 	$args6 = array(
 		'labels' => $labels6,
 		'public' => true,
-		'hierarchical' => true,
+		//'hierarchical' => true,
 		'show_ui' => true, // показывать интерфейс в админке
 		'has_archive' => true,
 		'menu_icon' => 'dashicons-universal-access', // иконка в меню
@@ -886,57 +885,118 @@ function fix_svg_mime_type($data, $file, $filename, $mimes, $real_mime = '')
 }
 
 
+// function my_pagination($total = '', $currentPage = '')
+// {
+// 	global $wp_query;
+// 	if ($currentPage == '') {
+// 		if (is_front_page()) {
+// 			$currentPage = (get_query_var("page")) ? get_query_var("page") : 1;
+// 		} else {
+// 			$currentPage = (get_query_var("paged")) ? get_query_var("paged") : 1;
+// 		}
+
+// 		$currentPage = max(1, $currentPage);
+// 	}
+
+
+// 	if ($total == '') {
+// 		$total = $wp_query->max_num_pages;
+// 	} else {
+
+// 		$wp_query->max_num_pages = $total;
+// 	}
+
+// 	$pagination = paginate_links([
+// 		"base"      => str_replace(999999999, "%#%", get_pagenum_link(999999999)),
+// 		"format"    => "",
+// 		"current"   => $currentPage,
+// 		"total"     => $total,
+// 		"type"      => "plain",
+// 		"prev_text" => 'Назад',
+// 		"next_text" => 'Вперед',
+// 	]);
+
+
+
+// 	if ($currentPage !== 1 && $currentPage > $total) {
+// 		$url_clear = get_clear_url($_SERVER['REQUEST_URI']);
+// 		wp_redirect($url_clear, 301);
+// 	}
+
+
+// 	// ВОТ ТУТ УБИРАЕМ ссылку на 1 страницу, т.к серавно будет редирект
+// 	$pagination = preg_replace('~page/1/?([\'"])~', '\1', $pagination);
+
+
+
+// 	$pagination = str_replace("page-numbers", "pagination__links-item", $pagination);
+// 	$pagination = str_replace("prev", "pagination__links-first", $pagination);
+
+
+// 	//$pagination = preg_replace( '~/page/1/?([\'"])~', '', $pagination );
+// 	echo $pagination = str_replace("next", "pagination__links-last", $pagination);
+// }
+
 function my_pagination($total = '', $currentPage = '')
 {
 	global $wp_query;
-	if ($currentPage == '') {
+
+	// Определение текущей страницы
+	if (empty($currentPage)) {
 		if (is_front_page()) {
-			$currentPage = (get_query_var("page")) ? get_query_var("page") : 1;
+			$currentPage = max(1, get_query_var('page'));
 		} else {
-			$currentPage = (get_query_var("paged")) ? get_query_var("paged") : 1;
+			$currentPage = max(1, get_query_var('paged'));
 		}
-
-		$currentPage = max(1, $currentPage);
 	}
 
-
-	if ($total == '') {
+	// Определение общего количества страниц
+	if (empty($total)) {
 		$total = $wp_query->max_num_pages;
-	} else {
-
-		$wp_query->max_num_pages = $total;
 	}
 
+	// Определение формата в зависимости от структуры постоянных ссылок
+	$format = get_option('permalink_structure') ? 'page/%#%/' : '&paged=%#%';
+
+	// Генерация ссылок пагинации
 	$pagination = paginate_links([
-		"base"      => str_replace(999999999, "%#%", get_pagenum_link(999999999)),
-		"format"    => "",
-		"current"   => $currentPage,
-		"total"     => $total,
-		"type"      => "plain",
-		"prev_text" => 'Назад',
-		"next_text" => 'Вперед',
+		'base'      => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
+		'format'    => $format,
+		'current'   => $currentPage,
+		'total'     => $total,
+		'type'      => 'plain',
+		'prev_text' => 'Назад',
+		'next_text' => 'Вперед',
 	]);
 
-
-
-	if ($currentPage !== 1 && $currentPage > $total) {
-		$url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-		wp_redirect($url_clear, 301);
+	// Проверка корректности текущей страницы
+	if ($currentPage > $total && $currentPage !== 1) {
+		// Убедитесь, что функция get_clear_url определена, иначе закомментируйте этот блок
+		/*
+        if (function_exists('get_clear_url')) {
+            $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
+            wp_redirect($url_clear, 301);
+            exit;
+        }
+        */
 	}
 
+	// Проверка наличия пагинации перед её выводом
+	if ($pagination) {
+		// Удаление ссылки на первую страницу, если необходимо
+		$pagination = str_replace('/page/1/', '/', $pagination);
 
-	// ВОТ ТУТ УБИРАЕМ ссылку на 1 страницу, т.к серавно будет редирект
-	$pagination = preg_replace('~page/1/?([\'"])~', '\1', $pagination);
+		// Кастомизация классов для CSS
+		$pagination = str_replace("page-numbers", "pagination__links-item", $pagination);
+		$pagination = str_replace("prev page-numbers", "pagination__links-first", $pagination);
+		$pagination = str_replace("next page-numbers", "pagination__links-last", $pagination);
 
-
-
-	$pagination = str_replace("page-numbers", "pagination__links-item", $pagination);
-	$pagination = str_replace("prev", "pagination__links-first", $pagination);
-
-
-	//$pagination = preg_replace( '~/page/1/?([\'"])~', '', $pagination );
-	echo $pagination = str_replace("next", "pagination__links-last", $pagination);
+		echo $pagination;
+	}
 }
+
+
+
 
 
 function team_pagination()
@@ -4141,10 +4201,8 @@ function myown_comment($comment, $args, $depth)
 	// webmactep changes
 
 
-
 	//Есть пагинация на страницах
-	function is_paginated()
-	{
+	function is_paginated() {
 		global $wp_query;
 		//echo $wp_query->max_num_pages;
 		//echo $GLOBALS['wp_query']->max_num_pages;
@@ -4152,70 +4210,71 @@ function myown_comment($comment, $args, $depth)
 		//print_r2($wp_query);
 		//echo 333;
 		//print_r2($GLOBALS['reviews']);
-
-
-		if ($wp_query->max_num_pages > 1) {
+	
+	
+		if ( $wp_query->max_num_pages > 1 ) {
 			return $wp_query->max_num_pages;
 		} else {
 			return false;
 		}
 	}
-
-	function prefix_filter_title_example($title)
-	{
-
-		if (is_paginated() ||  is_reviews_page() || is_comments_page()) {
-
-			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-			$title = $title . ' — страница ' . $paged;
-		}
-
-		return $title;
+	
+	function prefix_filter_title_example( $title ) {
+	
+	  if (is_paginated() ||  is_reviews_page() || is_comments_page() ) {
+	
+		  $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+		  $title = $title . ' — страница ' . $paged;
+	
+	  }
+	
+	  return $title;
 	}
-	add_filter('wpseo_title', 'prefix_filter_title_example');
-
-
-	function prefix_filter_description_example($description)
-	{
-		if (is_paginated() ||  is_reviews_page() || is_comments_page()) {
-
-			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+	add_filter( 'wpseo_title', 'prefix_filter_title_example');
+	
+	
+	function prefix_filter_description_example( $description ) {
+		if (is_paginated() ||  is_reviews_page() || is_comments_page() ) {
+	
+			$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 			$description = $description . ' — страница ' . $paged;
+	
 		}
-
+	
 		return $description;
 	}
-	add_filter('wpseo_metadesc', 'prefix_filter_description_example');
-
-
-	function is_reviews_page()
-	{
+	add_filter( 'wpseo_metadesc', 'prefix_filter_description_example');
+	
+	
+	function is_reviews_page() {
 		$url = $_SERVER['REQUEST_URI'];
 		$url = explode('?', $url);
 		$url = $url[0];
 		$findme   = 'reviews';
-
+	
 		return mb_substr_count($url, $findme);
 	}
-
-	function is_comments_page()
-	{
+	
+	function is_comments_page() {
 		$url = $_SERVER['REQUEST_URI'];
 		$url = explode('?', $url);
 		$url = $url[0];
 		$findme   = 'comments';
-
+	
 		return mb_substr_count($url, $findme);
 	}
-
-
+	
+	
 	require_once __DIR__ . '/roman-functions.php';
 	require_once __DIR__ . '/danil-functions.php';
-
-
-
-//function no_rows_found_function($query)
-//{
-//  $query->set('no_found_rows', true);
-//}
-//add_action('pre_get_posts', 'no_rows_found_function');
+	
+	
+	
+	//function no_rows_found_function($query)
+	//{
+	//  $query->set('no_found_rows', true);
+	//}
+	//add_action('pre_get_posts', 'no_rows_found_function');
+	
+	
+	
