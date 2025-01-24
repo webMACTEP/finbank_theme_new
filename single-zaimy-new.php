@@ -31,9 +31,13 @@ $current_url = get_permalink();
     <div class="container">
         <nav aria-label="breadcrumb" class="horizontal__scroll">
             <ol class="breadcrumb horizontal__scroll-container">
-                <li class="breadcrumb-item"><a href="<?php echo get_home_url(); ?>">Главная</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo get_post_type_archive_link('zaimy'); ?>">Займы</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?php echo the_title() ?></li>
+                <!-- <li class="breadcrumb-item"><a href="<?php echo get_home_url(); ?>">Главная</a></li> -->
+                <li class="breadcrumb-item">
+                <svg width="8" height="20" viewBox="0 0 8 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.35355 5.64645C6.54882 5.84171 6.54882 6.15829 6.35355 6.35355L2.70711 10L6.35355 13.6464C6.54882 13.8417 6.54882 14.1583 6.35355 14.3536C6.15829 14.5488 5.84171 14.5488 5.64645 14.3536L1.64645 10.3536C1.45119 10.1583 1.45119 9.84171 1.64645 9.64645L5.64645 5.64645C5.84171 5.45118 6.15829 5.45118 6.35355 5.64645Z" fill="#0A0D13" fill-opacity="0.55"></path>
+            </svg>
+                <a href="<?php echo get_post_type_archive_link('zaimy'); ?>">Все МФО</a></li>
+                <!-- <li class="breadcrumb-item active" aria-current="page"><?php echo the_title() ?></li> -->
             </ol>
         </nav>
         <!-- card info -->
@@ -754,7 +758,7 @@ $current_url = get_permalink();
                                 <h3>Как оформить займ
                                     в Займере?</h3>
                                 <img src="<?php bloginfo('template_url'); ?>/img/how-img.svg" alt="">
-                                <a id="additional-button" href="#content-lk" class="btn btn-primary">Подробнее</a>
+                                <a id="additional-button" href="<?= esc_url(get_permalink($child)); ?>" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -1190,7 +1194,7 @@ $current_url = get_permalink();
                                     <div class="comment__one-header">
                                         <div class="comment__one-info">
                                             <div class=""><?php echo the_title() ?></div>
-                                            <div class="rating d-flex align-items-center mt-3 mt-xl-n1">
+                                            <div class="rew-rating d-flex align-items-center ">
                                                 <?php
 
                                                 $rating     = get_comment_meta($comment_id, 'comment_rating', true);

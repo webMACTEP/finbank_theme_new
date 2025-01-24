@@ -485,7 +485,7 @@ function mytheme_add_comment_rating_field() {
     // но можно подставить иконки, SVG, Dashicons и т.д.
     // Также используем radio input, чтобы отловить конкретное числовое значение (1–5).
     ?>
-    <p class="comment-form-rating">
+    <div class="col-12 comment-form-rating">
         <label for="rating"><?php _e('Ваш рейтинг'); ?></label>
         <span id="rating-stars">
             <input type="radio" name="comment_rating" value="5" id="rating-5">
@@ -503,7 +503,7 @@ function mytheme_add_comment_rating_field() {
             <input type="radio" name="comment_rating" value="1" id="rating-1">
             <label for="rating-1" title="1 звезда">★</label>
         </span>
-    </p>
+</div>
     <?php
 }
 // Подключаем поле для авторизованных пользователей

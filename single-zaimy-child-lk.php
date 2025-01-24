@@ -46,16 +46,19 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 <main class="zaimy-new">
     <!-- page head -->
     <div class="container">
-        <nav aria-label="breadcrumb" class="horizontal__scroll">
+    <nav aria-label="breadcrumb" class="horizontal__scroll">
             <ol class="breadcrumb horizontal__scroll-container">
                 <!-- Главная -->
-                <li class="breadcrumb-item">
+                <!-- <li class="breadcrumb-item">
                     <a href="<?php echo esc_url(home_url()); ?>">Главная</a>
-                </li>
+                </li> -->
 
                 <!-- Архив Займов -->
                 <li class="breadcrumb-item">
-                    <a href="<?php echo esc_url(get_post_type_archive_link('zaimy')); ?>">Займы</a>
+                <svg width="8" height="20" viewBox="0 0 8 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.35355 5.64645C6.54882 5.84171 6.54882 6.15829 6.35355 6.35355L2.70711 10L6.35355 13.6464C6.54882 13.8417 6.54882 14.1583 6.35355 14.3536C6.15829 14.5488 5.84171 14.5488 5.64645 14.3536L1.64645 10.3536C1.45119 10.1583 1.45119 9.84171 1.64645 9.64645L5.64645 5.64645C5.84171 5.45118 6.15829 5.45118 6.35355 5.64645Z" fill="#0A0D13" fill-opacity="0.55"></path>
+            </svg>
+                    <a href="<?php echo esc_url(get_post_type_archive_link('zaimy')); ?>">Все МФО</a>
                 </li>
 
                 <?php
@@ -68,15 +71,15 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                     $parent_permalink = get_permalink($parent_post);
                 ?>
                     <!-- Родительская Страница -->
-                    <li class="breadcrumb-item">
+                    <!-- <li class="breadcrumb-item">
                         <a href="<?php echo esc_url($parent_permalink); ?>"><?php echo esc_html($parent_title); ?></a>
-                    </li>
+                    </li> -->
                 <?php endif; ?>
 
                 <!-- Текущая Страница -->
-                <li class="breadcrumb-item active" aria-current="page">
+                <!-- <li class="breadcrumb-item active" aria-current="page">
                     <?php echo esc_html(get_the_title()); ?>
-                </li>
+                </li> -->
             </ol>
         </nav>
 

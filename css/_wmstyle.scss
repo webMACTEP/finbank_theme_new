@@ -13,7 +13,20 @@
 .comment-form-rating {
     margin-bottom: 1em;
 }
+.rew-rating{
+    gap: 4px;
+}
+.breadcrumb-item{
+    a{
 
+        color: var(--gray-700);
+    }
+    svg{
+        path{
+            fill: var(--gray-700);
+        }
+    }
+}
 #rating-stars {
     direction: rtl; /* “Переворачиваем” порядок звезд, чтобы при наведении заполнялись слева направо */
     display: inline-flex;
@@ -24,7 +37,7 @@
 }
 
 #rating-stars label {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #ccc;
     cursor: pointer;
     padding: 0 2px;
