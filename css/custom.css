@@ -5509,6 +5509,78 @@ a.cld-like-dislike-trigger {
   display: none;
 }
 
+.zaimy-new .quiz {
+  /* Стили для квиза */
+  /* Стили для кнопки отправки */
+  /* Стили для модального окна */
+  /* Стили для содержимого модального окна */
+  /* Стили для кнопки закрытия */
+}
+.zaimy-new .quiz .quiz-result {
+  display: none;
+}
+.zaimy-new .quiz .quiz-question {
+  display: none;
+}
+.zaimy-new .quiz .quiz-question.active {
+  display: block;
+}
+.zaimy-new .quiz .quiz-question {
+  margin-bottom: 20px;
+}
+.zaimy-new .quiz #quizForm button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.zaimy-new .quiz #quizForm button:hover {
+  background-color: #0056b3;
+}
+.zaimy-new .quiz .modal {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed; /* Остаётся на месте */
+  z-index: 1000; /* На переднем плане */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ширина экрана */
+  height: 100%; /* Высота экрана */
+  overflow: auto; /* Включает прокрутку при необходимости */
+  background-color: rgba(0, 0, 0, 0.5); /* Чёрный с прозрачностью */
+}
+.zaimy-new .quiz .modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% от верха и центрирование */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Ширина модального окна */
+  max-width: 500px;
+  text-align: center;
+  border-radius: 8px;
+}
+.zaimy-new .quiz .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.zaimy-new .quiz .close:hover,
+.zaimy-new .quiz .close:focus {
+  color: black;
+  text-decoration: none;
+}
+.zaimy-new .calc,
+.zaimy-new .quiz {
+  display: none;
+}
+.zaimy-new .calc.active,
+.zaimy-new .quiz.active {
+  display: block;
+}
 .zaimy-new .nav-tabs .nav-link.active {
   background: none;
   color: var(--tab-bg-active);
@@ -5539,6 +5611,28 @@ a.cld-like-dislike-trigger {
 .zaimy-new .horizontal__scroll-container {
   margin-left: 0;
   margin-right: 0;
+}
+.zaimy-new .quiz-calc {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 2px 4px var(--tag-shadow);
+}
+.zaimy-new .quiz-calc .h3 {
+  font-size: 1.75rem;
+}
+.zaimy-new .quiz-calc .forline {
+  position: relative;
+  margin: 0px 0px 1rem 0px;
+}
+.zaimy-new .quiz-calc .forline::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #dddde4;
+  bottom: 0px;
+  left: 0;
+  z-index: 5;
 }
 .zaimy-new .offer-tabs .forline {
   position: relative;
@@ -6611,6 +6705,18 @@ a.cld-like-dislike-trigger {
 }
 
 @media (max-width: 768px) {
+  .zaimy-new .quiz-calc .forline {
+    position: relative;
+    margin: 0px 0px 1rem 0px;
+    padding: 0px 0px 0px 1rem;
+  }
+  .calc {
+    margin: 0px 0px 0px 0px;
+  }
+  .quiz-calc {
+    border-radius: 0;
+    margin: 0 -14px;
+  }
   .zaimy-new .tariffs__list-item {
     padding: 12px 0px;
   }
