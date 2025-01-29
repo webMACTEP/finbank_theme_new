@@ -1446,132 +1446,146 @@ $current_url = get_permalink();
                         </div>
                     </div>
                     <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const quizForm = document.getElementById('quizForm');
-                            const quizResultModal = document.getElementById('quizResult');
-                            const quizResultText = document.getElementById('quizResultText');
-                            const quizClose = document.querySelector('.quiz-close');
+                      document.addEventListener('DOMContentLoaded', function() {
+    const quizForm = document.getElementById('quizForm');
+    const quizResultModal = document.getElementById('quizResult');
+    const quizResultText = document.getElementById('quizResultText');
+    const quizClose = document.querySelector('.quiz-close');
 
-                            // Получаем все блоки вопросов
-                            const questions = document.querySelectorAll('.quiz-question');
+    // Получаем все блоки вопросов
+    const questions = document.querySelectorAll('.quiz-question');
 
-                            // Индикатор прогресса
-                            const currentStepElement = document.getElementById('currentStep');
-                            const totalStepsElement = document.getElementById('totalSteps');
-                            const progressFilled = document.getElementById('progressFilled');
+    // Индикатор прогресса
+    const currentStepElement = document.getElementById('currentStep');
+    const totalStepsElement = document.getElementById('totalSteps');
+    const progressFilled = document.getElementById('progressFilled');
 
-                            // Последний блок - это кнопка "Отправить"
-                            // поэтому считаем общее количество "шагов" = кол-во .quiz-question - 1
-                            totalStepsElement.textContent = questions.length - 1;
+    // Последний блок - это кнопка "Отправить"
+    // поэтому считаем общее количество "шагов" = кол-во .quiz-question - 1
+    totalStepsElement.textContent = questions.length - 1;
 
-                            // Показ вопроса по индексу
-                            function showQuestion(index) {
-                                questions.forEach((question, i) => {
-                                    if (i === index) {
-                                        question.classList.add('active');
-                                        // Включаем поля
-                                        const inputs = question.querySelectorAll('input, select, textarea');
-                                        inputs.forEach(input => {
-                                            input.disabled = false;
-                                        });
-                                    } else {
-                                        question.classList.remove('active');
-                                        // Выключаем поля
-                                        const inputs = question.querySelectorAll('input, select, textarea');
-                                        inputs.forEach(input => {
-                                            input.disabled = true;
-                                        });
-                                    }
-                                });
-                                // Обновляем счетчик шагов
-                                currentStepElement.textContent = index + 1;
-                                // Обновляем прогресс
-                                updateProgress(index + 1, totalStepsElement.textContent);
-                            }
+    // Показ вопроса по индексу
+    function showQuestion(index) {
+        questions.forEach((question, i) => {
+            if (i === index) {
+                question.classList.add('active');
+                // Включаем поля
+                const inputs = question.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.disabled = false;
+                });
+            } else {
+                question.classList.remove('active');
+                // Выключаем поля
+                const inputs = question.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+            }
+        });
+        // Обновляем счетчик шагов
+        currentStepElement.textContent = index + 1;
+        // Обновляем прогресс
+        updateProgress(index + 1, totalStepsElement.textContent);
+    }
 
-                            // Расчёт процента прохождения
-                            function updateProgress(current, total) {
-                                const percentage = (current / total) * 100;
-                                progressFilled.style.width = `${percentage}%`;
-                            }
+    // Расчёт процента прохождения
+    function updateProgress(current, total) {
+        const percentage = (current / total) * 100;
+        progressFilled.style.width = `${percentage}%`;
+    }
 
-                            // Переход к следующему вопросу
-                            function getNextQuestionIndex(currentIndex) {
-                                let nextIndex = currentIndex + 1;
-                                if (nextIndex >= questions.length) {
-                                    return questions.length - 1; // последний
-                                }
-                                return nextIndex;
-                            }
+    // Переход к следующему вопросу
+    function getNextQuestionIndex(currentIndex) {
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= questions.length) {
+            return questions.length - 1; // последний
+        }
+        return nextIndex;
+    }
 
-                            // Обработчики кнопок "Продолжить" — переключение шагов
-                            questions.forEach((question, index) => {
-                                const nextBtn = question.querySelector('.next-btn');
-                                if (nextBtn) {
-                                    nextBtn.addEventListener('click', function() {
-                                        // Проверка, выбран ли вариант (только если есть радио/чекбоксы)
-                                        const inputs = question.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-                                        if (inputs.length > 0) {
-                                            let isChecked = false;
-                                            inputs.forEach(input => {
-                                                if (input.checked) isChecked = true;
-                                            });
-                                            if (!isChecked) {
-                                                alert('Пожалуйста, выберите один из вариантов ответа.');
-                                                return;
-                                            }
-                                        }
-                                        // Следующий вопрос
-                                        const nextIndex = getNextQuestionIndex(index);
-                                        showQuestion(nextIndex);
-                                    });
-                                }
-                            });
+    // Обработчики кнопок "Продолжить" — переключение шагов
+    questions.forEach((question, index) => {
+        const nextBtn = question.querySelector('.next-btn');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function(event) {
+                // Проверка, является ли текущий вопрос последним
+                if (index === questions.length - 1) {
+                    // Если это последний вопрос, ничего не делать
+                    event.preventDefault();
+                    return;
+                }
 
-                            // Обработка кликов по радио, чтобы показывать/скрывать .conditional-block
-                            document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                                radio.addEventListener('change', function() {
-                                    // Определяем, в каком вопросе находимся
-                                    const parentQuestion = radio.closest('.quiz-question');
-                                    if (!parentQuestion) return;
+                // Проверка, выбран ли вариант (только если есть радио/чекбоксы)
+                const inputs = question.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+                if (inputs.length > 0) {
+                    let isChecked = false;
+                    inputs.forEach(input => {
+                        if (input.checked) isChecked = true;
+                    });
+                    if (!isChecked) {
+                        alert('Пожалуйста, выберите один из вариантов ответа.');
+                        return;
+                    }
+                }
+                // Следующий вопрос
+                const nextIndex = getNextQuestionIndex(index);
+                showQuestion(nextIndex);
+            });
+        }
+    });
 
-                                    // Скрываем все .conditional-block внутри этого question
-                                    const allConditionalBlocks = parentQuestion.querySelectorAll('.conditional-block');
-                                    allConditionalBlocks.forEach(block => {
-                                        block.style.display = 'none';
-                                    });
+    // Обработка кликов по радио, чтобы показывать/скрывать .conditional-block
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Определяем ближайший контейнер (.quiz-question или .conditional-block)
+            const parentContainer = radio.closest('.quiz-question, .conditional-block');
+            if (!parentContainer) return;
 
-                                    // Показываем блок, чей data-condition совпадает с id выбранного radio
-                                    const targetBlock = parentQuestion.querySelector(`.conditional-block[data-condition="${radio.id}"]`);
-                                    if (targetBlock) {
-                                        targetBlock.style.display = 'flex';
-                                    }
-                                });
-                            });
+            // Находим все непосредственные .conditional-block внутри этого контейнера
+            const allConditionalBlocks = Array.from(parentContainer.children).filter(child => child.classList.contains('conditional-block'));
+            allConditionalBlocks.forEach(block => {
+                block.style.display = 'none';
+                // Также скрываем все вложенные блоки внутри скрываемых блоков
+                const nestedBlocks = block.querySelectorAll('.conditional-block');
+                nestedBlocks.forEach(nested => {
+                    nested.style.display = 'none';
+                });
+            });
 
-                            // Отправка формы (последний экран)
-                            quizForm.addEventListener('submit', function(event) {
-                                event.preventDefault();
-                                // Демонстрация: случайная сумма
-                                const randomAmount = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
-                                const message = `Вам могут одобрить сумму от ${randomAmount.toLocaleString('ru-RU')} ₽`;
-                                quizResultText.textContent = message;
-                                quizResultModal.style.display = 'block';
-                            });
+            // Показываем блок, чей data-condition совпадает с id выбранного radio
+            const targetBlock = parentContainer.querySelector(`.conditional-block[data-condition="${radio.id}"]`);
+            if (targetBlock) {
+                targetBlock.style.display = 'flex';
+            }
+        });
+    });
 
-                            // Закрытие модалки
-                            quizClose.addEventListener('click', function() {
-                                quizResultModal.style.display = 'none';
-                            });
-                            window.addEventListener('click', function(e) {
-                                if (e.target === quizResultModal) {
-                                    quizResultModal.style.display = 'none';
-                                }
-                            });
+    // Отправка формы (последний экран)
+    quizForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Демонстрация: случайная сумма
+        const randomAmount = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
+        const message = `Вам могут одобрить сумму от ${randomAmount.toLocaleString('ru-RU')} ₽`;
+        quizResultText.textContent = message;
+        quizResultModal.style.display = 'block';
+    });
 
-                            // Старт
-                            showQuestion(0); // Показать первый вопрос
-                        });
+    // Закрытие модалки
+    quizClose.addEventListener('click', function() {
+        quizResultModal.style.display = 'none';
+    });
+    window.addEventListener('click', function(e) {
+        if (e.target === quizResultModal) {
+            quizResultModal.style.display = 'none';
+        }
+    });
+
+    // Старт
+    showQuestion(0); // Показать первый вопрос
+});
+
+
 
 
 
