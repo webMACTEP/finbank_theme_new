@@ -5510,35 +5510,133 @@ a.cld-like-dislike-trigger {
 }
 
 .zaimy-new .quiz {
-  /* Стили для квиза */
+  position: relative;
+  /* Стили для контейнера прогресса */
+  /* Стили для текстового индикатора */
+  /* Стили для полосы прогресса */
+  /* Стили для заполненной части полосы прогресса */
   /* Стили для кнопки отправки */
   /* Стили для модального окна */
   /* Стили для содержимого модального окна */
   /* Стили для кнопки закрытия */
 }
+.zaimy-new .quiz .conditional-block {
+  display: flex;
+  flex-wrap: wrap;
+}
+.zaimy-new .quiz .quiz-close {
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+.zaimy-new .quiz .quiz-result {
+  padding: 1rem;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-18px);
+  left: 1rem;
+}
+.zaimy-new .quiz .quiz-result #quizResultText {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.zaimy-new .quiz .progress-container {
+  width: 100%;
+  max-width: 100%; /* Можно настроить по необходимости */
+  margin: 20px auto; /* Центрирование контейнера */
+  padding: 0px 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.zaimy-new .quiz .progress-text {
+  text-wrap: nowrap;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: var(--text-color2);
+  text-align: center;
+}
+.zaimy-new .quiz .progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: #e3eef0; /* Цвет фона полосы */
+  border-radius: 10px;
+  overflow: hidden;
+}
+.zaimy-new .quiz .progress-filled {
+  height: 100%;
+  width: 0%; /* Начальное значение */
+  background-color: var(--btn-primary-bg); /* Цвет заполнения */
+  transition: width 0.3s ease-in-out;
+}
+.zaimy-new .quiz .quiz-question {
+  /* Скрытие дефолтных радиокнопок */
+  /* Добавление кастомной радиокнопки с помощью ::before */
+  /* Изменение стиля псевдоэлемента при активном состоянии */
+  /* Стили для активной метки */
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--range-value-border);
+  border-radius: 12px;
+  display: none;
+  margin-bottom: 20px;
+  padding-bottom: 80px;
+}
+.zaimy-new .quiz .quiz-question input[type=radio] {
+  display: none;
+}
+.zaimy-new .quiz .quiz-question input[type=radio]:checked + label::before {
+  background-color: var(--btn-primary-bg);
+}
+.zaimy-new .quiz .quiz-question input[type=radio]:checked + label {
+  background-color: var(--btn-primary-bg);
+  color: #fff;
+}
+.zaimy-new .quiz .quiz-question label {
+  flex: 0 0 calc(50% - 12px);
+  border: 1px solid var(--range-value-border);
+  border-radius: 12px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px;
+  cursor: pointer;
+}
+.zaimy-new .quiz .quiz-question p {
+  flex: 0 0 100%;
+}
+.zaimy-new .quiz .quiz-question.active {
+  display: flex;
+  flex-wrap: wrap;
+}
 .zaimy-new .quiz .quiz-result {
   display: none;
 }
-.zaimy-new .quiz .quiz-question {
-  display: none;
-}
-.zaimy-new .quiz .quiz-question.active {
-  display: block;
-}
-.zaimy-new .quiz .quiz-question {
-  margin-bottom: 20px;
+.zaimy-new .quiz #quizForm {
+  padding: 0px 0px 1rem 0px;
 }
 .zaimy-new .quiz #quizForm button {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: #626b84;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #e3eef0;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
 }
 .zaimy-new .quiz #quizForm button:hover {
-  background-color: #0056b3;
+  background-color: #14b8ad;
+  color: var(--white);
+}
+.zaimy-new .quiz #quizForm button:focus {
+  outline: none;
 }
 .zaimy-new .quiz .modal {
   display: none; /* Скрыто по умолчанию */
@@ -5629,7 +5727,7 @@ a.cld-like-dislike-trigger {
   position: absolute;
   width: 100%;
   height: 1px;
-  background: #dddde4;
+  background: var(--range-value-border);
   bottom: 0px;
   left: 0;
   z-index: 5;
@@ -6705,6 +6803,27 @@ a.cld-like-dislike-trigger {
 }
 
 @media (max-width: 768px) {
+  .zaimy-new .quiz .quiz-question label {
+    flex: 0 0 calc(100% - 0px);
+  }
+  .zaimy-new .quiz .quiz-question {
+    border: none;
+  }
+  .zaimy-new .quiz .quiz-question br {
+    display: none;
+  }
+  .zaimy-new .quiz #quizForm button {
+    min-width: 100%;
+    position: relative;
+    right: auto;
+    bottom: auto;
+  }
+  .zaimy-new .quiz .quiz-close {
+    display: none;
+  }
+  .zaimy-new .quiz .quiz-result {
+    position: relative;
+  }
   .zaimy-new .quiz-calc .forline {
     position: relative;
     margin: 0px 0px 1rem 0px;

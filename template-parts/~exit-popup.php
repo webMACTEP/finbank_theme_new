@@ -1,21 +1,5 @@
   <?php  if(get_field('exit_popup_on', 'option')): //1912
 
-function get_parent_url() {
-  // Определяем протокол (HTTP или HTTPS)
-  $protocol = is_ssl() ? 'https://' : 'http://';
-  
-  // Получаем текущий хост и URI
-  $current_url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-  
-  // Удаляем любые GET-параметры из URL
-  $current_url = strtok($current_url, '?');
-  
-  // Получаем родительский URL с помощью dirname
-  $parent_url = rtrim(dirname($current_url), '/') . '/';
-  
-  return esc_url($parent_url);
-}
-
             wp_enqueue_style( 'style',  get_template_directory_uri() .'/css/exit_popup.css');
             
             $titlepage = '';
@@ -277,11 +261,8 @@ function get_parent_url() {
                       <div class="exit_ili_block">
                         <div class="exit_ili"><span>или</span></div>
                       <div class="exit1_button">
-                        <a onclick="ym(35020350,'reachGoal','2EX_POPUP_close'); return true;" href="<?= get_parent_url(); ?>" class="btn btn-outline-primary exit1_btn">Спасибо, не надо, закрыть страницу</a>
-                        <a href="<?= get_parent_url(); ?>" class="btn btn-outline-primary exit1_btn_mob">Закрыть страницу
-                          <br>
-                          <?= $titlepage; ?>
-                        </a>
+                        <a onclick="ym(35020350,'reachGoal','2EX_POPUP_close'); return true;" href="https://www.google.ru/search?q=<?= $titlepage; ?>" class="btn btn-outline-primary exit1_btn">Спасибо, не надо, закрыть страницу</a>
+                        <a href="https://www.google.ru/search?q=<?= $titlepage; ?>" class="btn btn-outline-primary exit1_btn_mob">Закрыть страницу</a>
                       </div>     
                         <div class="exit_ili"><span>или</span></div>
                       </div>
@@ -395,7 +376,7 @@ function get_parent_url() {
                         <?php endif; ?>
 
                         <div class="exit_button">
-                          <a onclick="ym(35020350,'reachGoal','1EX_POPUP_close'); return true;" href="<?= get_parent_url(); ?>" class="btn btn-outline-primary btn-block btn-sm exit_btn">Спасибо, не надо</a>
+                          <a onclick="ym(35020350,'reachGoal','1EX_POPUP_close'); return true;" href="https://www.google.ru/search?q=<?= $titlepage; ?>" class="btn btn-outline-primary btn-block btn-sm exit_btn">Спасибо, не надо</a>
 
                         </div>         
                       </div>
