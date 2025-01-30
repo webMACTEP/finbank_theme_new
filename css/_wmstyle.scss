@@ -100,9 +100,16 @@
 }
 .zaimy-new {
     .quiz {
+        #quizResult {
+            //display: none;
+            &.show {
+                display: block;
+            }
+        }
         .conditional-block {
             display: flex;
             flex-wrap: wrap;
+            min-width: 100%;
         }
         position: relative;
         .quiz-close {
@@ -233,7 +240,21 @@
         }
 
         /* Стили для кнопки отправки */
-        #quizForm button {
+        #quizForm .back-btn {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            color: #626b84;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e3eef0;
+            //color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+        #quizForm .next-btn {
             position: absolute;
             right: 20px;
             bottom: 20px;
@@ -272,14 +293,15 @@
 
         /* Стили для содержимого модального окна */
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% от верха и центрирование */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Ширина модального окна */
-            max-width: 500px;
-            text-align: center;
-            border-radius: 8px;
+            //background-color: #fefefe;
+            // margin: 15% auto; /* 15% от верха и центрирование */
+            // padding: 20px;
+            // border: 1px solid #888;
+            // width: 80%; /* Ширина модального окна */
+            // max-width: 500px;
+             text-align: center;
+             padding: 1.5rem;
+            // border-radius: 8px;
         }
 
         /* Стили для кнопки закрытия */

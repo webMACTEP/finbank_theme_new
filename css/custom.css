@@ -5520,9 +5520,13 @@ a.cld-like-dislike-trigger {
   /* Стили для содержимого модального окна */
   /* Стили для кнопки закрытия */
 }
+.zaimy-new .quiz #quizResult.show {
+  display: block;
+}
 .zaimy-new .quiz .conditional-block {
   display: flex;
   flex-wrap: wrap;
+  min-width: 100%;
 }
 .zaimy-new .quiz .quiz-close {
   display: none;
@@ -5619,7 +5623,19 @@ a.cld-like-dislike-trigger {
 .zaimy-new .quiz #quizForm {
   padding: 0px 0px 1rem 0px;
 }
-.zaimy-new .quiz #quizForm button {
+.zaimy-new .quiz #quizForm .back-btn {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  color: #626b84;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #e3eef0;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.zaimy-new .quiz #quizForm .next-btn {
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -5650,14 +5666,8 @@ a.cld-like-dislike-trigger {
   background-color: rgba(0, 0, 0, 0.5); /* Чёрный с прозрачностью */
 }
 .zaimy-new .quiz .modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% от верха и центрирование */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Ширина модального окна */
-  max-width: 500px;
   text-align: center;
-  border-radius: 8px;
+  padding: 1.5rem;
 }
 .zaimy-new .quiz .close {
   color: #aaa;

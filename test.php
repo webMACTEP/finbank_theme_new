@@ -1,61 +1,410 @@
-<ul class="sidebar__menu">
-    <li><a href="<?php echo esc_url($parent_permalink); ?>" class="item-about ">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 17H16M11.0177 2.764L4.23539 8.03912C3.78202 8.39175 3.55534 8.56806 3.39203 8.78886C3.24737 8.98444 3.1396 9.20478 3.07403 9.43905C3 9.70352 3 9.9907 3 10.5651V17.8C3 18.9201 3 19.4801 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4801 21 18.9201 21 17.8V10.5651C21 9.9907 21 9.70352 20.926 9.43905C20.8604 9.20478 20.7526 8.98444 20.608 8.78886C20.4447 8.56806 20.218 8.39175 19.7646 8.03913L12.9823 2.764C12.631 2.49075 12.4553 2.35412 12.2613 2.3016C12.0902 2.25526 11.9098 2.25526 11.7387 2.3016C11.5447 2.35412 11.369 2.49075 11.0177 2.764Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Об МФО</a>
-    </li>
-    <li>
-        <?php
-        // Получаем значение телефона
-        $phone = get_field('z_organization_phone');
-        // Удаляем все символы, кроме цифр
-        $cleaned_phone = preg_replace('![^0-9]+!', '', $phone);
-        ?>
-        <a href="tel:<?php echo esc_attr($cleaned_phone); ?>">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8.38028 8.85323C9.07627 10.3028 10.0251 11.6615 11.2266 12.8631C12.4282 14.0646 13.7869 15.0134 15.2365 15.7094C15.3612 15.7693 15.4235 15.7992 15.5024 15.8222C15.7828 15.904 16.127 15.8453 16.3644 15.6752C16.4313 15.6274 16.4884 15.5702 16.6027 15.4559C16.9523 15.1063 17.1271 14.9315 17.3029 14.8172C17.9658 14.3862 18.8204 14.3862 19.4833 14.8172C19.6591 14.9315 19.8339 15.1063 20.1835 15.4559L20.3783 15.6508C20.9098 16.1822 21.1755 16.448 21.3198 16.7333C21.6069 17.3009 21.6069 17.9712 21.3198 18.5387C21.1755 18.8241 20.9098 19.0898 20.3783 19.6213L20.2207 19.7789C19.6911 20.3085 19.4263 20.5733 19.0662 20.7756C18.6667 21 18.0462 21.1614 17.588 21.16C17.1751 21.1588 16.8928 21.0787 16.3284 20.9185C13.295 20.0575 10.4326 18.433 8.04466 16.045C5.65668 13.6571 4.03221 10.7947 3.17124 7.76131C3.01103 7.19687 2.93092 6.91464 2.9297 6.5017C2.92833 6.04347 3.08969 5.42298 3.31411 5.02348C3.51636 4.66345 3.78117 4.39863 4.3108 3.86901L4.46843 3.71138C4.99987 3.17993 5.2656 2.91421 5.55098 2.76987C6.11854 2.4828 6.7888 2.4828 7.35636 2.76987C7.64174 2.91421 7.90747 3.17993 8.43891 3.71138L8.63378 3.90625C8.98338 4.25585 9.15819 4.43065 9.27247 4.60643C9.70347 5.26932 9.70347 6.1239 9.27247 6.78679C9.15819 6.96257 8.98338 7.13738 8.63378 7.48698C8.51947 7.60129 8.46231 7.65845 8.41447 7.72526C8.24446 7.96269 8.18576 8.30695 8.26748 8.5873C8.29048 8.6662 8.32041 8.72854 8.38028 8.85323Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Горячая линия</a>
-    </li>
-    <li>
-        <a href="<?php echo esc_url($parent_permalink); ?>lichnyy-kabinet/" class="item-lk ">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 20C5.33579 17.5226 8.50702 16 12 16C15.493 16 18.6642 17.5226 21 20M16.5 7.5C16.5 9.98528 14.4853 12 12 12C9.51472 12 7.5 9.98528 7.5 7.5C7.5 5.01472 9.51472 3 12 3C14.4853 3 16.5 5.01472 16.5 7.5Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Личный кабинет</a>
-    </li>
-    <li>
-        <a href="<?php echo esc_url($parent_permalink); ?>#faq">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13M12 17H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Вопросы</a>
-    </li>
-    <li>
-        <a href="<?php echo esc_url($parent_permalink); ?>#comments">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 8.5H12M7 12H15M9.68375 18H16.2C17.8802 18 18.7202 18 19.362 17.673C19.9265 17.3854 20.3854 16.9265 20.673 16.362C21 15.7202 21 14.8802 21 13.2V7.8C21 6.11984 21 5.27976 20.673 4.63803C20.3854 4.07354 19.9265 3.6146 19.362 3.32698C18.7202 3 17.8802 3 16.2 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V20.3355C3 20.8684 3 21.1348 3.10923 21.2716C3.20422 21.3906 3.34827 21.4599 3.50054 21.4597C3.67563 21.4595 3.88367 21.2931 4.29976 20.9602L6.68521 19.0518C7.17252 18.662 7.41617 18.4671 7.68749 18.3285C7.9282 18.2055 8.18443 18.1156 8.44921 18.0613C8.74767 18 9.0597 18 9.68375 18Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Отзывы</a>
-    </li>
-    <li>
-        <a href="<?php echo esc_url($parent_permalink); ?>kontakty/" class="item-contacts active">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 2.26946V6.4C14 6.96005 14 7.24008 14.109 7.45399C14.2049 7.64215 14.3578 7.79513 14.546 7.89101C14.7599 8 15.0399 8 15.6 8H19.7305M20 9.98822V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V6.8C4 5.11984 4 4.27976 4.32698 3.63803C4.6146 3.07354 5.07354 2.6146 5.63803 2.32698C6.27976 2 7.11984 2 8.8 2H12.0118C12.7455 2 13.1124 2 13.4577 2.08289C13.7638 2.15638 14.0564 2.27759 14.3249 2.44208C14.6276 2.6276 14.887 2.88703 15.4059 3.40589L18.5941 6.59411C19.113 7.11297 19.3724 7.3724 19.5579 7.67515C19.7224 7.94356 19.8436 8.2362 19.9171 8.5423C20 8.88757 20 9.25445 20 9.98822Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Контакты</a>
-    </li>
-    <li>
-        <a href="<?php echo esc_url($parent_permalink); ?>promokody-skidki/" class="item-promo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 8V7M8 12.5V11.5M8 17V16M6.8 20H17.2C18.8802 20 19.7202 20 20.362 19.673C20.9265 19.3854 21.3854 18.9265 21.673 18.362C22 17.7202 22 16.8802 22 15.2V8.8C22 7.11984 22 6.27976 21.673 5.63803C21.3854 5.07354 20.9265 4.6146 20.362 4.32698C19.7202 4 18.8802 4 17.2 4H6.8C5.11984 4 4.27976 4 3.63803 4.32698C3.07354 4.6146 2.6146 5.07354 2.32698 5.63803C2 6.27976 2 7.11984 2 8.8V15.2C2 16.8802 2 17.7202 2.32698 18.362C2.6146 18.9265 3.07354 19.3854 3.63803 19.673C4.27976 20 5.11984 20 6.8 20Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Промокоды, скидки</a>
-    </li>
-    <li>
-        <a href="/blog/">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 9.25H15M21 4H3M21 14.75H15M21 20H3M4.6 16H9.4C9.96005 16 10.2401 16 10.454 15.891C10.6422 15.7951 10.7951 15.6422 10.891 15.454C11 15.2401 11 14.9601 11 14.4V9.6C11 9.03995 11 8.75992 10.891 8.54601C10.7951 8.35785 10.6422 8.20487 10.454 8.10899C10.2401 8 9.96005 8 9.4 8H4.6C4.03995 8 3.75992 8 3.54601 8.10899C3.35785 8.20487 3.20487 8.35785 3.10899 8.54601C3 8.75992 3 9.03995 3 9.6V14.4C3 14.9601 3 15.2401 3.10899 15.454C3.20487 15.6422 3.35785 15.7951 3.54601 15.891C3.75992 16 4.03995 16 4.6 16Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Новости и статьи</a>
-    </li>
-    <li>
-        <a href="#best-offers">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 17C8.41015 17 5.5 14.0899 5.5 10.5V4.55556C5.5 4.03739 5.5 3.77831 5.59369 3.57738C5.69305 3.36431 5.86431 3.19305 6.07738 3.09369C6.27831 3 6.53739 3 7.05556 3H16.9444C17.4626 3 17.7217 3 17.9226 3.09369C18.1357 3.19305 18.3069 3.36431 18.4063 3.57738C18.5 3.77831 18.5 4.03739 18.5 4.55556V10.5C18.5 14.0899 15.5899 17 12 17ZM12 17V21M17 21H7M22 5V10M2 5V10" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>Лучшие предложения</a>
-    </li>
-</ul>
+<form id="quizForm">
+    <!-- ВОПРОС 1 -->
+    <div class="quiz-question active" data-question="1">
+        <p><strong>1. Сколько Вам лет?</strong></p>
+        <input type="radio" id="age1" name="age" value="1" required>
+        <label for="age1">18-22</label><br>
+
+        <input type="radio" id="age2" name="age" value="2">
+        <label for="age2">23-27</label><br>
+
+        <input type="radio" id="age3" name="age" value="3">
+        <label for="age3">28-35</label><br>
+
+        <input type="radio" id="age4" name="age" value="4">
+        <label for="age4">36-45</label><br>
+
+        <input type="radio" id="age5" name="age" value="5">
+        <label for="age5">46-60</label><br>
+
+        <input type="radio" id="age6" name="age" value="6">
+        <label for="age6">Более 60</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 2 -->
+    <div class="quiz-question" data-question="2">
+        <p><strong>2. Ваш пол?</strong></p>
+        <input type="radio" id="genderMale" name="gender" value="male" required>
+        <label for="genderMale">Мужчина</label><br>
+
+        <input type="radio" id="genderFemale" name="gender" value="female">
+        <label for="genderFemale">Женщина</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 3 -->
+    <div class="quiz-question" data-question="3">
+        <p><strong>3. Семейное положение?</strong></p>
+        <input type="radio" id="maritalMarried" name="maritalStatus" value="married" required>
+        <label for="maritalMarried">Женат/Замужем</label><br>
+
+        <input type="radio" id="maritalSingle" name="maritalStatus" value="single">
+        <label for="maritalSingle">Холост/Не замужем</label><br>
+
+        <input type="radio" id="maritalCivilUnion" name="maritalStatus" value="civilUnion">
+        <label for="maritalCivilUnion">Гражданский брак</label><br>
+
+        <input type="radio" id="maritalDivorced" name="maritalStatus" value="divorced">
+        <label for="maritalDivorced">В разводе</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 4 -->
+    <div class="quiz-question" data-question="4">
+        <p><strong>4. У вас есть гражданство РФ?</strong></p>
+        <input type="radio" id="citizenshipYes" name="citizenship" value="yes" required>
+        <label for="citizenshipYes">Да</label><br>
+
+        <input type="radio" id="citizenshipNo" name="citizenship" value="no">
+        <label for="citizenshipNo">Нет</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 5 -->
+    <div class="quiz-question" data-question="5">
+        <p><strong>5. Где вы проживаете?</strong></p>
+        <input type="radio" id="residenceOwn" name="residence" value="own" required>
+        <label for="residenceOwn">Собственное жилье</label><br>
+
+        <input type="radio" id="residenceRental" name="residence" value="rental">
+        <label for="residenceRental">Съемное жилье</label><br>
+
+        <input type="radio" id="residenceDormitory" name="residence" value="dormitory">
+        <label for="residenceDormitory">Общежитие</label><br>
+
+        <input type="radio" id="residenceRelatives" name="residence" value="relatives">
+        <label for="residenceRelatives">Жилье родственников</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 6: Доход + доп. доход -->
+    <div class="quiz-question" data-question="6">
+        <p><strong>6. Ваш доход в месяц?</strong></p>
+        <input type="radio" id="income1" name="income" value="1" required>
+        <label for="income1">Менее 10 000</label><br>
+
+        <input type="radio" id="income2" name="income" value="2">
+        <label for="income2">10-20 000</label><br>
+
+        <input type="radio" id="income3" name="income" value="3">
+        <label for="income3">20-30 000</label><br>
+
+        <input type="radio" id="income4" name="income" value="4">
+        <label for="income4">30-40 000</label><br>
+
+        <input type="radio" id="income5" name="income" value="5">
+        <label for="income5">40-60 000</label><br>
+
+        <input type="radio" id="income6" name="income" value="6">
+        <label for="income6">Более 60 000</label><br>
+
+        <hr />
+
+        <p><strong>Есть ли у Вас дополнительный доход?</strong></p>
+        <input type="radio" id="additionalIncomeYes" name="additionalIncome" value="yes" required>
+        <label for="additionalIncomeYes">Да</label><br>
+
+        <input type="radio" id="additionalIncomeNo" name="additionalIncome" value="no">
+        <label for="additionalIncomeNo">Нет</label><br>
+
+        <!-- Блок, который показывается, если выбран "Доп. доход = Да" -->
+        <div class="conditional-block" data-condition="additionalIncomeYes" style="display:none; margin-top:10px;">
+            <p><strong>В каком размере дополнительный доход?</strong></p>
+
+            <input type="radio" id="additionalIncomeSize1" name="additionalIncomeSize" value="1">
+            <label for="additionalIncomeSize1">Менее 10 000</label><br>
+
+            <input type="radio" id="additionalIncomeSize2" name="additionalIncomeSize" value="2">
+            <label for="additionalIncomeSize2">10-20 000</label><br>
+
+            <input type="radio" id="additionalIncomeSize3" name="additionalIncomeSize" value="3">
+            <label for="additionalIncomeSize3">20-30 000</label><br>
+
+            <input type="radio" id="additionalIncomeSize4" name="additionalIncomeSize" value="4">
+            <label for="additionalIncomeSize4">30-40 000</label><br>
+
+            <input type="radio" id="additionalIncomeSize5" name="additionalIncomeSize" value="5">
+            <label for="additionalIncomeSize5">40-60 000</label><br>
+
+            <input type="radio" id="additionalIncomeSize6" name="additionalIncomeSize" value="6">
+            <label for="additionalIncomeSize6">Более 60 000</label><br>
+        </div>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 7 -->
+    <div class="quiz-question" data-question="7">
+        <p><strong>7. Стаж работы на последнем месте?</strong></p>
+        <input type="radio" id="workExp1" name="workExperience" value="1" required>
+        <label for="workExp1">Менее полугода</label><br>
+
+        <input type="radio" id="workExp2" name="workExperience" value="2">
+        <label for="workExp2">До 1 года</label><br>
+
+        <input type="radio" id="workExp3" name="workExperience" value="3">
+        <label for="workExp3">1-3 года</label><br>
+
+        <input type="radio" id="workExp4" name="workExperience" value="4">
+        <label for="workExp4">3-5 лет</label><br>
+
+        <input type="radio" id="workExp5" name="workExperience" value="5">
+        <label for="workExp5">5-7 лет</label><br>
+
+        <input type="radio" id="workExp6" name="workExperience" value="6">
+        <label for="workExp6">Более 7 лет</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 8 -->
+    <div class="quiz-question" data-question="8">
+        <p><strong>8. Какая у вас должность?</strong></p>
+        <input type="radio" id="positionManager" name="position" value="manager" required>
+        <label for="positionManager">Руководитель</label><br>
+
+        <input type="radio" id="positionEmployee" name="position" value="employee">
+        <label for="positionEmployee">Работник</label><br>
+
+        <input type="radio" id="positionEntrepreneur" name="position" value="entrepreneur">
+        <label for="positionEntrepreneur">Предприниматель</label><br>
+
+        <input type="radio" id="positionPensioner" name="position" value="pensioner">
+        <label for="positionPensioner">Пенсионер</label><br>
+
+        <input type="radio" id="positionStudent" name="position" value="student">
+        <label for="positionStudent">Студент</label><br>
+
+        <input type="radio" id="positionUnemployed" name="position" value="unemployed">
+        <label for="positionUnemployed">Не работаю</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 9 -->
+    <div class="quiz-question" data-question="9">
+        <p><strong>9. Есть ли у вас иждивенцы (дети, инвалиды)?</strong></p>
+        <input type="radio" id="dependents0" name="dependents" value="0" required>
+        <label for="dependents0">Нет</label><br>
+
+        <input type="radio" id="dependents1" name="dependents" value="1">
+        <label for="dependents1">1</label><br>
+
+        <input type="radio" id="dependents2" name="dependents" value="2">
+        <label for="dependents2">2</label><br>
+
+        <input type="radio" id="dependents3" name="dependents" value="3">
+        <label for="dependents3">3 и более</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 10: Кредитовались ли вы ранее? -->
+    <div class="quiz-question" data-question="10">
+        <p><strong>10. Кредитовались ли вы ранее?</strong></p>
+        <input type="radio" id="previousCreditYes" name="previousCredit" value="yes" required>
+        <label for="previousCreditYes">Да</label><br>
+
+        <input type="radio" id="previousCreditNo" name="previousCredit" value="no">
+        <label for="previousCreditNo">Нет</label><br>
+
+        <!-- Появляется, если выбрано "Да" -->
+        <div class="conditional-block" data-condition="previousCreditYes" style="display:none; margin-top:10px;">
+            <p><strong>Есть ли открытые кредиты?</strong></p>
+            <input type="radio" id="openCreditsYes" name="openCredits" value="yes">
+            <label for="openCreditsYes">Да</label><br>
+
+            <input type="radio" id="openCreditsNo" name="openCredits" value="no">
+            <label for="openCreditsNo">Нет</label><br>
+
+            <!-- Появляется, если выбрано "Есть открытые кредиты?" = Да -->
+            <div class="conditional-block" data-condition="openCreditsYes" style="display:none; margin-top:10px;">
+                <p><strong>Сколько платите в месяц по кредитам?</strong></p>
+                <input type="radio" id="monthlyPayment1" name="monthlyPayment" value="1">
+                <label for="monthlyPayment1">Менее 10 000</label><br>
+
+                <input type="radio" id="monthlyPayment2" name="monthlyPayment" value="2">
+                <label for="monthlyPayment2">10-20 000</label><br>
+
+                <input type="radio" id="monthlyPayment3" name="monthlyPayment" value="3">
+                <label for="monthlyPayment3">20-30 000</label><br>
+
+                <input type="radio" id="monthlyPayment4" name="monthlyPayment" value="4">
+                <label for="monthlyPayment4">30-40 000</label><br>
+
+                <input type="radio" id="monthlyPayment5" name="monthlyPayment" value="5">
+                <label for="monthlyPayment5">40-60 000</label><br>
+
+                <input type="radio" id="monthlyPayment6" name="monthlyPayment" value="6">
+                <label for="monthlyPayment6">Более 60 000</label><br>
+            </div>
+        </div>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 11: Кредитная история -->
+    <div class="quiz-question" data-question="11">
+        <p><strong>11. Какая у вас кредитная история?</strong></p>
+        <input type="radio" id="creditHistoryPositive" name="creditHistory" value="positive" required>
+        <label for="creditHistoryPositive">Положительная</label><br>
+
+        <input type="radio" id="creditHistoryNegative" name="creditHistory" value="negative">
+        <label for="creditHistoryNegative">Негативная</label><br>
+
+        <input type="radio" id="creditHistoryZero" name="creditHistory" value="zero">
+        <label for="creditHistoryZero">Нулевая</label><br>
+
+        <input type="radio" id="creditHistoryDelayed" name="creditHistory" value="delayed">
+        <label for="creditHistoryDelayed">Были просрочки</label><br>
+
+        <!-- Появляется, если "Были просрочки" -->
+        <div class="conditional-block" data-condition="creditHistoryDelayed" style="display:none; margin-top:10px;">
+            <p><strong>На сколько дней просрочили?</strong></p>
+            <input type="radio" id="overdueDays1" name="overdueDays" value="1">
+            <label for="overdueDays1">До 10 дней</label><br>
+
+            <input type="radio" id="overdueDays2" name="overdueDays" value="2">
+            <label for="overdueDays2">До 30 дней</label><br>
+
+            <input type="radio" id="overdueDays3" name="overdueDays" value="3">
+            <label for="overdueDays3">Более 30 дней</label><br>
+
+            <input type="radio" id="overdueDays4" name="overdueDays" value="4">
+            <label for="overdueDays4">Не помню</label><br>
+        </div>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 12 -->
+    <div class="quiz-question" data-question="12">
+        <p><strong>12. Какое у вас образование?</strong></p>
+        <input type="radio" id="educationHigher" name="education" value="higher" required>
+        <label for="educationHigher">Высшее</label><br>
+
+        <input type="radio" id="educationIncompleteHigher" name="education" value="incompleteHigher">
+        <label for="educationIncompleteHigher">Неоконченное высшее</label><br>
+
+        <input type="radio" id="educationSecondarySpecial" name="education" value="secondarySpecial">
+        <label for="educationSecondarySpecial">Среднее специальное</label><br>
+
+        <input type="radio" id="educationGeneralSecondary" name="education" value="generalSecondary">
+        <label for="educationGeneralSecondary">Среднее общее</label><br>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Продолжить" -->
+            <button type="button" class="next-btn">Продолжить</button>
+        </div>
+    </div>
+
+    <!-- ВОПРОС 13: Автомобиль -->
+    <div class="quiz-question" data-question="13">
+        <p><strong>13. У вас есть автомобиль?</strong></p>
+        <input type="radio" id="carYes" name="car" value="yes" required>
+        <label for="carYes">Да</label><br>
+
+        <input type="radio" id="carNo" name="car" value="no">
+        <label for="carNo">Нет</label><br>
+
+        <!-- Появляется, если "Да" -->
+        <div class="conditional-block" data-condition="carYes" style="display:none; margin-top:10px;">
+            <p><strong>Какой именно?</strong></p>
+            <input type="radio" id="carTypeNewForeign" name="carType" value="newForeign">
+            <label for="carTypeNewForeign">Новая иномарка</label><br>
+
+            <input type="radio" id="carTypeOldForeign" name="carType" value="oldForeign">
+            <label for="carTypeOldForeign">Старая иномарка</label><br>
+
+            <input type="radio" id="carTypeNewDomestic" name="carType" value="newDomestic">
+            <label for="carTypeNewDomestic">Новый отечественный</label><br>
+
+            <input type="radio" id="carTypeOldDomestic" name="carType" value="oldDomestic">
+            <label for="carTypeOldDomestic">Старый отечественный</label><br>
+        </div>
+
+        <!-- Контейнер для кнопок -->
+        <div class="button-group" style="margin-top: 20px;">
+            <!-- Кнопка "Назад" -->
+            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+            <!-- Кнопка "Показать результат" -->
+            <button type="button" class="next-btn">Показать результат</button>
+        </div>
+    </div>
+
+
+</form>

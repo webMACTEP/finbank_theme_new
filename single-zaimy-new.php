@@ -1095,291 +1095,8 @@ $current_url = get_permalink();
                                     </div>
                                 </div>
 
-
                                 <form id="quizForm">
-                                    <!-- ВОПРОС 1 -->
-                                    <div class="quiz-question active" data-question="1">
-                                        <p><strong>1. Сколько Вам лет?</strong></p>
-                                        <input type="radio" id="age1" name="age" value="1" required>
-                                        <label for="age1">18-22</label><br>
-
-                                        <input type="radio" id="age2" name="age" value="2">
-                                        <label for="age2">23-27</label><br>
-
-                                        <input type="radio" id="age3" name="age" value="3">
-                                        <label for="age3">28-35</label><br>
-
-                                        <input type="radio" id="age4" name="age" value="4">
-                                        <label for="age4">36-45</label><br>
-
-                                        <input type="radio" id="age5" name="age" value="5">
-                                        <label for="age5">46-60</label><br>
-
-                                        <input type="radio" id="age6" name="age" value="6">
-                                        <label for="age6">Более 60</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 2 -->
-                                    <div class="quiz-question" data-question="2">
-                                        <p><strong>2. Ваш пол?</strong></p>
-                                        <input type="radio" id="genderMale" name="gender" value="male" required>
-                                        <label for="genderMale">Мужчина</label><br>
-
-                                        <input type="radio" id="genderFemale" name="gender" value="female">
-                                        <label for="genderFemale">Женщина</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 3 -->
-                                    <div class="quiz-question" data-question="3">
-                                        <p><strong>3. Семейное положение?</strong></p>
-                                        <input type="radio" id="maritalMarried" name="maritalStatus" value="married" required>
-                                        <label for="maritalMarried">Женат/Замужем</label><br>
-
-                                        <input type="radio" id="maritalSingle" name="maritalStatus" value="single">
-                                        <label for="maritalSingle">Холост/Не замужем</label><br>
-
-                                        <input type="radio" id="maritalCivilUnion" name="maritalStatus" value="civilUnion">
-                                        <label for="maritalCivilUnion">Гражданский брак</label><br>
-
-                                        <input type="radio" id="maritalDivorced" name="maritalStatus" value="divorced">
-                                        <label for="maritalDivorced">В разводе</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 4 -->
-                                    <div class="quiz-question" data-question="4">
-                                        <p><strong>4. У вас есть гражданство РФ?</strong></p>
-                                        <input type="radio" id="citizenshipYes" name="citizenship" value="yes" required>
-                                        <label for="citizenshipYes">Да</label><br>
-
-                                        <input type="radio" id="citizenshipNo" name="citizenship" value="no">
-                                        <label for="citizenshipNo">Нет</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 5 -->
-                                    <div class="quiz-question" data-question="5">
-                                        <p><strong>5. Где вы проживаете?</strong></p>
-                                        <input type="radio" id="residenceOwn" name="residence" value="own" required>
-                                        <label for="residenceOwn">Собственное жилье</label><br>
-
-                                        <input type="radio" id="residenceRental" name="residence" value="rental">
-                                        <label for="residenceRental">Съемное жилье</label><br>
-
-                                        <input type="radio" id="residenceDormitory" name="residence" value="dormitory">
-                                        <label for="residenceDormitory">Общежитие</label><br>
-
-                                        <input type="radio" id="residenceRelatives" name="residence" value="relatives">
-                                        <label for="residenceRelatives">Жилье родственников</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 6: Доход + доп. доход -->
-                                    <div class="quiz-question" data-question="6">
-                                        <p><strong>6. Ваш доход в месяц?</strong></p>
-                                        <input type="radio" id="income1" name="income" value="1" required>
-                                        <label for="income1">Менее 10 000</label><br>
-
-                                        <input type="radio" id="income2" name="income" value="2">
-                                        <label for="income2">10-20 000</label><br>
-
-                                        <input type="radio" id="income3" name="income" value="3">
-                                        <label for="income3">20-30 000</label><br>
-
-                                        <input type="radio" id="income4" name="income" value="4">
-                                        <label for="income4">30-40 000</label><br>
-
-                                        <input type="radio" id="income5" name="income" value="5">
-                                        <label for="income5">40-60 000</label><br>
-
-                                        <input type="radio" id="income6" name="income" value="6">
-                                        <label for="income6">Более 60 000</label><br>
-
-                                        <hr />
-
-                                        <p><strong>Есть ли у Вас дополнительный доход?</strong></p>
-                                        <input type="radio" id="additionalIncomeYes" name="additionalIncome" value="yes" required>
-                                        <label for="additionalIncomeYes">Да</label><br>
-
-                                        <input type="radio" id="additionalIncomeNo" name="additionalIncome" value="no">
-                                        <label for="additionalIncomeNo">Нет</label><br>
-
-                                        <!-- Блок, который показывается, если выбран "Доп. доход = Да" -->
-                                        <div class="conditional-block" data-condition="additionalIncomeYes" style="display:none; margin-top:10px;">
-                                            <p><strong>В каком размере дополнительный доход?</strong></p>
-
-                                            <input type="radio" id="additionalIncomeSize1" name="additionalIncomeSize" value="1">
-                                            <label for="additionalIncomeSize1">Менее 10 000</label><br>
-
-                                            <input type="radio" id="additionalIncomeSize2" name="additionalIncomeSize" value="2">
-                                            <label for="additionalIncomeSize2">10-20 000</label><br>
-
-                                            <input type="radio" id="additionalIncomeSize3" name="additionalIncomeSize" value="3">
-                                            <label for="additionalIncomeSize3">20-30 000</label><br>
-
-                                            <input type="radio" id="additionalIncomeSize4" name="additionalIncomeSize" value="4">
-                                            <label for="additionalIncomeSize4">30-40 000</label><br>
-
-                                            <input type="radio" id="additionalIncomeSize5" name="additionalIncomeSize" value="5">
-                                            <label for="additionalIncomeSize5">40-60 000</label><br>
-
-                                            <input type="radio" id="additionalIncomeSize6" name="additionalIncomeSize" value="6">
-                                            <label for="additionalIncomeSize6">Более 60 000</label><br>
-                                        </div>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 7 -->
-                                    <div class="quiz-question" data-question="7">
-                                        <p><strong>7. Стаж работы на последнем месте?</strong></p>
-                                        <input type="radio" id="workExp1" name="workExperience" value="1" required>
-                                        <label for="workExp1">Менее полугода</label><br>
-
-                                        <input type="radio" id="workExp2" name="workExperience" value="2">
-                                        <label for="workExp2">До 1 года</label><br>
-
-                                        <input type="radio" id="workExp3" name="workExperience" value="3">
-                                        <label for="workExp3">1-3 года</label><br>
-
-                                        <input type="radio" id="workExp4" name="workExperience" value="4">
-                                        <label for="workExp4">3-5 лет</label><br>
-
-                                        <input type="radio" id="workExp5" name="workExperience" value="5">
-                                        <label for="workExp5">5-7 лет</label><br>
-
-                                        <input type="radio" id="workExp6" name="workExperience" value="6">
-                                        <label for="workExp6">Более 7 лет</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 8 -->
-                                    <div class="quiz-question" data-question="8">
-                                        <p><strong>8. Какая у вас должность?</strong></p>
-                                        <input type="radio" id="positionManager" name="position" value="manager" required>
-                                        <label for="positionManager">Руководитель</label><br>
-
-                                        <input type="radio" id="positionEmployee" name="position" value="employee">
-                                        <label for="positionEmployee">Работник</label><br>
-
-                                        <input type="radio" id="positionEntrepreneur" name="position" value="entrepreneur">
-                                        <label for="positionEntrepreneur">Предприниматель</label><br>
-
-                                        <input type="radio" id="positionPensioner" name="position" value="pensioner">
-                                        <label for="positionPensioner">Пенсионер</label><br>
-
-                                        <input type="radio" id="positionStudent" name="position" value="student">
-                                        <label for="positionStudent">Студент</label><br>
-
-                                        <input type="radio" id="positionUnemployed" name="position" value="unemployed">
-                                        <label for="positionUnemployed">Не работаю</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 9 -->
-                                    <div class="quiz-question" data-question="9">
-                                        <p><strong>9. Есть ли у вас иждивенцы (дети, инвалиды)?</strong></p>
-                                        <input type="radio" id="dependents0" name="dependents" value="0" required>
-                                        <label for="dependents0">Нет</label><br>
-
-                                        <input type="radio" id="dependents1" name="dependents" value="1">
-                                        <label for="dependents1">1</label><br>
-
-                                        <input type="radio" id="dependents2" name="dependents" value="2">
-                                        <label for="dependents2">2</label><br>
-
-                                        <input type="radio" id="dependents3" name="dependents" value="3">
-                                        <label for="dependents3">3 и более</label><br>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 10: Кредитовались ли вы ранее? -->
-                                    <div class="quiz-question" data-question="10">
-                                        <p><strong>10. Кредитовались ли вы ранее?</strong></p>
-                                        <input type="radio" id="previousCreditYes" name="previousCredit" value="yes" required>
-                                        <label for="previousCreditYes">Да</label><br>
-
-                                        <input type="radio" id="previousCreditNo" name="previousCredit" value="no">
-                                        <label for="previousCreditNo">Нет</label><br>
-
-                                        <!-- Появляется, если выбрано "Да" -->
-                                        <div class="conditional-block" data-condition="previousCreditYes" style="display:none; margin-top:10px;">
-                                            <p><strong>Есть ли открытые кредиты?</strong></p>
-                                            <input type="radio" id="openCreditsYes" name="openCredits" value="yes">
-                                            <label for="openCreditsYes">Да</label><br>
-
-                                            <input type="radio" id="openCreditsNo" name="openCredits" value="no">
-                                            <label for="openCreditsNo">Нет</label><br>
-
-                                            <!-- Появляется, если выбрано "Есть открытые кредиты?" = Да -->
-                                            <div class="conditional-block" data-condition="openCreditsYes" style="display:none; margin-top:10px;">
-                                                <p><strong>Сколько платите в месяц по кредитам?</strong></p>
-                                                <input type="radio" id="monthlyPayment1" name="monthlyPayment" value="1">
-                                                <label for="monthlyPayment1">Менее 10 000</label><br>
-
-                                                <input type="radio" id="monthlyPayment2" name="monthlyPayment" value="2">
-                                                <label for="monthlyPayment2">10-20 000</label><br>
-
-                                                <input type="radio" id="monthlyPayment3" name="monthlyPayment" value="3">
-                                                <label for="monthlyPayment3">20-30 000</label><br>
-
-                                                <input type="radio" id="monthlyPayment4" name="monthlyPayment" value="4">
-                                                <label for="monthlyPayment4">30-40 000</label><br>
-
-                                                <input type="radio" id="monthlyPayment5" name="monthlyPayment" value="5">
-                                                <label for="monthlyPayment5">40-60 000</label><br>
-
-                                                <input type="radio" id="monthlyPayment6" name="monthlyPayment" value="6">
-                                                <label for="monthlyPayment6">Более 60 000</label><br>
-                                            </div>
-                                        </div>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 11: Кредитная история -->
-                                    <div class="quiz-question" data-question="11">
-                                        <p><strong>11. Какая у вас кредитная история?</strong></p>
-                                        <input type="radio" id="creditHistoryPositive" name="creditHistory" value="positive" required>
-                                        <label for="creditHistoryPositive">Положительная</label><br>
-
-                                        <input type="radio" id="creditHistoryNegative" name="creditHistory" value="negative">
-                                        <label for="creditHistoryNegative">Негативная</label><br>
-
-                                        <input type="radio" id="creditHistoryZero" name="creditHistory" value="zero">
-                                        <label for="creditHistoryZero">Нулевая</label><br>
-
-                                        <input type="radio" id="creditHistoryDelayed" name="creditHistory" value="delayed">
-                                        <label for="creditHistoryDelayed">Были просрочки</label><br>
-
-                                        <!-- Появляется, если "Были просрочки" -->
-                                        <div class="conditional-block" data-condition="creditHistoryDelayed" style="display:none; margin-top:10px;">
-                                            <p><strong>На сколько дней просрочили?</strong></p>
-                                            <input type="radio" id="overdueDays1" name="overdueDays" value="1">
-                                            <label for="overdueDays1">До 10 дней</label><br>
-
-                                            <input type="radio" id="overdueDays2" name="overdueDays" value="2">
-                                            <label for="overdueDays2">До 30 дней</label><br>
-
-                                            <input type="radio" id="overdueDays3" name="overdueDays" value="3">
-                                            <label for="overdueDays3">Более 30 дней</label><br>
-
-                                            <input type="radio" id="overdueDays4" name="overdueDays" value="4">
-                                            <label for="overdueDays4">Не помню</label><br>
-                                        </div>
-
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
+                                    
 
                                     <!-- ВОПРОС 12 -->
                                     <div class="quiz-question" data-question="12">
@@ -1396,10 +1113,16 @@ $current_url = get_permalink();
                                         <input type="radio" id="educationGeneralSecondary" name="education" value="generalSecondary">
                                         <label for="educationGeneralSecondary">Среднее общее</label><br>
 
-                                        <button type="button" class="next-btn">Продолжить</button>
+                                        <!-- Контейнер для кнопок -->
+                                        <div class="button-group" style="margin-top: 20px;">
+                                            <!-- Кнопка "Назад" -->
+                                            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+                                            <!-- Кнопка "Продолжить" -->
+                                            <button type="button" class="next-btn">Продолжить</button>
+                                        </div>
                                     </div>
 
-                                    <!-- ВОПРОС 13: Автомобиль -->
+                                    <!-- ВОПРОС 13 -->
                                     <div class="quiz-question" data-question="13">
                                         <p><strong>13. У вас есть автомобиль?</strong></p>
                                         <input type="radio" id="carYes" name="car" value="yes" required>
@@ -1424,172 +1147,271 @@ $current_url = get_permalink();
                                             <label for="carTypeOldDomestic">Старый отечественный</label><br>
                                         </div>
 
-                                        <button type="button" class="next-btn">Продолжить</button>
-                                    </div>
-
-                                    <!-- ВОПРОС 14: кнопка отправки -->
-                                    <div class="quiz-question" data-question="14">
-                                        <button type="submit" class="submit-btn">Показать результат</button>
+                                        <!-- Контейнер для кнопок -->
+                                        <div class="button-group" style="margin-top: 20px;">
+                                            <!-- Кнопка "Назад" -->
+                                            <button type="button" class="back-btn" style="margin-right: 10px;">Назад</button>
+                                            <!-- Кнопка "Показать результат" -->
+                                            <button type="button" class="next-btn">Показать результат</button>
+                                        </div>
                                     </div>
                                 </form>
 
+                                <!-- Модальное окно для показа результата (скрыто по умолчанию) -->
+                                <div id="quizResult" style="display: none;">
+                                    <div class="modal-content">
+                                        <!-- Блок 1: Рассчитываем лимит -->
+                                        <div id="calculationBlock">
+                                            <p>Рассчитываем лимит, подождите немного</p>
+                                            <p id="countdownText">5</p> <!-- Обратный отсчёт -->
+                                        </div>
 
-                                <!-- Модальное окно для результата -->
-                                <div id="quizResult" class="quiz-result">
-                                    <div class="quiz-content">
-                                        <span class="quiz-close">&times;</span>
-                                        <p id="quizResultText"></p>
+                                        <!-- Блок 2: Итоговый результат (изначально скрыт) -->
+                                        <div id="resultBlock" style="display: none;">
+                                            <h2>Вы можете получить</h2> <!-- Заголовок -->
+                                            <p id="finalAmount" style="font-size: 24px; font-weight: bold;"></p> <!-- Сумма -->
+                                            <p>Расчет не является окончательным и может быть изменен кредитной организацией.</p> <!-- Пояснительный текст -->
+
+                                            <!-- Контейнер для кнопок -->
+                                            <div class="button-group" style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+                                                <!-- Кнопка "Начать заново" -->
+                                                <button type="button" id="restartQuiz" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px;">Начать заново</button>
+
+                                                <!-- Кнопка "Оформить сейчас" -->
+                                                <a href="#" id="applyNow" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border: none; border-radius: 5px; cursor: pointer;">Оформить сейчас</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const quizForm = document.getElementById('quizForm');
+                                    const quizResultModal = document.getElementById('quizResult');
+                                    const countdownText = document.getElementById('countdownText'); // Элемент для обратного отсчёта
+                                    const finalAmount = document.getElementById('finalAmount'); // Элемент для суммы
+                                    const restartQuizBtn = document.getElementById('restartQuiz'); // Кнопка "Начать заново"
+                                    const applyNowBtn = document.getElementById('applyNow'); // Кнопка "Оформить сейчас"
+
+                                    // Блоки внутри модального окна
+                                    const calculationBlock = document.getElementById('calculationBlock');
+                                    const resultBlock = document.getElementById('resultBlock');
+
+                                    // Получаем все блоки вопросов
+                                    const questions = document.querySelectorAll('.quiz-question');
+
+                                    // Индикатор прогресса
+                                    const currentStepElement = document.getElementById('currentStep');
+                                    const totalStepsElement = document.getElementById('totalSteps');
+                                    const progressFilled = document.getElementById('progressFilled');
+
+                                    // Общее количество шагов (для прогресса)
+                                    if (totalStepsElement) {
+                                        totalStepsElement.textContent = questions.length;
+                                    }
+
+                                    // Текущий индекс вопроса
+                                    let currentQuestionIndex = 0;
+
+                                    // Показываем вопрос по индексу
+                                    function showQuestion(index) {
+                                        questions.forEach((question, i) => {
+                                            if (i === index) {
+                                                question.classList.add('active');
+                                                // Включаем поля ввода у активного вопроса
+                                                const inputs = question.querySelectorAll('input, select, textarea');
+                                                inputs.forEach(input => {
+                                                    input.disabled = false;
+                                                });
+                                            } else {
+                                                question.classList.remove('active');
+                                                // Выключаем поля ввода у неактивных вопросов
+                                                const inputs = question.querySelectorAll('input, select, textarea');
+                                                inputs.forEach(input => {
+                                                    input.disabled = true;
+                                                });
+                                            }
+                                        });
+
+                                        // Обновляем счетчик шагов
+                                        if (currentStepElement) {
+                                            currentStepElement.textContent = index + 1;
+                                        }
+
+                                        // Обновляем прогресс
+                                        if (progressFilled && totalStepsElement) {
+                                            const totalSteps = parseInt(totalStepsElement.textContent, 10);
+                                            const percentage = ((index + 1) / totalSteps) * 100;
+                                            progressFilled.style.width = `${percentage}%`;
+                                        }
+
+                                        // Обновляем кнопку "Назад" (скрываем на первом шаге)
+                                        updateBackButtons();
+                                    }
+
+                                    // Переход к следующему вопросу или показ результата
+                                    function handleNextClick(event) {
+                                        const currentQuestion = questions[currentQuestionIndex];
+
+                                        // Проверяем, выбраны ли варианты (для radio/checkbox)
+                                        const inputs = currentQuestion.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+                                        if (inputs.length > 0) {
+                                            let isChecked = false;
+                                            inputs.forEach(input => {
+                                                if (input.checked) isChecked = true;
+                                            });
+                                            if (!isChecked) {
+                                                alert('Пожалуйста, выберите один из вариантов ответа.');
+                                                return;
+                                            }
+                                        }
+
+                                        // Если это последний вопрос:
+                                        if (currentQuestionIndex === questions.length - 1) {
+                                            showResult(); // Показать модальное окно с обратным отсчётом и итоговым результатом
+                                            return;
+                                        }
+
+                                        // Иначе переходим к следующему вопросу
+                                        currentQuestionIndex++;
+                                        showQuestion(currentQuestionIndex);
+                                    }
+
+                                    // Переход к предыдущему вопросу
+                                    function handleBackClick() {
+                                        if (currentQuestionIndex > 0) {
+                                            currentQuestionIndex--;
+                                            showQuestion(currentQuestionIndex);
+                                        }
+                                    }
+
+                                    // Обновление видимости кнопок "Назад"
+                                    function updateBackButtons() {
+                                        questions.forEach((question, index) => {
+                                            const backBtn = question.querySelector('.back-btn');
+                                            if (backBtn) {
+                                                backBtn.style.display = (index === 0) ? 'none' : 'inline-block';
+                                            }
+                                        });
+                                    }
+
+                                    // Показ результата (сначала блок расчёта, потом итоговый)
+                                    function showResult() {
+                                        // Показываем блок расчёта, скрываем итоговый
+                                        calculationBlock.style.display = 'block';
+                                        resultBlock.style.display = 'none';
+
+                                        // Показываем модальное окно
+                                        quizResultModal.style.display = 'block';
+                                        quizResultModal.classList.add('show'); // Можно использовать для анимации, если есть CSS
+
+                                        // Скрываем форму с вопросами
+                                        quizForm.style.display = 'none';
+
+                                        // Запускаем обратный отсчёт
+                                        let countdown = 5;
+                                        countdownText.textContent = countdown;
+                                        const countdownInterval = setInterval(() => {
+                                            countdown--;
+                                            if (countdown > 0) {
+                                                countdownText.textContent = countdown;
+                                            } else {
+                                                clearInterval(countdownInterval);
+                                                countdownText.textContent = ''; // Убираем цифру
+                                                displayFinalResult();
+                                            }
+                                        }, 1000);
+                                    }
+
+                                    // Отображаем итоговый результат
+                                    function displayFinalResult() {
+                                        // Пример: случайная сумма (в реальном проекте вставьте свою логику)
+                                        const randomAmount = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
+                                        finalAmount.textContent = `${randomAmount.toLocaleString('ru-RU')} ₽`;
+
+                                        // Скрываем блок расчёта, показываем итоговый блок
+                                        calculationBlock.style.display = 'none';
+                                        resultBlock.style.display = 'block';
+                                    }
+
+                                    // Обработчики кнопок "Продолжить"
+                                    const nextButtons = document.querySelectorAll('.next-btn');
+                                    nextButtons.forEach(button => {
+                                        button.addEventListener('click', handleNextClick);
+                                    });
+
+                                    // Обработчики кнопок "Назад"
+                                    const backButtons = document.querySelectorAll('.back-btn');
+                                    backButtons.forEach(button => {
+                                        button.addEventListener('click', handleBackClick);
+                                    });
+
+                                    // Обработчик радио-кнопок для показа/скрытия .conditional-block
+                                    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                                        radio.addEventListener('change', function() {
+                                            const parentContainer = radio.closest('.quiz-question, .conditional-block');
+                                            if (!parentContainer) return;
+
+                                            // Скрываем все вложенные .conditional-block внутри текущего контейнера
+                                            const allConditionalBlocks = Array.from(parentContainer.children).filter(child => child.classList && child.classList.contains('conditional-block'));
+                                            allConditionalBlocks.forEach(block => {
+                                                block.style.display = 'none';
+                                                // Скрываем все вложенные блоки внутри скрываемых блоков
+                                                const nestedBlocks = block.querySelectorAll('.conditional-block');
+                                                nestedBlocks.forEach(nested => {
+                                                    nested.style.display = 'none';
+                                                });
+                                            });
+
+                                            // Показываем нужный блок, если у него data-condition = id выбранного radio
+                                            const targetBlock = parentContainer.querySelector(`.conditional-block[data-condition="${radio.id}"]`);
+                                            if (targetBlock) {
+                                                targetBlock.style.display = 'block';
+                                            }
+                                        });
+                                    });
+
+                                    // Кнопка "Начать заново"
+                                    if (restartQuizBtn) {
+                                        restartQuizBtn.addEventListener('click', function() {
+                                            // Скрываем модальное окно
+                                            quizResultModal.style.display = 'none';
+                                            quizResultModal.classList.remove('show');
+
+                                            // Сбрасываем форму
+                                            quizForm.reset();
+
+                                            // Возвращаемся к первому вопросу
+                                            currentQuestionIndex = 0;
+                                            showQuestion(currentQuestionIndex);
+
+                                            // Показываем форму заново
+                                            quizForm.style.display = 'block';
+                                        });
+                                    }
+
+                                    // Кнопка "Оформить сейчас"
+                                    if (applyNowBtn) {
+                                        applyNowBtn.addEventListener('click', function(event) {
+                                            event.preventDefault();
+                                            // Сюда можно добавить код перехода на страницу оформления, например:
+                                            // window.location.href = 'https://ваш-сайт.рф/оформление';
+                                            alert('Здесь вы можете перейти к оформлению.');
+                                        });
+                                    }
+
+                                    // Инициализация: показываем первый вопрос
+                                    showQuestion(currentQuestionIndex);
+                                });
+                            </script>
+
 
                         </div>
                     </div>
+
                     <script>
-                      document.addEventListener('DOMContentLoaded', function() {
-    const quizForm = document.getElementById('quizForm');
-    const quizResultModal = document.getElementById('quizResult');
-    const quizResultText = document.getElementById('quizResultText');
-    const quizClose = document.querySelector('.quiz-close');
-
-    // Получаем все блоки вопросов
-    const questions = document.querySelectorAll('.quiz-question');
-
-    // Индикатор прогресса
-    const currentStepElement = document.getElementById('currentStep');
-    const totalStepsElement = document.getElementById('totalSteps');
-    const progressFilled = document.getElementById('progressFilled');
-
-    // Последний блок - это кнопка "Отправить"
-    // поэтому считаем общее количество "шагов" = кол-во .quiz-question - 1
-    totalStepsElement.textContent = questions.length - 1;
-
-    // Показ вопроса по индексу
-    function showQuestion(index) {
-        questions.forEach((question, i) => {
-            if (i === index) {
-                question.classList.add('active');
-                // Включаем поля
-                const inputs = question.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => {
-                    input.disabled = false;
-                });
-            } else {
-                question.classList.remove('active');
-                // Выключаем поля
-                const inputs = question.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => {
-                    input.disabled = true;
-                });
-            }
-        });
-        // Обновляем счетчик шагов
-        currentStepElement.textContent = index + 1;
-        // Обновляем прогресс
-        updateProgress(index + 1, totalStepsElement.textContent);
-    }
-
-    // Расчёт процента прохождения
-    function updateProgress(current, total) {
-        const percentage = (current / total) * 100;
-        progressFilled.style.width = `${percentage}%`;
-    }
-
-    // Переход к следующему вопросу
-    function getNextQuestionIndex(currentIndex) {
-        let nextIndex = currentIndex + 1;
-        if (nextIndex >= questions.length) {
-            return questions.length - 1; // последний
-        }
-        return nextIndex;
-    }
-
-    // Обработчики кнопок "Продолжить" — переключение шагов
-    questions.forEach((question, index) => {
-        const nextBtn = question.querySelector('.next-btn');
-        if (nextBtn) {
-            nextBtn.addEventListener('click', function(event) {
-                // Проверка, является ли текущий вопрос последним
-                if (index === questions.length - 1) {
-                    // Если это последний вопрос, ничего не делать
-                    event.preventDefault();
-                    return;
-                }
-
-                // Проверка, выбран ли вариант (только если есть радио/чекбоксы)
-                const inputs = question.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-                if (inputs.length > 0) {
-                    let isChecked = false;
-                    inputs.forEach(input => {
-                        if (input.checked) isChecked = true;
-                    });
-                    if (!isChecked) {
-                        alert('Пожалуйста, выберите один из вариантов ответа.');
-                        return;
-                    }
-                }
-                // Следующий вопрос
-                const nextIndex = getNextQuestionIndex(index);
-                showQuestion(nextIndex);
-            });
-        }
-    });
-
-    // Обработка кликов по радио, чтобы показывать/скрывать .conditional-block
-    document.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            // Определяем ближайший контейнер (.quiz-question или .conditional-block)
-            const parentContainer = radio.closest('.quiz-question, .conditional-block');
-            if (!parentContainer) return;
-
-            // Находим все непосредственные .conditional-block внутри этого контейнера
-            const allConditionalBlocks = Array.from(parentContainer.children).filter(child => child.classList.contains('conditional-block'));
-            allConditionalBlocks.forEach(block => {
-                block.style.display = 'none';
-                // Также скрываем все вложенные блоки внутри скрываемых блоков
-                const nestedBlocks = block.querySelectorAll('.conditional-block');
-                nestedBlocks.forEach(nested => {
-                    nested.style.display = 'none';
-                });
-            });
-
-            // Показываем блок, чей data-condition совпадает с id выбранного radio
-            const targetBlock = parentContainer.querySelector(`.conditional-block[data-condition="${radio.id}"]`);
-            if (targetBlock) {
-                targetBlock.style.display = 'flex';
-            }
-        });
-    });
-
-    // Отправка формы (последний экран)
-    quizForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        // Демонстрация: случайная сумма
-        const randomAmount = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
-        const message = `Вам могут одобрить сумму от ${randomAmount.toLocaleString('ru-RU')} ₽`;
-        quizResultText.textContent = message;
-        quizResultModal.style.display = 'block';
-    });
-
-    // Закрытие модалки
-    quizClose.addEventListener('click', function() {
-        quizResultModal.style.display = 'none';
-    });
-    window.addEventListener('click', function(e) {
-        if (e.target === quizResultModal) {
-            quizResultModal.style.display = 'none';
-        }
-    });
-
-    // Старт
-    showQuestion(0); // Показать первый вопрос
-});
-
-
-
-
-
-
                         // Обработчики вкладок калькулятора и квиза
                         document.addEventListener('DOMContentLoaded', function() {
                             // Получаем все элементы вкладок
