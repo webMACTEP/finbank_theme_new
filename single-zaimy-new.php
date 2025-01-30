@@ -1524,10 +1524,19 @@ $current_url = get_permalink();
                                             <!-- Контейнер для кнопок -->
                                             <div class="button-group" style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
                                                 <!-- Кнопка "Начать заново" -->
-                                                <button type="button" id="restartQuiz" style="padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px;">Начать заново</button>
+                                                <button type="button" id="restartQuiz">Начать заново</button>
 
                                                 <!-- Кнопка "Оформить сейчас" -->
-                                                <a href="#" id="applyNow" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border: none; border-radius: 5px; cursor: pointer;">Оформить сейчас</a>
+                                                <?php if (reclink($ID)): ?>
+                                                    <a id="applyNow" href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank"
+                                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
+                                                        class="btn btn-primary">Оформить сейчас</a>
+                                                <?php else: ?>
+                                                    <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
+                                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
+                                                        Оформить сейчас</a>
+                                                <?php endif; ?>
+
                                             </div>
                                         </div>
                                     </div>

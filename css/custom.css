@@ -5635,6 +5635,15 @@ a.cld-like-dislike-trigger {
   border-radius: 50px;
   cursor: pointer;
 }
+.zaimy-new .quiz #restartQuiz {
+  color: #626b84;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #e3eef0;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
 .zaimy-new .quiz #quizForm .next-btn {
   position: absolute;
   right: 20px;

@@ -253,7 +253,16 @@
             border-radius: 50px;
             cursor: pointer;
         }
-
+        #restartQuiz{
+            color: #626b84;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e3eef0;
+            //color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
         #quizForm .next-btn {
             position: absolute;
             right: 20px;
@@ -299,8 +308,8 @@
             // border: 1px solid #888;
             // width: 80%; /* Ширина модального окна */
             // max-width: 500px;
-             text-align: center;
-             padding: 1.5rem;
+            text-align: center;
+            padding: 1.5rem;
             // border-radius: 8px;
         }
 
