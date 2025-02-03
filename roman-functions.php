@@ -195,37 +195,51 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
             <li class="additional-comment">
                 <div class="additional-comment__header">
                     <div class="additional-comment__avatar"></div>
-                    <div class="">
-
+                    <div class="additional-row">
                         <div class="comment__one-title mb-2 mb-md-0"><?php echo esc_html($author_name); ?></div>
-                        <div class="comment__one-date mr-md-4 order-md-1"><?php echo esc_html($comment_date); ?></div>
+                        <div class="additional-status">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.4 7C15.4 8.87777 13.8778 10.4 12 10.4V11.6C14.5405 11.6 16.6 9.54051 16.6 7H15.4ZM12 10.4C10.1222 10.4 8.6 8.87777 8.6 7H7.4C7.4 9.54051 9.45949 11.6 12 11.6V10.4ZM8.6 7C8.6 5.12223 10.1222 3.6 12 3.6V2.4C9.45949 2.4 7.4 4.45949 7.4 7H8.6ZM12 3.6C13.8778 3.6 15.4 5.12223 15.4 7H16.6C16.6 4.45949 14.5405 2.4 12 2.4V3.6ZM9 14.6H15V13.4H9V14.6ZM15 21.4H9V22.6H15V21.4ZM9 21.4C7.12223 21.4 5.6 19.8778 5.6 18H4.4C4.4 20.5405 6.45949 22.6 9 22.6V21.4ZM18.4 18C18.4 19.8778 16.8778 21.4 15 21.4V22.6C17.5405 22.6 19.6 20.5405 19.6 18H18.4ZM15 14.6C16.8778 14.6 18.4 16.1222 18.4 18H19.6C19.6 15.4595 17.5405 13.4 15 13.4V14.6ZM9 13.4C6.45949 13.4 4.4 15.4595 4.4 18H5.6C5.6 16.1222 7.12223 14.6 9 14.6V13.4Z" fill="#9CA3AF" />
+                            </svg>
+                            Гость
+                        </div>
                     </div>
                 </div>
                 <div class="additional-comment__content"><?php echo esc_html($comment_content); ?></div>
-                <div class="additional-comment__actions">
-                    <button class="like-button btn btn-sm btn-outline-success" data-comment-id="<?php echo esc_attr($comment_id); ?>">
-                        <!-- SVG иконка "Лайк" -->
-                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.75 4.5L2.32258 2.84722C3.57668 1.52915 4.20373 0.870122 4.968 0.768647C5.15526 0.743785 5.34474 0.743785 5.532 0.768647C6.29627 0.870122 6.92332 1.52915 8.17742 2.84722L9.75 4.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
-                        </svg>
-                        <span class="like-count"><?php echo $likes; ?></span>
-                    </button>
-                    <button class="dislike-button btn btn-sm btn-outline-danger" data-comment-id="<?php echo esc_attr($comment_id); ?>">
-                        <!-- SVG иконка "Дизлайк" -->
-                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.25 1.5L8.67742 3.15278C7.42332 4.47085 6.79627 5.12988 6.032 5.23135C5.84474 5.25621 5.65526 5.25621 5.468 5.23135C4.70373 5.12988 4.07668 4.47085 2.82258 3.15278L1.25 1.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
-                        </svg>
-                        <span class="dislike-count"><?php echo $dislikes; ?></span>
-                    </button>
-                    <button class="reply-button btn" data-comment-id="<?php echo esc_attr($comment_id); ?>">Ответить</button>
+                <div class="additional-row">
+                    <div class="additional-btns">
+                        <div class="comment__one-date mr-md-4 order-md-1"><?php echo esc_html($comment_date); ?></div>
+                        <button class="reply-button btn" data-comment-id="<?php echo esc_attr($comment_id); ?>">Ответить</button>
+                    </div>
+
+                    <div class="additional-comment__actions">
+                        <button class="like-button btn btn-sm btn-outline-success" data-comment-id="<?php echo esc_attr($comment_id); ?>">
+                            <!-- SVG иконка "Лайк" -->
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.9063 7.22222H15.1965C16.5355 7.22222 17.4063 8.613 16.8075 9.79505L13.6555 16.0173C13.3504 16.6196 12.7268 17 12.0445 17H8.4263C8.27903 17 8.13232 16.9822 7.98946 16.9469L4.60228 16.1111M10.9063 7.22222V2.77778C10.9063 1.79594 10.0999 1 9.10514 1H9.01915C8.56927 1 8.20457 1.35997 8.20457 1.80402C8.20457 2.43896 8.01415 3.05969 7.65733 3.58799L4.60228 8.11111V16.1111M10.9063 7.22222H9.10514M4.60228 16.1111H2.80114C1.8064 16.1111 1 15.3152 1 14.3333V9C1 8.01816 1.8064 7.22222 2.80114 7.22222H5.05257" stroke="#7b8aa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+
+                            <span class="like-count"><?php echo $likes; ?></span>
+                        </button>
+                        <button class="dislike-button btn btn-sm btn-outline-danger" data-comment-id="<?php echo esc_attr($comment_id); ?>">
+                            <!-- SVG иконка "Дизлайк" -->
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.09372 11.7778H3.80347C2.46453 11.7778 1.59368 10.387 2.19248 9.20495L5.34447 2.98273C5.64957 2.38045 6.27324 2 6.95546 2H10.5737C10.721 2 10.8677 2.01783 11.0105 2.05308L14.3977 2.88889M8.09372 11.7778V16.2222C8.09372 17.2041 8.90012 18 9.89486 18H9.98084C10.4307 18 10.7954 17.64 10.7954 17.196C10.7954 16.561 10.9858 15.9403 11.3427 15.412L14.3977 10.8889V2.88889M8.09372 11.7778H9.89486M14.3977 2.88889H16.1989C17.1936 2.88889 18 3.68483 18 4.66667V10C18 10.9818 17.1936 11.7778 16.1989 11.7778H13.9474" stroke="#7b8aa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+
+                            <span class="dislike-count"><?php echo $dislikes; ?></span>
+                        </button>
+                    </div>
                 </div>
+
+
                 <div class="reply-form-container" id="reply-form-container-<?php echo esc_attr($comment_id); ?>" style="display: none; margin-top: 15px;"></div>
                 <?php
                 // Рекурсивный вызов для отображения ответов
                 display_additional_comments(get_the_ID(), $comment_id, $level + 1);
                 ?>
             </li>
-<?php
+    <?php
         }
         echo '</ul>';
         wp_reset_postdata();
@@ -480,7 +494,8 @@ function add_comments_sitemap($sitemap_index)
 /**
  * Добавляем поле рейтинга (5 звёзд) к форме комментариев
  */
-function mytheme_add_comment_rating_field() {
+function mytheme_add_comment_rating_field()
+{
     // Выводим блок звёзд. В данном случае используем обычные HTML-символы ★/☆,
     // но можно подставить иконки, SVG, Dashicons и т.д.
     // Также используем radio input, чтобы отловить конкретное числовое значение (1–5).
@@ -490,52 +505,54 @@ function mytheme_add_comment_rating_field() {
         <span id="rating-stars">
             <input type="radio" name="comment_rating" value="5" id="rating-5">
             <label for="rating-5" title="5 звёзд">★</label>
-            
+
             <input type="radio" name="comment_rating" value="4" id="rating-4">
             <label for="rating-4" title="4 звезды">★</label>
-            
+
             <input type="radio" name="comment_rating" value="3" id="rating-3">
             <label for="rating-3" title="3 звезды">★</label>
-            
+
             <input type="radio" name="comment_rating" value="2" id="rating-2">
             <label for="rating-2" title="2 звезды">★</label>
-            
+
             <input type="radio" name="comment_rating" value="1" id="rating-1">
             <label for="rating-1" title="1 звезда">★</label>
         </span>
-</div>
-    <?php
+    </div>
+<?php
 }
 // Подключаем поле для авторизованных пользователей
-add_action( 'comment_form_logged_in_after', 'mytheme_add_comment_rating_field' );
+add_action('comment_form_logged_in_after', 'mytheme_add_comment_rating_field');
 // И для неавторизованных (форма с полями «Имя», «Почта» и т.д.)
-add_action( 'comment_form_after_fields', 'mytheme_add_comment_rating_field' );
+add_action('comment_form_after_fields', 'mytheme_add_comment_rating_field');
 
 /**
  * Сохраняем рейтинг комментария
  */
-function mytheme_save_comment_rating( $comment_id ) {
-    if ( isset($_POST['comment_rating']) && !empty($_POST['comment_rating']) ) {
+function mytheme_save_comment_rating($comment_id)
+{
+    if (isset($_POST['comment_rating']) && !empty($_POST['comment_rating'])) {
         $rating = intval($_POST['comment_rating']);
         // Сохраняем рейтинг (число от 1 до 5) в метаполе comment_rating
-        update_comment_meta( $comment_id, 'comment_rating', $rating );
+        update_comment_meta($comment_id, 'comment_rating', $rating);
     }
 }
-add_action( 'comment_post', 'mytheme_save_comment_rating' );
+add_action('comment_post', 'mytheme_save_comment_rating');
 
 /**
  * Выводим звёзды перед текстом комментария
  */
-function mytheme_display_comment_rating( $comment_text, $comment ) {
+function mytheme_display_comment_rating($comment_text, $comment)
+{
     // Получаем значение рейтинга из метаполя
-    $rating = get_comment_meta( $comment->comment_ID, 'comment_rating', true );
+    $rating = get_comment_meta($comment->comment_ID, 'comment_rating', true);
 
-    if ( $rating ) {
+    if ($rating) {
         // Генерируем HTML для звёзд
         // (можно заменить HTML-символы другими иконками, например Dashicons)
         $stars_html = '<div class="comment-rating">';
-        for ( $i = 1; $i <= 5; $i++ ) {
-            if ( $i <= $rating ) {
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= $rating) {
                 $stars_html .= '<span style="color: #f5b301;">★</span>';
             } else {
                 $stars_html .= '<span style="color: #ccc;">★</span>';
@@ -549,4 +566,4 @@ function mytheme_display_comment_rating( $comment_text, $comment ) {
 
     return $comment_text;
 }
-add_filter( 'comment_text', 'mytheme_display_comment_rating', 10, 2 );
+add_filter('comment_text', 'mytheme_display_comment_rating', 10, 2);

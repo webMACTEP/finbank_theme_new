@@ -1010,8 +1010,8 @@ $current_url = get_permalink();
                             <!-- Блок калькулятора -->
                             <div class="calc active" id="calc" data-type="creditCalc">
                                 <div class="calc__content p-3 p-md-4">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
+                                    <div class="calc-row">
+                                        <div class="col-12 row">
                                             <div class="calc__content-buttons d-flex pb-3">
                                                 <label class="btn__radio">
                                                     <input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
@@ -1022,14 +1022,18 @@ $current_url = get_permalink();
                                                     <span class="btn__radio-text">Дифференцированный</span>
                                                 </label>
                                             </div>
-                                            <div class="calc__field mt-3 mt-md-4">
+                                        </div>
+
+                                        <div class="col-12 row">
+
+                                            <div class="calc__field mt-3 mt-md-4 col-md-6">
                                                 <div class="calc__field-wrap">
                                                     <div class="calc__field-label">Кредитный лимит</div>
                                                     <input type="text" class="range__value form-control calc__input" value="1000000" min="0" max="10000000" data-field="limit">
                                                     <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
                                                 </div>
                                             </div>
-                                            <div class="calc__field d-flex">
+                                            <div class="calc__field d-flex col-md-6">
                                                 <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
                                                     <div class="calc__field-label">Срок / месяц</div>
                                                     <input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
@@ -1041,15 +1045,27 @@ $current_url = get_permalink();
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="calc__total">
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Сумма кредита</div>
+
+                                        <div class="col-12 row mt-5">
+                                            <div class="calc-result">
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">Сумма займа</div>
                                                     <div class="calc__value">
                                                         <span id="calc__sum" class="calc__value-text">8 000 000</span>
                                                         <span class="calc__value-char">₽</span>
                                                     </div>
                                                 </div>
+                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">К возврату</div>
+                                                    <div class="calc__total-value">
+                                                        <span id="calc__total" class="calc__value-text">9 000 000</span>
+                                                        <span class="calc__value-char">₽</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="calc__total">
+                                               
                                                 <div class="calc__total-field d-flex justify-content-between align-items-center">
                                                     <div class="calc__total-label">Переплата</div>
                                                     <div class="calc__total-value">
@@ -1057,13 +1073,7 @@ $current_url = get_permalink();
                                                         <span class="calc__value-char">₽</span>
                                                     </div>
                                                 </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Общая сумма выплат</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__total" class="calc__value-text">9 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="calc__total-field d-flex justify-content-between align-items-center">
                                                     <div class="calc__total-label">Окончание кредита</div>
                                                     <div class="calc__total-value">
@@ -1077,8 +1087,14 @@ $current_url = get_permalink();
                                                         <span class="calc__value-char">₽</span>
                                                     </div>
                                                 </div>
+                                                <!-- Кнопка "Получить деньги" -->
+                                                 <div class="row">
+                                                     <a class="btn btn-primary mt-3" href="<?php echo the_field('card_bank_link', $ID) ?>" id="applyNow">Получить деньги</a>
+                                                 </div>
+                                               
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -1119,7 +1135,6 @@ $current_url = get_permalink();
 
                                         <!-- Контейнер для кнопок -->
                                         <div class="button-group" style="margin-top: 20px;">
-
                                             <!-- Кнопка "Продолжить" -->
                                             <button type="button" class="next-btn">Продолжить</button>
                                         </div>
@@ -1469,7 +1484,7 @@ $current_url = get_permalink();
                                         </div>
                                     </div>
 
-                                    <!-- ВОПРОС 13: Автомобиль -->
+                                    <!-- ВОПРОС 13 -->
                                     <div class="quiz-question" data-question="13">
                                         <p><strong>13. У вас есть автомобиль?</strong></p>
                                         <input type="radio" id="carYes" name="car" value="yes" required>
@@ -1502,11 +1517,9 @@ $current_url = get_permalink();
                                             <button type="button" class="next-btn">Показать результат</button>
                                         </div>
                                     </div>
-
-
                                 </form>
 
-                                <!-- Модальное окно для показа результата (скрыто по умолчанию) -->
+                                <!-- Модальное окно для показа результата -->
                                 <div id="quizResult" style="display: none;">
                                     <div class="modal-content">
                                         <!-- Блок 1: Рассчитываем лимит -->
@@ -1515,7 +1528,7 @@ $current_url = get_permalink();
                                             <p id="countdownText">5</p> <!-- Обратный отсчёт -->
                                         </div>
 
-                                        <!-- Блок 2: Итоговый результат (изначально скрыт) -->
+                                        <!-- Блок 2: Итоговый результат -->
                                         <div id="resultBlock" style="display: none;">
                                             <h2>Вы можете получить</h2> <!-- Заголовок -->
                                             <p id="finalAmount" style="font-size: 24px; font-weight: bold;"></p> <!-- Сумма -->
@@ -1524,19 +1537,10 @@ $current_url = get_permalink();
                                             <!-- Контейнер для кнопок -->
                                             <div class="button-group" style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
                                                 <!-- Кнопка "Начать заново" -->
-                                                <button type="button" id="restartQuiz">Начать заново</button>
+                                                <button class="" type="button" id="restartQuiz">Начать заново</button>
 
                                                 <!-- Кнопка "Оформить сейчас" -->
-                                                <?php if (reclink($ID)): ?>
-                                                    <a id="applyNow" href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank"
-                                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
-                                                        class="btn btn-primary">Оформить сейчас</a>
-                                                <?php else: ?>
-                                                    <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
-                                                        Оформить сейчас</a>
-                                                <?php endif; ?>
-
+                                                <a class="btn btn-primary" href="<?php echo the_field('card_bank_link', $ID) ?>" id="applyNow">Оформить сейчас</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1548,72 +1552,66 @@ $current_url = get_permalink();
                                 document.addEventListener('DOMContentLoaded', function() {
                                     const quizForm = document.getElementById('quizForm');
                                     const quizResultModal = document.getElementById('quizResult');
-                                    const countdownText = document.getElementById('countdownText'); // Элемент для обратного отсчёта
-                                    const finalAmount = document.getElementById('finalAmount'); // Элемент для суммы
-                                    const restartQuizBtn = document.getElementById('restartQuiz'); // Кнопка "Начать заново"
-                                    const applyNowBtn = document.getElementById('applyNow'); // Кнопка "Оформить сейчас"
+                                    const countdownText = document.getElementById('countdownText');
+                                    const finalAmount = document.getElementById('finalAmount');
 
-                                    // Блоки внутри модального окна
+                                    const restartQuizBtn = document.getElementById('restartQuiz');
+                                    const applyNowBtn = document.getElementById('applyNow');
+
+                                    // Блоки модального окна
                                     const calculationBlock = document.getElementById('calculationBlock');
                                     const resultBlock = document.getElementById('resultBlock');
 
-                                    // Получаем все блоки вопросов
-                                    const questions = document.querySelectorAll('.quiz-question');
-
-                                    // Индикатор прогресса
+                                    // Прогресс
+                                    const progressContainer = document.querySelector('.progress-container');
                                     const currentStepElement = document.getElementById('currentStep');
                                     const totalStepsElement = document.getElementById('totalSteps');
                                     const progressFilled = document.getElementById('progressFilled');
 
-                                    // Общее количество шагов (для прогресса)
+                                    // Все вопросы
+                                    const questions = document.querySelectorAll('.quiz-question');
+
+                                    // Устанавливаем общее число шагов
                                     if (totalStepsElement) {
                                         totalStepsElement.textContent = questions.length;
                                     }
 
-                                    // Текущий индекс вопроса
                                     let currentQuestionIndex = 0;
 
-                                    // Показываем вопрос по индексу
+                                    // Показать вопрос по индексу
                                     function showQuestion(index) {
                                         questions.forEach((question, i) => {
                                             if (i === index) {
                                                 question.classList.add('active');
-                                                // Включаем поля ввода у активного вопроса
+                                                // Включаем поля во "включённом" вопросе
                                                 const inputs = question.querySelectorAll('input, select, textarea');
-                                                inputs.forEach(input => {
-                                                    input.disabled = false;
-                                                });
+                                                inputs.forEach(input => input.disabled = false);
                                             } else {
                                                 question.classList.remove('active');
-                                                // Выключаем поля ввода у неактивных вопросов
+                                                // Выключаем поля во всех остальных
                                                 const inputs = question.querySelectorAll('input, select, textarea');
-                                                inputs.forEach(input => {
-                                                    input.disabled = true;
-                                                });
+                                                inputs.forEach(input => input.disabled = true);
                                             }
                                         });
 
-                                        // Обновляем счетчик шагов
+                                        // Обновляем шаг и прогресс
                                         if (currentStepElement) {
                                             currentStepElement.textContent = index + 1;
                                         }
-
-                                        // Обновляем прогресс
                                         if (progressFilled && totalStepsElement) {
-                                            const totalSteps = parseInt(totalStepsElement.textContent, 10);
-                                            const percentage = ((index + 1) / totalSteps) * 100;
+                                            const total = parseInt(totalStepsElement.textContent, 10);
+                                            const percentage = ((index + 1) / total) * 100;
                                             progressFilled.style.width = `${percentage}%`;
                                         }
 
-                                        // Обновляем кнопку "Назад" (скрываем на первом шаге)
                                         updateBackButtons();
                                     }
 
-                                    // Переход к следующему вопросу или показ результата
+                                    // Обработчик кнопки "Продолжить"/"Показать результат"
                                     function handleNextClick(event) {
                                         const currentQuestion = questions[currentQuestionIndex];
 
-                                        // Проверяем, выбраны ли варианты (для radio/checkbox)
+                                        // Проверяем, выбран ли вариант (если есть radio/checkbox)
                                         const inputs = currentQuestion.querySelectorAll('input[type="radio"], input[type="checkbox"]');
                                         if (inputs.length > 0) {
                                             let isChecked = false;
@@ -1626,9 +1624,9 @@ $current_url = get_permalink();
                                             }
                                         }
 
-                                        // Если это последний вопрос:
+                                        // Если последний вопрос, показываем результат
                                         if (currentQuestionIndex === questions.length - 1) {
-                                            showResult(); // Показать модальное окно с обратным отсчётом и итоговым результатом
+                                            showResult();
                                             return;
                                         }
 
@@ -1637,7 +1635,7 @@ $current_url = get_permalink();
                                         showQuestion(currentQuestionIndex);
                                     }
 
-                                    // Переход к предыдущему вопросу
+                                    // Обработчик кнопки "Назад"
                                     function handleBackClick() {
                                         if (currentQuestionIndex > 0) {
                                             currentQuestionIndex--;
@@ -1645,85 +1643,80 @@ $current_url = get_permalink();
                                         }
                                     }
 
-                                    // Обновление видимости кнопок "Назад"
+                                    // Скрытие/показ кнопки "Назад" на первом шаге
                                     function updateBackButtons() {
-                                        questions.forEach((question, index) => {
+                                        questions.forEach((question, i) => {
                                             const backBtn = question.querySelector('.back-btn');
                                             if (backBtn) {
-                                                backBtn.style.display = (index === 0) ? 'none' : 'inline-block';
+                                                backBtn.style.display = (i === 0) ? 'none' : 'inline-block';
                                             }
                                         });
                                     }
 
-                                    // Показ результата (сначала блок расчёта, потом итоговый)
+                                    // Функция показа результата
                                     function showResult() {
-                                        // Показываем блок расчёта, скрываем итоговый
+                                        // Скрываем progress-container
+                                        progressContainer.style.display = 'none';
+
+                                        // Показываем блок расчёта, скрываем итог
                                         calculationBlock.style.display = 'block';
                                         resultBlock.style.display = 'none';
 
                                         // Показываем модальное окно
                                         quizResultModal.style.display = 'block';
-                                        quizResultModal.classList.add('show'); // Можно использовать для анимации, если есть CSS
 
-                                        // Скрываем форму с вопросами
+                                        // Скрываем форму
                                         quizForm.style.display = 'none';
 
                                         // Запускаем обратный отсчёт
                                         let countdown = 5;
                                         countdownText.textContent = countdown;
-                                        const countdownInterval = setInterval(() => {
+                                        const timer = setInterval(() => {
                                             countdown--;
                                             if (countdown > 0) {
                                                 countdownText.textContent = countdown;
                                             } else {
-                                                clearInterval(countdownInterval);
-                                                countdownText.textContent = ''; // Убираем цифру
+                                                clearInterval(timer);
+                                                countdownText.textContent = '';
                                                 displayFinalResult();
                                             }
                                         }, 1000);
                                     }
 
-                                    // Отображаем итоговый результат
+                                    // Показ итогового результата
                                     function displayFinalResult() {
-                                        // Пример: случайная сумма (в реальном проекте вставьте свою логику)
+                                        // Пример: случайная сумма 
                                         const randomAmount = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
                                         finalAmount.textContent = `от ${randomAmount.toLocaleString('ru-RU')} ₽`;
 
-                                        // Скрываем блок расчёта, показываем итоговый блок
+                                        // Скрываем блок расчёта, показываем итог
                                         calculationBlock.style.display = 'none';
                                         resultBlock.style.display = 'block';
                                     }
 
-                                    // Обработчики кнопок "Продолжить"
-                                    const nextButtons = document.querySelectorAll('.next-btn');
-                                    nextButtons.forEach(button => {
-                                        button.addEventListener('click', handleNextClick);
+                                    // Вешаем обработчики на кнопки "Продолжить" / "Показать результат"
+                                    document.querySelectorAll('.next-btn').forEach(btn => {
+                                        btn.addEventListener('click', handleNextClick);
                                     });
 
-                                    // Обработчики кнопок "Назад"
-                                    const backButtons = document.querySelectorAll('.back-btn');
-                                    backButtons.forEach(button => {
-                                        button.addEventListener('click', handleBackClick);
+                                    // Кнопки "Назад"
+                                    document.querySelectorAll('.back-btn').forEach(btn => {
+                                        btn.addEventListener('click', handleBackClick);
                                     });
 
-                                    // Обработчик радио-кнопок для показа/скрытия .conditional-block
+                                    // Логика для conditional-block
                                     document.querySelectorAll('input[type="radio"]').forEach(radio => {
                                         radio.addEventListener('change', function() {
                                             const parentContainer = radio.closest('.quiz-question, .conditional-block');
                                             if (!parentContainer) return;
 
-                                            // Скрываем все вложенные .conditional-block внутри текущего контейнера
-                                            const allConditionalBlocks = Array.from(parentContainer.children).filter(child => child.classList && child.classList.contains('conditional-block'));
-                                            allConditionalBlocks.forEach(block => {
+                                            // Скрываем все вложенные .conditional-block
+                                            const allBlocks = parentContainer.querySelectorAll('.conditional-block');
+                                            allBlocks.forEach(block => {
                                                 block.style.display = 'none';
-                                                // Скрываем все вложенные блоки внутри скрываемых блоков
-                                                const nestedBlocks = block.querySelectorAll('.conditional-block');
-                                                nestedBlocks.forEach(nested => {
-                                                    nested.style.display = 'none';
-                                                });
                                             });
 
-                                            // Показываем нужный блок, если у него data-condition = id выбранного radio
+                                            // Ищем .conditional-block, у которого data-condition = id выбранного radio
                                             const targetBlock = parentContainer.querySelector(`.conditional-block[data-condition="${radio.id}"]`);
                                             if (targetBlock) {
                                                 targetBlock.style.display = 'flex';
@@ -1733,37 +1726,39 @@ $current_url = get_permalink();
 
                                     // Кнопка "Начать заново"
                                     if (restartQuizBtn) {
-                                        restartQuizBtn.addEventListener('click', function() {
+                                        restartQuizBtn.addEventListener('click', () => {
                                             // Скрываем модальное окно
                                             quizResultModal.style.display = 'none';
-                                            quizResultModal.classList.remove('show');
 
-                                            // Сбрасываем форму
+                                            // Показываем форму
+                                            quizForm.style.display = 'block';
+
+                                            // Показываем снова progress-container
+                                            progressContainer.style.display = 'block';
+
+                                            // Сбрасываем форму (все ответы)
                                             quizForm.reset();
 
                                             // Возвращаемся к первому вопросу
                                             currentQuestionIndex = 0;
                                             showQuestion(currentQuestionIndex);
-
-                                            // Показываем форму заново
-                                            quizForm.style.display = 'block';
                                         });
                                     }
 
                                     // Кнопка "Оформить сейчас"
-                                    if (applyNowBtn) {
-                                        applyNowBtn.addEventListener('click', function(event) {
-                                            event.preventDefault();
-                                            // Сюда можно добавить код перехода на страницу оформления, например:
-                                            // window.location.href = 'https://ваш-сайт.рф/оформление';
-                                            alert('Здесь вы можете перейти к оформлению.');
-                                        });
-                                    }
+                                    // if (applyNowBtn) {
+                                    //     applyNowBtn.addEventListener('click', (e) => {
+                                    //         e.preventDefault();
+                                    //         // Логика перехода или любая другая
+                                    //         alert('Здесь можно перейти к оформлению.');
+                                    //     });
+                                    // }
 
-                                    // Инициализация: показываем первый вопрос
+                                    // Инициализация - показываем первый вопрос
                                     showQuestion(currentQuestionIndex);
                                 });
                             </script>
+
 
 
                         </div>
