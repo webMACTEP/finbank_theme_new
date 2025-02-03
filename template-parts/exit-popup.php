@@ -1,20 +1,42 @@
   <?php  if(get_field('exit_popup_on', 'option')): //1912
 
-function get_parent_url() {
-  // Определяем протокол (HTTP или HTTPS)
-  $protocol = is_ssl() ? 'https://' : 'http://';
+
+function get_parent_url( $post_type = '' ) {
+  global $post;
   
-  // Получаем текущий хост и URI
-  $current_url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+  // Если тип записи не передан, получаем его из глобального объекта $post
+  if ( empty( $post_type ) && isset( $post ) ) {
+      $post_type = get_post_type( $post->ID );
+  }
   
-  // Удаляем любые GET-параметры из URL
-  $current_url = strtok($current_url, '?');
+  // Задаём список допустимых типов (или слагов терминов)
+  $valid_types = array( 'zaimy', 'kredity', 'debetcard', 'creditcard', 'installmentcard' );
   
-  // Получаем родительский URL с помощью dirname
-  $parent_url = rtrim(dirname($current_url), '/') . '/';
+  // Если тип записи "bankcard", попробуем получить термин таксономии (например, bankcards)
+  if ( 'bankcard' === $post_type ) {
+      $terms = get_the_terms( $post->ID, 'bankcards' );
+      if ( $terms && ! is_wp_error( $terms ) ) {
+          // Можно выбрать первый термин или перебрать все,
+          // здесь берём первый, если его слаг входит в допустимые
+          $term_slug = $terms[0]->slug;
+          if ( in_array( $term_slug, $valid_types, true ) ) {
+              $post_type = $term_slug;
+          }
+      }
+  }
   
-  return esc_url($parent_url);
+  if ( in_array( $post_type, $valid_types, true ) ) {
+      // Формируем URL: домен/ + best- + тип (или слаг) записи + /
+      $url = trailingslashit( get_home_url() ) . 'best-' . $post_type . '/';
+      return esc_url( $url );
+  }
+  
+  // Если тип записи не соответствует ожидаемым, возвращаем домашний URL
+  return esc_url( get_home_url() );
 }
+
+
+
 
             wp_enqueue_style( 'style',  get_template_directory_uri() .'/css/exit_popup.css');
             

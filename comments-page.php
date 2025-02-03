@@ -563,20 +563,26 @@ if ($TAX != '' && $DISPLAY == 'reviews'):
 
 
 
-$current_page_comments = (get_query_var('comments')) ? get_query_var('comments') : 1;
+$current_page_comments = get_query_var('comments') ? get_query_var('comments') : 1;
 $current_page_comments = str_replace('page/', '', $current_page_comments);
 $comments_per_page = 10;
-$current_page = $current_page_comments;
-$offset = (--$current_page) * $comments_per_page;
-// Почему +1 ? ВОПРОСЫ
+
+// Приводим к целому числу
+$current_page = intval($current_page_comments);
+
+// Уменьшаем значение для расчёта offset (так как нумерация страниц начинается с 1)
+$current_page--; // теперь $current_page равен (номер страницы - 1)
+$offset = $current_page * $comments_per_page;
+
+// Если потом требуется вернуть исходное значение номера страницы, можно увеличить:
 $current_page++;
 
-//MYSQL: LIMIT offset, number
+// MYSQL: LIMIT offset, number
 $params = array(
     'post_id' => $post->ID,
-    'offset' => $offset,
-    'status' => 'approve',
-    'number' => $comments_per_page,
+    'offset'  => $offset,
+    'status'  => 'approve',
+    'number'  => $comments_per_page,
 );
 
 $comments = get_comments($params);
