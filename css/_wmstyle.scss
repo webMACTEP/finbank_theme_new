@@ -451,14 +451,12 @@
     }
     .calc__total {
         margin: 0px 0px 0px auto;
-       flex: 0 0  50%;
+        flex: 0 0 50%;
     }
     .calc__total-field {
         gap: 1rem;
     }
     .calc-result {
-        
-       
         .calc__total-field {
             padding: 5px 0px;
             gap: 1px;
@@ -555,11 +553,16 @@
     }
     .additional-comment {
         &__avatar {
+            img {
+                max-width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
             width: 46px;
             height: 46px;
             border-radius: 12px;
             overflow: hidden;
-            background: url("../img/avatar_def.jpg") no-repeat center center;
+            //background: url("../img/avatar_def.jpg") no-repeat center center;
             background-size: cover;
         }
         &__header {
@@ -1611,16 +1614,16 @@
     }
 }
 @media (max-width: 768px) {
-    .calc__content-buttons{
+    .calc__content-buttons {
         border-bottom: none;
     }
-    .calc-row{
-        .row{
+    .calc-row {
+        .row {
             justify-content: center;
             margin: 0px 0px 0px 0px;
         }
     }
-    .zaimy-new .calc__total{
+    .zaimy-new .calc__total {
         flex: 0 0 100%;
     }
     .zaimy-new .quiz .quiz-question label {
@@ -1871,7 +1874,7 @@
     }
     .horizontal__scroll-container {
         scrollbar-width: thin;
-        padding-bottom: 24px;
+        padding-bottom: 0px;
     }
     .zaimy-new .reviews,
     .zaimy-new .tariffs-rows,
@@ -1918,6 +1921,6 @@
         min-height: auto;
     }
     .header ~ main {
-        margin-top: 75px;
+        margin-top: 65px;
     }
 }

@@ -29,7 +29,7 @@ $current_url = get_permalink();
 <main class="zaimy-new">
     <!-- page head -->
     <div class="container">
-       111 <?= $post_type ?>
+       
         <nav aria-label="breadcrumb" class="horizontal__scroll">
             <ol class="breadcrumb horizontal__scroll-container">
                 <!-- <li class="breadcrumb-item"><a href="<?php echo get_home_url(); ?>">Главная</a></li> -->

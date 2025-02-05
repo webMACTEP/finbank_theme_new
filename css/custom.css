@@ -5900,8 +5900,13 @@ a.cld-like-dislike-trigger {
   height: 46px;
   border-radius: 12px;
   overflow: hidden;
-  background: url("../img/avatar_def.jpg") no-repeat center center;
   background-size: cover;
+}
+.zaimy-new .additional-comment__avatar img {
+  max-width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .zaimy-new .additional-comment__header {
   display: flex;
@@ -7087,7 +7092,7 @@ a.cld-like-dislike-trigger {
   }
   .horizontal__scroll-container {
     scrollbar-width: thin;
-    padding-bottom: 24px;
+    padding-bottom: 0px;
   }
   .zaimy-new .reviews,
   .zaimy-new .tariffs-rows,
@@ -7129,6 +7134,6 @@ a.cld-like-dislike-trigger {
     min-height: auto;
   }
   .header ~ main {
-    margin-top: 75px;
+    margin-top: 65px;
   }
 }/*# sourceMappingURL=custom.css.map */

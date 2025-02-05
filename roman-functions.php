@@ -181,20 +181,34 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
         echo '<ul class="additional-comments-level-' . esc_attr($level) . '">';
         while ($comments->have_posts()) {
             $comments->the_post();
-            $comment_id = get_the_ID();
-            $author_name = get_field('author_name');
-            $author_email = get_field('author_email');
+            $comment_id    = get_the_ID();
+            $author_name   = get_field('author_name');
+            $author_email  = get_field('author_email');
             $comment_content = get_field('comment_content');
-            $comment_date = get_the_date();
+            $comment_date  = get_the_date();
 
             // Извлечение лайков и дизлайков
-            $likes = intval(get_field('likes', $comment_id));
+            $likes    = intval(get_field('likes', $comment_id));
             $dislikes = intval(get_field('dislikes', $comment_id));
 
+            // Получаем аватар автора (если поле задано, например 'author_avatar')
+            $author_avatar = get_field('author_avatar');
+            if (!$author_avatar) {
+                // Если аватар не задан, выбираем случайное изображение из папки
+                $random = rand(1, 444);
+                // Если число меньше 10, добавляем ведущий ноль (например, 1 -> 01)
+                $avatar_num = ($random < 10) ? sprintf("0%d", $random) : $random;
+                // Формируем URL изображения; используем content_url(), чтобы получить URL к папке wp-content
+                $author_avatar = content_url("avatars/avatar{$avatar_num}.jpg");
+            }
 ?>
             <li class="additional-comment">
                 <div class="additional-comment__header">
-                    <div class="additional-comment__avatar"></div>
+                    <div class="additional-comment__avatar">
+                        <!-- Вывод аватара: -->
+                        <img src="<?php echo esc_url($author_avatar); ?>" alt="avatar" />
+                    </div>
+                   
                     <div class="additional-row">
                         <div class="comment__one-title mb-2 mb-md-0"><?php echo esc_html($author_name); ?></div>
                         <div class="additional-status">
@@ -232,7 +246,6 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
                     </div>
                 </div>
 
-
                 <div class="reply-form-container" id="reply-form-container-<?php echo esc_attr($comment_id); ?>" style="display: none; margin-top: 15px;"></div>
                 <?php
                 // Рекурсивный вызов для отображения ответов
@@ -245,6 +258,7 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
         wp_reset_postdata();
     }
 }
+
 
 // Функция для установки заголовка комментария после сохранения через ACF
 function set_additional_comment_title($post_id)
