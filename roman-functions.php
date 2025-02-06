@@ -206,9 +206,9 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
                 <div class="additional-comment__header">
                     <div class="additional-comment__avatar">
                         <!-- Вывод аватара: -->
-                        <img src="<?php echo esc_url($author_avatar); ?>" alt="avatar" />
+                        <!-- <img src="<?php echo esc_url($author_avatar); ?>" alt="avatar" /> -->
                     </div>
-                   
+
                     <div class="additional-row">
                         <div class="comment__one-title mb-2 mb-md-0"><?php echo esc_html($author_name); ?></div>
                         <div class="additional-status">
@@ -581,3 +581,76 @@ function mytheme_display_comment_rating($comment_text, $comment)
     return $comment_text;
 }
 add_filter('comment_text', 'mytheme_display_comment_rating', 10, 2);
+
+
+
+//Есть пагинация на страницах
+
+
+function is_paginated()
+{
+    global $wp_query;
+
+
+
+    if ($wp_query->max_num_pages > 1) {
+        return $wp_query->max_num_pages;
+    } else {
+        return false;
+    }
+}
+
+
+
+function is_reviews_page()
+{
+    $url = $_SERVER['REQUEST_URI'];
+    $url = explode('?', $url);
+    $url = $url[0];
+    $findme   = 'reviews';
+
+    return mb_substr_count($url, $findme);
+}
+
+function is_comments_page()
+{
+    $url = $_SERVER['REQUEST_URI'];
+    $url = explode('?', $url);
+    $url = $url[0];
+    $findme   = 'comments';
+
+    return mb_substr_count($url, $findme);
+}
+
+
+function prefix_filter_title_example($title)
+{
+    // Получаем текущий номер страницы
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+    // Если это пагинированная страница или другие нужные условия,
+    // и номер страницы больше 1, то добавляем суффикс
+    if ((is_paginated() || is_reviews_page() || is_comments_page()) && $paged > 1) {
+        $title .= ' — страница ' . $paged;
+    }
+
+    return $title;
+}
+add_filter('wpseo_title', 'prefix_filter_title_example');
+
+
+
+
+function prefix_filter_description_example($description)
+{
+    // Получаем текущий номер страницы
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+    // Если условия выполняются и номер страницы больше 1, добавляем суффикс
+    if ((is_paginated() || is_reviews_page() || is_comments_page()) && $paged > 1) {
+        $description .= ' — страница ' . $paged;
+    }
+
+    return $description;
+}
+add_filter('wpseo_metadesc', 'prefix_filter_description_example');

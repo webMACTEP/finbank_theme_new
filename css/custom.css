@@ -5900,6 +5900,7 @@ a.cld-like-dislike-trigger {
   height: 46px;
   border-radius: 12px;
   overflow: hidden;
+  background: url("../img/avatarsiz.png") no-repeat center center;
   background-size: cover;
 }
 .zaimy-new .additional-comment__avatar img {
