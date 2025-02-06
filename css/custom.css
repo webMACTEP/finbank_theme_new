@@ -5930,6 +5930,12 @@ a.cld-like-dislike-trigger {
 .zaimy-new .additional-comment__actions {
   margin-top: 10px;
 }
+.zaimy-new .like-button {
+  color: #0e9a1e;
+}
+.zaimy-new .dislike-button {
+  color: #d41212;
+}
 .zaimy-new .like-button,
 .zaimy-new .dislike-button {
   cursor: pointer;
