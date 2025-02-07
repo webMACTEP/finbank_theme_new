@@ -29,7 +29,7 @@ $current_url = get_permalink();
 <main class="zaimy-new">
     <!-- page head -->
     <div class="container">
-       
+
         <nav aria-label="breadcrumb" class="horizontal__scroll">
             <ol class="breadcrumb horizontal__scroll-container">
                 <!-- <li class="breadcrumb-item"><a href="<?php echo get_home_url(); ?>">Главная</a></li> -->
@@ -2172,10 +2172,10 @@ $current_url = get_permalink();
                                                         </div>
                                                         <div class="card__header-title"><a href="<?php echo the_permalink() ?>">
                                                                 <?php
-                                                                $alter_title = get_field('alter_title');
+                                                                $alter_title1 = get_field('alter_title');
 
-                                                                if ($alter_title) {
-                                                                    echo $alter_title;
+                                                                if ($alter_title1) {
+                                                                    echo $alter_title1;
                                                                 } else {
                                                                     echo get_the_title();
                                                                 }
@@ -2279,10 +2279,11 @@ $current_url = get_permalink();
                                                                 src="<?php echo the_field('bank_logo', $bank_choise_rel) ?>">
                                                         </div>
                                                         <div class="card__header-title"><a href="<?php echo the_permalink() ?>"> <?php
-                                                                                                                                    $alter_title = get_field('alter_title');
+                                                                                                                                    $alter_title2 = get_field('alter_title');
 
-                                                                                                                                    if ($alter_title) {
-                                                                                                                                        echo $alter_title;
+
+                                                                                                                                    if ($alter_title2) {
+                                                                                                                                        echo $alter_title2;
                                                                                                                                     } else {
                                                                                                                                         echo get_the_title();
                                                                                                                                     }
@@ -2388,10 +2389,11 @@ $current_url = get_permalink();
                                                                         ?>">
                                                         </div>
                                                         <div class="card__header-title"><a href="<?php echo the_permalink() ?>"> <?php
-                                                                                                                                    $alter_title = get_field('alter_title');
+                                                                                                                                    $alter_title3 = get_field('alter_title');
 
-                                                                                                                                    if ($alter_title) {
-                                                                                                                                        echo $alter_title;
+
+                                                                                                                                    if ($alter_title3) {
+                                                                                                                                        echo $alter_title3;
                                                                                                                                     } else {
                                                                                                                                         echo get_the_title();
                                                                                                                                     }
@@ -2486,10 +2488,10 @@ $current_url = get_permalink();
                                                                         ?>">
                                                         </div>
                                                         <div class="card__header-title"><a href="<?php echo the_permalink() ?>"> <?php
-                                                                                                                                    $alter_title = get_field('alter_title');
+                                                                                                                                    $alter_title4 = get_field('alter_title');
 
-                                                                                                                                    if ($alter_title) {
-                                                                                                                                        echo $alter_title;
+                                                                                                                                    if ($alter_title4) {
+                                                                                                                                        echo $alter_title4;
                                                                                                                                     } else {
                                                                                                                                         echo get_the_title();
                                                                                                                                     }
@@ -2572,10 +2574,11 @@ $current_url = get_permalink();
 
                                                         </div>
                                                         <div class="card__header-title"><a href="<?php echo the_permalink() ?>"> <?php
-                                                                                                                                    $alter_title = get_field('alter_title');
+                                                                                                                                    $alter_title5 = get_field('alter_title');
+                                                                                                                                    $alter_title5 = get_field('alter_title');
 
-                                                                                                                                    if ($alter_title) {
-                                                                                                                                        echo $alter_title;
+                                                                                                                                    if ($alter_title5) {
+                                                                                                                                        echo $alter_title5;
                                                                                                                                     } else {
                                                                                                                                         echo get_the_title();
                                                                                                                                     }
