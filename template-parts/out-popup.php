@@ -32,7 +32,7 @@
     <div class="out_exit">
       <div class="out_exit_close"><img alt="Закрыть" src="/wp-content/themes/finbank_theme/img/close2.png"></div>
       <div class="out_exit_body">
-        <div class="h2">К сожалению, "<?= get_the_title(); ?>" недоступен для оформления на Finabank. Предлагаем вам ознакомиться с лучшими предложениями этой категории.</div>
+        <div class="h2">К сожалению, "<?= get_the_title(); ?>111" недоступен для оформления на Finabank. Предлагаем вам ознакомиться с лучшими предложениями этой категории.</div>
         <div class="out_exit_btn">
           <a href="<?= $present_link; ?>" target="_blank" class="btn btn-outline-primary btn-sm btn-block font-weight-normal">Перейти</a>
           <?php if (get_field('card_bank_link') && !reclink(get_the_id())): ?>  

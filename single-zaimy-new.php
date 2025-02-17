@@ -568,6 +568,7 @@ $current_url = get_permalink();
                             </div>
                             <div class="tariffs-cards">
                                 <?php while (have_rows('tarifs_new', $ID)): the_row();
+                                    $alter_title = get_field('alter_title');
                                     $title = get_sub_field('title');
                                     $summa = get_sub_field('summa');
                                     $time = get_sub_field('time');
@@ -583,7 +584,7 @@ $current_url = get_permalink();
                                                         echo $logo_alt;
                                                         ?>">
                                             <div class="">
-                                                <?php echo the_title() ?>
+                                                <?php echo isset($alter_title) && $alter_title ? $alter_title : the_title(); ?>
                                                 <span><?php echo $title ?></span>
                                             </div>
                                         </div>

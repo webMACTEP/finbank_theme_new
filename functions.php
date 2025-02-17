@@ -4081,15 +4081,11 @@ function myown_comment($comment, $args, $depth)
 
 
 		// Правило перезаписи
-		add_rewrite_rule('^(nutrition)/([^/]*)/([^/]*)/?', 'index.php?pagename=$matches[1]&food=$matches[2]&variety=$matches[3]', 'top');
-		// нужно указать ?p=123 если такое правило создается для записи 123
-		// первый параметр для записей: p или name, для страниц: page_id или pagename
-
-
-
-
-
-
+		add_rewrite_rule(
+			'^(nutrition)/([^/]*)/([^/]*)/page/([0-9]+)/?$',
+			'index.php?pagename=$matches[1]&food=$matches[2]&variety=$matches[3]&paged=$matches[4]',
+			'top'
+		);
 	}
 
 
@@ -4165,51 +4161,14 @@ function myown_comment($comment, $args, $depth)
 
 		die();
 	}
-	//
-	//remove_filter( 'get_the_excerpt', 'wp_trim_excerpt', 10, 2 );
-	//
-	//add_filter( 'get_the_excerpt', function ( $excerpt, $post ) {
-	//
-	//    return wp_trim_words( the_content(), 50, ' ...' );
-	//    //wp_trim_excerpt( '', $post_id )
-	//    //return $post->post_excerpt ?
-	//    //    'Has custom excerpt: ' . $excerpt :
-	//    //    'Here, create your own excerpt.';
-	//}, 10, 2 );
 
 
-	//if( get_previous_posts_link() and get_next_posts_link() ){
-	//    function custom_document_title( $title ) {
-	//        return 'Here is the new title';
-	//    }
-	//
-	//    add_filter( 'pre_get_document_title', 'custom_document_title', 10 );
-	//
-	//
-	//}
 
-	//add_filter('pre_get_document_title', 'change_404_title');
-
-	//add_filter('pre_get_document_title', 'change_404_title', 50);
-	//function change_404_title($title) {
-	//if (is_paged()) {
-	//    return 'My Custom Title';
-	//}
-	//return $title;
-	//}
-
-	// webmactep changes
 
 
 
 
 	require_once __DIR__ . '/roman-functions.php';
 	require_once __DIR__ . '/danil-functions.php';
-	
-	
-	
-	//function no_rows_found_function($query)
-	//{
-	//  $query->set('no_found_rows', true);
-	//}
-	//add_action('pre_get_posts', 'no_rows_found_function');
+
+

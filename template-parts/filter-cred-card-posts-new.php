@@ -53,13 +53,17 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                 </div>
 
                 <div class="item-info">
-                    <!-- <a href="<?php echo esc_url(get_permalink()); ?>">
-                        <?php echo esc_html(get_the_title()); ?>
-                    </a> -->
+                   
                     <a href="<?php echo esc_url(get_permalink($bank_id)); ?>" class="font-weight-semibold">
                         <?php echo esc_html(get_the_title($bank_id)); ?>
                     </a>
-                    <span class="item-title"><?php echo esc_html(get_the_title()); ?></span>
+                    <span class="item-title">
+                        <?php
+                        $alter_title = get_field('alter_title');
+                        echo esc_html(!empty($alter_title) ? $alter_title : get_the_title());
+                        ?>
+                    </span>
+
                     <!-- Рейтинги -->
                     <div class="d-sm-flex flex-wrap justify-content-between align-items-center">
                         <div class="d-flex align-items-center my-2 my-sm-0">
@@ -112,18 +116,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                 <span class="card__field-title">Стоимость:</span>
                 <span class="card__field-num">От <?php echo esc_html($card_cost); ?> ₽</span>
             </div>
-            <!--<div class="item-column">
-                <span class="card__field-title">Cтавка:</span>
-                <span class="card__field-num">От <?php echo esc_html($card_stavka); ?>%</span>
-            </div>
-            <div class="item-column">
-                <span class="card__field-title">Решение:</span>
-                <span class="card__field-num"><?php echo esc_html($card_answ); ?></span>
-            </div>
-            <div class="item-column">
-                <span class="card__field-title">Кэшбек:</span>
-                <span class="card__field-num"><?php echo esc_html($card_cashback); ?></span>
-            </div> -->
+            
             <!-- Кнопка оформить -->
             <div class="item-buttons">
                 <?php if ($card_bank_link): ?>
@@ -157,20 +150,16 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
         <div class="item-footer">
 
             <!-- метки -->
-            
-                <?php
-                if (has_tag()) { // Проверяем, есть ли метки у поста
-                    the_tags('<ul class="item-tags"><li>', '</li><li>', '</li></ul>');
-                }
-                ?>
 
-                <div class="">Прочие: <?php echo esc_html($card_other_state); ?>
+
+
+            <div class="">Прочие:
                 <?php foreach ($card_other_state as $item): ?>
-                                    <a href="#" class="btn calc__page-nav btn-light"><?php echo $item; ?></a>
-                                <?php endforeach; ?>
+                    <a href="#" class=""><?php echo $item; ?></a>
+                <?php endforeach; ?>
             </div>
 
-           
+
 
             <div class="tabs-and-btns w-100">
                 <div class="card__footer-new d-flex justify-content-between align-items-center">

@@ -74,7 +74,7 @@ else:
                     }
                     wp_reset_query() ?>
                 </div>
-                <div class="row mb-4">
+                <div class="row mb-4 flex-end">
 
                     <div class="page__heading-description col-lg-8 col-sm-12 mt-2">
                         В данном разделе вы можете оформить кредитную карту по вашим финансовым возможностям. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis consequuntur, natus cum necessitatibus quos esse odit assumenda consequatur! At ipsam deserunt officia architecto et ullam, possimus ipsa! Neque, inventore illum?
@@ -239,7 +239,7 @@ else:
             </div>
         </div>
         <!-- / tags -->
-        <!-- banks -->
+        <!-- banks 
         <div class="container">
 
             <div class="banks-wrapper mb-4">
@@ -295,7 +295,7 @@ else:
 
 
         </div>
-        <!-- / banks -->
+         / banks -->
         <div class="container">
             <!-- credits list -->
             <div class="credits section">
@@ -411,7 +411,7 @@ else:
                                 <?php if ($paged < $max_pages): ?>
                                     <button class="btn btn-outline-gray btn-block load_more_btn"
                                         data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
-                                        Больше решений
+                                        Больше решений000
                                     </button>
                                 <?php endif; ?>
                                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">

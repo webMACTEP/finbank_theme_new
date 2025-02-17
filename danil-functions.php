@@ -1,9 +1,9 @@
 <?php
 
 
-define( 'RATINGS_IMG_EXT', apply_filters( 'wp_postratings_image_extension', 'gif' ) );
+define('RATINGS_IMG_EXT', apply_filters('wp_postratings_image_extension', 'gif'));
 //echo 'Danil';
-global $wp_query;
+//global $wp_query;
 //print_r2($wp_query);
 //if(!$wp_query->have_posts()) {
 //    status_header(404);
@@ -21,4 +21,3 @@ function  get_clear_url($url = '')
     $url_clear = implode('/', $url_arr);
     return $url_clear . '/';
 }
-

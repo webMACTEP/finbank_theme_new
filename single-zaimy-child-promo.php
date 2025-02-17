@@ -46,7 +46,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 <main class="zaimy-new">
     <!-- page head -->
     <div class="container">
-    <nav aria-label="breadcrumb" class="horizontal__scroll">
+        <nav aria-label="breadcrumb" class="horizontal__scroll">
             <ol class="breadcrumb horizontal__scroll-container">
                 <!-- Главная -->
                 <!-- <li class="breadcrumb-item">
@@ -55,9 +55,9 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 
                 <!-- Архив Займов -->
                 <li class="breadcrumb-item">
-                <svg width="8" height="20" viewBox="0 0 8 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.35355 5.64645C6.54882 5.84171 6.54882 6.15829 6.35355 6.35355L2.70711 10L6.35355 13.6464C6.54882 13.8417 6.54882 14.1583 6.35355 14.3536C6.15829 14.5488 5.84171 14.5488 5.64645 14.3536L1.64645 10.3536C1.45119 10.1583 1.45119 9.84171 1.64645 9.64645L5.64645 5.64645C5.84171 5.45118 6.15829 5.45118 6.35355 5.64645Z" fill="#0A0D13" fill-opacity="0.55"></path>
-            </svg>
+                    <svg width="8" height="20" viewBox="0 0 8 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.35355 5.64645C6.54882 5.84171 6.54882 6.15829 6.35355 6.35355L2.70711 10L6.35355 13.6464C6.54882 13.8417 6.54882 14.1583 6.35355 14.3536C6.15829 14.5488 5.84171 14.5488 5.64645 14.3536L1.64645 10.3536C1.45119 10.1583 1.45119 9.84171 1.64645 9.64645L5.64645 5.64645C5.84171 5.45118 6.15829 5.45118 6.35355 5.64645Z" fill="#0A0D13" fill-opacity="0.55"></path>
+                    </svg>
                     <a href="<?php echo esc_url(get_post_type_archive_link('zaimy')); ?>">Все МФО</a>
                 </li>
 
@@ -225,8 +225,8 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                     <div class="credits__view-img">
                         <img src="<?php echo the_field('card_logo', $parent_id) ?>" alt="<?php echo $parent_title ?>">
                         <div class="credits__view-buttons d-flex justify-content-center py-3 py-sm-4">
-                        <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary mx-3"
-                        onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
+                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary mx-3"
+                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
 
 
                         </div>
@@ -271,7 +271,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                             </svg>Об МФО</a>
                                     </li>
                                     <li>
-                                        
+
                                         <a href="<?php echo esc_url($parent_permalink); ?>goryachaya-liniya/">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.38028 8.85323C9.07627 10.3028 10.0251 11.6615 11.2266 12.8631C12.4282 14.0646 13.7869 15.0134 15.2365 15.7094C15.3612 15.7693 15.4235 15.7992 15.5024 15.8222C15.7828 15.904 16.127 15.8453 16.3644 15.6752C16.4313 15.6274 16.4884 15.5702 16.6027 15.4559C16.9523 15.1063 17.1271 14.9315 17.3029 14.8172C17.9658 14.3862 18.8204 14.3862 19.4833 14.8172C19.6591 14.9315 19.8339 15.1063 20.1835 15.4559L20.3783 15.6508C20.9098 16.1822 21.1755 16.448 21.3198 16.7333C21.6069 17.3009 21.6069 17.9712 21.3198 18.5387C21.1755 18.8241 20.9098 19.0898 20.3783 19.6213L20.2207 19.7789C19.6911 20.3085 19.4263 20.5733 19.0662 20.7756C18.6667 21 18.0462 21.1614 17.588 21.16C17.1751 21.1588 16.8928 21.0787 16.3284 20.9185C13.295 20.0575 10.4326 18.433 8.04466 16.045C5.65668 13.6571 4.03221 10.7947 3.17124 7.76131C3.01103 7.19687 2.93092 6.91464 2.9297 6.5017C2.92833 6.04347 3.08969 5.42298 3.31411 5.02348C3.51636 4.66345 3.78117 4.39863 4.3108 3.86901L4.46843 3.71138C4.99987 3.17993 5.2656 2.91421 5.55098 2.76987C6.11854 2.4828 6.7888 2.4828 7.35636 2.76987C7.64174 2.91421 7.90747 3.17993 8.43891 3.71138L8.63378 3.90625C8.98338 4.25585 9.15819 4.43065 9.27247 4.60643C9.70347 5.26932 9.70347 6.1239 9.27247 6.78679C9.15819 6.96257 8.98338 7.13738 8.63378 7.48698C8.51947 7.60129 8.46231 7.65845 8.41447 7.72526C8.24446 7.96269 8.18576 8.30695 8.26748 8.5873C8.29048 8.6662 8.32041 8.72854 8.38028 8.85323Z" stroke="#1B2636" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -420,10 +420,10 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                                 $organization_site = get_field('z_organization_site', $data_source_id);
                                                 ?>
                                                 <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
-                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
-                                                        class="off_site_link">
-                                                        <?php echo esc_html($organization_site); ?>
-                                                    </a>
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
+                                                    class="off_site_link">
+                                                    <?php echo esc_html($organization_site); ?>
+                                                </a>
                                             </div>
                                         </div>
 
@@ -453,11 +453,11 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 
                                         <!-- Кнопка Оформить сейчас -->
                                         <div class="wm-fixed-button sidebar__field mb-3">
-                                        <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
-                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
-                                                    class="btn btn-primary">
-                                                    Оформить сейчас
-                                                </a>
+                                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
+                                                class="btn btn-primary">
+                                                Оформить сейчас
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -626,13 +626,10 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                         <div class="oc-butt close">Свернуть</div>
                                     </div>
                                     <div class="right">
-                                        <?php if (reclink($ID)): ?>
-                                            <a href="<?php echo the_field('card_bank_link', $parent_id) ?>" target="_blank" class="btn btn-primary"
+                                      
+                                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary"
                                                 onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Перейти на сайт</a>
-                                        <?php else: ?>
-                                            <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return false;">Перейти на сайт</a>
-                                        <?php endif; ?>
+                                      
 
                                         <span><?php echo $time ?></span>
                                     </div>
@@ -678,7 +675,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                                 <div class="info-text"> <?php echo $time ?></div>
                                             </div>
 
-                                            <a href="#" class="btn btn-primary">Подробнее</a>
+                                            <a target="_blank" href="<?php echo esc_url($bank_link); ?>" class="btn btn-primary">Подробнее</a>
                                         </div>
                                         <div class="info">
                                             <?php echo $text ?>

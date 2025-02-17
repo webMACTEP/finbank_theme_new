@@ -1248,6 +1248,7 @@
         <!-- / header region -->
         <div id="backdrop" class="header__overlay"></div>
     </header>
+   
     <div class="POPUP_APPLY_ALL"></div>
     <? //php get_template_part( 'all_template/forms/help-become-better', null, ['show' => 'Y']); 
     ?>

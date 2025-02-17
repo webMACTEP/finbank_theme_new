@@ -58,9 +58,9 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 
                 <!-- Архив Займов -->
                 <li class="breadcrumb-item">
-                <svg width="8" height="20" viewBox="0 0 8 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.35355 5.64645C6.54882 5.84171 6.54882 6.15829 6.35355 6.35355L2.70711 10L6.35355 13.6464C6.54882 13.8417 6.54882 14.1583 6.35355 14.3536C6.15829 14.5488 5.84171 14.5488 5.64645 14.3536L1.64645 10.3536C1.45119 10.1583 1.45119 9.84171 1.64645 9.64645L5.64645 5.64645C5.84171 5.45118 6.15829 5.45118 6.35355 5.64645Z" fill="#0A0D13" fill-opacity="0.55"></path>
-            </svg>
+                    <svg width="8" height="20" viewBox="0 0 8 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.35355 5.64645C6.54882 5.84171 6.54882 6.15829 6.35355 6.35355L2.70711 10L6.35355 13.6464C6.54882 13.8417 6.54882 14.1583 6.35355 14.3536C6.15829 14.5488 5.84171 14.5488 5.64645 14.3536L1.64645 10.3536C1.45119 10.1583 1.45119 9.84171 1.64645 9.64645L5.64645 5.64645C5.84171 5.45118 6.15829 5.45118 6.35355 5.64645Z" fill="#0A0D13" fill-opacity="0.55"></path>
+                    </svg>
                     <a href="<?php echo esc_url(get_post_type_archive_link('zaimy')); ?>">Все МФО</a>
                 </li>
 
@@ -229,7 +229,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                         <img src="<?php echo the_field('card_logo', $parent_id) ?>" alt="<?php echo $parent_title ?>">
                         <div class="credits__view-buttons d-flex justify-content-center py-3 py-sm-4">
                             <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary mx-3"
-                            onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
+                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
                         </div>
                     </div>
                 </div>
@@ -418,7 +418,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                             <div class="sidebar__field-title">Официальный сайт</div>
                                             <div class="sidebar__field-content">
                                                 <?php
-                                                
+
                                                 $organization_site = get_field('z_organization_site', $data_source_id);
                                                 ?>
 
@@ -634,46 +634,46 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                     <!-- / support -->
 
                     <!-- yandexmap -->
-                <?php
-                // Получаем введённый адрес из ACF
-                $address = get_field('address', $parent_id); // То самое поле, куда редактор вбивает адрес
-                ?>
-                <!-- <?= $address ?> -->
-                <div class="section" id="map" style="width: 100%; height: 400px;"></div>
+                    <?php
+                    // Получаем введённый адрес из ACF
+                    $address = get_field('address', $parent_id); // То самое поле, куда редактор вбивает адрес
+                    ?>
+                    <!-- <?= $address ?> -->
+                    <div class="section" id="map" style="width: 100%; height: 400px;"></div>
 
-                <script>
-                    // Когда загрузится JS API Яндекс и DOM
-                    ymaps.ready(init);
+                    <script>
+                        // Когда загрузится JS API Яндекс и DOM
+                        ymaps.ready(init);
 
-                    function init() {
-                        // Создаём карту (координаты пока любые, их заменим после геокодинга)
-                        var myMap = new ymaps.Map("map", {
-                            center: [55.76, 37.64], // Москва как «заглушка»
-                            zoom: 10
-                        });
+                        function init() {
+                            // Создаём карту (координаты пока любые, их заменим после геокодинга)
+                            var myMap = new ymaps.Map("map", {
+                                center: [55.76, 37.64], // Москва как «заглушка»
+                                zoom: 10
+                            });
 
-                        // Обращаемся к геокодеру, чтобы найти координаты по адресу
-                        ymaps.geocode('<?php echo esc_js($address); ?>', {
-                            results: 1
-                        }).then(function(res) {
-                            // Выбираем первый результат геокодирования
-                            var firstGeoObject = res.geoObjects.get(0);
-                            if (firstGeoObject) {
-                                // Получаем координаты
-                                var coords = firstGeoObject.geometry.getCoordinates();
-                                // Устанавливаем центр карты на эти координаты
-                                myMap.setCenter(coords, 15);
-                                // Создаём метку
-                                var placemark = new ymaps.Placemark(coords, {
-                                    balloonContent: '<?php echo esc_js($address); ?>'
-                                });
-                                myMap.geoObjects.add(placemark);
-                            } else {
-                                console.log('Адрес не найден геокодером');
-                            }
-                        });
-                    }
-                </script>
+                            // Обращаемся к геокодеру, чтобы найти координаты по адресу
+                            ymaps.geocode('<?php echo esc_js($address); ?>', {
+                                results: 1
+                            }).then(function(res) {
+                                // Выбираем первый результат геокодирования
+                                var firstGeoObject = res.geoObjects.get(0);
+                                if (firstGeoObject) {
+                                    // Получаем координаты
+                                    var coords = firstGeoObject.geometry.getCoordinates();
+                                    // Устанавливаем центр карты на эти координаты
+                                    myMap.setCenter(coords, 15);
+                                    // Создаём метку
+                                    var placemark = new ymaps.Placemark(coords, {
+                                        balloonContent: '<?php echo esc_js($address); ?>'
+                                    });
+                                    myMap.geoObjects.add(placemark);
+                                } else {
+                                    console.log('Адрес не найден геокодером');
+                                }
+                            });
+                        }
+                    </script>
 
 
 
@@ -686,6 +686,8 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                             <div class="tariffs-cards">
                                 <?php while (have_rows('tarifs_new', $data_source_id)): the_row();
                                     // Получаем под-поля Repeater
+                                    $alter_title = get_field('alter_title', $data_source_id);
+
                                     $title  = get_sub_field('title');
                                     $summa  = get_sub_field('summa');
                                     $time   = get_sub_field('time');
@@ -706,9 +708,14 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                                 <img src="<?php echo esc_url(get_template_directory_uri()); ?>/img/default-logo.png" alt="Логотип">
                                             <?php endif; ?>
                                             <div class="">
-                                                <h3><?php echo esc_html(get_the_title($data_source_id)); ?></h3>
+                                                <h3>
+                                                    <?php
+                                                    echo !empty($alter_title) ? esc_html($alter_title) : esc_html(get_the_title($data_source_id));
+                                                    ?>
+                                                </h3>
                                                 <span><?php echo esc_html($title); ?></span>
                                             </div>
+
                                         </div>
                                         <div class="info">
                                             <div class="info-item">

@@ -444,59 +444,60 @@ add_action('wp_ajax_handle_additional_comment_reply_ajax', 'handle_additional_co
 add_action('wp_ajax_nopriv_handle_additional_comment_reply_ajax', 'handle_additional_comment_reply_ajax');
 
 // AJAX Обработчик для Лайков и Дизлайков
-function handle_like_dislike_ajax() {
+function handle_like_dislike_ajax()
+{
     // Проверка nonce
-    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'like_dislike_nonce' ) ) {
-        wp_send_json_error( 'Ошибка безопасности.' );
+    if (! isset($_POST['nonce']) || ! wp_verify_nonce($_POST['nonce'], 'like_dislike_nonce')) {
+        wp_send_json_error('Ошибка безопасности.');
     }
 
     // Валидация и санитизация данных
-    $comment_id = intval( $_POST['comment_id'] );
-    $type       = sanitize_text_field( $_POST['type'] );
+    $comment_id = intval($_POST['comment_id']);
+    $type       = sanitize_text_field($_POST['type']);
     // Проверяем параметр cancel (он может быть строкой "true", числом или boolean)
-    $cancel = ( isset( $_POST['cancel'] ) && $_POST['cancel'] ) ? true : false;
+    $cancel = (isset($_POST['cancel']) && $_POST['cancel']) ? true : false;
 
     // Проверка существования комментария
-    $comment = get_post( $comment_id );
-    if ( ! $comment || get_post_type( $comment_id ) != 'additional_comment' ) {
-        wp_send_json_error( 'Комментарий не найден.' );
+    $comment = get_post($comment_id);
+    if (! $comment || get_post_type($comment_id) != 'additional_comment') {
+        wp_send_json_error('Комментарий не найден.');
     }
 
     // Получение текущих значений лайков и дизлайков
-    $likes    = intval( get_field( 'likes', $comment_id ) );
-    $dislikes = intval( get_field( 'dislikes', $comment_id ) );
+    $likes    = intval(get_field('likes', $comment_id));
+    $dislikes = intval(get_field('dislikes', $comment_id));
 
     // Определение типа действия с учётом отмены
-    if ( $type === 'like' ) {
-        if ( $cancel ) {
+    if ($type === 'like') {
+        if ($cancel) {
             // Отмена лайка: уменьшаем значение, но не ниже 0
-            $likes = max( 0, $likes - 1 );
+            $likes = max(0, $likes - 1);
         } else {
             // Добавление лайка
             $likes += 1;
         }
-        update_field( 'likes', $likes, $comment_id );
-    } elseif ( $type === 'dislike' ) {
-        if ( $cancel ) {
+        update_field('likes', $likes, $comment_id);
+    } elseif ($type === 'dislike') {
+        if ($cancel) {
             // Отмена дизлайка
-            $dislikes = max( 0, $dislikes - 1 );
+            $dislikes = max(0, $dislikes - 1);
         } else {
             // Добавление дизлайка
             $dislikes += 1;
         }
-        update_field( 'dislikes', $dislikes, $comment_id );
+        update_field('dislikes', $dislikes, $comment_id);
     } else {
-        wp_send_json_error( 'Неверный тип действия.' );
+        wp_send_json_error('Неверный тип действия.');
     }
 
     // Возвращаем обновленные значения
-    wp_send_json_success( array(
+    wp_send_json_success(array(
         'likes'    => $likes,
         'dislikes' => $dislikes,
-    ) );
+    ));
 }
-add_action( 'wp_ajax_handle_like_dislike_ajax', 'handle_like_dislike_ajax' );
-add_action( 'wp_ajax_nopriv_handle_like_dislike_ajax', 'handle_like_dislike_ajax' );
+add_action('wp_ajax_handle_like_dislike_ajax', 'handle_like_dislike_ajax');
+add_action('wp_ajax_nopriv_handle_like_dislike_ajax', 'handle_like_dislike_ajax');
 
 
 /**
@@ -635,36 +636,45 @@ function is_comments_page()
 
     return mb_substr_count($url, $findme);
 }
+function is_collection_page()
+{
+    $url = $_SERVER['REQUEST_URI'];
+    $url = explode('?', $url);
+    $url = $url[0];
+    $findme   = 'collection';
+
+    return mb_substr_count($url, $findme);
+}
+function get_current_page_number_from_uri()
+{
+    $uri = $_SERVER['REQUEST_URI'];
+    if (preg_match('/\/page\/(\d+)(\/|$)/', $uri, $matches)) {
+        return intval($matches[1]);
+    }
+    return 1;
+}
+
 
 
 function prefix_filter_title_example($title)
 {
-    // Получаем текущий номер страницы
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    $paged = get_current_page_number_from_uri();
 
-    // Если это пагинированная страница или другие нужные условия,
-    // и номер страницы больше 1, то добавляем суффикс
-    if ((is_paginated() || is_reviews_page() || is_comments_page()) && $paged > 1) {
+    // Если это пагинированная страница и номер больше 1 — добавляем суффикс
+    if ((is_paginated() || is_reviews_page() || is_collection_page() || is_comments_page()) && $paged > 1) {
         $title .= ' — страница ' . $paged;
     }
-
     return $title;
 }
 add_filter('wpseo_title', 'prefix_filter_title_example');
 
-
-
-
 function prefix_filter_description_example($description)
 {
-    // Получаем текущий номер страницы
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    $paged = get_current_page_number_from_uri();
 
-    // Если условия выполняются и номер страницы больше 1, добавляем суффикс
-    if ((is_paginated() || is_reviews_page() || is_comments_page()) && $paged > 1) {
+    if ((is_paginated() || is_reviews_page() || is_collection_page() || is_comments_page()) && $paged > 1) {
         $description .= ' — страница ' . $paged;
     }
-
     return $description;
 }
 add_filter('wpseo_metadesc', 'prefix_filter_description_example');

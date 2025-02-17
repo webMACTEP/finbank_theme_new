@@ -5930,12 +5930,6 @@ a.cld-like-dislike-trigger {
 .zaimy-new .additional-comment__actions {
   margin-top: 10px;
 }
-.zaimy-new .like-button {
-  color: #0e9a1e;
-}
-.zaimy-new .dislike-button {
-  color: #d41212;
-}
 .zaimy-new .like-button,
 .zaimy-new .dislike-button {
   cursor: pointer;
@@ -6142,7 +6136,7 @@ a.cld-like-dislike-trigger {
 .zaimy-new .content-contacts__wrapper .item:first-child {
   border-top: none;
 }
-.zaimy-new .content-lk h6 {
+.zaimy-new .content-lk blockquote {
   padding: 1rem;
   border-radius: 12px;
   background: rgba(20, 184, 173, 0.1019607843);
@@ -6729,6 +6723,9 @@ a.cld-like-dislike-trigger {
   align-items: center;
   justify-content: center;
 }
+.newlisting .views-buttons div svg path {
+  stroke: var(--gray-700);
+}
 .newlisting .views-buttons div.active svg path {
   stroke: #14b8ad;
 }
@@ -6849,6 +6846,9 @@ a.cld-like-dislike-trigger {
 .newlisting .nav-link.active {
   background: var(--primary);
 }
+.newlisting .flex-end {
+  align-items: flex-end;
+}
 .newlisting .page__heading {
   background: none;
   padding: 1.875rem 0 0 0;
@@ -6859,7 +6859,7 @@ a.cld-like-dislike-trigger {
 }
 .newlisting .page__heading-description {
   font-size: 1rem;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
