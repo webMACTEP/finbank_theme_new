@@ -29,76 +29,20 @@ $comments_count = wp_count_comments(get_the_ID());
 $about_item = get_field('about_item', get_the_ID());
 $if_in_tab = get_field('if_in_tab', get_the_ID());
 $plus_and_minus_tab = get_field('plus_and_minus_tab', get_the_ID());
+//$card_other_state = get_field('card_other_state');
+$card_other_state =  get_field('card_other_state', $ID);
+
 
 // Определение необходимости отображения кнопки "Подробнее"
 $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_in_tab || $plus_and_minus_tab;
 ?>
 
-<div class="card card__horizontal mb-4 <?php echo esc_attr($query__card); ?>">
-    <div class="card-container d-flex flex-wrap">
-        <!-- Заголовок карточки -->
-        <div class="card__header d-flex justify-content-between align-items-center mb-3 flex-grow-1 order-1">
-            <div class="mb-0">
-                <a class="h4" href="<?php echo esc_url(get_permalink()); ?>">
-                    <?php echo esc_html(get_the_title()); ?>
-                </a>
-</div>
-            <div class="card__header_right">
-                <?php if (get_field('archive') == true): ?>
-                    <div class="card__archive">Архив</div>
-                <?php endif; ?>
-                <a class="btn__compare <?php echo esc_attr(my_compare_btn(get_the_ID())); ?>"
-                    data-id="<?php echo esc_attr(get_the_ID()); ?>"
-                    data-tax="<?php echo $term_slug; ?>">
-                    <!-- SVG иконка -->
-                    <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
-                        <path d="m3.29 19.939.44-.607-.44.607Zm-1.229-1.23..."></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
-
-        <!-- Футер карточки -->
-        <div class="card__footer mb-md-3 flex-grow-1 order-3 order-md-2">
-            <p>
-                <?php if ($bank_phone): ?>
-                    <span class="mr-2 mr-md-5">
-                        <a href="tel:<?php echo esc_attr(preg_replace('![^0-9]+!', '', $bank_phone)); ?>">
-                            <?php echo esc_html($bank_phone); ?>
-                        </a>
-                    </span>
-                <?php endif; ?>
-
-                <span class="mr-2 mr-md-5">
-                    <?php if ($card_bank_link): ?>
-                        <a href="<?php echo esc_url($card_bank_link); ?>"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-                            target="_blank">
-                            <?php echo esc_html($bank_email); ?>
-                        </a>
-                    <?php else: ?>
-                        <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                            class="off_site_link <?php echo $apply_now ? 'apply_now_btm' : 'out_exit_link'; ?>"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
-                            <?php echo esc_html($bank_email); ?>
-                        </a>
-                    <?php endif; ?>
-                </span>
-
-                <?php if ($bank_license): ?>
-                    <span class="mr-2 mr-md-5">Лицензия: <?php echo esc_html($bank_license); ?></span>
-                <?php endif; ?>
-
-                <?php if ($views): ?>
-                    <span><?php echo intval($views); ?> заявок</span>
-                <?php endif; ?>
-            </p>
-        </div>
-
-        <!-- Изображение карточки -->
-        <div class="row flex-grow-1 order-2 order-md-3">
-            <div class="col-12 col-md-6 col-lg-5 mb-3 mb-md-0">
-                <div class="card__image">
+<div class="card mb-4 <?php echo esc_attr($query__card); ?>">
+    <div class="card-container">
+        <div class="item-content">
+            <div class="item-about">
+                <!-- Изображение -->
+                <div class="item-image">
                     <a href="<?php echo esc_url(get_permalink()); ?>">
                         <?php if ($card_logo):
                             $logo_alt = get_post_meta($card_logo, '_wp_attachment_image_alt', true);
@@ -107,148 +51,151 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                         <?php endif; ?>
                     </a>
                 </div>
-            </div>
 
-            <!-- Информация о карточке -->
-            <div class="col-12 col-md-6 col-lg-7">
-                <div class="row">
-                    <div class="col-12 col-md-7">
-                        <div class="card__field my-1">
-                            <span class="card__field-title">Кред. лимит:</span>
-                            <span class="card__field-num"><?php echo number_format(intval($card_cred_limit), 0, '.', ' '); ?> ₽</span>
-                        </div>
-                        <div class="card__field my-1">
-                            <span class="card__field-title">Без процентов:</span>
-                            <span class="card__field-num"><?php echo esc_html($card_period['label'] ?? ''); ?></span>
-                        </div>
-                        <div class="card__field my-1">
-                            <span class="card__field-title">Стоимость:</span>
-                            <span class="card__field-num">От <?php echo esc_html($card_cost); ?> ₽</span>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-5">
-                        <div class="card__field my-1">
-                            <span class="card__field-title">Cтавка:</span>
-                            <span class="card__field-num">От <?php echo esc_html($card_stavka); ?>%</span>
-                        </div>
-                        <div class="card__field my-1">
-                            <span class="card__field-title">Решение:</span>
-                            <span class="card__field-num"><?php echo esc_html($card_answ); ?></span>
-                        </div>
-                        <div class="card__field my-1">
-                            <span class="card__field-title">Кэшбек:</span>
-                            <span class="card__field-num"><?php echo esc_html($card_cashback); ?></span>
-                        </div>
-                    </div>
-                </div>
+                <div class="item-info">
 
-                <!-- Кнопки действий -->
-                <div class="row mt-3 mx-n1 mx-md-n3">
-                    <?php if ($card_bank_link): ?>
-                        <div class="col-6 px-1 px-md-2">
-                            <a href="<?php echo esc_url($card_bank_link); ?>"
-                                target="_blank"
-                                onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-                                class="btn btn-primary btn-block">
-                                Оформить
-                            </a>
-                        </div>
-                    <?php else: ?>
-                        <div class="col-6 px-1 px-md-2">
-                            <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                                target="_blank"
-                                onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-                                class="apply_now_btm btn btn-primary btn-block">
-                                Оформить
-                            </a>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="col-6 px-1 px-md-2">
-                        <a href="<?php echo esc_url(get_permalink()); ?>" class="btn btn-outline-alternative btn-block">
-                            Подробнее
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Дополнительная информация -->
-                <div class="d-sm-flex flex-wrap justify-content-between align-items-center mt-3">
                     <a href="<?php echo esc_url(get_permalink($bank_id)); ?>" class="font-weight-semibold">
                         <?php echo esc_html(get_the_title($bank_id)); ?>
                     </a>
-                    <div class="ml-xl-auto d-flex align-items-center my-2 my-sm-0">
-                        <div class="card__rating d-flex align-items-center mr-3">
-                            <div class="mr-2">
-                                <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#starLine" x="0" y="0"></use>
-                                </svg>
-                            </div>
-                            <?php echo esc_html($ratings_average); ?>
-                        </div>
-                        <div class="card__icon d-flex align-items-center mr-3">
-                            <div class="mr-2">
-                                <svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
-                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#eye" x="0" y="0"></use>
-                                </svg>
-                            </div>
-                            <?php echo intval($views); ?>
-                        </div>
-                        <div class="position-relative card__icon d-flex align-items-center mr-3">
-                            <div class="mr-2">
-                                <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                    <span class="item-title">
+                        <?php
+                        $alter_title = get_field('alter_title');
+                        echo esc_html(!empty($alter_title) ? $alter_title : get_the_title());
+                        ?>
+                    </span>
+
+                    <!-- Рейтинги -->
+                    <div class="d-sm-flex flex-wrap justify-content-between align-items-center">
+                        <div class="d-flex align-items-center my-2 my-sm-0">
+                            <div class="card__rating d-flex align-items-center mr-3">
+                                <div class="mr-2">
                                     <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#starLine" x="0" y="0"></use>
                                     </svg>
-                                </a>
+                                </div>
+                                <?php echo esc_html($ratings_average); ?>
                             </div>
-                            <?php
-                            if ($comments_count && isset($comments_count->approved)) {
-                                echo intval($comments_count->approved);
-                            }
-                            ?>
-                        </div>
-                        <div class="position-relative card__like d-flex align-items-center">
-                            <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                            <div class="card__icon d-flex align-items-center mr-3">
+                                <div class="mr-2">
+                                    <svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#eye" x="0" y="0"></use>
+                                    </svg>
+                                </div>
+                                <?php echo intval($views); ?>
+                            </div>
+                            <div class="position-relative card__icon d-flex align-items-center mr-3">
+                                <div class="mr-2">
+                                    <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                                        <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                            <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <?php
+                                if ($comments_count && isset($comments_count->approved)) {
+                                    echo intval($comments_count->approved);
+                                }
+                                ?>
+                            </div>
+                            <div class="position-relative card__like d-flex align-items-center">
+                                <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="item-column">
+                <span class="card__field-title">Кред. лимит:</span>
+                <span class="card__field-num"><?php echo number_format(intval($card_cred_limit), 0, '.', ' '); ?> ₽</span>
+            </div>
+            <div class="item-column">
+                <span class="card__field-title">Без процентов:</span>
+                <span class="card__field-num"><?php echo esc_html($card_period['label'] ?? ''); ?></span>
+            </div>
+            <div class="item-column">
+                <span class="card__field-title">Стоимость:</span>
+                <span class="card__field-num">От <?php echo esc_html($card_cost); ?> ₽</span>
+            </div>
 
-        <!-- Вкладки и дополнительные кнопки -->
-        <div class="tabs-and-btns w-100">
-            <div class="card__footer-new w-100 d-flex justify-content-between align-items-center">
-                <?php
-                $ID = get_the_ID();
-                // Повторная инициализация переменных (можно оптимизировать)
-                $about_item = get_field('about_item', $ID);
-                $if_in_tab = get_field('if_in_tab', $ID);
-                $plus_and_minus_tab = get_field('plus_and_minus_tab', $ID);
-                $show_btn_detail = have_rows('product_tar', $ID) || $about_item || $if_in_tab || $plus_and_minus_tab;
-                ?>
-
-                <?php if ($show_btn_detail): ?>
-                    <div data-id="<?php echo esc_attr($ID); ?>" data-close="Скрыть" data-open="Подробнее" class="open__dop-btn">
-                        <div class="open__dop-btn-text">Подробнее</div>
-                        <div class="navigation__item-arrow">
-                            <svg width="12" height="6" viewBox="0 0 12 6">
-                                <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#arrow" x="0" y="0"></use>
-                            </svg>
-                        </div>
+            <!-- Кнопка оформить -->
+            <div class="item-buttons">
+                <?php if ($card_bank_link): ?>
+                    <div class="">
+                        <a href="<?php echo esc_url($card_bank_link); ?>"
+                            target="_blank"
+                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                            class="btn btn-primary btn-block">
+                            Оформить
+                        </a>
+                    </div>
+                <?php else: ?>
+                    <div class="">
+                        <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                            target="_blank"
+                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                            class="apply_now_btm btn btn-primary btn-block">
+                            Оформить
+                        </a>
                     </div>
                 <?php endif; ?>
 
-                <?php
-                $date_actually = get_the_modified_date('d.m.Y', $bank_id);
-                if ($date_actually):
-                ?>
-                    <div class="date_actually">Обновлено: <?php echo esc_html($date_actually); ?></div>
-                <?php endif; ?>
+                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="<?php echo 'creditcard'; ?>">
+                    <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
+                        <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
+                    </svg>
+                </a>
             </div>
 
-            <div class="tabs">
-                <!-- Здесь можно добавить содержимое вкладок -->
+        </div>
+        <div class="item-footer">
+
+            <!-- метки -->
+
+
+
+            <div class="other-param">
+
+                <ul>
+                    <?php foreach ($card_other_state as $item): ?>
+                        <li><?php echo $item; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+
+            </div>
+
+
+
+            <div class="tabs-and-btns w-100">
+                <div class="card__footer-new d-flex justify-content-between align-items-center">
+                    <?php
+                    $ID = get_the_ID();
+                    // Повторная инициализация переменных (можно оптимизировать)
+                    $about_item = get_field('about_item', $ID);
+                    $if_in_tab = get_field('if_in_tab', $ID);
+                    $plus_and_minus_tab = get_field('plus_and_minus_tab', $ID);
+                    $show_btn_detail = have_rows('product_tar', $ID) || $about_item || $if_in_tab || $plus_and_minus_tab;
+                    ?>
+
+                    <?php if ($show_btn_detail): ?>
+                        <div data-id="<?php echo esc_attr($ID); ?>" data-close="Скрыть" data-open="Подробнее" class="open__dop-btn">
+                            <div class="open__dop-btn-text">Подробнее</div>
+                            <div class="navigation__item-arrow">
+                                <svg width="12" height="6" viewBox="0 0 12 6">
+                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#arrow" x="0" y="0"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="tabs">
+                    
+                    <!-- Здесь можно добавить содержимое вкладок -->
+                </div>
             </div>
         </div>
+
+
+
     </div>
 </div>

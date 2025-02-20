@@ -6136,15 +6136,6 @@ a.cld-like-dislike-trigger {
 .zaimy-new .content-contacts__wrapper .item:first-child {
   border-top: none;
 }
-.zaimy-new .content-lk blockquote {
-  padding: 1rem;
-  border-radius: 12px;
-  background: rgba(20, 184, 173, 0.1019607843);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--text-color2);
-}
 .zaimy-new .content-lk .eafl-link {
   display: block;
   max-width: -moz-fit-content;
@@ -6166,31 +6157,37 @@ a.cld-like-dislike-trigger {
 .zaimy-new .content-block.active {
   display: block;
 }
+.zaimy-new figure {
+  max-width: 100%;
+}
+.zaimy-new figure img {
+  max-width: 100%;
+}
 .zaimy-new blockquote {
-  padding: 20px;
+  position: relative;
+  color: var(--black);
+  padding: 20px 20px 3rem 4rem;
   background: #f5f9fa;
   border-radius: 12px;
   font-style: italic;
 }
 .zaimy-new blockquote p {
-  position: relative;
   color: var(--black);
-  padding: 0px 0px 2rem 3rem;
 }
-.zaimy-new blockquote p::after {
+.zaimy-new blockquote::after {
   content: "Мнение эксперта";
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 20px;
+  bottom: 20px;
   font-style: italic;
   font-size: 14px;
   color: #626b84;
 }
-.zaimy-new blockquote p::before {
+.zaimy-new blockquote::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 20px;
+  top: 20px;
   width: 32px;
   height: 25px;
   background: url("../img/blockquote.svg") no-repeat;
@@ -6647,6 +6644,24 @@ a.cld-like-dislike-trigger {
   cursor: pointer;
 }
 
+.newlisting {
+  position: relative;
+}
+.newlisting .stretched-link::after {
+  z-index: -1;
+}
+.newlisting .card-container {
+  position: unset;
+}
+.newlisting .tabs-and-btns .tabs {
+  max-width: 900px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-450px);
+  top: 100px;
+  z-index: 100;
+  background: var(--white);
+}
 .newlisting .card .item-tags {
   margin: 0px 0px 0px 0px;
   list-style-type: none;
@@ -6664,11 +6679,29 @@ a.cld-like-dislike-trigger {
 .newlisting .card .open__dop-btn {
   margin-left: auto;
 }
+.newlisting .card .other-param {
+  min-width: 80%;
+}
 .newlisting .card .item-footer {
   margin: 16px 0px 0px 0px;
   min-width: 100%;
   display: flex;
   justify-content: space-between;
+}
+.newlisting .card .item-footer ul {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0px 0px 0px 0px;
+}
+.newlisting .card .item-footer ul li {
+  list-style-type: none;
+  text-wrap: nowrap;
+  font-size: 13px;
+  color: var(--black);
+  padding: 4px 12px;
+  border-radius: 50px;
+  background: var(--gray-400);
 }
 .newlisting .card .btn-sm {
   width: 46px;

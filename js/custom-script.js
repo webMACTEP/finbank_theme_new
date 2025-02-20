@@ -2275,7 +2275,7 @@ jQuery(document).ready(function ($) {
 
 window.onload = function () {
   setTimeout(function () {
-    document.querySelectorAll(".gallery img, .alignnone").forEach((n) => {
+    document.querySelectorAll(".gallery img, figure img").forEach((n) => {
       const link = document.createElement("a");
       link.setAttribute("data-fslightbox", "gallery");
       link.setAttribute("data-type", "image");
@@ -2286,7 +2286,20 @@ window.onload = function () {
         link.setAttribute("href", n.getAttribute("src"));
       }
 
-      link.setAttribute("data-caption", n.getAttribute("alt"));
+      // Получаем текст из figcaption, если он есть, иначе alt
+      let captionText = "";
+      const figure = n.closest("figure");
+      if (figure) {
+        const figcaption = figure.querySelector("figcaption");
+        if (figcaption && figcaption.textContent.trim() !== "") {
+          captionText = figcaption.textContent;
+        } else {
+          captionText = n.getAttribute("alt");
+        }
+      } else {
+        captionText = n.getAttribute("alt");
+      }
+      link.setAttribute("data-caption", captionText);
 
       n.parentNode.append(link);
       link.append(n);
@@ -2298,35 +2311,26 @@ window.onload = function () {
     link.setAttribute("data-fslightbox", "gallery");
     link.setAttribute("data-type", "image");
 
-    // console.log( n.getAttribute("src"))
-
-    // if (n.hasAttribute("data-lazy-src")) {
-    // 	link.setAttribute("href", n.getAttribute("data-lazy-src"));
-    // } else {
-
     link.setAttribute("href", n.getAttribute("src"));
 
-    // }
-    link.setAttribute("data-caption", n.getAttribute("title"));
+    // Для bigpic пробуем тоже получить текст из figcaption, иначе title
+    let captionText = "";
+    const figure = n.closest("figure");
+    if (figure) {
+      const figcaption = figure.querySelector("figcaption");
+      if (figcaption && figcaption.textContent.trim() !== "") {
+        captionText = figcaption.textContent;
+      } else {
+        captionText = n.getAttribute("title");
+      }
+    } else {
+      captionText = n.getAttribute("title");
+    }
+    link.setAttribute("data-caption", captionText);
+
     n.parentNode.append(link);
     link.append(n);
   });
-
-  // document.querySelectorAll('#method img').forEach(n => {
-  //   const link = document.createElement('a');
-  //   link.setAttribute("data-fslightbox", "gallery");
-  //   link.setAttribute("data-type", "image");
-  //   // if (n.hasAttribute("data-lazy-src")) {
-  //   // 	link.setAttribute("href", n.getAttribute("data-lazy-src"));
-  //   // } else {
-  // 	link.setAttribute("href", n.getAttribute("src"));
-  //
-  //   // }
-  //   link.setAttribute("data-caption", n.getAttribute("title"));
-  //
-  //   n.parentNode.append(link);
-  //   link.append(n);
-  // });
 
   setTimeout(function () {
     const lightbox = new FsLightbox();

@@ -813,15 +813,15 @@
         }
     }
     .content-lk {
-        blockquote {
-            padding: 1rem;
-            border-radius: 12px;
-            background: #14b8ad1a;
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.2;
-            color: var(--text-color2);
-        }
+        // blockquote {
+        //     padding: 1rem;
+        //     border-radius: 12px;
+        //     background: #14b8ad1a;
+        //     font-size: 16px;
+        //     font-weight: 400;
+        //     line-height: 1.2;
+        //     color: var(--text-color2);
+        // }
         .eafl-link {
             display: block;
             max-width: fit-content;
@@ -844,31 +844,40 @@
         }
         display: none;
     }
+    figure {
+        max-width: 100%;
+        img {
+            max-width: 100%;
+        }
+    }
     blockquote {
         p {
-            &::after {
-                content: "Мнение эксперта";
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                font-style: italic;
-                font-size: 14px;
-                color: #626b84;
-            }
-            &::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 32px;
-                height: 25px;
-                background: url("../img/blockquote.svg") no-repeat;
-            }
-            position: relative;
             color: var(--black);
-            padding: 0px 0px 2rem 3rem;
         }
-        padding: 20px;
+
+        &::after {
+            content: "Мнение эксперта";
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-style: italic;
+            font-size: 14px;
+            color: #626b84;
+        }
+        &::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 32px;
+            height: 25px;
+            background: url("../img/blockquote.svg") no-repeat;
+        }
+        position: relative;
+        color: var(--black);
+        padding: 20px 20px 3rem 4rem;
+
+        //padding: 20px;
         background: #f5f9fa;
         border-radius: 12px;
 
@@ -1370,6 +1379,25 @@
     }
 }
 .newlisting {
+    position: relative;
+    .stretched-link::after {
+        z-index: -1;
+    }
+    .container {
+        //position: relative;
+    }
+    .card-container {
+        position: unset;
+    }
+    .tabs-and-btns .tabs {
+        max-width: 900px;
+        position: fixed;
+        left: 50%;
+        transform: translateX(-450px);
+        top: 100px;
+        z-index: 100;
+        background: var(--white);
+    }
     .card {
         .item-tags {
             li {
@@ -1388,7 +1416,25 @@
         .open__dop-btn {
             margin-left: auto;
         }
+        .other-param {
+            min-width: 80%;
+        }
         .item-footer {
+            ul {
+                li {
+                    list-style-type: none;
+                    text-wrap: nowrap;
+                    font-size: 13px;
+                    color: var(--black);
+                    padding: 4px 12px;
+                    border-radius: 50px;
+                    background: var(--gray-400);
+                }
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin: 0px 0px 0px 0px;
+            }
             margin: 16px 0px 0px 0px;
             min-width: 100%;
             display: flex;
@@ -1442,7 +1488,7 @@
         div {
             svg {
                 path {
-                    stroke: var(--gray-700)
+                    stroke: var(--gray-700);
                 }
             }
             &.active {

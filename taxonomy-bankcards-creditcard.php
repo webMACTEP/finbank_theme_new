@@ -336,7 +336,7 @@ else:
                             while ($query->have_posts()):
                                 $query->the_post();
                                 $counter++;
-                                get_template_part('template-parts/filter-cred-card-posts-new');
+                                get_template_part('template-parts/filter-cred-card-posts');
                             endwhile;
 
                             $posts_html = ob_get_contents();
@@ -411,7 +411,7 @@ else:
                                 <?php if ($paged < $max_pages): ?>
                                     <button class="btn btn-outline-gray btn-block load_more_btn"
                                         data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
-                                        Больше решений000
+                                        Больше решений
                                     </button>
                                 <?php endif; ?>
                                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
