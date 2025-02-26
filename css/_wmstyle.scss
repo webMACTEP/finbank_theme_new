@@ -1,5 +1,9 @@
 :root[data-theme="dark"] {
     .zaimy-new {
+        .dedicated,
+        strong {
+            background: #626b84;
+        }
         blockquote {
             p {
                 &::after {
@@ -812,6 +816,7 @@
             flex-direction: column;
         }
     }
+   
     .content-lk {
         // blockquote {
         //     padding: 1rem;
@@ -844,10 +849,17 @@
         }
         display: none;
     }
+   
     figure {
         max-width: 100%;
-        img {
+        a{
             max-width: 100%;
+        }
+        
+
+        img {
+            max-width: 100% !important;
+            height: auto;
         }
     }
     blockquote {
@@ -882,6 +894,30 @@
         border-radius: 12px;
 
         font-style: italic;
+    }
+    strong,
+    .dedicated {
+        &::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 24px;
+            height: 24px;
+            background: url("../img/info-circle.svg") no-repeat;
+        }
+        position: relative;
+        display: block;
+        font-weight: normal;
+        color: var(--black);
+        padding: 20px 20px 20px 4rem;
+
+        //padding: 20px;
+        background: #f5f9fa;
+        border-radius: 12px;
+
+        //font-style: italic;
+        margin-bottom: 1rem;
     }
 
     .rating-footer {
@@ -1387,16 +1423,40 @@
         //position: relative;
     }
     .card-container {
+        &::before {
+            display: none;
+        }
         position: unset;
     }
+    .tabs{
+        margin-top: 0;
+    }
     .tabs-and-btns .tabs {
-        max-width: 900px;
-        position: fixed;
-        left: 50%;
-        transform: translateX(-450px);
-        top: 100px;
-        z-index: 100;
-        background: var(--white);
+        .tariffs__list{
+            padding: 0px 0px 0px 0px;
+            box-shadow:none
+        }
+        .new-tab-wrapp{
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            
+            z-index: 100;
+            background: #626b846c;
+        }
+        
+        .new-tab-content {
+            padding: 20px;
+            border-radius: 12px;
+           width: 900px;
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-450px);
+            background: var(--white);
+        }
     }
     .card {
         .item-tags {

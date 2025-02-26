@@ -511,7 +511,6 @@ $current_url = get_permalink();
 
                                 </div>
                             <?php endif; ?>
-
                         </div>
                         <div class="article__news mb-5 p-4">
                             <div class="article__news-title article__container-title mb-3">Статьи о займах</div>

@@ -9,24 +9,47 @@
             <div class="out_exit_body">
 
                 <div class="h2">Выбирайте актуальные продукты!</div>
-                <?php if (!wp_is_mobile()): ?>
+                <?php // if (!wp_is_mobile()): ?>
 
                     <?
 
-                    if ($args['title']) {
-                        $title = $args['title'];
-                    } else {
-                        $title = get_the_title();
-                    }
-
+                    // if ($args['title']) {
+                    //     $title = $args['title'];
+                    // } else {
+                    //     $title = get_the_title();
+                    // }
 
                     ?>
 
-                    <div class="exit1_offer_param_label">
-                        К сожалению, "<?php echo $title; ?>" больше не доступен для оформления на Finabank.
+                    <!-- <div class="exit1_offer_param_label">
+                        К сожалению, "<?php // echo $title; ?>" больше не доступен для оформления на Finabank.
                         <br>Предлагаем ознакомиться с похожими предложениями.
-                    </div>
-                <?php endif; ?>
+                    </div> -->
+                <?php // endif; ?>
+
+                <?php
+                // Если явно передан заголовок, используем его, иначе получаем заголовок записи из аргументов
+                if (!empty($args['title'])) {
+                    $title = $args['title'];
+                } else {
+                    // Пример: если в аргументах передан ID через 'bank_exit_id'
+                    if (!empty($args['bank_exit_id'])) {
+                        $post_id = $args['bank_exit_id'];
+                    } elseif (!empty($args['DATA']) && is_array($args['DATA'])) {
+                        // Если передан массив, берём первый ID
+                        $post_id = $args['DATA'][0];
+                    } else {
+                        $post_id = null;
+                    }
+
+                    $title = $post_id ? get_the_title($post_id) : '';
+                }
+                ?>
+                <div class="exit1_offer_param_label">
+                    К сожалению, "<?php // echo esc_html($title); ?>" К сожалению, это предложение больше не доступно для оформления на Finabank.
+                    <br>Предлагаем ознакомиться с похожими предложениями.
+                </div>
+
 
                 <div class="popup-slider-apply-new">
                     <div class="<?php if (wp_is_mobile()): ?> wellcome__slider  <?php endif; ?>">
@@ -92,7 +115,7 @@
                                                 ?>
                                                 <!--    <div class="exit1_strip_--><?php //= get_field('pl-color', $bank_exit_id); 
                                                                                     ?><!--"><span>--><?php //= get_field('pl-text', $bank_exit_id); 
-                                                                                                                                                    ?><!--</span></div>-->
+                                                                                                        ?><!--</span></div>-->
                                                 <?php //endif; 
                                                 ?>
 
@@ -170,7 +193,7 @@
                                                     ?>
                                                     <!--    <div class="exit1_strip_--><?php //= get_field('pl-color', $bank_exit_id); 
                                                                                         ?><!--"><span>--><?php //= get_field('pl-text', $bank_exit_id); 
-                                                                                                                                                        ?><!--</span></div>-->
+                                                                                                            ?><!--</span></div>-->
                                                     <?php //endif; 
                                                     ?>
 
@@ -241,7 +264,7 @@
                                                     ?>
                                                     <!--    <div class="exit1_strip_--><?php //= get_field('pl-color', $bank_exit_id); 
                                                                                         ?><!--"><span>--><?php //= get_field('pl-text', $bank_exit_id); 
-                                                                                                                                                        ?><!--</span></div>-->
+                                                                                                            ?><!--</span></div>-->
                                                     <?php //endif; 
                                                     ?>
 
@@ -313,7 +336,7 @@
                                                     ?>
                                                     <!--    <div class="exit1_strip_--><?php //= get_field('pl-color', $bank_exit_id); 
                                                                                         ?><!--"><span>--><?php //= get_field('pl-text', $bank_exit_id); 
-                                                                                                                                                        ?><!--</span></div>-->
+                                                                                                            ?><!--</span></div>-->
                                                     <?php //endif; 
                                                     ?>
 
@@ -386,7 +409,7 @@
                                                 ?>
                                                 <!--    <div class="exit1_strip_--><?php //= get_field('pl-color', $bank_exit_id); 
                                                                                     ?><!--"><span>--><?php //= get_field('pl-text', $bank_exit_id); 
-                                                                                                                                                    ?><!--</span></div>-->
+                                                                                                        ?><!--</span></div>-->
                                                 <?php //endif; 
                                                 ?>
 

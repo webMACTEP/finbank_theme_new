@@ -2273,37 +2273,40 @@ jQuery(document).ready(function ($) {
 
 //slider.events.on('transitionEnd', customizedFunction);
 
+
 window.onload = function () {
   setTimeout(function () {
-    document.querySelectorAll(".gallery img, figure img").forEach((n) => {
-      const link = document.createElement("a");
-      link.setAttribute("data-fslightbox", "gallery");
-      link.setAttribute("data-type", "image");
+    document
+      .querySelectorAll(".gallery img, figure img")
+      .forEach((n) => {
+        const link = document.createElement("a");
+        link.setAttribute("data-fslightbox", "gallery");
+        link.setAttribute("data-type", "image");
 
-      if (n.hasAttribute("data-src")) {
-        link.setAttribute("href", n.getAttribute("data-src"));
-      } else {
-        link.setAttribute("href", n.getAttribute("src"));
-      }
+        if (n.hasAttribute("data-src")) {
+          link.setAttribute("href", n.getAttribute("data-src"));
+        } else {
+          link.setAttribute("href", n.getAttribute("src"));
+        }
 
-      // Получаем текст из figcaption, если он есть, иначе alt
-      let captionText = "";
-      const figure = n.closest("figure");
-      if (figure) {
-        const figcaption = figure.querySelector("figcaption");
-        if (figcaption && figcaption.textContent.trim() !== "") {
-          captionText = figcaption.textContent;
+        // Получаем текст из figcaption, если он есть, иначе alt
+        let captionText = "";
+        const figure = n.closest("figure");
+        if (figure) {
+          const figcaption = figure.querySelector("figcaption");
+          if (figcaption && figcaption.textContent.trim() !== "") {
+            captionText = figcaption.textContent;
+          } else {
+            captionText = n.getAttribute("alt");
+          }
         } else {
           captionText = n.getAttribute("alt");
         }
-      } else {
-        captionText = n.getAttribute("alt");
-      }
-      link.setAttribute("data-caption", captionText);
+        link.setAttribute("data-caption", captionText);
 
-      n.parentNode.append(link);
-      link.append(n);
-    });
+        n.parentNode.append(link);
+        link.append(n);
+      });
   }, 300);
 
   document.querySelectorAll("img.bigpic").forEach((n) => {
@@ -2801,13 +2804,13 @@ jQuery(function ($) {
     }
 
     // замена текста
-    var open = $(this).attr("data-open");
-    var close = $(this).attr("data-close");
-    if (btnText.text() === close) {
-      btnText.text(open);
-    } else {
-      btnText.text(close);
-    }
+    // var open = $(this).attr("data-open");
+    // var close = $(this).attr("data-close");
+    // if (btnText.text() === close) {
+    //   btnText.text(open);
+    // } else {
+    //   btnText.text(close);
+    // }
   });
 
   // get_selected_value_v1'

@@ -5408,6 +5408,10 @@ a.cld-like-dislike-trigger {
 
 /* use_new_template_v1*/
 /* NEW VIEW TEMPLATE */
+:root[data-theme=dark] .zaimy-new .dedicated,
+:root[data-theme=dark] .zaimy-new strong {
+  background: #626b84;
+}
 :root[data-theme=dark] .zaimy-new blockquote {
   background: #626b84;
 }
@@ -6160,8 +6164,12 @@ a.cld-like-dislike-trigger {
 .zaimy-new figure {
   max-width: 100%;
 }
-.zaimy-new figure img {
+.zaimy-new figure a {
   max-width: 100%;
+}
+.zaimy-new figure img {
+  max-width: 100% !important;
+  height: auto;
 }
 .zaimy-new blockquote {
   position: relative;
@@ -6191,6 +6199,27 @@ a.cld-like-dislike-trigger {
   width: 32px;
   height: 25px;
   background: url("../img/blockquote.svg") no-repeat;
+}
+.zaimy-new strong,
+.zaimy-new .dedicated {
+  position: relative;
+  display: block;
+  font-weight: normal;
+  color: var(--black);
+  padding: 20px 20px 20px 4rem;
+  background: #f5f9fa;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+.zaimy-new strong::before,
+.zaimy-new .dedicated::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 24px;
+  height: 24px;
+  background: url("../img/info-circle.svg") no-repeat;
 }
 .zaimy-new .rating-footer .rating-stat {
   display: flex;
@@ -6653,13 +6682,33 @@ a.cld-like-dislike-trigger {
 .newlisting .card-container {
   position: unset;
 }
-.newlisting .tabs-and-btns .tabs {
-  max-width: 900px;
+.newlisting .card-container::before {
+  display: none;
+}
+.newlisting .tabs {
+  margin-top: 0;
+}
+.newlisting .tabs-and-btns .tabs .tariffs__list {
+  padding: 0px 0px 0px 0px;
+  box-shadow: none;
+}
+.newlisting .tabs-and-btns .tabs .new-tab-wrapp {
   position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: rgba(98, 107, 132, 0.4235294118);
+}
+.newlisting .tabs-and-btns .tabs .new-tab-content {
+  padding: 20px;
+  border-radius: 12px;
+  width: 900px;
+  position: absolute;
+  top: 100px;
   left: 50%;
   transform: translateX(-450px);
-  top: 100px;
-  z-index: 100;
   background: var(--white);
 }
 .newlisting .card .item-tags {
