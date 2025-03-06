@@ -706,7 +706,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                         </div>
                                         <div id="collapse__item-<?php echo esc_attr($counter_about); ?>" class="accordion__collapse collapse" data-bs-parent="#accordion">
                                             <div class="accordion__body wysiwyg">
-                                                <p><?php echo esc_html($answer); ?></p>
+                                                <p><?php echo $answer ?></p>
                                             </div>
                                         </div>
                                     </div>

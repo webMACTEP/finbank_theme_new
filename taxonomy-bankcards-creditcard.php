@@ -102,104 +102,111 @@ else:
                         </div>
                     </div>
                 </div>
-                <form id="credit-card-filter" action="" method="POST">
-                    <input type="hidden" name="action" value="cardfilter" />
-                    <input type="hidden" name="term" value="creditcard" />
-                    <?php if (!empty($sessfiltercard)): ?>
-                        <input type="hidden" name="sessfiltercard" value="<?= $sessfiltercard; ?>" />
-                    <?php endif; ?>
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-1">
-                            <div class="range">
-                                <div class="d-flex justify-content-between">
-                                    <div class="range__label">Кредитный лимит, ₽</div>
-                                    <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" value="<?php echo $cred_limit ?>" min="0">
-                                </div>
-                                <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0" value="<?php echo $cred_limit ?>">
 
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-2">
-                            <div class="range">
-                                <div class="d-flex justify-content-between">
-                                    <div class="range__label">Льготный период, дней</div>
-                                    <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<?php echo $cred_day_period ?>" min="0">
-                                </div>
-                                <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" class="range__input" name="cred_day_period" type="range" min="0" value="<?php echo $cred_day_period ?>">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-lg-0 order-5 order-md-3">
-                            <div class="btn btn-primary btn-block submit-button">Показать</div>
-                        </div>
-                        <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-3 mt-lg-0 order-3 order-md-4">
-                            <div class="filter__details">
-                                <a class="btn btn-outline-alternative btn-block" href="#filter__details" data-bs-toggle="collapse" aria-expanded="false">
-                                    Еще условия
-                                    <svg width="12" height="6" viewBox="0 0 12 6" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6 6h-.4C4.4 5.8 3.5 5 2 3.5L.3 1.7C-.1 1.3-.1.7.3.3c.4-.4 1-.4 1.4 0l1.7 1.8C4.6 3.2 5.3 3.9 5.8 4h.4c.5-.1 1.2-.8 2.4-1.9L10.3.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L10 3.5C8.5 5 7.6 5.8 6.4 6H6Z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                        <div id="filter__details" class="col-12 collapse mt-md-4 order-4 order-md-5">
-                            <div class="row pb-3 pb-md-0">
-                                <div class="col-12 col-md-4 banks_select">
-                                    <label class="form-label" for="bankSelect">Банки</label>
-                                    <select name="bank" id="bankSelect" class="styledSelect" placeholder="">
-                                        <option value="">Любой</option>
-                                        <?php
-                                        $args = array(
-                                            'posts_per_page' => -1,
-                                            'post_type' => 'banks',
-                                            'orderby' => 'name',
-                                            'order' => 'DESC',
-                                        );
+                <!-- filter popup -->
 
-                                        $wp_query = new WP_Query($args);
+                <div class="new-filter-modal mb-3">
+                    <div class="new-filter-modal-close">Close</div>
+                    <form id="credit-card-filter" action="" method="POST">
+                        <input type="hidden" name="action" value="cardfilter" />
+                        <input type="hidden" name="term" value="creditcard" />
+                        <?php if (!empty($sessfiltercard)): ?>
+                            <input type="hidden" name="sessfiltercard" value="<?= $sessfiltercard; ?>" />
+                        <?php endif; ?>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-1">
+                                <div class="range">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="range__label">Кредитный лимит, ₽</div>
+                                        <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" value="<?php echo $cred_limit ?>" min="0">
+                                    </div>
+                                    <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0" value="<?php echo $cred_limit ?>">
 
-                                        // Цикл
-                                        if ($wp_query->have_posts()) {
-                                            $counter = 0;
-                                            while ($wp_query->have_posts()) {
-                                                $wp_query->the_post();
-                                                $counter += 1;
-                                        ?>
-                                                <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
-                                        <?php
-                                            }
-                                        } ?>
-                                        <?php wp_reset_query() ?>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-md-4 card_cat_select">
-                                    <label class="form-label" for="bankTop">Категория карты</label>
-                                    <select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
-                                        <option value="">Все</option>
-                                        <?php
-                                        $field = get_field_object('card_category', 95);
-                                        //$value = $field['value'];
-                                        //$label = $field['choices'][ $value ];
-                                        if ($field['choices']): ?>
-                                            <?php foreach ($field['choices'] as $value => $label): ?>
-                                                <option value="<?php echo $value ?>"><?php echo $label ?></option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-
-                                    </select>
-                                </div>
-                                <div class="col-12 col-md-4 grace_period_select">
-                                    <label class="form-label" for="gracePeriod">Льготный период</label>
-                                    <select name="period" id="gracePeriod" class="styledSelect" placeholder="">
-                                        <option value="">Любой</option>
-                                        <option value="grc20">до 100 дней</option>
-                                        <option value="grc30">от 100 до 200 дней</option>
-                                        <option value="grc40">более 200 дней</option>
-                                    </select>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-2">
+                                <div class="range">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="range__label">Льготный период, дней</div>
+                                        <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<?php echo $cred_day_period ?>" min="0">
+                                    </div>
+                                    <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" class="range__input" name="cred_day_period" type="range" min="0" value="<?php echo $cred_day_period ?>">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-lg-0 order-5 order-md-3">
+                                <div class="btn btn-primary btn-block submit-button">Показать</div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-3 mt-lg-0 order-3 order-md-4">
+                                <div class="filter__details">
+                                    <a class="btn btn-outline-alternative btn-block" href="#filter__details" data-bs-toggle="collapse" aria-expanded="false">
+                                        Еще условия
+                                        <svg width="12" height="6" viewBox="0 0 12 6" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 6h-.4C4.4 5.8 3.5 5 2 3.5L.3 1.7C-.1 1.3-.1.7.3.3c.4-.4 1-.4 1.4 0l1.7 1.8C4.6 3.2 5.3 3.9 5.8 4h.4c.5-.1 1.2-.8 2.4-1.9L10.3.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L10 3.5C8.5 5 7.6 5.8 6.4 6H6Z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="filter__details" class="col-12 collapse mt-md-4 order-4 order-md-5">
+                                <div class="row pb-3 pb-md-0">
+                                    <div class="col-12 col-md-4 banks_select">
+                                        <label class="form-label" for="bankSelect">Банки</label>
+                                        <select name="bank" id="bankSelect" class="styledSelect" placeholder="">
+                                            <option value="">Любой</option>
+                                            <?php
+                                            $args = array(
+                                                'posts_per_page' => -1,
+                                                'post_type' => 'banks',
+                                                'orderby' => 'name',
+                                                'order' => 'DESC',
+                                            );
+
+                                            $wp_query = new WP_Query($args);
+
+                                            // Цикл
+                                            if ($wp_query->have_posts()) {
+                                                $counter = 0;
+                                                while ($wp_query->have_posts()) {
+                                                    $wp_query->the_post();
+                                                    $counter += 1;
+                                            ?>
+                                                    <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
+                                            <?php
+                                                }
+                                            } ?>
+                                            <?php wp_reset_query() ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-4 card_cat_select">
+                                        <label class="form-label" for="bankTop">Категория карты</label>
+                                        <select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
+                                            <option value="">Все</option>
+                                            <?php
+                                            $field = get_field_object('card_category', 95);
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
+                                            if ($field['choices']): ?>
+                                                <?php foreach ($field['choices'] as $value => $label): ?>
+                                                    <option value="<?php echo $value ?>"><?php echo $label ?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-4 grace_period_select">
+                                        <label class="form-label" for="gracePeriod">Льготный период</label>
+                                        <select name="period" id="gracePeriod" class="styledSelect" placeholder="">
+                                            <option value="">Любой</option>
+                                            <option value="grc20">до 100 дней</option>
+                                            <option value="grc30">от 100 до 200 дней</option>
+                                            <option value="grc40">более 200 дней</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+
             </div>
         </div>
         <!-- / page navigation -->
@@ -239,63 +246,7 @@ else:
             </div>
         </div>
         <!-- / tags -->
-        <!-- banks 
-        <div class="container">
 
-            <div class="banks-wrapper mb-4">
-                <?php
-                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                $max_pages = $wp_query->max_num_pages;
-                $args = array(
-                    'post_type' => 'banks',
-                    //'meta_key' => 'ratings_average',
-                    'orderby' => array('ratings_average' => 'desc', 'name' => 'desc',),
-                    'order' => 'DESC',
-                    'paged' => $paged,
-                    'meta_query' => array(
-                        'relation' => 'OR',
-                        array(
-                            'key' => 'ratings_average',
-                            'compare' => 'EXISTS', //or "NOT EXISTS", for non-existance of this key
-                        ),
-                        array(
-                            'key' => 'ratings_average',
-                            'compare' => 'NOT EXISTS', //or "NOT EXISTS", for non-existance of this key
-                        ),
-                    )
-                );
-
-                $wp_query = new WP_Query($args);
-
-                // Цикл
-                if ($wp_query->have_posts()) {
-                    $counter = 0;
-                    while ($wp_query->have_posts()) {
-                        $wp_query->the_post();
-                        $counter += 1;
-                ?>
-
-                        <a href="<?php echo the_permalink() ?>" class="bank-item">
-                            <img src="<?php echo the_field('bank_logo') ?>"
-                                alt="<?
-                                        $bank_id = get_field('bank_logo', get_the_ID(), false);
-                                        $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
-                                        echo $bank_alt;
-                                        ?>">
-                            <?php echo the_title() ?>
-                        </a>
-
-                <?php
-                    }
-                } ?>
-            </div>
-
-            <?php wp_reset_query(); ?>
-
-
-
-        </div>
-         / banks -->
         <div class="container">
             <!-- credits list -->
             <div class="credits section">
@@ -931,6 +882,27 @@ else:
                     moreButton.textContent = isActive ? 'Свернуть' : 'Развернуть';
                 });
             }
+
+            var filterButtons = document.querySelectorAll(".filtr-butt");
+            filterButtons.forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    var modal = document.querySelector(".new-filter-modal");
+                    if (modal) {
+                        modal.classList.add("active");
+                    }
+                });
+            });
+
+            // При клике на элемент с классом new-filter-modal-close убираем класс active у new-filter-modal
+            var closeButtons = document.querySelectorAll(".new-filter-modal-close");
+            closeButtons.forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    var modal = document.querySelector(".new-filter-modal");
+                    if (modal) {
+                        modal.classList.remove("active");
+                    }
+                });
+            });
 
 
         });

@@ -65,7 +65,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     </span>
 
                     <!-- Рейтинги -->
-                    <div class="d-sm-flex flex-wrap justify-content-between align-items-center">
+                    <div class="rait-panel d-sm-flex flex-wrap justify-content-between align-items-center">
                         <div class="d-flex align-items-center my-2 my-sm-0">
                             <div class="card__rating d-flex align-items-center mr-3">
                                 <div class="mr-2">
@@ -134,7 +134,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить
+                            Оформить 0
                         </a>
                     </div>
                 <?php endif; ?>
@@ -178,12 +178,14 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
 
                     <?php if ($show_btn_detail): ?>
                         <div data-id="<?php echo esc_attr($ID); ?>" data-close="Скрыть" data-open="Подробнее" class="open__dop-btn">
-                            <div class="open__dop-btn-text">Подробнее</div>
+
                             <div class="navigation__item-arrow">
-                                <svg width="12" height="6" viewBox="0 0 12 6">
-                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#arrow" x="0" y="0"></use>
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 12V9M9 6H9.0075M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z" stroke="#14B8AD" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
+
                             </div>
+                            <div class="open__dop-btn-text">Подробнее</div>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -197,4 +199,60 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
 
 
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Функция для установки режима отображения
+            function setLayout(layout) {
+                const listPosts = document.querySelectorAll(".list_posts");
+                if (layout === "horisont") {
+                    document.querySelectorAll(".horisont-butt").forEach(function(el) {
+                        el.classList.add("active");
+                    });
+                    document.querySelectorAll(".cards-butt").forEach(function(el) {
+                        el.classList.remove("active");
+                    });
+                    listPosts.forEach(function(el) {
+                        el.classList.add("horisont");
+                        el.classList.remove("cards");
+                    });
+                } else if (layout === "cards") {
+                    document.querySelectorAll(".cards-butt").forEach(function(el) {
+                        el.classList.add("active");
+                    });
+                    document.querySelectorAll(".horisont-butt").forEach(function(el) {
+                        el.classList.remove("active");
+                    });
+                    listPosts.forEach(function(el) {
+                        el.classList.add("cards");
+                        el.classList.remove("horisont");
+                    });
+                }
+            }
+
+            // При загрузке страницы проверяем сохранённый режим
+            var savedLayout = localStorage.getItem("layout");
+            if (savedLayout) {
+                setLayout(savedLayout);
+            }
+
+            // Обработчик для кнопки с классом horisont-butt
+            var horisontButtons = document.querySelectorAll(".horisont-butt");
+            horisontButtons.forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    setLayout("horisont");
+                    localStorage.setItem("layout", "horisont");
+                });
+            });
+
+            // Обработчик для кнопки с классом cards-butt
+            var cardsButtons = document.querySelectorAll(".cards-butt");
+            cardsButtons.forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    setLayout("cards");
+                    localStorage.setItem("layout", "cards");
+                });
+            });
+        });
+    </script>
+
 </div>

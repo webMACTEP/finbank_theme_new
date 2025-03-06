@@ -785,7 +785,7 @@ $current_url = get_permalink();
                                 <h3>Как оформить займ
                                     в Займере?</h3>
                                 <img src="<?php bloginfo('template_url'); ?>/img/how-img.svg" alt="">
-                                <a id="additional-button" href="<?= esc_url(get_permalink($child)); ?>" class="btn btn-primary">Подробнее</a>
+                                <a id="additional-button" href="<?= $current_url ?>lichnyy-kabinet/" class="btn btn-primary">Подробнее</a>
                             </div>
                         </div>
                     </div>

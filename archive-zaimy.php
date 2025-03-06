@@ -15,6 +15,7 @@ $items_args = array(
     'order' => 'DESC',
     'post_type' => 'zaimy',
     'post_status' => 'publish',
+    'post_parent' => 0, // Только родительские записи
     'meta_query' => array(
         array(
             'key' => 'archive',
@@ -25,13 +26,13 @@ $items_args = array(
 );
 
 // Создание нового запроса
-$query_items = new WP_Query( $items_args );
+$query_items = new WP_Query($items_args);
 
 // Проверка наличия постов
-if ( !$query_items->have_posts() ) {
+if (!$query_items->have_posts()) {
     global $wp_query;
-    $url_clear = get_clear_url( $_SERVER['REQUEST_URI'] );
-    wp_redirect( $url_clear, 301 );
+    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
+    wp_redirect($url_clear, 301);
     exit; // Всегда используйте exit после wp_redirect
 }
 
@@ -49,7 +50,7 @@ if ( !$query_items->have_posts() ) {
     $z_sum = 0;
     $z_time = 0;
 
-    if ( isset($_SESSION['filter_zaimy']) && !empty($_SESSION['filter_zaimy']) ) {
+    if (isset($_SESSION['filter_zaimy']) && !empty($_SESSION['filter_zaimy'])) {
         $mt = 1;
         $z_sum = sanitize_text_field($_SESSION['filter_zaimy'][0]);
         $z_time = sanitize_text_field($_SESSION['filter_zaimy'][1]);
@@ -66,7 +67,7 @@ if ( !$query_items->have_posts() ) {
             <!-- Breadcrumbs -->
             <nav aria-label="breadcrumb" class="horizontal__scroll">
                 <ol class="breadcrumb horizontal__scroll-container">
-                    <li class="breadcrumb-item"><a href="<?php echo esc_url( get_home_url() ); ?>">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo esc_url(get_home_url()); ?>">Главная</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Займы</li>
                 </ol>
             </nav>
@@ -92,7 +93,7 @@ if ( !$query_items->have_posts() ) {
                         wp_reset_postdata();
                     }
                     ?>
-                    <div class="page__heading-date">Обновлено: <?php echo esc_html( $date ); ?></div>
+                    <div class="page__heading-date">Обновлено: <?php echo esc_html($date); ?></div>
                 </div>
                 <div class="page__heading-description mt-2 mb-4">
                     В данном разделе вы можете оформить займ по вашим финансовым возможностям
@@ -107,18 +108,18 @@ if ( !$query_items->have_posts() ) {
                             <div class="range">
                                 <div class="d-flex justify-content-between">
                                     <div class="range__label">Сумма, ₽</div>
-                                    <input type="text" class="range__value cred_limit" max="<?php echo esc_attr( $filter_price['zaimy_inputs_range']['max'] ); ?>" value="<?php echo esc_attr( $z_sum ); ?>">
+                                    <input type="text" class="range__value cred_limit" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['max']); ?>" value="<?php echo esc_attr($z_sum); ?>">
                                 </div>
-                                <input class="range__input" name="z_sum" type="range" max="<?php echo esc_attr( $filter_price['zaimy_inputs_range']['max'] ); ?>" value="<?php echo esc_attr( $z_sum ); ?>">
+                                <input class="range__input" name="z_sum" type="range" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['max']); ?>" value="<?php echo esc_attr($z_sum); ?>">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-2">
                             <div class="range">
                                 <div class="d-flex justify-content-between">
                                     <div class="range__label">Срок, дней</div>
-                                    <input type="text" class="range__value cred_trat" max="<?php echo esc_attr( $filter_price['zaimy_inputs_range']['day_max'] ); ?>" value="<?php echo esc_attr( $z_time ); ?>">
+                                    <input type="text" class="range__value cred_trat" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['day_max']); ?>" value="<?php echo esc_attr($z_time); ?>">
                                 </div>
-                                <input class="range__input" name="z_time" type="range" max="<?php echo esc_attr( $filter_price['zaimy_inputs_range']['day_max'] ); ?>" value="<?php echo esc_attr( $z_time ); ?>">
+                                <input class="range__input" name="z_time" type="range" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['day_max']); ?>" value="<?php echo esc_attr($z_time); ?>">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-lg-0 order-5 order-md-3">
@@ -135,11 +136,11 @@ if ( !$query_items->have_posts() ) {
                 <div class="page__nav-container nav-tabs">
                     <div class="horizontal__scroll">
                         <div class="horizontal__scroll-container">
-                            <a href="<?php echo esc_url( get_post_type_archive_link('zaimy') ); ?>" class="nav-link active">Все займы</a>
-                            <a href="<?php echo esc_url( get_page_link(4975) ); ?>" class="nav-link" data-tax="zaimy">Отзывы</a>
-                            <a href="<?php echo esc_url( get_page_link(159) ); ?>" class="nav-link">Калькулятор</a>
-                            <a href="<?php echo esc_url( get_category_link(38) ); ?>" class="nav-link">Статьи</a>
-                            <a href="<?php echo esc_url( get_page_link(1554) ); ?>" class="nav-link">Сравнить</a>
+                            <a href="<?php echo esc_url(get_post_type_archive_link('zaimy')); ?>" class="nav-link active">Все займы</a>
+                            <a href="<?php echo esc_url(get_page_link(4975)); ?>" class="nav-link" data-tax="zaimy">Отзывы</a>
+                            <a href="<?php echo esc_url(get_page_link(159)); ?>" class="nav-link">Калькулятор</a>
+                            <a href="<?php echo esc_url(get_category_link(38)); ?>" class="nav-link">Статьи</a>
+                            <a href="<?php echo esc_url(get_page_link(1554)); ?>" class="nav-link">Сравнить</a>
                             <a href="#best-products" class="nav-link">Лучшие предложения</a>
                         </div>
                     </div>
@@ -199,9 +200,9 @@ if ( !$query_items->have_posts() ) {
                                         );
                                         $query = new WP_Query($args_coll);
                                         if ($query->have_posts()) {
-                                            ?>
+                                ?>
                                             <?php get_template_part('all_template/filter_right', null, ['cat' => $cat, 'query' => $query]); ?>
-                                            <?php
+                                <?php
                                         }
                                         wp_reset_postdata();
                                     }
@@ -217,7 +218,7 @@ if ( !$query_items->have_posts() ) {
                     $counter = 0;
 
                     // Проверяем, есть ли посты в запросе
-                    if ( $query_items->have_posts() ) {
+                    if ($query_items->have_posts()) {
                         // Используем существующий объект запроса
                         $query = $query_items;
                         $max_pages   = $query->max_num_pages;
@@ -227,7 +228,7 @@ if ( !$query_items->have_posts() ) {
                         ob_start();
 
                         // Проходим по всем постам в запросе
-                        while ( $query->have_posts() ) {
+                        while ($query->have_posts()) {
                             $query->the_post();
                             $counter++;
                             // Подключаем шаблон для каждого поста
@@ -252,7 +253,7 @@ if ( !$query_items->have_posts() ) {
                         <div class="credits__list">
                             <div class="d-flex flex-wrap justify-content-between align-items-center mt-0 mt-md-5 mt-lg-0 mb-3">
                                 <div class="h2 mt-5 mb-4 mt-md-0 mb-md-0">
-                                    <span class="variants_count"><?php echo esc_html( $query->found_posts ); ?></span> вариантов
+                                    <span class="variants_count"><?php echo esc_html($query->found_posts); ?></span> вариантов
                                 </div>
                                 <div class="credits__list-dropdown dropdown mb-3 mb-md-0 col-12 col-md-5 col-lg-4 px-0">
                                     <select name="order" class="styledSelect cred-order-select">
@@ -273,19 +274,19 @@ if ( !$query_items->have_posts() ) {
 
                             <!-- Пагинация -->
                             <div class="pagination flex-column mb-5 mb-md-0">
-                                <?php if ( $paged < $max_pages ): ?>
+                                <?php if ($paged < $max_pages): ?>
                                     <button class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?php echo esc_attr( $max_pages ); ?>" data-paged="<?php echo esc_attr( $paged ); ?>">
+                                        data-max_pages="<?php echo esc_attr($max_pages); ?>" data-paged="<?php echo esc_attr($paged); ?>">
                                         Больше решений
                                     </button>
                                 <?php endif; ?>
                                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
                                     <div class="pagination__links">
-                                        <?php my_pagination( $max_pages ); ?>
+                                        <?php my_pagination($max_pages); ?>
                                     </div>
                                     <div class="pagination__description mt-4 mt-sm-0">
-                                        Показано <span class="count_view"><?php echo esc_html( $counter ); ?></span>
-                                        продуктов из <span class="count_all"><?php echo esc_html( $query->found_posts ); ?></span>
+                                        Показано <span class="count_view"><?php echo esc_html($counter); ?></span>
+                                        продуктов из <span class="count_all"><?php echo esc_html($query->found_posts); ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -299,11 +300,11 @@ if ( !$query_items->have_posts() ) {
                                 'meta_key'       => 'archive',
                                 'meta_value'     => true,
                             );
-                            $query_archive = new WP_Query( $args_archive );
-                            if ( $query_archive->have_posts() ): ?>
-                                <h2 class="title archive_title mt-5">Архивные займы (<?php echo esc_html( $query_archive->found_posts ); ?>)</h2>
+                            $query_archive = new WP_Query($args_archive);
+                            if ($query_archive->have_posts()): ?>
+                                <h2 class="title archive_title mt-5">Архивные займы (<?php echo esc_html($query_archive->found_posts); ?>)</h2>
                                 <div class="list_posts archive_list archive_hide">
-                                    <?php while ( $query_archive->have_posts() ): $query_archive->the_post(); ?>
+                                    <?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
                                         <?php get_template_part('template-parts/filter-zaimy-posts'); ?>
                                     <?php endwhile;
                                     wp_reset_postdata(); ?>
@@ -347,9 +348,9 @@ if ( !$query_items->have_posts() ) {
                                         );
                                         $query = new WP_Query($args_coll);
                                         if ($query->have_posts()) {
-                                            ?>
+                                ?>
                                             <?php get_template_part('all_template/filter_right', null, ['mobile' => 1, 'cat' => $cat, 'query' => $query]); ?>
-                                            <?php
+                                <?php
                                         }
                                         wp_reset_postdata();
                                     }
@@ -369,7 +370,7 @@ if ( !$query_items->have_posts() ) {
             <div class="section">
                 <div class="section__header mb-4 d-flex justify-content-between align-items-center">
                     <h2 class="title mb-0">Статьи о займах</h2>
-                    <a href="<?php echo esc_url( get_category_link(38) ); ?>" class="btn btn-primary btn-sm btn-all">
+                    <a href="<?php echo esc_url(get_category_link(38)); ?>" class="btn btn-primary btn-sm btn-all">
                         Все
                         <span class="icon ml-2">
                             <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
@@ -403,7 +404,7 @@ if ( !$query_items->have_posts() ) {
             <div class="section">
                 <div class="section__header d-flex justify-content-between align-items-center mb-4">
                     <h2 class="title mb-0">Отзывы о займах</h2>
-                    <a href="<?php echo esc_url( get_page_link(4975) ); ?>" class="btn btn-primary btn-sm btn-all" data-tax="zaimy">
+                    <a href="<?php echo esc_url(get_page_link(4975)); ?>" class="btn btn-primary btn-sm btn-all" data-tax="zaimy">
                         Все
                         <span class="icon ml-2">
                             <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
@@ -443,7 +444,7 @@ if ( !$query_items->have_posts() ) {
             <div class="section" id="best-products">
                 <div class="section__header d-flex justify-content-between align-items-center mb-4">
                     <h2 class="title mb-0">Лучшие предложения</h2>
-                    <a href="<?php echo esc_url( get_post_type_archive_link('zaimy') ); ?>" class="btn btn-primary btn-sm btn-all">
+                    <a href="<?php echo esc_url(get_post_type_archive_link('zaimy')); ?>" class="btn btn-primary btn-sm btn-all">
                         Все
                         <span class="icon ml-2">
                             <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
@@ -471,32 +472,32 @@ if ( !$query_items->have_posts() ) {
             <!-- / Best Offers Section -->
 
             <!-- FAQ Section -->
-            <?php if ( have_rows('zaimy_faq', 'options') ): ?>
+            <?php if (have_rows('zaimy_faq', 'options')): ?>
                 <div class="section">
                     <div class="section__header d-flex justify-content-between align-items-center mb-4">
                         <h2 class="title mb-0">Часто задаваемые вопросы</h2>
                     </div>
                     <div class="accordion" id="accordion">
                         <?php $faq_counter = 0; ?>
-                        <?php while ( have_rows('zaimy_faq', 'options') ): the_row();
+                        <?php while (have_rows('zaimy_faq', 'options')): the_row();
                             $question = get_sub_field('question');
                             $answer = get_sub_field('answer');
                             $faq_counter++;
                         ?>
                             <div class="accordion__item">
                                 <div class="accordion__header">
-                                    <button class="accordion__button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse__item-<?php echo esc_attr( $faq_counter ); ?>" aria-expanded="false">
-                                        <?php echo esc_html( $question ); ?>
+                                    <button class="accordion__button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse__item-<?php echo esc_attr($faq_counter); ?>" aria-expanded="false">
+                                        <?php echo esc_html($question); ?>
                                         <div class="accordion__button-icon">
                                             <svg width="12" height="6" viewBox="0 0 12 6">
-                                                <use xlink:href="<?php echo esc_url( get_template_directory_uri() . '/img/icons.svg#arrow' ); ?>" width="12" height="6" x="0" y="0"></use>
+                                                <use xlink:href="<?php echo esc_url(get_template_directory_uri() . '/img/icons.svg#arrow'); ?>" width="12" height="6" x="0" y="0"></use>
                                             </svg>
                                         </div>
                                     </button>
                                 </div>
-                                <div id="collapse__item-<?php echo esc_attr( $faq_counter ); ?>" class="accordion__collapse collapse" data-bs-parent="#accordion">
+                                <div id="collapse__item-<?php echo esc_attr($faq_counter); ?>" class="accordion__collapse collapse" data-bs-parent="#accordion">
                                     <div class="accordion__body">
-                                        <p><?php echo esc_html( $answer ); ?></p>
+                                        <p><?php echo esc_html($answer); ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -509,7 +510,7 @@ if ( !$query_items->have_posts() ) {
             <!-- WYSIWYG Text Section -->
             <div class="section">
                 <div class="wysiwyg">
-                    <?php echo wp_kses_post( get_field('zaimy_desc', 'options') ); ?>
+                    <?php echo wp_kses_post(get_field('zaimy_desc', 'options')); ?>
                 </div>
             </div>
             <!-- / WYSIWYG Text Section -->
