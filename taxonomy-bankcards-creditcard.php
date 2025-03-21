@@ -19,6 +19,8 @@ else:
     $cred_limit = 0;
     $cred_day_period = 0;
 
+    $card_bank_link = get_field('card_bank_link', $ID);
+
     // Проверка наличия фильтра в сессии
     if (isset($_SESSION['filter_credit_card']) && !empty($_SESSION['filter_credit_card'])):
         $mt = 1;
@@ -34,9 +36,35 @@ else:
         <div class="start-func-credit-card-filter"></div>
     <?php endif; ?>
 
+    <?php $args = array(
+        'post_type'             => 'bankcard',
+        'posts_per_page'        => -1,
+        'orderby' => 'date',
+        'order' => 'ASC',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'bankcards',
+                'field'    => 'slug',
+                'terms'    => 'creditcard',
+            ),
+        )
+    );
+    $query = new WP_Query($args);
+
+    // Цикл
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $date = get_the_date('d.m.y');
+        }
+    }
+    wp_reset_query() ?>
 
 
-    <main class="newlisting" term="creditcard">
+
+    <main class="newlisting zaimy-new" term="creditcard">
+
+        <!-- Bread crumbs -->
         <div class="container">
             <nav aria-label="breadcrumb" class="horizontal__scroll">
                 <ol class="breadcrumb horizontal__scroll-container">
@@ -45,35 +73,16 @@ else:
                 </ol>
             </nav>
         </div>
+        <!-- /Bread crumbs -->
+
+        <!-- title & description -->
         <div class="page__heading">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="page__heading-title mb-0">Кредитные карты</h1>
-                    <?php $args = array(
-                        'post_type'             => 'bankcard',
-                        'posts_per_page'        => -1,
-                        'orderby' => 'date',
-                        'order' => 'ASC',
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => 'bankcards',
-                                'field'    => 'slug',
-                                'terms'    => 'creditcard',
-                            ),
-                        )
-                    );
-                    $query = new WP_Query($args);
-
-                    // Цикл
-                    if ($query->have_posts()) {
-                        while ($query->have_posts()) {
-                            $query->the_post();
-                            $date = get_the_date('d.m.y');
-                    ?>
-                    <?php }
-                    }
-                    wp_reset_query() ?>
                 </div>
+
+                <!-- description -->
                 <div class="row mb-4 flex-end">
 
                     <div class="page__heading-description col-lg-8 col-sm-12 mt-2">
@@ -81,131 +90,242 @@ else:
                     </div>
                     <div class="page__heading-description-more col-lg-2 col-sm-12 mt-2">Развернуть</div>
                 </div>
+                <!-- /description -->
 
             </div>
 
         </div>
+        <!-- /title & description -->
 
         <!-- page navigation -->
         <div class="page__nav">
             <div class="container">
-                <div class="page__nav-container nav-tabs">
+                <!-- top tab -->
+                <div class="page__nav-container ">
                     <div class="horizontal__scroll">
-                        <div class="horizontal__scroll-container">
-                            <a href="<?php echo get_term_link(2, '') ?>" class="nav-link active">Все кредитные карты</a>
-                            <a href="<?php echo get_page_link(4969); //1503 tax-reviews
-                                        ?>" class="nav-link " data-tax="creditcard">Отзывы</a>
-                            <a href="<?php echo get_page_link(149) ?>" class="nav-link">Калькулятор</a>
-                            <a href="<?php echo get_category_link(32) ?>" class="nav-link">Статьи</a>
-                            <a href="<?php echo get_page_link(380) ?>" class="nav-link">сравнить</a>
-                            <a href="#best-products" class="nav-link">Лучшие предложения</a>
+                        <div class="horizontal__scroll-container-top">
+                            <a href="<?php echo get_term_link(2, '') ?>" class="nav-link-top active">Все кредитные карты</a>
+
+                            <a href="#top" class="nav-link-top">Сравнение</a>
+                            <a href="#popular" class="nav-link-top">Подборки</a>
+                            <a href="#reviews" class="nav-link-top">Отзывы</a>
+                            <a href="#faq" class="nav-link-top">FAQ</a>
+                            <a href="#comments" class="nav-link-top">Комментарии</a>
+                            <a href="#news" class="nav-link-top">Новости и статьи</a>
                         </div>
                     </div>
                 </div>
+                <!-- / top tab -->
 
                 <!-- filter popup -->
+                <div class="new-filter-modal">
+                    <div class="new-filter-modal-content">
+                        <div class="new-filter-modal-close">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <form id="credit-card-filter" action="" method="POST">
+                            <input type="hidden" name="action" value="cardfilter" />
+                            <input type="hidden" name="term" value="creditcard" />
+                            <?php if (!empty($sessfiltercard)): ?>
+                                <input type="hidden" name="sessfiltercard" value="<?= $sessfiltercard; ?>" />
+                            <?php endif; ?>
+                            <h2>Все фильтры</h2>
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
+                                    <div class="range">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="range__label">Кредитный лимит, ₽</div>
+                                            <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" value="<?php echo $cred_limit ?>" min="0">
+                                        </div>
+                                        <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0" value="<?php echo $cred_limit ?>">
 
-                <div class="new-filter-modal mb-3">
-                    <div class="new-filter-modal-close">Close</div>
-                    <form id="credit-card-filter" action="" method="POST">
-                        <input type="hidden" name="action" value="cardfilter" />
-                        <input type="hidden" name="term" value="creditcard" />
-                        <?php if (!empty($sessfiltercard)): ?>
-                            <input type="hidden" name="sessfiltercard" value="<?= $sessfiltercard; ?>" />
-                        <?php endif; ?>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-1">
-                                <div class="range">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="range__label">Кредитный лимит, ₽</div>
-                                        <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" value="<?php echo $cred_limit ?>" min="0">
                                     </div>
-                                    <input max="<?= $filter_price['credit_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0" value="<?php echo $cred_limit ?>">
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-2">
+                                    <div class="range">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="range__label">Льготный период, дней</div>
+                                            <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<?php echo $cred_day_period ?>" min="0">
+                                        </div>
+                                        <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" class="range__input" name="cred_day_period" type="range" min="0" value="<?php echo $cred_day_period ?>">
+                                    </div>
+                                </div>
 
+
+                                <div id="filter__details" class="col-12 show mt-md-4 order-4 order-md-4">
+                                    <div class="row pb-3 pb-md-0">
+                                        <div class="col-12 col-md-4 banks_select">
+                                            <label class="form-label" for="bankSelect">Банки</label>
+                                            <select name="bank" id="bankSelect" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <?php
+                                                $args = array(
+                                                    'posts_per_page' => -1,
+                                                    'post_type' => 'banks',
+                                                    'orderby' => 'name',
+                                                    'order' => 'DESC',
+                                                );
+
+                                                $wp_query = new WP_Query($args);
+
+                                                // Цикл
+                                                if ($wp_query->have_posts()) {
+                                                    $counter = 0;
+                                                    while ($wp_query->have_posts()) {
+                                                        $wp_query->the_post();
+                                                        $counter += 1;
+                                                ?>
+                                                        <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
+                                                <?php
+                                                    }
+                                                } ?>
+                                                <?php wp_reset_query() ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-4 card_cat_select">
+                                            <label class="form-label" for="bankTop">Категория карты</label>
+                                            <select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
+                                                <option value="">Все</option>
+                                                <?php
+                                                $field = get_field_object('card_category', 95);
+                                                //$value = $field['value'];
+                                                //$label = $field['choices'][ $value ];
+                                                if ($field['choices']): ?>
+                                                    <?php foreach ($field['choices'] as $value => $label): ?>
+                                                        <option value="<?php echo $value ?>"><?php echo $label ?></option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-4 grace_period_select">
+                                            <label class="form-label" for="gracePeriod">Льготный период</label>
+                                            <select name="period" id="gracePeriod" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <option value="grc20">до 100 дней</option>
+                                                <option value="grc30">от 100 до 200 дней</option>
+                                                <option value="grc40">более 200 дней</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
+                                    <div class="btn btn-primary btn-block submit-button">Показать</div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-3 col-xl-4 order-2">
-                                <div class="range">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="range__label">Льготный период, дней</div>
-                                        <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<?php echo $cred_day_period ?>" min="0">
+                        </form>
+                    </div>
+                </div>
+                <!-- / filter popup -->
+
+                <!-- calc popup -->
+                <div class="new-calc-modal">
+                    <div class="new-calc-content">
+                        <div class="new-calc-close">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h2>Кредитный калькулятор</h2>
+                        <!-- Блок калькулятора -->
+                        <div class="mt-5" id="calc" data-type="creditCalc">
+                            <div class="calc__content">
+                                <div class="calc-row">
+                                    <div class="col-12 row">
+                                        <div class="calc__content-buttons d-flex pb-3">
+                                            <label class="btn__radio">
+                                                <input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
+                                                <span class="btn__radio-text">Аннуентный</span>
+                                            </label>
+                                            <label class="btn__radio">
+                                                <input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
+                                                <span class="btn__radio-text">Дифференцированный</span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <input max="<?= $filter_price['credit_inputs_range']['day_max']; ?>" class="range__input" name="cred_day_period" type="range" min="0" value="<?php echo $cred_day_period ?>">
+
+                                    <div class="col-12 row">
+
+                                        <div class="calc__field mt-3 mt-md-4 col-md-6">
+                                            <div class="calc__field-wrap">
+                                                <div class="calc__field-label">Кредитный лимит</div>
+                                                <input type="text" class="range__value form-control calc__input" value="1000000" min="0" max="10000000" data-field="limit">
+                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
+                                            </div>
+                                        </div>
+                                        <div class="calc__field d-flex col-md-6">
+                                            <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
+                                                <div class="calc__field-label">Срок / месяц</div>
+                                                <input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
+                                                <input class="range__input calc__input" name="range2" type="range" min="1" max="40" value="10" data-field="date" style="--range-progress:25%;">
+                                            </div>
+                                            <div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
+                                                <div class="calc__field-label">Ставка</div>
+                                                <input type="text" class="range__value form-control calc__input" value="15%" maxlength="6" data-field="percent" pattern="[0-9]*">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 row mt-5">
+                                        <div class="calc-result col-6">
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">Сумма займа</div>
+                                                <div class="calc__value">
+                                                    <span id="calc__sum" class="calc__value-text">8 000 000</span>
+                                                    <span class="calc__value-char">₽</span>
+                                                </div>
+                                            </div>
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">К возврату</div>
+                                                <div class="calc__total-value">
+                                                    <span id="calc__total" class="calc__value-text">9 000 000</span>
+                                                    <span class="calc__value-char">₽</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="calc__total col-6">
+
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">Переплата</div>
+                                                <div class="calc__total-value">
+                                                    <span id="calc__overpay" class="calc__value-text">1 000 000</span>
+                                                    <span class="calc__value-char">₽</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">Окончание кредита</div>
+                                                <div class="calc__total-value">
+                                                    <span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
+                                                </div>
+                                            </div>
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">Платежи в месяц</div>
+                                                <div class="calc__total-value">
+                                                    <span id="calc__payments" class="calc__value-text">500 000</span>
+                                                    <span class="calc__value-char">₽</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-lg-0 order-5 order-md-3">
-                                <div class="btn btn-primary btn-block submit-button">Показать</div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3 col-xl-2 mt-3 mt-lg-0 order-3 order-md-4">
-                                <div class="filter__details">
-                                    <a class="btn btn-outline-alternative btn-block" href="#filter__details" data-bs-toggle="collapse" aria-expanded="false">
-                                        Еще условия
-                                        <svg width="12" height="6" viewBox="0 0 12 6" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M6 6h-.4C4.4 5.8 3.5 5 2 3.5L.3 1.7C-.1 1.3-.1.7.3.3c.4-.4 1-.4 1.4 0l1.7 1.8C4.6 3.2 5.3 3.9 5.8 4h.4c.5-.1 1.2-.8 2.4-1.9L10.3.3c.4-.4 1-.4 1.4 0 .4.4.4 1 0 1.4L10 3.5C8.5 5 7.6 5.8 6.4 6H6Z"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                            <div id="filter__details" class="col-12 collapse mt-md-4 order-4 order-md-5">
-                                <div class="row pb-3 pb-md-0">
-                                    <div class="col-12 col-md-4 banks_select">
-                                        <label class="form-label" for="bankSelect">Банки</label>
-                                        <select name="bank" id="bankSelect" class="styledSelect" placeholder="">
-                                            <option value="">Любой</option>
-                                            <?php
-                                            $args = array(
-                                                'posts_per_page' => -1,
-                                                'post_type' => 'banks',
-                                                'orderby' => 'name',
-                                                'order' => 'DESC',
-                                            );
+                                <div class="row col-12">
 
-                                            $wp_query = new WP_Query($args);
-
-                                            // Цикл
-                                            if ($wp_query->have_posts()) {
-                                                $counter = 0;
-                                                while ($wp_query->have_posts()) {
-                                                    $wp_query->the_post();
-                                                    $counter += 1;
-                                            ?>
-                                                    <option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
-                                            <?php
-                                                }
-                                            } ?>
-                                            <?php wp_reset_query() ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-4 card_cat_select">
-                                        <label class="form-label" for="bankTop">Категория карты</label>
-                                        <select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
-                                            <option value="">Все</option>
-                                            <?php
-                                            $field = get_field_object('card_category', 95);
-                                            //$value = $field['value'];
-                                            //$label = $field['choices'][ $value ];
-                                            if ($field['choices']): ?>
-                                                <?php foreach ($field['choices'] as $value => $label): ?>
-                                                    <option value="<?php echo $value ?>"><?php echo $label ?></option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-4 grace_period_select">
-                                        <label class="form-label" for="gracePeriod">Льготный период</label>
-                                        <select name="period" id="gracePeriod" class="styledSelect" placeholder="">
-                                            <option value="">Любой</option>
-                                            <option value="grc20">до 100 дней</option>
-                                            <option value="grc30">от 100 до 200 дней</option>
-                                            <option value="grc40">более 200 дней</option>
-                                        </select>
-                                    </div>
+                                    <div class="new-calc-btn-close btn btn-outline-primary">Закрыть</div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
                 </div>
+                <!-- / calc popup -->
 
             </div>
         </div>
@@ -357,31 +477,27 @@ else:
                                 echo $posts_html;
                                 ?>
                             </div>
+                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                            wp_reset_query(); ?>
+                            <div class="pagination__description mt-4">
+                                Показано <span class="count_view"><?php echo $counter ?></span>
+                                продуктов из <span class="count_all"><?php echo $query->found_posts; ?></span>
+                            </div>
                             <!-- pagination -->
-                            <div class="pagination flex-column mb-5 mb-md-0">
+                            <div class="pagination flex-column mb-3">
                                 <?php if ($paged < $max_pages): ?>
                                     <button class="btn btn-outline-gray btn-block load_more_btn"
                                         data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
                                         Больше решений
                                     </button>
+
                                 <?php endif; ?>
-                                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                                    <div class="pagination__links">
-                                        <?php my_pagination(); ?>
-                                    </div>
 
-                                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
-                                    wp_reset_query(); ?>
-                                    <div class="pagination__description mt-4 mt-sm-0">
-                                        Показано <span class="count_view"><?php echo $counter ?></span>
-                                        продуктов из <span class="count_all"><?php echo $query->found_posts; ?></span>
-                                    </div>
-                                </div>
                             </div>
-                            <!-- / pagination -->
 
+
+                            <!-- archive posts -->
                             <?php
-
                             $args_archive = array(
                                 'post_type'             => 'bankcard',
                                 'posts_per_page'        => -1,
@@ -397,7 +513,11 @@ else:
                             );
                             $query_archive = new WP_Query($args_archive);
                             if ($query_archive->have_posts()): ?>
-                                <h2 class="title archive_title mt-5">Архивные кредитные карты (<?= $query_archive->found_posts; ?>)</h2>
+                                <button class="btn btn-outline-gray btn-block archive_title mb-4">
+                                    Архивные оферы (<?= $query_archive->found_posts; ?>)
+                                </button>
+
+
                                 <div class="list_posts archive_list archive_hide">
                                     <?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
                                         <?php get_template_part('template-parts/filter-cred-card-posts'); ?>
@@ -405,6 +525,11 @@ else:
                                     wp_reset_postdata(); ?>
                                 </div>
                             <?php endif; ?>
+                            <!-- /archive posts -->
+
+
+
+
 
                             <div class="d-xs-block d-lg-none">
                                 <?php
@@ -455,104 +580,360 @@ else:
 
 
 
+
                         </div>
                     </div>
                     <!-- / list -->
+
+
                     <!-- / pagination -->
+
+
+                </div>
+                <div class="section">
+                    <div class="list-info">
+                        <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
+                        <?php if ($date_actually): ?>
+                            <p>Дата обновления информации: <?= $date_actually ?></p>
+                        <?php endif; ?>
+                        <p>Наиболее актуальные условия и тарифы мы рекомендуем узнавать на официальном сайте банков и в отделениях</p>
+                    </div>
                 </div>
             </div>
             <?php wp_reset_query(); ?>
             <!-- / credits list -->
-            <!-- articles -->
-            <div class="section">
-                <div class="section__header mb-4 d-flex justify-content-between align-items-center">
-                    <h2 class="title mb-0">Статьи о кредитных картах</h2>
-                    <a href="<?php echo get_category_link('32') ?>" class="btn btn-primary btn-sm btn-all">
-                        Все
-                        <span class="icon ml-2">
-                            <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
-                            </svg>
-                        </span>
-                    </a>
+
+
+
+            <!-- best offers month -->
+            <div class="section" id="best-products">
+                <div class="section__header d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="title mb-0">Предложения месяца</h2>
+
                 </div>
-                <div class="horizontal__scroll row mb-5 mb-md-6">
+                <div class="horizontal__scroll row">
                     <div class="horizontal__scroll-container">
                         <?php
                         $args = array(
-                            'post_type' => 'post',
-                            'cat' => 32,
-                            'posts_per_page' => 4,
-                            //    'meta_key' => 'views',
-                            //    'orderby' => array( 'meta_value_num' => 'desc', 'name' => 'desc' ),
-                            //    'order' => 'DESC',
+                            'post_type'             => 'bankcard',
+                            'posts_per_page'        => 8,
+                            'meta_key' => 'ratings_average',
+                            'orderby' => 'meta_value_num',
+                            'order' => 'DESC',
+                            'tax_query' => array(
+                                array(
+                                    'taxonomy' => 'bankcards',
+                                    'field'    => 'slug',
+                                    'terms'    =>  'creditcard',
+                                ),
+                            )
                         );
-                        $wp_query = new WP_Query($args);
-                        if ($wp_query->have_posts()) {
-                            while ($wp_query->have_posts()) {
-                                $wp_query->the_post(); ?>
+
+                        $query = new WP_Query($args);
+
+                        // Цикл
+                        if ($query->have_posts()) {
+                            while ($query->have_posts()) {
+                                $query->the_post();
+
+                        ?>
                                 <!-- item -->
-                                <div class="article__item card card__vertical size4 offer h-100">
-                                    <div class="card-container p-3 d-xl-flex flex-xl-column">
-                                        <?php if (get_the_post_thumbnail_url()): ?>
-                                            <div class="card__image">
-                                                <img
-                                                    src="<?php echo the_post_thumbnail_url() ?>"
-                                                    alt="<?= get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
+                                <div class="main-page card card__vertical size4 offer h-100">
+                                    <div class="card-container p-3">
+                                        <div class="card__header mb-2 d-flex">
+                                            <div class="card__header-img">
+                                                <img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
+                                                                                <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
+                                                    alt="<?
+                                                            $bank_id = get_field('bank_logo', $bank_choise_rel, false);
+                                                            $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
+                                                            echo $bank_alt;
+                                                            ?>">
                                             </div>
-                                        <?php endif; ?>
-                                        <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
-                                        <a href="<?php echo the_permalink() ?>" class="article__title h4 stretched-link"><?php echo the_title() ?></a>
-                                        <div class="mt-auto">
-                                            <div class="d-flex align-items-center mt-2">
-                                                <div class="card__icon d-flex align-items-center mr-3">
-                                                    <div class="mr-2"><svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
-                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#eye" x="0" y="0"></use>
-                                                        </svg></div>
-                                                    <?php echo the_field('views') ?>
-                                                </div>
-                                                <div class="position-relative card__icon d-flex align-items-center mr-3">
-                                                    <div class="mr-2"><a href="<?php the_permalink() ?>#comments" data-target="comments" class="stretched-link"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
-                                                            </svg></a></div>
-                                                    <?php echo comments_number('0', '1', '%'); ?>
-                                                </div>
-                                                <div class="card__like d-flex align-items-center ml-auto">
-                                                    <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
-                                                </div>
+                                            <div class="card__header-title"><a href="<?php echo the_permalink() ?>">
+                                                    <?php
+                                                    $alter_title1 = get_field('alter_title');
+
+                                                    if ($alter_title1) {
+                                                        echo $alter_title1;
+                                                    } else {
+                                                        echo get_the_title();
+                                                    }
+                                                    ?>
+
+                                                </a></div>
+                                        </div>
+
+
+
+                                        <ul class="leaders">
+                                            <div class="bank__item-footer text-center  pb-2 mt-2">
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Лимит</div>
+                                                    <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Обслуживание</div>
+                                                    <div class="leaders__item-value"><?php echo the_field('card_cost') ?> ₽</div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Без %</div>
+                                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
+
+                                                                                        echo $field['label'] ?></div>
+                                                </li>
+
                                             </div>
-                                            <?php $author_id = get_field('page_author');
-                                            if ($author_id):
-                                            ?>
-                                                <div class="card__author d-flex align-items-center mt-3">
-                                                    <div class="card__author-img">
-                                                        <?php get_template_part('all_template/image_and_alt/card_author-img', null, $author_id); ?>
-                                                    </div>
-                                                    <div class="card__author-content">
-                                                        <a href="<?php echo get_permalink($author_id) ?>" class="card__author-title"><?php echo get_the_title($author_id) ?></a>
-                                                        <div class="rating d-flex align-items-center">
-                                                            <?php echo do_shortcode('[ratings id="' . $author_id . '"]'); ?>
-                                                        </div>
-                                                    </div>
+                                        </ul>
+                                        <div class="card__actions mt-3 d-flex">
+                                            <?php if ($card_bank_link): ?>
+                                                <div class="card__actions-btns">
+                                                    <a href="<?php echo esc_url($card_bank_link); ?>"
+                                                        target="_blank"
+                                                        onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                                                        class="apply_now_btm btn btn-primary btn-block">
+                                                        Оформить
+                                                    </a>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="card__actions-btns">
+                                                    <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                        target="_blank"
+                                                        onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                                                        class="apply_now_btm btn btn-primary btn-block">
+                                                        Оформить 0
+                                                    </a>
                                                 </div>
                                             <?php endif; ?>
+
                                         </div>
+
                                     </div>
                                 </div>
                                 <!-- / item -->
-                        <?php }
-                        } ?>
-                        <?php wp_reset_query() ?>
+                        <?php
+                            }
+                        }
+                        // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                        wp_reset_postdata();
+                        ?>
                     </div>
                 </div>
             </div>
-            <!-- / articles -->
+            <!-- / best offers month -->
 
-            <!-- similar offers -->
+            <!-- top offers -->
+            <div id="top" class="section anchor">
+                <div class="section__header d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="title mb-0">Сравнение условий ТОП предложений месяца</h2>
+                </div>
+                <div class="top-offers-wrapper">
+                    <div class="top-offers-head">
+                        <div class="item">Карта</div>
+                        <div class="item">Лимит</div>
+                        <div class="item">Обслуживание</div>
+                        <div class="item">Без %</div>
+                    </div>
+                    <ul>
+                        <?php
+                        $argstop = array(
+                            'post_type'             => 'bankcard',
+                            'posts_per_page'        => 16,
+                            'meta_key' => 'ratings_average',
+                            'orderby' => 'meta_value_num',
+                            'order' => 'DESC',
+                            'tax_query' => array(
+                                array(
+                                    'taxonomy' => 'bankcards',
+                                    'field'    => 'slug',
+                                    'terms'    =>  'creditcard',
+                                ),
+                            )
+                        );
 
-            <!-- / similar offers -->
+                        $querytop = new WP_Query($argstop);
+
+                        // Цикл
+                        if ($querytop->have_posts()) {
+                            while ($querytop->have_posts()) {
+                                $querytop->the_post();
+
+                        ?>
+                                <li>
+                                    <div class="card__header-img">
+                                        <img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
+                                                                                <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
+                                            alt="<?
+                                                    $bank_id = get_field('bank_logo', $bank_choise_rel, false);
+                                                    $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
+                                                    echo $bank_alt;
+                                                    ?>">
+                                        <a href="<?php echo the_permalink() ?>">
+                                            <?php //echo get_the_title($bank_choise_rel) 
+                                            ?>
+                                            <?php
+                                            $alter_title1 = get_field('alter_title');
+
+                                            if ($alter_title1) {
+                                                echo $alter_title1;
+                                            } else {
+                                                echo get_the_title();
+                                            }
+                                            ?>
+                                        </a>
+                                    </div>
+
+
+
+                                    <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
+
+                                    <div class="leaders__item-value"><?php echo the_field('card_cost') ?> ₽</div>
+
+                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
+
+                                                                        echo $field['label'] ?></div>
+
+
+
+                                </li>
+
+
+
+
+
+                        <?php
+                            }
+                        }
+                        // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                        wp_reset_postdata();
+                        ?>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Popular -->
+            <div id="popular" class="section anchor">
+                <div class="section__header d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="title mb-0">Популярные категории</h2>
+                </div>
+                <div class="popular-products">
+
+                    <?php
+                    $massiv_vhodnih_parametrov = array(
+                        'container' => '',
+                        'depth' => 0,
+                        'echo' => false,
+                        'link_class' => 'filter__btn',
+                        'theme_location' => 'sidebar_menu_creditcard',
+                        'before' => '<div class="filter__section" id="collist">',
+                        'after' => '</div>',
+                    );
+                    ?>
+                    <?php echo strip_tags(wp_nav_menu($massiv_vhodnih_parametrov), '<a>,'); ?>
+
+                    <div class="popular-products-wrapp">
+                        <?php
+                        $args = array(
+                            'hide_empty' => true,
+                            'taxonomy'   => 'tags-category',
+                        );
+
+                        $cats = get_categories($args);
+
+                        if ($cats) {
+                            // ID категорий, которые НЕ ДОЛЖНЫ выводиться
+                            $exclude_categories = array(98); // Запретим вывод ID 99 и 150
+
+                            // Массив с желаемым порядком категорий (ID категории => порядок сортировки)
+                            $custom_order = array(
+                                97  => 1, // Эта категория будет первой
+
+                            );
+
+                            // Функция сортировки по пользовательскому порядку
+                            usort($cats, function ($a, $b) use ($custom_order) {
+                                $orderA = $custom_order[$a->term_id] ?? PHP_INT_MAX; // Если ID нет в массиве, ставим в конец
+                                $orderB = $custom_order[$b->term_id] ?? PHP_INT_MAX;
+                                return $orderA - $orderB;
+                            });
+
+                            $first_category = 0;
+
+                            foreach ($cats as $cat) {
+                                // Проверяем, есть ли ID категории в массиве исключений
+                                if (in_array($cat->term_id, $exclude_categories)) {
+                                    continue; // Пропускаем категорию и НЕ выводим её
+                                }
+                                $args_coll = array(
+                                    'post_type' => 'collection',
+                                    'taxonomy'  => 'tags-category',
+                                    'tax_query' => [
+                                        [
+                                            'taxonomy' => 'tags-category',
+                                            'terms'    => $cat->term_id,
+                                            'field'    => 'id',
+                                            'operator' => 'IN',
+                                        ]
+                                    ],
+                                    'posts_per_page' => -1,
+                                    'orderby'        => 'date',
+                                    'order'          => 'DESC',
+                                    'meta_query'     => array(
+                                        array(
+                                            'key'     => 'coll-type',
+                                            'value'   => 'creditcard',
+                                            'compare' => '=',
+                                        ),
+                                    )
+                                );
+
+                                $query = new WP_Query($args_coll);
+                                if ($query->have_posts()) {
+                        ?>
+                                    <div class="filter">
+
+                                        <div class="filter-title"><?= $cat->name; ?> (<?= $cat->term_id; ?>)</div>
+                                        <div class="filter__section" id="collist_<?= $cat->term_id; ?>">
+                                            <?php $counter_col = 0; ?>
+                                            <?php while ($query->have_posts()) {
+                                                $query->the_post();
+                                                $counter_col += 1;
+                                            ?>
+                                                <a class="filter__btn 
+                            <?php if ($first_category !== 0 && $counter_col > 0) echo 'coll_li coll__hidden'; ?>
+                            <?php if ($current_id == get_the_ID()) echo ' active_post'; ?>"
+                                                    href="<?php the_permalink(); ?>">
+                                                    <?php the_title(); ?>
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+
+                                        <?php if ($first_category !== 0 && $counter_col > 0): ?>
+                                            <button class="btn__collmore_cat" data-text-open="" data-text-hide="" data-id="collist_<?= $cat->term_id; ?>">
+                                                <span class="btn__collmore-icon">
+                                                    <svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M1 1L3.09677 3.20371C4.7689 4.96113 5.60497 5.83984 6.624 5.97514C6.87367 6.00829 7.12633 6.00829 7.376 5.97514C8.39503 5.83984 9.2311 4.96113 10.9032 3.20371L13 1" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" />
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        <?php endif; ?>
+                                    </div>
+                        <?php
+                                    $first_category++; // Увеличиваем счётчик
+                                }
+                                wp_reset_query();
+                            }
+                        }
+                        ?>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / popular -->
+
+
             <!-- card reviews -->
-            <div class="section">
+            <div id="reviews" class="section anchor">
                 <div class="section__header d-flex justify-content-between align-items-center mb-4">
                     <h2 class="title mb-0">Отзывы о кредитных картах</h2>
                     <a href="<?php echo  get_page_link(4969); //1503 tax-reviews 
@@ -676,155 +1057,10 @@ else:
                 </div>
             </div>
             <!-- / card reviews -->
-            <!-- best offers -->
-            <div class="section" id="best-products">
-                <div class="section__header d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="title mb-0">Лучшие предложения </h2>
-                    <a href="" class="btn btn-primary btn-sm btn-all">
-                        Все
-                        <span class="icon ml-2">
-                            <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
-                            </svg>
-                        </span>
-                    </a>
-                </div>
-                <div class="horizontal__scroll row">
-                    <div class="horizontal__scroll-container">
-                        <?php
-                        $args = array(
-                            'post_type'             => 'bankcard',
-                            'posts_per_page'        => 4,
-                            'meta_key' => 'ratings_average',
-                            'orderby' => 'meta_value_num',
-                            'order' => 'DESC',
-                            'tax_query' => array(
-                                array(
-                                    'taxonomy' => 'bankcards',
-                                    'field'    => 'slug',
-                                    'terms'    =>  'creditcard',
-                                ),
-                            )
-                        );
 
-                        $query = new WP_Query($args);
-
-                        // Цикл
-                        if ($query->have_posts()) {
-                            while ($query->have_posts()) {
-                                $query->the_post();
-
-
-                                // if($_GET['test']){
-                                //     $posttype = get_term(get_the_id());
-                                //     print_r2($posttype);
-                                //     echo 123;
-                                // }
-
-                        ?>
-                                <!-- item -->
-                                <div class="card card__vertical size4 offer h-100">
-                                    <div class="card-container p-3">
-                                        <div class="card__header mb-2 d-flex">
-                                            <div class="card__header-img">
-                                                <img src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
-                                                <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
-                                                    alt="<?
-                                                            $logo_id = get_field('bank_logo', $bank_choise_rel, false);
-                                                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                            echo $logo_alt;
-                                                            ?>">
-                                            </div>
-                                            <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
-                                        </div>
-                                        <div class="card__header-info d-flex align-items-center">
-                                            <div class="card__rating d-flex align-items-center mr-3">
-                                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                                        <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
-                                                    </svg></div>
-                                                <?php echo the_field('ratings_average'); ?>
-                                            </div>
-                                            <div class="position-relative card__icon d-flex align-items-center mr-3">
-                                                <div class="mr-2"><a href="<?php the_permalink() ?>#comments" data-target="comments" class="stretched-link"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
-                                                        </svg></a></div>
-                                                <?php $comments_count = wp_count_comments(get_the_ID());
-                                                echo $comments_count->approved ?>
-                                            </div>
-                                            <div class="card__like d-flex align-items-center">
-                                                <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
-                                            </div>
-                                            <div class="card__header-actions ml-auto">
-                                                <a href=""><svg width="20" height="20" viewBox="0 0 20 20">
-                                                        <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#circledots" x="0" y="0"></use>
-                                                    </svg></a>
-                                            </div>
-                                        </div>
-                                        <div class="card__image my-3">
-                                            <a href="<?php echo the_permalink() ?>">
-                                                <img
-                                                    src="<?php echo the_field('card_logo') ?>"
-                                                    alt="<?
-                                                            $logo_id = get_field('card_logo', get_the_ID(), false);
-                                                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                            echo $logo_alt;
-                                                            ?>"></a>
-                                        </div>
-                                        <ul class="leaders">
-                                            <li class="leaders__item mb-1">
-                                                <div class="leaders__item-title">Лимит</div>
-                                                <div class="leaders__item-value"><?php echo the_field('card_cred_limit') ?> р</div>
-                                            </li>
-                                            <li class="leaders__item mb-1">
-                                                <div class="leaders__item-title">Без %</div>
-                                                <div class="leaders__item-value"><?php $field = get_field('card_period');
-                                                                                    //$value = $field['value'];
-                                                                                    //$label = $field['choices'][ $value ];
-                                                                                    echo $field['label'] ?></div>
-                                            </li>
-                                            <li class="leaders__item mb-1">
-                                                <div class="leaders__item-title">Кэшбек</div>
-                                                <div class="leaders__item-value"><?= get_field('card_cashback'); ?></div>
-                                            </li>
-                                            <li class="leaders__item mb-1">
-                                                <div class="leaders__item-title">Ставка</div>
-                                                <div class="leaders__item-value">от <?php echo the_field('card_stavka') ?>%</div>
-                                            </li>
-                                        </ul>
-                                        <div class="card__actions mt-3 d-flex">
-                                            <a href="<?php echo the_permalink() ?>" class="btn btn-outline-primary btn-sm btn-block font-weight-normal">Подробнее</a>
-                                            <a class="btn__compare btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center ml-3" data-id="<?php echo get_the_id() ?>" data-tax="<?php echo 'creditcard'; ?>">
-                                                <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
-                                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        <div class="card__footer mt-3">
-                                            <p>
-                                                <span><?php echo the_field('bank_phone', $bank_choise_rel) ?></span>
-                                                <span><?php echo the_field('bank_email', $bank_choise_rel) ?></span>
-                                                <span>Лицензия: <?php echo the_field('bank_license', $bank_choise_rel) ?></span>
-                                                <span><?php echo the_field('views', get_the_id()) ?> заявок</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- / item -->
-                        <?php
-                            }
-                        }
-                        // Возвращаем оригинальные данные поста. Сбрасываем $post.
-                        wp_reset_postdata();
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <!-- / best offers -->
             <!-- faq -->
-
-
             <?php if (have_rows('type_faq', $term)): ?>
-                <div class="section">
+                <div id="faq" class="section">
                     <div class="section__header d-flex justify-content-between align-items-center mb-4">
                         <h2 class="title mb-0">Часто задавемые вопросы</h2>
                     </div>
@@ -855,6 +1091,145 @@ else:
                 </div>
             <?php endif; ?>
             <!-- / faq -->
+
+            <!-- articles -->
+            <div id="news" class="section anchor">
+                <div class="section__header mb-4 d-flex justify-content-between align-items-center">
+                    <h2 class="title mb-0">Статьи о кредитных картах</h2>
+                    <a href="<?php echo get_category_link('32') ?>" class="btn btn-primary btn-sm btn-all">
+                        Все
+                        <span class="icon ml-2">
+                            <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+                <div class="horizontal__scroll row mb-5 mb-md-6">
+                    <div class="horizontal__scroll-container">
+                        <?php
+                        $args = array(
+                            'post_type' => 'post',
+                            'cat' => 32,
+                            'posts_per_page' => 4,
+                            //    'meta_key' => 'views',
+                            //    'orderby' => array( 'meta_value_num' => 'desc', 'name' => 'desc' ),
+                            //    'order' => 'DESC',
+                        );
+                        $wp_query = new WP_Query($args);
+                        if ($wp_query->have_posts()) {
+                            while ($wp_query->have_posts()) {
+                                $wp_query->the_post(); ?>
+                                <!-- item -->
+                                <div class="article__item card card__vertical size4 offer h-100">
+                                    <div class="card-container p-3 d-xl-flex flex-xl-column">
+                                        <?php if (get_the_post_thumbnail_url()): ?>
+                                            <div class="card__image">
+                                                <img
+                                                    src="<?php echo the_post_thumbnail_url() ?>"
+                                                    alt="<?= get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
+                                        <a href="<?php echo the_permalink() ?>" class="article__title h4 stretched-link"><?php echo the_title() ?></a>
+                                        <div class="mt-auto">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <div class="card__icon d-flex align-items-center mr-3">
+                                                    <div class="mr-2"><svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#eye" x="0" y="0"></use>
+                                                        </svg></div>
+                                                    <?php echo the_field('views') ?>
+                                                </div>
+                                                <div class="position-relative card__icon d-flex align-items-center mr-3">
+                                                    <div class="mr-2"><a href="<?php the_permalink() ?>#comments" data-target="comments" class="stretched-link"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                                            </svg></a></div>
+                                                    <?php echo comments_number('0', '1', '%'); ?>
+                                                </div>
+                                                <div class="card__like d-flex align-items-center ml-auto">
+                                                    <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                                                </div>
+                                            </div>
+                                            <?php $author_id = get_field('page_author');
+                                            if ($author_id):
+                                            ?>
+                                                <div class="card__author d-flex align-items-center mt-3">
+                                                    <div class="card__author-img">
+                                                        <?php get_template_part('all_template/image_and_alt/card_author-img', null, $author_id); ?>
+                                                    </div>
+                                                    <div class="card__author-content">
+                                                        <a href="<?php echo get_permalink($author_id) ?>" class="card__author-title"><?php echo get_the_title($author_id) ?></a>
+                                                        <div class="rating d-flex align-items-center">
+                                                            <?php echo do_shortcode('[ratings id="' . $author_id . '"]'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- / item -->
+                        <?php }
+                        } ?>
+                        <?php wp_reset_query() ?>
+                    </div>
+                </div>
+            </div>
+            <!-- / articles -->
+
+            <!-- new-comments -->
+            <div id="comments" class="section">
+                <h2 class="title mb-3">Комментарии</h2>
+                <div class="additional-comments">
+                    <?php
+                    $current_post_id = get_the_ID();
+                    display_additional_comments($current_post_id);
+                    ?>
+                </div>
+                <div class="btn btn-primary" id="openAdditionalCommentForm">
+                    Написать комментарий
+                </div>
+
+            </div>
+            <div class="new-comment-form">
+                <?php // if (is_user_logged_in()): 
+                ?>
+                <!-- <h3>Оставить комментарий</h3> -->
+                <form id="additional-comment-form" method="post" class="row additional-comment-form">
+                    <input type="hidden" name="action" value="handle_additional_comment_ajax">
+                    <input type="hidden" name="additional_comment_nonce" value="<?php echo wp_create_nonce('additional_comment_form'); ?>">
+                    <div class="form-group col-12 col-md-6">
+                        <!-- <label for="author_name">Имя</label> -->
+                        <div class="mb-3">
+                            <input type="text" id="author_name" name="acf[field_675ae76ee8992]" class="form-control" placeholder="Имя*" required>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <!-- <label for="author_email">E-Mail</label> -->
+                        <div class="mb-3">
+                            <input type="email" id="author_email" name="acf[field_675ae7d4b0bdc]" class="form-control" placeholder="E-Mail*" required>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-12">
+                        <!-- <label for="comment_content">Комментарий</label> -->
+                        <textarea id="comment_content" name="acf[field_675ae80ab0bdd]" class="form-control" rows="4" placeholder="Ваш комментарий*" required></textarea>
+                    </div>
+                    <div class="form-comment__bottom">* - Обязательно заполнить</div>
+                    <input type="hidden" name="acf[field_related_post]" value="<?php echo get_the_ID(); ?>" />
+                    <div class="col-12">
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary px-5">Отправить</button>
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+            <!-- /new-comments -->
+
             <!-- wysiwyg text -->
             <div class="section">
                 <div class="wysiwyg">
@@ -866,11 +1241,126 @@ else:
                 <?php endif; ?>
             </div>
             <!-- / wysiwyg text -->
+
+            <!-- footer-raiting -->
+            <div class="section">
+                <div class="container">
+                    <div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
+                        <?php
+                        $title = get_sub_field('title', $term);
+                        echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
+                        // Дополнительный рейтинговый блок
+                        if (have_rows('additional_ratings_list', $term)) :
+                            $additional_index = 0;
+                            while (have_rows('additional_ratings_list', $term)) : the_row();
+                                $title = get_sub_field('title', $term);
+                                $rating_total = get_sub_field('rating_total', $term);
+                                $rating_count = get_sub_field('rating_count', $term);
+
+                                // Вычисляем средний рейтинг
+                                if ($rating_total && $rating_count) {
+                                    $average_rating = $rating_total / $rating_count;
+                                    $average_rating = round($average_rating, 1);
+                                } else {
+                                    $average_rating = 0;
+                                }
+
+                                if ($title || $average_rating > 0) :
+                                    echo '<div class="rating-item" data-rating-index="' . $additional_index . '" data-rating-block="additional_ratings_list">';
+                                    if ($title) {
+                                        echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
+                                    }
+
+                                    if ($average_rating > 0) {
+                                        // Передаём правильный блок в функцию отображения рейтинга
+                                        display_star_rating($average_rating, 'additional_ratings_list');
+                                    } else {
+                                        echo '<div class="stars">';
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            echo '<span class="star" data-value="' . $i . '" data-rating-block="additional_ratings_list">☆</span>';
+                                        }
+                                        echo '</div>';
+                                    }
+
+                                    // Добавляем элемент для отображения числового рейтинга
+                                    echo '<div class="rating-stat">';
+                                    echo 'Оценок ' . ($rating_count > 0 ? $rating_count : '0') . ', ';
+                                    echo 'среднее <span class="average-rating">' . ($average_rating > 0 ? $average_rating : '0') . '</span> из 5';
+                                    echo '</div>';
+
+                                endif;
+
+                                $additional_index++;
+                            endwhile;
+                        endif;
+                        ?>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- / footer-raiting -->
         </div>
 
     </main>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function toggleModal(modalSelector) {
+                var modal = document.querySelector(modalSelector);
+                if (modal) {
+                    modal.classList.toggle("active");
+                }
+            }
+
+            function closeModal(modalSelector) {
+                var modal = document.querySelector(modalSelector);
+                if (modal) {
+                    modal.classList.remove("active");
+                }
+            }
+
+            // Универсальная функция для кликов по кнопкам
+            function setupModalToggle(buttonSelector, modalSelector) {
+                document.querySelectorAll(buttonSelector).forEach(function(btn) {
+                    btn.addEventListener("click", function() {
+                        toggleModal(modalSelector);
+                    });
+                });
+            }
+
+            function setupModalClose(buttonSelector, modalSelector) {
+                document.querySelectorAll(buttonSelector).forEach(function(btn) {
+                    btn.addEventListener("click", function() {
+                        closeModal(modalSelector);
+                    });
+                });
+            }
+
+            // Фильтр
+            setupModalToggle(".filtr-butt", ".new-filter-modal");
+            setupModalClose(".new-filter-modal-close", ".new-filter-modal");
+
+            // Калькулятор
+            setupModalToggle(".calc-butt", ".new-calc-modal");
+            setupModalClose(".new-calc-close, .new-calc-btn-close", ".new-calc-modal");
+
+            // Закрытие модального окна при клике вне области .new-calc-content и .new-filter-content
+            document.addEventListener("click", function(event) {
+                document.querySelectorAll(".new-filter-modal, .new-calc-modal").forEach(function(modal) {
+                    let isClickInsideContent = event.target.closest(".new-filter-content, .new-calc-content");
+                    let isClickInsideModal = event.target.closest(".new-filter-modal, .new-calc-modal");
+                    let isClickOnButton = event.target.closest(".filtr-butt, .calc-butt");
+
+                    if (modal.classList.contains("active") && !isClickInsideContent && isClickInsideModal && !isClickOnButton) {
+                        modal.classList.remove("active");
+                    }
+                });
+            });
+        });
+
+
         document.addEventListener('DOMContentLoaded', () => {
+
             const moreButton = document.querySelector('.page__heading-description-more');
             const descriptionElement = document.querySelector('.page__heading-description');
 
@@ -883,25 +1373,26 @@ else:
                 });
             }
 
-            var filterButtons = document.querySelectorAll(".filtr-butt");
-            filterButtons.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    var modal = document.querySelector(".new-filter-modal");
-                    if (modal) {
-                        modal.classList.add("active");
-                    }
-                });
+
+
+
+            const openAdCommentForm = document.getElementById("openAdditionalCommentForm");
+
+            const adCommentForm = document.getElementById("additional-comment-form");
+
+            openAdCommentForm.addEventListener("click", () => {
+                adCommentForm.classList.add("active");
             });
 
-            // При клике на элемент с классом new-filter-modal-close убираем класс active у new-filter-modal
-            var closeButtons = document.querySelectorAll(".new-filter-modal-close");
-            closeButtons.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    var modal = document.querySelector(".new-filter-modal");
-                    if (modal) {
-                        modal.classList.remove("active");
-                    }
-                });
+
+
+
+            const openCommentForm = document.getElementById("openCommentForm");
+
+            const commentForm = document.getElementById("commentForm");
+
+            openCommentForm.addEventListener("click", () => {
+                commentForm.classList.add("active");
             });
 
 

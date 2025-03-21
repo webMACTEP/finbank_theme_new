@@ -645,6 +645,7 @@
         box-shadow: none;
         border-radius: 0;
     }
+    .anchor,
     #faq,
     #best-offers,
     #comments,
@@ -652,6 +653,7 @@
     #content-lk,
     #content-contacts,
     #content-promo {
+
         padding-top: 70px; /* Высота вашего хедера */
         margin-top: -70px; /* Отрицательный отступ равный высоте хедера */
     }
@@ -1414,6 +1416,18 @@
     }
 }
 .newlisting {
+    .nav-link {
+        font-size: 14px;
+    }
+    .horizontal__scroll-container-top {
+        display: flex;
+        gap: 2rem;
+    }
+    .nav-link-top {
+        text-transform: uppercase;
+        font-size: 13px;
+        color: var(--tab-color);
+    }
     .open__dop-btn {
         width: auto;
     }
@@ -1498,8 +1512,9 @@
             display: none; /* Chrome, Safari, Opera */
         }
 
-        .new-tab-content {
-            padding: 20px;
+        .new-tab-content,
+        .new-calc-content {
+            padding: 2rem;
             border-radius: 12px;
             width: 900px;
             max-height: 80vh;
@@ -1582,6 +1597,12 @@
             min-width: fit-content;
         }
         .item-info {
+            a {
+                display: -webkit-box;
+                -webkit-line-clamp: 1; /* Ограничиваем текст двумя строками */
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
             .item-title {
                 font-size: 14px;
                 max-width: 250px;
@@ -1607,6 +1628,7 @@
         }
         .item-image {
             img {
+                border-radius: 12px;
                 max-height: 72px;
             }
         }
@@ -1686,6 +1708,140 @@
             color: var(--gray-700);
         }
     }
+    .btn-primary {
+        color: var(--btn-primary-color) !important;
+        cursor: pointer;
+    }
+    .filter__section {
+        border-bottom: none;
+    }
+    .btn__collmore_cat {
+        &.btn__collmore_visible {
+            transform: rotate(180deg);
+        }
+    }
+    .btn__collmore-icon {
+        border: none;
+        border-radius: 0;
+        svg{
+            path{
+                stroke: var(--black);
+            }
+        }
+        &::after {
+            display: none;
+        }
+        &::before {
+            display: none;
+        }
+    }
+    .filter__btn{
+        color: var(--gray-600);
+        &:hover {
+          color: #14b8ad;
+        }
+    }
+    #best-products{
+        .size4 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 290px;
+            flex: 0 0 290px;
+            width: 290px;
+        }
+        .card {
+            max-width: 100%;
+        }
+        .horizontal__scroll-container {
+            -ms-flex-wrap: nowrap !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto;
+            position: relative;
+            -ms-scroll-snap-type: x mandatory;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+    }
+    .popular-products-wrapp {
+        .btn__collmore-icon {
+            margin-right: 0;
+        }
+        .filter-title {
+            padding: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn__collmore_cat {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+        .filter {
+            position: relative;
+            margin-bottom: 1rem;
+            //width: calc(33.333% - 11px) ;
+        }
+        // display: flex;
+        // flex-wrap: wrap;
+        // display: grid;
+        // grid-template-columns: repeat(3, 1fr);
+
+        // gap: 1rem;
+        // align-items: start;
+        columns: 3;
+    }
+    .card__actions {
+        .card__actions-btns {
+            min-width: 100%;
+        }
+    }
+    .top-offers-wrapper {
+        border-radius: 12px;
+        padding: 1.25rem 2.25rem;
+        background: var(--card-bg);
+        .top-offers-head {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 1rem;
+            .item {
+                &:first-child {
+                    min-width: 300px;
+                }
+                min-width: 100px;
+                text-align: left;
+                font-size: 14px;
+                color: var(--gray-700);
+            }
+        }
+        .card__header-img {
+            margin: 0px;
+
+            min-width: 300px;
+            border-radius: 0;
+
+            img {
+                width: 36px;
+                border-radius: 6px;
+                margin: 0px 20px 0px 0px;
+            }
+        }
+        ul {
+            margin: 0px 0px 0px 0px;
+            display: flex;
+            flex-direction: column;
+            //gap: 1rem;
+            li {
+                .leaders__item-value {
+                    min-width: 100px;
+                    text-align: left;
+                }
+                display: flex;
+                justify-content: space-between;
+                list-style-type: none;
+                border-top: 1px solid var(--border-color);
+                padding: 10px 1rem;
+            }
+        }
+    }
     .filtr-butt,
     .calc-butt {
         border: 1px solid;
@@ -1748,6 +1904,7 @@
 
         background: var(--white);
         width: 36px;
+        min-width: 36px;
         height: 36px;
 
         border-radius: 36px;
@@ -1762,8 +1919,57 @@
     #credit-card-filter {
         //display: none;
     }
-    .new-filter-modal{
+
+    .calc__content {
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+    .new-calc-btn-close {
+        margin-top: 1rem;
+        margin-left: auto;
+        cursor: pointer;
+    }
+    .new-calc-close,
+    .new-filter-modal-close {
+        position: absolute;
+        top: -32px;
+        right: -32px;
+        background: #14b8ad;
+        width: 32px;
+        height: 32px;
+        border-radius: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .new-calc-content,
+    .new-filter-modal-content {
+        padding: 2rem;
+        border-radius: 12px;
+        width: 900px;
+        max-height: 80vh;
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-450px);
+        background: var(--white);
+    }
+    .new-filter-modal-show {
+        margin-left: auto;
+    }
+    .new-calc-modal,
+    .new-filter-modal {
         display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background: rgba(98, 107, 132, 0.4235294118);
         &.active {
             display: block;
         }
@@ -1867,11 +2073,38 @@
     }
 
     .list_posts {
+        .card__field-title {
+            font-size: 14px;
+        }
+        .card__field-num {
+            font-weight: 400;
+        }
+        .rait-cards {
+            display: none;
+        }
         &.cards {
+            .rait-cards {
+                display: block;
+                margin: 10px 0px 10px 0px;
+            }
+            .rait-hor {
+                display: none;
+            }
+
+            .item-column {
+                flex-direction: row;
+                justify-content: space-between;
+            }
             flex-direction: row;
             flex-wrap: wrap;
 
             .card {
+                .item-image {
+                    img {
+                        border-radius: 12px;
+                        max-height: 46px;
+                    }
+                }
                 .btn-block {
                     min-width: 170px;
                 }
@@ -1880,16 +2113,20 @@
                 }
                 .item-buttons {
                     justify-content: space-between;
+                    margin: 10px 0px 0px 0px;
+                }
+                .card__footer-new {
+                    margin-top: 0;
                 }
                 .item-about {
-                    flex-direction: column;
+                    //flex-direction: column;
                 }
                 .item-info {
                     //position: relative;
                 }
                 .item-content {
                     flex-direction: column;
-                    gap: 1rem;
+                    gap: 6px;
                 }
                 .other-param {
                     display: none;
@@ -2215,4 +2452,21 @@
     .header ~ main {
         margin-top: 65px;
     }
+    .newlisting .new-calc-content,
+    .newlisting .new-filter-modal-content {
+        width: 100%;
+        transform: translateX(0px);
+        left: 0;
+    }
+    .newlisting .new-calc-close,
+    .newlisting .new-filter-modal-close {
+        right: 10px;
+        top: 10px;
+    }
+}
+
+.wysiwyg table {
+    display: block;
+    overflow: hidden;
+    overflow-x: scroll;
 }

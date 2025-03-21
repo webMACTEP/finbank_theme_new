@@ -990,7 +990,7 @@ $current_url = get_permalink();
                     <?php if (have_rows('product_faq', $ID)): ?>
                         <div id="faq" class="section">
                             <div class="section__header d-flex justify-content-between align-items-center">
-                                <h2 class="title mb-4">Часто задавемые вопросы</h2>
+                                <h2 class="title mb-4">Часто задаваемые вопросы</h2>
                             </div>
 
                             <div class="accordion mb-4" id="accordion">

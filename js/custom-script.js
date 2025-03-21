@@ -472,25 +472,25 @@ jQuery(function ($) {
     );
   });
 
-  $(".btn__collmore_cat").click(function () {
-    let work = $(this).attr("data-click");
-    let parent = $(this).parent();
+  $(".btn__collmore_cat, .filter-title").click(function () {
+    let parent = $(this).closest(".filter"); // Находим родительский элемент
+    let content = parent.find(".filter__section"); // Находим блок списка
+    let button = parent.find(".btn__collmore_cat"); // Кнопка "Показать больше"
+    let hiddenItems = content.find(".coll_li"); // Скрытые элементы списка
 
-    if (work == 0) {
+    // Переключаем классы
+    hiddenItems.toggleClass("coll__hidden"); // Показываем/скрываем элементы
+    button.toggleClass("btn__collmore_visible"); // Меняем класс кнопки
+    parent.find(".filter-title").toggleClass("active"); // Делаем заголовок активным
+
+    // Обновляем текст кнопки
+    let textOpen = button.attr("data-text-open");
+    let textHide = button.attr("data-text-hide");
+
+    if (button.hasClass("btn__collmore_visible")) {
+      button.find(".btn__collmore-text").text(textHide);
     } else {
-      $(this).toggleClass("btn__collmore_visible");
-      // console.log($(parent).find('#' + $(this).attr('data-id')).find('.coll_li'))
-      $(parent)
-        .find("#" + $(this).attr("data-id"))
-        .find(".coll_li")
-        .toggleClass("coll__hidden");
-
-      $(".btn__collmore_cat .btn__collmore-text").text(
-        $(this).attr("data-text-open")
-      );
-      $(".btn__collmore_cat.btn__collmore_visible .btn__collmore-text").text(
-        $(this).attr("data-text-hide")
-      );
+      button.find(".btn__collmore-text").text(textOpen);
     }
   });
 
@@ -2273,40 +2273,37 @@ jQuery(document).ready(function ($) {
 
 //slider.events.on('transitionEnd', customizedFunction);
 
-
 window.onload = function () {
   setTimeout(function () {
-    document
-      .querySelectorAll(".gallery img, figure img")
-      .forEach((n) => {
-        const link = document.createElement("a");
-        link.setAttribute("data-fslightbox", "gallery");
-        link.setAttribute("data-type", "image");
+    document.querySelectorAll(".gallery img, figure img").forEach((n) => {
+      const link = document.createElement("a");
+      link.setAttribute("data-fslightbox", "gallery");
+      link.setAttribute("data-type", "image");
 
-        if (n.hasAttribute("data-src")) {
-          link.setAttribute("href", n.getAttribute("data-src"));
-        } else {
-          link.setAttribute("href", n.getAttribute("src"));
-        }
+      if (n.hasAttribute("data-src")) {
+        link.setAttribute("href", n.getAttribute("data-src"));
+      } else {
+        link.setAttribute("href", n.getAttribute("src"));
+      }
 
-        // Получаем текст из figcaption, если он есть, иначе alt
-        let captionText = "";
-        const figure = n.closest("figure");
-        if (figure) {
-          const figcaption = figure.querySelector("figcaption");
-          if (figcaption && figcaption.textContent.trim() !== "") {
-            captionText = figcaption.textContent;
-          } else {
-            captionText = n.getAttribute("alt");
-          }
+      // Получаем текст из figcaption, если он есть, иначе alt
+      let captionText = "";
+      const figure = n.closest("figure");
+      if (figure) {
+        const figcaption = figure.querySelector("figcaption");
+        if (figcaption && figcaption.textContent.trim() !== "") {
+          captionText = figcaption.textContent;
         } else {
           captionText = n.getAttribute("alt");
         }
-        link.setAttribute("data-caption", captionText);
+      } else {
+        captionText = n.getAttribute("alt");
+      }
+      link.setAttribute("data-caption", captionText);
 
-        n.parentNode.append(link);
-        link.append(n);
-      });
+      n.parentNode.append(link);
+      link.append(n);
+    });
   }, 300);
 
   document.querySelectorAll("img.bigpic").forEach((n) => {
@@ -2747,70 +2744,58 @@ jQuery(function ($) {
     }
   });
 
-  $(document).on("click", ".open__dop-btn", function () {
+  $(document).on("click", ".open__dop-btn", function (event) {
+    event.stopPropagation(); // Останавливаем всплытие, чтобы document click не закрыл сразу
+
     var $this = $(this);
-    var id = $(this).attr("data-id");
-    var have_content_more_detail = $(this).attr(
-      "data-have-content-more-detail"
-    );
-    var parent = $(this).closest(".tabs-and-btns");
+    var id = $this.attr("data-id");
+    var have_content_more_detail = $this.attr("data-have-content-more-detail");
+    var parent = $this.closest(".tabs-and-btns");
     var btnText = parent.find(".open__dop-btn-text");
     var tabs = parent.parent().find(".tabs");
 
-    // var popup = parent.parent().find('.popup_detail_wrap');
-    // if(popup){
-    // 	popup.show()
-    // }
-    if (!have_content_more_detail) {
-      // console.log('Тут же ?')
-      $.ajax({
-        // type : 'GET',
-        // url: "/ajax-get-more-details.php",
-        // data: {
-        // 	id: id,
-        // },
-        // dataType : 'json',
-        url: "/wp-admin/admin-ajax.php", // AJAX handler
-        data: {
-          action: "get_more_details", // the parameter for admin-ajax.php
-          id: id,
-        },
-        type: "POST",
-        dataType: "json",
-        success: function (res) {
-          console.log(res);
-          $this.attr("data-have-content-more-detail", "1");
-          $(tabs).html(res.content);
-          $(tabs).toggle("show");
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR);
-          console.log(textStatus);
-          console.log(errorThrown);
+    // Проверяем, открыто ли уже это окно
+    var isVisible = tabs.is(":visible");
 
-          //response.text('')
-          //esponse.html(jqXHR.responseJSON.message)
-        },
-      });
-      // открываем/закрываем
-      // setTimeout(function() {
-      // 	$(tabs).toggle('show');
-      // }, 500);
-    } else {
-      // console.log('какого ?')
-      // открываем/закрываем
+    // Закрываем все открытые окна перед открытием нового
+    $(".tabs").hide();
+    $(".open__dop-btn").removeClass("active");
 
-      $(tabs).toggle("show");
+    if (!isVisible) {
+      // Если текущее окно не было открыто, то открываем
+      if (!have_content_more_detail) {
+        $.ajax({
+          url: "/wp-admin/admin-ajax.php",
+          data: {
+            action: "get_more_details",
+            id: id,
+          },
+          type: "POST",
+          dataType: "json",
+          success: function (res) {
+            console.log(res);
+            $this.attr("data-have-content-more-detail", "1");
+            $(tabs).html(res.content);
+            $(tabs).show();
+            $this.addClass("active"); // Добавляем класс активной кнопке
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+          },
+        });
+      } else {
+        $(tabs).show();
+        $this.addClass("active");
+      }
     }
+  });
 
-    // замена текста
-    // var open = $(this).attr("data-open");
-    // var close = $(this).attr("data-close");
-    // if (btnText.text() === close) {
-    //   btnText.text(open);
-    // } else {
-    //   btnText.text(close);
-    // }
+  // Закрытие при клике вне области .tabs или .open__dop-btn
+  $(document).on("click", function (event) {
+    if (!$(event.target).closest(".new-tab-content, .open__dop-btn").length) {
+      $(".tabs").hide(); // Закрываем все вкладки
+      $(".open__dop-btn").removeClass("active"); // Сбрасываем активные кнопки
+    }
   });
 
   // get_selected_value_v1'

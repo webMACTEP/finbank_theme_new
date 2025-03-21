@@ -17,6 +17,7 @@ $card_bank_link = get_field('card_bank_link');
 $bank_email = get_field('bank_email', $bank_id);
 $bank_license = get_field('bank_license', $bank_id);
 $card_logo = get_field('card_logo');
+$bank_logo = get_field('bank_logo', $bank_id);
 $card_cred_limit = get_field('card_cred_limit');
 $card_period = get_field('card_period');
 $card_cost = get_field('card_cost');
@@ -47,14 +48,14 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                         <?php if ($card_logo):
                             $logo_alt = get_post_meta($card_logo, '_wp_attachment_image_alt', true);
                         ?>
-                            <img src="<?php echo esc_url($card_logo); ?>" alt="<?php echo esc_attr($logo_alt); ?>">
+                            <img src="<?php echo $card_logo ?>" alt="<?php echo esc_attr($logo_alt); ?>">
                         <?php endif; ?>
                     </a>
                 </div>
 
                 <div class="item-info">
 
-                    <a href="<?php echo esc_url(get_permalink($bank_id)); ?>" class="font-weight-semibold">
+                    <a href="<?php echo esc_url(get_permalink()); ?>" class="font-weight-semibold">
                         <?php echo esc_html(get_the_title($bank_id)); ?>
                     </a>
                     <span class="item-title">
@@ -64,8 +65,8 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                         ?>
                     </span>
 
-                    <!-- Рейтинги -->
-                    <div class="rait-panel d-sm-flex flex-wrap justify-content-between align-items-center">
+                    <!-- Рейтинги hor-->
+                    <div class="rait-hor rait-panel flex-wrap justify-content-between align-items-center">
                         <div class="d-flex align-items-center my-2 my-sm-0">
                             <div class="card__rating d-flex align-items-center mr-3">
                                 <div class="mr-2">
@@ -102,8 +103,51 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                             </div>
                         </div>
                     </div>
+
+
+                </div>
+
+
+            </div>
+            <!-- Рейтинги cards-->
+            <div class="rait-cards rait-panel  flex-wrap justify-content-between align-items-center">
+                <div class="d-flex align-items-center my-2 my-sm-0">
+                    <div class="card__rating d-flex align-items-center mr-3">
+                        <div class="mr-2">
+                            <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                            </svg>
+                        </div>
+                        <?php echo esc_html($ratings_average); ?>
+                    </div>
+                    <div class="card__icon d-flex align-items-center mr-3">
+                        <div class="mr-2">
+                            <svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
+                                <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#eye" x="0" y="0"></use>
+                            </svg>
+                        </div>
+                        <?php echo intval($views); ?>
+                    </div>
+                    <div class="position-relative card__icon d-flex align-items-center mr-3">
+                        <div class="mr-2">
+                            <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                                <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                </svg>
+                            </a>
+                        </div>
+                        <?php
+                        if ($comments_count && isset($comments_count->approved)) {
+                            echo intval($comments_count->approved);
+                        }
+                        ?>
+                    </div>
+                    <div class="position-relative card__like d-flex align-items-center">
+                        <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                    </div>
                 </div>
             </div>
+
             <div class="item-column">
                 <span class="card__field-title">Кред. лимит:</span>
                 <span class="card__field-num"><?php echo number_format(intval($card_cred_limit), 0, '.', ' '); ?> ₽</span>
@@ -134,7 +178,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить 0
+                            Оформить
                         </a>
                     </div>
                 <?php endif; ?>
