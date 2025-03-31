@@ -678,3 +678,59 @@ function prefix_filter_description_example($description)
     return $description;
 }
 add_filter('wpseo_metadesc', 'prefix_filter_description_example');
+
+// Фильтр для изменения метатега robots
+add_filter('wpseo_robots', 'custom_robots_for_child_zaimy');
+function custom_robots_for_child_zaimy($robots)
+{
+    if (is_singular('zaimy')) {
+        $parent_id = wp_get_post_parent_id(get_the_ID());
+        if ($parent_id && get_field('archive', $parent_id)) {
+            $robots = 'noindex, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+        }
+    }
+    return $robots;
+}
+
+// Фильтр для исключения из карты сайта Yoast SEO (принимаем второй параметр — объект записи)
+add_filter('wpseo_sitemap_exclude_post', 'custom_exclude_from_sitemap', 10, 2);
+function custom_exclude_from_sitemap($exclude, $post)
+{
+    if ('zaimy' === $post->post_type) {
+        $parent_id = wp_get_post_parent_id($post->ID);
+        if ($parent_id && get_field('archive', $parent_id)) {
+            return true;
+        }
+    }
+    return $exclude;
+}
+
+add_filter('wpseo_xml_sitemap_post_url', 'remove_from_sitemap', 10, 2);
+function remove_from_sitemap($url, $post)
+{
+    if ('zaimy' === $post->post_type) {
+        $parent_id = wp_get_post_parent_id($post->ID);
+        if ($parent_id) {
+            $archive_value = get_field('archive', $parent_id);
+            if ($archive_value == true || $archive_value === '1') {
+                return '';
+            }
+        }
+    }
+    return $url;
+}
+
+add_filter('wpseo_sitemap_entry', 'remove_entry_from_sitemap', 10, 3);
+function remove_entry_from_sitemap($entry, $type, $object)
+{
+    // Применяем для записей типа "zaimy"
+    if ('zaimy' === get_post_type($object->ID)) {
+        $parent_id = wp_get_post_parent_id($object->ID);
+        // Проверяем, установлен ли переключатель archive у родительской записи.
+        if ($parent_id && (get_field('archive', $parent_id) == true || get_field('archive', $parent_id) === '1')) {
+            // Если условие выполняется, полностью исключаем запись из карты сайта.
+            return false;
+        }
+    }
+    return $entry;
+}

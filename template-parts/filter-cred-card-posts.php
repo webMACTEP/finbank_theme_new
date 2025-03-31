@@ -67,7 +67,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
 
                     <!-- Рейтинги hor-->
                     <div class="rait-hor rait-panel flex-wrap justify-content-between align-items-center">
-                        <div class="d-flex align-items-center my-2 my-sm-0">
+                        <div class="d-flex align-items-center my-2 my-sm-0 ">
                             <div class="card__rating d-flex align-items-center mr-3">
                                 <div class="mr-2">
                                     <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
@@ -111,7 +111,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
             </div>
             <!-- Рейтинги cards-->
             <div class="rait-cards rait-panel  flex-wrap justify-content-between align-items-center">
-                <div class="d-flex align-items-center my-2 my-sm-0">
+                <div class="d-flex align-items-center my-2 my-sm-0 subraitings">
                     <div class="card__rating d-flex align-items-center mr-3">
                         <div class="mr-2">
                             <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
@@ -164,7 +164,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
             <!-- Кнопка оформить -->
             <div class="item-buttons">
                 <?php if ($card_bank_link): ?>
-                    <div class="">
+                    <div class="item-buttons-cont">
                         <a href="<?php echo esc_url($card_bank_link); ?>"
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
@@ -173,7 +173,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                         </a>
                     </div>
                 <?php else: ?>
-                    <div class="">
+                    <div class="item-buttons-cont">
                         <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"

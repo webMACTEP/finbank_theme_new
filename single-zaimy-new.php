@@ -2011,15 +2011,15 @@ $current_url = get_permalink();
                                 <!-- /item -->
                             <?php } ?>
                         </div>
-                        <?php if (count($comments) != "0"): ?>
-                            <div class="comments__action">
-                                <a class="btn btn-primary" id="openCommentForm">
-                                    Оставить отзыв
-                                </a>
-                                <a href="<?php //echo  get_page_link(1503); 
-                                            ?><?php the_permalink(); ?>comments/" class="btn btn-outline-alternative" post-id="<?php echo $ID ?>">Все отзывы</a>
-                            </div>
-                        <?php endif; ?>
+
+                        <div class="comments__action">
+                            <a class="btn btn-primary" id="openCommentForm">
+                                Оставить отзыв
+                            </a>
+                            <a href="<?php //echo  get_page_link(1503); 
+                                        ?><?php the_permalink(); ?>comments/" class="btn btn-outline-alternative" post-id="<?php echo $ID ?>">Все отзывы</a>
+                        </div>
+
                     </div>
                     <div class="section">
                         <!-- form -->

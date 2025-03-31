@@ -152,31 +152,42 @@ switch ($post_type) {
 
 
                     <div class='tabs-table'>
-                        <div class="mobile">
-                            <div data-class-item="item-plus" class="left active">Преимущества</div>
-                            <div data-class-item="item-minus" class="right">Недостатки</div>
-                        </div>
-                        <div class="content">
+                       
+                        <div class="plus-minus__items">
 
                             <?php foreach ($plus_and_minus_tab as $item): ?>
 
-                                <div class="item-wrap">
+                                <div class="plus-minus__row">
 
                                     <?php if ($item['plus']): ?>
-                                        <div class="item item-plus show">
-                                            <div data-click="0" class="btn__collmore_cat">
-                                                <span class="btn__collmore-icon"></span>
-                                            </div>
-                                            <div><?= $item['plus'] ?></div>
+                                        <div class="plus-minus__item plus">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_4843_6537)">
+                                                    <path d="M8.0026 5.33337V10.6667M5.33594 8.00004H10.6693M14.6693 8.00004C14.6693 11.6819 11.6845 14.6667 8.0026 14.6667C4.32071 14.6667 1.33594 11.6819 1.33594 8.00004C1.33594 4.31814 4.32071 1.33337 8.0026 1.33337C11.6845 1.33337 14.6693 4.31814 14.6693 8.00004Z" stroke="#14B8AD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_4843_6537">
+                                                        <rect width="16" height="16" fill="white"></rect>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                            <?= $item['plus'] ?>
                                         </div>
                                     <?php endif; ?>
 
                                     <?php if ($item['minus']): ?>
-                                        <div class="item item-minus">
-                                            <div data-click="0" class="btn__collmore_cat btn__collmore_visible">
-                                                <span class="btn__collmore-icon"></span>
-                                            </div>
-                                            <div><?= $item['minus'] ?></div>
+                                        <div class="plus-minus__item minus">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_4843_6540)">
+                                                    <path d="M5.33594 8.00004H10.6693M14.6693 8.00004C14.6693 11.6819 11.6845 14.6667 8.0026 14.6667C4.32071 14.6667 1.33594 11.6819 1.33594 8.00004C1.33594 4.31814 4.32071 1.33337 8.0026 1.33337C11.6845 1.33337 14.6693 4.31814 14.6693 8.00004Z" stroke="#EF3124" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_4843_6540">
+                                                        <rect width="16" height="16" fill="white"></rect>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                            <?= $item['minus'] ?>
                                         </div>
                                     <?php endif; ?>
 
@@ -238,7 +249,7 @@ switch ($post_type) {
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить 0
+                            Оформить
                         </a>
                     </div>
                 <?php endif; ?>

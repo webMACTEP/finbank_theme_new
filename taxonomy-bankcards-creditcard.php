@@ -143,7 +143,7 @@ else:
 
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-2">
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-2 ortamrg">
                                     <div class="range">
                                         <div class="d-flex justify-content-between">
                                             <div class="range__label">Льготный период, дней</div>
@@ -269,8 +269,8 @@ else:
                                         </div>
                                     </div>
 
-                                    <div class="col-12 row mt-5">
-                                        <div class="calc-result col-6">
+                                    <div class="col-12 row mt-5 calc-result-wrapp">
+                                        <div class="calc-result ">
                                             <div class="calc__total-field d-flex justify-content-between align-items-center">
                                                 <div class="calc__total-label">Сумма займа</div>
                                                 <div class="calc__value">
@@ -287,7 +287,7 @@ else:
                                             </div>
 
                                         </div>
-                                        <div class="calc__total col-6">
+                                        <div class="calc__total ">
 
                                             <div class="calc__total-field d-flex justify-content-between align-items-center">
                                                 <div class="calc__total-label">Переплата</div>
@@ -375,19 +375,21 @@ else:
                     <?php
                     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
                     $args = array(
-                        'paged' => $paged,
-                        'orderby' => 'name',
-                        'order' => 'DESC',
-                        'post_type'             => 'bankcard',
-                        'tax_query' => array(
+                        'paged'          => $paged,
+                        'orderby'        => 'name',
+                        'order'          => 'DESC',
+                        'post_type'      => 'bankcard',
+                        'posts_per_page' => 12, // Добавлено для вывода 12 материалов
+                        'tax_query'      => array(
                             array(
                                 'taxonomy' => 'bankcards',
                                 'field'    => 'slug',
                                 'terms'    => 'creditcard',
                             ),
                         ),
-                        'post_status' => 'publish',
+                        'post_status'    => 'publish',
                     );
+
 
                     $args['meta_query'][] = array(
                         'key' => 'archive',
@@ -426,7 +428,7 @@ else:
                         <div class="credits__list">
                             <div class="d-flex flex-wrap justify-content-between align-items-center mt-0 mt-md-5 mt-lg-0 mb-3">
                                 <div class="credits__list-buttons d-flex flex-wrap justify-content-between align-items-center">
-                                    <div class="mt-5 mb-4 mt-md-0 mb-md-0"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
+                                    <div class="mt-5 mb-4 mt-md-0 mb-md-0 variants_count-container"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
                                     <div class="filtr-butt">
                                         <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.25 3L10.25 3M10.25 3C10.25 4.24264 11.2574 5.25 12.5 5.25C13.7426 5.25 14.75 4.24264 14.75 3C14.75 1.75736 13.7426 0.75 12.5 0.75C11.2574 0.75 10.25 1.75736 10.25 3ZM5.75 9L14.75 9M5.75 9C5.75 10.2426 4.74264 11.25 3.5 11.25C2.25736 11.25 1.25 10.2426 1.25 9C1.25 7.75736 2.25736 6.75 3.5 6.75C4.74264 6.75 5.75 7.75736 5.75 9Z" stroke="#14B8AD" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
@@ -531,52 +533,7 @@ else:
 
 
 
-                            <div class="d-xs-block d-lg-none">
-                                <?php
-                                $args = array(
-                                    'hide_empty' => true,
-                                    'taxonomy'     => 'tags-category',
-                                );
 
-                                $cats = get_categories($args);
-                                if ($cats) {
-                                    foreach ($cats as $cat) {
-                                        $parent_category = array(81, 87, 99, 72);
-                                        if (in_array($cat->term_id, $parent_category)) continue;
-
-                                        $args_coll = array(
-                                            'post_type' => 'collection',
-                                            'taxonomy' => 'tags-category',
-                                            'tax_query' => [
-                                                [
-                                                    'taxonomy' => 'tags-category',
-                                                    'terms' => $cat->term_id,
-                                                    'field' => 'id',
-                                                    'operator' => 'IN',
-                                                ]
-                                            ],
-                                            'posts_per_page' => -1,
-                                            'orderby' => 'date',
-                                            'order' => 'DESC',
-                                            'meta_query'    => array(
-                                                array(
-                                                    'key'       => 'coll-type',
-                                                    'value'     => 'creditcard',
-                                                    'compare'   => '=',
-                                                ),
-                                            )
-                                        );
-                                        $query = new WP_Query($args_coll);
-                                        if ($query->have_posts()) {
-                                            $current_id = $wp_query->get_queried_object_id(); ?>
-                                            <?php get_template_part('all_template/filter_right', null, ['cat' => $cat, 'query' => $query,  'mobile' => 1]); ?>
-                                        <?php }
-                                        wp_reset_query(); ?>
-
-                                <?php        }
-                                }
-                                ?>
-                            </div>
 
 
 
@@ -611,12 +568,24 @@ else:
                     <h2 class="title mb-0">Предложения месяца</h2>
 
                 </div>
-                <div class="horizontal__scroll row">
-                    <div class="horizontal__scroll-container">
+                <div class="best-offers-scroll horizontal__scroll row">
+                    <div class="horiz-prew">
+                        <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 1L3.79629 3.09677C2.03887 4.7689 1.16016 5.60497 1.02486 6.624C0.991713 6.87367 0.991713 7.12633 1.02486 7.376C1.16016 8.39503 2.03887 9.2311 3.79629 10.9032L6 13" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
+                        </svg>
+
+                    </div>
+                    <div class="horiz-next">
+                        <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L3.20371 3.09677C4.96113 4.7689 5.83984 5.60497 5.97514 6.624C6.00829 6.87367 6.00829 7.12633 5.97514 7.376C5.83984 8.39503 4.96113 9.2311 3.20371 10.9032L1 13" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
+                        </svg>
+
+                    </div>
+                    <div class="horizontal__scroll-container best-offers-scroll-container">
                         <?php
                         $args = array(
                             'post_type'             => 'bankcard',
-                            'posts_per_page'        => 8,
+                            'posts_per_page'        => 10,
                             'meta_key' => 'ratings_average',
                             'orderby' => 'meta_value_num',
                             'order' => 'DESC',
@@ -701,7 +670,7 @@ else:
                                                         target="_blank"
                                                         onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                                                         class="apply_now_btm btn btn-primary btn-block">
-                                                        Оформить 0
+                                                        Оформить
                                                     </a>
                                                 </div>
                                             <?php endif; ?>
@@ -785,13 +754,19 @@ else:
 
 
 
-                                    <div class="leaders__item-value"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
+                                    <div class="leaders__item-value">
+                                        <div class="leaders__item-title">Лимит</div><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽
+                                    </div>
 
-                                    <div class="leaders__item-value"><?php echo the_field('card_cost') ?> ₽</div>
+                                    <div class="leaders__item-value">
+                                        <div class="leaders__item-title">Обслуживание</div><?php echo the_field('card_cost') ?> ₽
+                                    </div>
 
-                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
+                                    <div class="leaders__item-value">
+                                        <div class="leaders__item-title">Без %</div><?php $field = get_field('card_period');
 
-                                                                        echo $field['label'] ?></div>
+                                                                                    echo $field['label'] ?>
+                                    </div>
 
 
 
@@ -1304,7 +1279,8 @@ else:
 
     </main>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener('DOMContentLoaded', () => {
+
             function toggleModal(modalSelector) {
                 var modal = document.querySelector(modalSelector);
                 if (modal) {
@@ -1339,6 +1315,8 @@ else:
             // Фильтр
             setupModalToggle(".filtr-butt", ".new-filter-modal");
             setupModalClose(".new-filter-modal-close", ".new-filter-modal");
+            setupModalClose(".submit-button", ".new-filter-modal");
+
 
             // Калькулятор
             setupModalToggle(".calc-butt", ".new-calc-modal");
@@ -1347,7 +1325,7 @@ else:
             // Закрытие модального окна при клике вне области .new-calc-content и .new-filter-content
             document.addEventListener("click", function(event) {
                 document.querySelectorAll(".new-filter-modal, .new-calc-modal").forEach(function(modal) {
-                    let isClickInsideContent = event.target.closest(".new-filter-content, .new-calc-content");
+                    let isClickInsideContent = event.target.closest(".new-filter-modal-content, .new-calc-content");
                     let isClickInsideModal = event.target.closest(".new-filter-modal, .new-calc-modal");
                     let isClickOnButton = event.target.closest(".filtr-butt, .calc-butt");
 
@@ -1356,10 +1334,6 @@ else:
                     }
                 });
             });
-        });
-
-
-        document.addEventListener('DOMContentLoaded', () => {
 
             const moreButton = document.querySelector('.page__heading-description-more');
             const descriptionElement = document.querySelector('.page__heading-description');
@@ -1394,6 +1368,53 @@ else:
             openCommentForm.addEventListener("click", () => {
                 commentForm.classList.add("active");
             });
+
+
+
+        });
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Получаем контейнер скролла
+            const scrollContainer = document.querySelector('.best-offers-scroll-container');
+
+            // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
+            document.querySelector('.horiz-next').addEventListener('click', () => {
+                scrollContainer.scrollBy({
+                    left: 300,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
+            document.querySelector('.horiz-prew').addEventListener('click', () => {
+                scrollContainer.scrollBy({
+                    left: -300,
+                    behavior: 'smooth'
+                });
+            });
+
+
+            const wrapper = document.querySelector('.tags-list_wrapper');
+
+            // При клике на кнопку "предыдущий" прокручиваем влево на 200px
+            document.querySelector('.tags-list_prev').addEventListener('click', function() {
+                wrapper.scrollBy({
+                    left: -200,
+                    behavior: 'smooth'
+                });
+            });
+
+            // При клике на кнопку "следующий" прокручиваем вправо на 200px
+            document.querySelector('.tags-list_next').addEventListener('click', function() {
+                wrapper.scrollBy({
+                    left: 200,
+                    behavior: 'smooth'
+                });
+            });
+
 
 
         });

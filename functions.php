@@ -4091,6 +4091,7 @@ function myown_comment($comment, $args, $depth)
 
 	add_action('wp_ajax_get_popap_apply', 'get_popap_apply_handler');
 	add_action('wp_ajax_nopriv_get_popap_apply', 'get_popap_apply_handler');
+
 	function get_popap_apply_handler()
 	{
 
@@ -4170,5 +4171,3 @@ function myown_comment($comment, $args, $depth)
 
 	require_once __DIR__ . '/roman-functions.php';
 	require_once __DIR__ . '/danil-functions.php';
-
-

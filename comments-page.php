@@ -83,7 +83,7 @@ if ($TAX != '' && $DISPLAY == 'reviews'):
     }   ?>
     <main>
         <div class="container">
-            
+
             <nav aria-label="breadcrumb" class="horizontal__scroll">
                 <ol class="breadcrumb horizontal__scroll-container">
                     <li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
@@ -95,7 +95,7 @@ if ($TAX != '' && $DISPLAY == 'reviews'):
         <!-- page header -->
         <div class="page__heading mb-4">
             <div class="container">
-                
+
                 <div class="page__heading-top d-flex justify-content-between align-items-center">
                     <div>
                         <h1 class="page__heading-title mb-0"><?php echo $title_term1;  ?></h1>
@@ -1266,7 +1266,7 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
 
                         <div class="pagination__container d-sm-flex justify-content-between align-items-center">
                             <div class="pagination__links">
-                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination); 
+                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination);
                                 ?>
 
                                 <?php my_pagination($max_page, $current_page); ?>
@@ -1275,8 +1275,12 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                Показано 000 <span class="count_view"><?php echo $count_items; ?></span>
                                 отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
+                            </div>
+                            <div class="">
+                                <?= $max_page ?> <br>
+                                <?= $current_page ?>
                             </div>
                         </div>
                     </div>
