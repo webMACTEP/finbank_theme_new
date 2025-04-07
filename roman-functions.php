@@ -734,3 +734,27 @@ function remove_entry_from_sitemap($entry, $type, $object)
     }
     return $entry;
 }
+
+
+
+
+function custom_zaimy_comments_rewrite()
+{
+    add_rewrite_rule(
+        '^zaimy/([^/]+)/comments/page/([0-9]+)/?$',
+        'index.php?post_type=zaimy&name=$matches[1]&comments=$matches[2]',
+        'top'
+    );
+}
+add_action('init', 'custom_zaimy_comments_rewrite');
+
+function add_comments_query_var($vars)
+{
+    $vars[] = 'comments';
+    return $vars;
+}
+add_filter('query_vars', 'add_comments_query_var');
+
+
+// Принудительно включить комментарии в XML-карту сайта Yoast SEO
+add_filter('wpseo_xml_sitemaps_exclude_comments', '__return_false');

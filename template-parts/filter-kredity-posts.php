@@ -13,7 +13,7 @@ $ID = get_the_ID();
         <div class="card__header d-flex justify-content-between align-items-center mb-3 flex-grow-1 order-1">
             <div class="mb-0">
                 <a class="h4" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-</div>
+            </div>
             <div class="card__header_right">
                 <?php if (get_field('archive')): ?>
                     <div class="card__archive">Архив</div>
@@ -111,7 +111,7 @@ $ID = get_the_ID();
                         </div>
                     <?php else: ?>
                         <div class="col-6 px-1 px-md-2">
-                            <a href="#"
+                            <a
                                 data-popap-apply-id="<?php echo esc_attr($ID); ?>"
                                 target="_blank"
                                 onclick="<?php echo esc_attr(get_metrika_for_list(get_field('card_bank_link'))); ?> return true;"

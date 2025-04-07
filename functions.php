@@ -999,6 +999,8 @@ function my_pagination($total = '', $currentPage = '')
 
 
 
+
+
 function team_pagination()
 {
 	global $wp_query;

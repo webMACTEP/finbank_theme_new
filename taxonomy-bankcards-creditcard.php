@@ -79,18 +79,24 @@ else:
         <div class="page__heading">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="page__heading-title mb-0">Кредитные карты</h1>
+                    <h1 class="page__heading-title">Кредитные карты</h1>
                 </div>
 
-                <!-- description -->
-                <div class="row mb-4 flex-end">
-
-                    <div class="page__heading-description col-lg-8 col-sm-12 mt-2">
-                        В данном разделе вы можете оформить кредитную карту по вашим финансовым возможностям. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis consequuntur, natus cum necessitatibus quos esse odit assumenda consequatur! At ipsam deserunt officia architecto et ullam, possimus ipsa! Neque, inventore illum?
+                <?php
+                $type_desc_top = get_field('type_desc_top', $term);
+                if ($type_desc_top) :
+                ?>
+                    <!-- description -->
+                    <div class="row flex-end">
+                        <div class="page__heading-description col-lg-8 col-sm-12 mt-2">
+                            <?php echo $type_desc_top; ?>
+                        </div>
+                        <div class="page__heading-description-more col-lg-2 col-sm-12 mt-2">Развернуть</div>
                     </div>
-                    <div class="page__heading-description-more col-lg-2 col-sm-12 mt-2">Развернуть</div>
-                </div>
-                <!-- /description -->
+                    <!-- /description -->
+                <?php
+                endif;
+                ?>
 
             </div>
 
@@ -231,32 +237,33 @@ else:
                         </div>
                         <h2>Кредитный калькулятор</h2>
                         <!-- Блок калькулятора -->
-                        <div class="mt-5" id="calc" data-type="creditCalc">
-                            <div class="calc__content">
-                                <div class="calc-row">
-                                    <div class="col-12 row">
-                                        <div class="calc__content-buttons d-flex pb-3">
-                                            <label class="btn__radio">
-                                                <input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
-                                                <span class="btn__radio-text">Аннуентный</span>
-                                            </label>
-                                            <label class="btn__radio">
-                                                <input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
-                                                <span class="btn__radio-text">Дифференцированный</span>
-                                            </label>
-                                        </div>
+                        <div class="calc__content" id="calc" data-type="creditCalc">
+
+                            <div class="calc-row">
+                                <div class="row">
+                                    <div class="calc__content-buttons d-flex">
+                                        <label class="btn__radio">
+                                            <input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
+                                            <span class="btn__radio-text">Аннуентный</span>
+                                        </label>
+                                        <label class="btn__radio">
+                                            <input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
+                                            <span class="btn__radio-text">Дифференцированный</span>
+                                        </label>
                                     </div>
+                                </div>
 
-                                    <div class="col-12 row">
+                                <div class="c-row">
+                                    <div class="c-col-1">
 
-                                        <div class="calc__field mt-3 mt-md-4 col-md-6">
+                                        <div class="calc__field">
                                             <div class="calc__field-wrap">
                                                 <div class="calc__field-label">Кредитный лимит</div>
                                                 <input type="text" class="range__value form-control calc__input" value="1000000" min="0" max="10000000" data-field="limit">
                                                 <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
                                             </div>
                                         </div>
-                                        <div class="calc__field d-flex col-md-6">
+                                        <div class="calc__field d-flex">
                                             <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
                                                 <div class="calc__field-label">Срок / месяц</div>
                                                 <input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
@@ -268,59 +275,81 @@ else:
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="c-col-2">
+                                        <div class="calc-result-wrapp">
 
-                                    <div class="col-12 row mt-5 calc-result-wrapp">
-                                        <div class="calc-result ">
-                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                <div class="calc__total-label">Сумма займа</div>
-                                                <div class="calc__value">
-                                                    <span id="calc__sum" class="calc__value-text">8 000 000</span>
-                                                    <span class="calc__value-char">₽</span>
+                                            <div class="calc__total">
+                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">Сумма займа</div>
+                                                    <div class="calc__value">
+                                                        <span id="calc__sum" class="calc__value-text">8 000 000</span>
+                                                        <span class="calc__value-char">₽</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                <div class="calc__total-label">К возврату</div>
-                                                <div class="calc__total-value">
-                                                    <span id="calc__total" class="calc__value-text">9 000 000</span>
-                                                    <span class="calc__value-char">₽</span>
+                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">Переплата</div>
+                                                    <div class="calc__total-value">
+                                                        <span id="calc__overpay" class="calc__value-text">1 000 000</span>
+                                                        <span class="calc__value-char">₽</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="calc__total ">
-
-                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                <div class="calc__total-label">Переплата</div>
-                                                <div class="calc__total-value">
-                                                    <span id="calc__overpay" class="calc__value-text">1 000 000</span>
-                                                    <span class="calc__value-char">₽</span>
+                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">К возврату</div>
+                                                    <div class="calc__total-value">
+                                                        <span id="calc__total" class="calc__value-text">9 000 000</span>
+                                                        <span class="calc__value-char">₽</span>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                <div class="calc__total-label">Окончание кредита</div>
-                                                <div class="calc__total-value">
-                                                    <span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
+
+                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">Окончание кредита</div>
+                                                    <div class="calc__total-value">
+                                                        <span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                <div class="calc__total-label">Платежи в месяц</div>
-                                                <div class="calc__total-value">
-                                                    <span id="calc__payments" class="calc__value-text">500 000</span>
-                                                    <span class="calc__value-char">₽</span>
+                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                    <div class="calc__total-label">Платежи в месяц</div>
+                                                    <div class="calc__total-value">
+                                                        <span id="calc__payments" class="calc__value-text">500 000</span>
+                                                        <span class="calc__value-char">₽</span>
+                                                    </div>
                                                 </div>
+
+
                                             </div>
-
-
                                         </div>
                                     </div>
-
+                                    <div class="c-col-3">
+                                        <div class="benefit">
+                                            <div class="b-lines">
+                                                <div class="b-line active"></div>
+                                                <div class="b-line active"></div>
+                                                <div class="b-line active"></div>
+                                                <div class="b-line active"></div>
+                                                <div class="b-line active"></div>
+                                                <div class="b-line active"></div>
+                                                <div class="b-line active"></div>
+                                                <div class="b-line"></div>
+                                                <div class="b-line"></div>
+                                                <div class="b-line"></div>
+                                            </div>
+                                            <p>
+                                                По нашим подсчетам, рассчитанный
+                                                кредит <span>на 75% выгоден</span>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row col-12">
 
-                                    <div class="new-calc-btn-close btn btn-outline-primary">Закрыть</div>
-                                </div>
                             </div>
+
+                            <div class="c-line"></div>
+                            <div class="c-footer">
+                                <div class="btn btn-primary">Подобрать</div>
+                                <div class="new-calc-btn-close btn">Закрыть</div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -426,7 +455,7 @@ else:
                     <!-- list -->
                     <div class="col-12 col-lg-12 order-lg-1">
                         <div class="credits__list">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center mt-0 mt-md-5 mt-lg-0 mb-3">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center credits__list-header">
                                 <div class="credits__list-buttons d-flex flex-wrap justify-content-between align-items-center">
                                     <div class="mt-5 mb-4 mt-md-0 mb-md-0 variants_count-container"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
                                     <div class="filtr-butt">
@@ -443,7 +472,8 @@ else:
                                     </div>
                                 </div>
                                 <div class="credits__list-right">
-                                    <div class="credits__list-dropdown dropdown mb-3 mb-md-0 px-0">
+                                    <div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
+                                    <div class="credits__list-dropdown dropdown  px-0">
                                         <select name="" class="styledSelect cred-order-select">
                                             <option value="" selected disabled>Сортировать</option>
                                             <option value="ratings_average">По рейтингу</option>
@@ -569,13 +599,13 @@ else:
 
                 </div>
                 <div class="best-offers-scroll horizontal__scroll row">
-                    <div class="horiz-prew">
+                    <div class="horiz-prew offers-horiz-prew">
                         <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 1L3.79629 3.09677C2.03887 4.7689 1.16016 5.60497 1.02486 6.624C0.991713 6.87367 0.991713 7.12633 1.02486 7.376C1.16016 8.39503 2.03887 9.2311 3.79629 10.9032L6 13" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
                         </svg>
 
                     </div>
-                    <div class="horiz-next">
+                    <div class="horiz-next offers-horiz-next">
                         <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 1L3.20371 3.09677C4.96113 4.7689 5.83984 5.60497 5.97514 6.624C6.00829 6.87367 6.00829 7.12633 5.97514 7.376C5.83984 8.39503 4.96113 9.2311 3.20371 10.9032L1 13" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
                         </svg>
@@ -707,7 +737,7 @@ else:
                         <?php
                         $argstop = array(
                             'post_type'             => 'bankcard',
-                            'posts_per_page'        => 16,
+                            'posts_per_page'        => 10,
                             'meta_key' => 'ratings_average',
                             'orderby' => 'meta_value_num',
                             'order' => 'DESC',
@@ -783,6 +813,7 @@ else:
                         wp_reset_postdata();
                         ?>
                     </ul>
+                    <div class="btn btn-outline-gray mt-3 top-offers-more">Показать еще</div>
                 </div>
             </div>
 
@@ -867,7 +898,7 @@ else:
                         ?>
                                     <div class="filter">
 
-                                        <div class="filter-title"><?= $cat->name; ?> (<?= $cat->term_id; ?>)</div>
+                                        <div class="filter-title"><?= $cat->name; ?></div>
                                         <div class="filter__section" id="collist_<?= $cat->term_id; ?>">
                                             <?php $counter_col = 0; ?>
                                             <?php while ($query->have_posts()) {
@@ -921,11 +952,23 @@ else:
                         </span>
                     </a>
                 </div>
-                <div class="horizontal__scroll row">
-                    <div class="horizontal__scroll-container">
+                <div class="reviews-scroll horizontal__scroll row">
+                    <div class="horiz-prew reviews-horiz-prew">
+                        <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 1L3.79629 3.09677C2.03887 4.7689 1.16016 5.60497 1.02486 6.624C0.991713 6.87367 0.991713 7.12633 1.02486 7.376C1.16016 8.39503 2.03887 9.2311 3.79629 10.9032L6 13" stroke="#626B84" stroke-width="1.2" stroke-linecap="round"></path>
+                        </svg>
+
+                    </div>
+                    <div class="horiz-next reviews-horiz-next">
+                        <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L3.20371 3.09677C4.96113 4.7689 5.83984 5.60497 5.97514 6.624C6.00829 6.87367 6.00829 7.12633 5.97514 7.376C5.83984 8.39503 4.96113 9.2311 3.20371 10.9032L1 13" stroke="#626B84" stroke-width="1.2" stroke-linecap="round"></path>
+                        </svg>
+
+                    </div>
+                    <div class="horizontal__scroll-container reviews-scroll-container">
                         <?php
 
-                        $ppp = 3; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+                        $ppp = 10; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
                         $custom_offset = 0;
 
                         // fetch posts in all those categories
@@ -1030,6 +1073,15 @@ else:
                         <?php } ?>
                     </div>
                 </div>
+                <a href="<?php echo  get_page_link(4969); //1503 tax-reviews 
+                            ?>" class="btn btn-primary btn-sm btn-all-mob" data-tax="creditcard">
+                    Все
+                    <span class="icon ml-2">
+                        <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
+                        </svg>
+                    </span>
+                </a>
             </div>
             <!-- / card reviews -->
 
@@ -1067,8 +1119,100 @@ else:
             <?php endif; ?>
             <!-- / faq -->
 
-            <!-- articles -->
+            <!-- news -->
             <div id="news" class="section anchor">
+                <div class="section__header mb-4 d-flex justify-content-between align-items-center">
+                    <h2 class="title mb-0">Новости о кредитных картах</h2>
+                    <a href="<?php echo get_category_link('10') ?>" class="btn btn-primary btn-sm btn-all">
+                        Все
+                        <span class="icon ml-2">
+                            <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+                <div class="horizontal__scroll row mb-5 mb-md-6">
+                    <div class="horizontal__scroll-container">
+                        <?php
+                        $args = array(
+                            'post_type' => 'post',
+                            'cat' => 10,
+                            'posts_per_page' => 4,
+                            //    'meta_key' => 'views',
+                            //    'orderby' => array( 'meta_value_num' => 'desc', 'name' => 'desc' ),
+                            //    'order' => 'DESC',
+                        );
+                        $wp_query = new WP_Query($args);
+                        if ($wp_query->have_posts()) {
+                            while ($wp_query->have_posts()) {
+                                $wp_query->the_post(); ?>
+                                <!-- item -->
+                                <div class="article__item card card__vertical size4 offer h-100">
+                                    <div class="card-container p-3 d-xl-flex flex-xl-column">
+                                        <?php if (get_the_post_thumbnail_url()): ?>
+                                            <div class="card__image">
+                                                <img
+                                                    src="<?php echo the_post_thumbnail_url() ?>"
+                                                    alt="<?= get_post_meta(get_post_thumbnail_id(), '_wp_attachment_image_alt', true); ?>">
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="card__date my-2"><?php echo get_the_date('d.m.y') ?></div>
+                                        <a href="<?php echo the_permalink() ?>" class="article__title h4 stretched-link"><?php echo the_title() ?></a>
+                                        <div class="mt-auto">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <div class="card__icon d-flex align-items-center mr-3">
+                                                    <div class="mr-2"><svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#eye" x="0" y="0"></use>
+                                                        </svg></div>
+                                                    <?php echo the_field('views') ?>
+                                                </div>
+                                                <div class="position-relative card__icon d-flex align-items-center mr-3">
+                                                    <div class="mr-2"><a href="<?php the_permalink() ?>#comments" data-target="comments" class="stretched-link"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                                            </svg></a></div>
+                                                    <?php echo comments_number('0', '1', '%'); ?>
+                                                </div>
+                                                <div class="card__like d-flex align-items-center ml-auto">
+                                                    <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                                                </div>
+                                            </div>
+                                            <?php $author_id = get_field('page_author');
+                                            if ($author_id):
+                                            ?>
+                                                <div class="card__author d-flex align-items-center mt-3">
+                                                    <div class="card__author-img">
+                                                        <?php get_template_part('all_template/image_and_alt/card_author-img', null, $author_id); ?>
+                                                    </div>
+                                                    <div class="card__author-content">
+                                                        <a href="<?php echo get_permalink($author_id) ?>" class="card__author-title"><?php echo get_the_title($author_id) ?></a>
+                                                        <div class="rating d-flex align-items-center">
+                                                            <?php echo do_shortcode('[ratings id="' . $author_id . '"]'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- / item -->
+                        <?php }
+                        } ?>
+                        <?php wp_reset_query() ?>
+                    </div>
+                </div>
+                <a href="<?php echo get_category_link('10') ?>" class="btn btn-primary btn-sm btn-all-mob">
+                    Все
+                    <span class="icon ml-2">
+                        <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
+                        </svg>
+                    </span>
+                </a>
+            </div>
+            <!-- / news -->
+            <!-- articles -->
+            <div id="articles" class="section anchor">
                 <div class="section__header mb-4 d-flex justify-content-between align-items-center">
                     <h2 class="title mb-0">Статьи о кредитных картах</h2>
                     <a href="<?php echo get_category_link('32') ?>" class="btn btn-primary btn-sm btn-all">
@@ -1149,6 +1293,14 @@ else:
                         <?php wp_reset_query() ?>
                     </div>
                 </div>
+                <a href="<?php echo get_category_link('32') ?>" class="btn btn-primary btn-sm btn-all-mob">
+                    Все
+                    <span class="icon ml-2">
+                        <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.242 5.266A.738.738 0 0 0 .5 6c0 .406.332.734.742.734H11.38v2.07c0 2.233 2.59 3.495 4.379 2.132l3.68-2.803a2.674 2.674 0 0 0 0-4.266l-3.68-2.803c-1.789-1.363-4.38-.1-4.38 2.132v2.07H1.243Zm13.612 4.507c-.813.62-1.99.046-1.99-.97V3.197c0-1.015 1.177-1.588 1.99-.969l3.68 2.804c.643.49.643 1.449 0 1.939l-3.68 2.803Z"></path>
+                        </svg>
+                    </span>
+                </a>
             </div>
             <!-- / articles -->
 
@@ -1207,9 +1359,10 @@ else:
 
             <!-- wysiwyg text -->
             <div class="section">
-                <div class="wysiwyg">
+                <div class="wysiwyg type-desc">
                     <?php echo the_field('type_desc', $term) ?>
                 </div>
+                <div class="type-desc-more">Раскрыть</div>
                 <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
                 <?php if ($date_actually): ?>
                     <div class="date_actually-article mb-2">Обновлено: <?= $date_actually; ?></div>
@@ -1335,6 +1488,16 @@ else:
                 });
             });
 
+            var topmoreButton = document.querySelector(".top-offers-more");
+            var topulElement = document.querySelector(".top-offers-wrapper ul");
+
+            if (topmoreButton && topulElement) {
+                topmoreButton.addEventListener("click", function() {
+                    topulElement.classList.add("active");
+                    topmoreButton.classList.add("hide");
+                });
+            }
+
             const moreButton = document.querySelector('.page__heading-description-more');
             const descriptionElement = document.querySelector('.page__heading-description');
 
@@ -1344,6 +1507,19 @@ else:
 
                     // Меняем текст кнопки
                     moreButton.textContent = isActive ? 'Свернуть' : 'Развернуть';
+                });
+            }
+
+
+            const moreButton2 = document.querySelector('.type-desc-more');
+            const descriptionElement2 = document.querySelector('.type-desc');
+
+            if (moreButton && descriptionElement) {
+                moreButton2.addEventListener('click', () => {
+                    const isActive = descriptionElement2.classList.toggle('active'); // Переключаем класс active
+
+                    // Меняем текст кнопки
+                    moreButton2.textContent = isActive ? 'Свернуть' : 'Раскрыть';
                 });
             }
 
@@ -1381,7 +1557,7 @@ else:
             const scrollContainer = document.querySelector('.best-offers-scroll-container');
 
             // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-            document.querySelector('.horiz-next').addEventListener('click', () => {
+            document.querySelector('.offers-horiz-next').addEventListener('click', () => {
                 scrollContainer.scrollBy({
                     left: 300,
                     behavior: 'smooth'
@@ -1389,9 +1565,29 @@ else:
             });
 
             // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-            document.querySelector('.horiz-prew').addEventListener('click', () => {
+            document.querySelector('.offers-horiz-prew').addEventListener('click', () => {
                 scrollContainer.scrollBy({
                     left: -300,
+                    behavior: 'smooth'
+                });
+            });
+
+
+            // Получаем контейнер скролла
+            const scrollContainer2 = document.querySelector('.reviews-scroll-container');
+
+            // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
+            document.querySelector('.reviews-horiz-next').addEventListener('click', () => {
+                scrollContainer2.scrollBy({
+                    left: 400,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
+            document.querySelector('.reviews-horiz-prew').addEventListener('click', () => {
+                scrollContainer2.scrollBy({
+                    left: -400,
                     behavior: 'smooth'
                 });
             });

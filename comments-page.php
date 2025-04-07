@@ -1275,13 +1275,10 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
                             <div class="pagination__description mt-4 mt-sm-0">
-                                Показано 000 <span class="count_view"><?php echo $count_items; ?></span>
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
                                 отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
                             </div>
-                            <div class="">
-                                <?= $max_page ?> <br>
-                                <?= $current_page ?>
-                            </div>
+
                         </div>
                     </div>
                     <!-- / pagination -->

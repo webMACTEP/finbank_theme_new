@@ -11,6 +11,7 @@ $plus_and_minus_tab = get_field('product_plus_minus', $ID);
 $tab_details = get_field('tab_details', $ID);
 $post_type = get_post_type($ID);
 $card_bank_link = get_field('card_bank_link', $ID);
+$card_other_state =  get_field('card_other_state', $ID);
 
 $active_first = $active_three = '';
 
@@ -101,7 +102,11 @@ switch ($post_type) {
                         </p>
                     </div>
 
-                    <h2>Условия</h2>
+                    <div class="tariffs__list-header">
+                        <h2>Условия</h2>
+                        <a class="tariffs__list-more" href="<?php echo (get_permalink($ID)); ?>">Подробнее о продукте</a>
+                    </div>
+
                     <div class="tariffs__list">
                         <?php while (have_rows('product_tar', $ID)): the_row();
                             $title = get_sub_field('title');
@@ -115,6 +120,15 @@ switch ($post_type) {
                             </div>
                         <?php endwhile; ?>
                     </div>
+                    <div class="tariffs__list-tags">
+                        <ul>
+                            <?php foreach ($card_other_state as $item): ?>
+                                <li><?php echo $item; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+
+                    <a class="tariffs__list-more-mob btn btn-outline-gray mt-5" href="<?php echo (get_permalink($ID)); ?>">Подробнее о продукте</a>
                 </div>
             <?php endif; ?>
 
@@ -152,7 +166,7 @@ switch ($post_type) {
 
 
                     <div class='tabs-table'>
-                       
+
                         <div class="plus-minus__items">
 
                             <?php foreach ($plus_and_minus_tab as $item): ?>
@@ -209,9 +223,11 @@ switch ($post_type) {
             <?php if (have_rows('tab_details', $ID)): ?>
                 <div class="tab-pane <?= $active_three ?>" id="<?= $ID; ?>tab5">
                     <div class="section">
-                        <div class="section__header mb-4 d-flex justify-content-between align-items-center">
-                            <h2 class="title mb-0">Реквизиты</h2>
+                        <div class="tariffs__list-header">
+                            <h2>Реквизиты</h2>
+                            <a class="tariffs__list-more" href="<?php the_permalink($bank_id); ?>">Подробнее о банке</a>
                         </div>
+
                         <div class="tariffs__list">
                             <?php while (have_rows('tab_details', $ID)): the_row();
                                 $title = get_sub_field('title');
@@ -226,16 +242,19 @@ switch ($post_type) {
                             <?php endwhile; ?>
                         </div>
                     </div>
+                    <a class="tariffs__list-more-mob btn btn-outline-gray mt-5" href="<?php the_permalink($bank_id); ?>">Подробнее о банке</a>
                 </div>
             <?php endif; ?>
         </div>
+
         <div class="new-tab-footer">
+
             <div class="new-tab-footer-close">
                 <div data-id="<?php echo esc_attr($ID); ?>" class="open__dop-btn btn btn-outline-primary">Закрыть</div>
             </div>
             <div class="new-tab-footer-btns">
                 <?php if ($card_bank_link): ?>
-                    <div class="">
+                    <div class="new-tab-footer-btn">
                         <a href="<?php echo esc_url($card_bank_link); ?>"
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
@@ -244,7 +263,7 @@ switch ($post_type) {
                         </a>
                     </div>
                 <?php else: ?>
-                    <div class="">
+                    <div class="new-tab-footer-btn">
                         <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             target="_blank"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
