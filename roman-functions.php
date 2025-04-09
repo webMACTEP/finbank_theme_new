@@ -186,6 +186,7 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
             $author_email  = get_field('author_email');
             $comment_content = get_field('comment_content');
             $comment_date  = get_the_date();
+            $comment_time  = get_the_time();
 
             // Извлечение лайков и дизлайков
             $likes    = intval(get_field('likes', $comment_id));
@@ -211,18 +212,22 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
 
                     <div class="additional-row">
                         <div class="comment__one-title mb-2 mb-md-0"><?php echo esc_html($author_name); ?></div>
-                        <div class="additional-status">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.4 7C15.4 8.87777 13.8778 10.4 12 10.4V11.6C14.5405 11.6 16.6 9.54051 16.6 7H15.4ZM12 10.4C10.1222 10.4 8.6 8.87777 8.6 7H7.4C7.4 9.54051 9.45949 11.6 12 11.6V10.4ZM8.6 7C8.6 5.12223 10.1222 3.6 12 3.6V2.4C9.45949 2.4 7.4 4.45949 7.4 7H8.6ZM12 3.6C13.8778 3.6 15.4 5.12223 15.4 7H16.6C16.6 4.45949 14.5405 2.4 12 2.4V3.6ZM9 14.6H15V13.4H9V14.6ZM15 21.4H9V22.6H15V21.4ZM9 21.4C7.12223 21.4 5.6 19.8778 5.6 18H4.4C4.4 20.5405 6.45949 22.6 9 22.6V21.4ZM18.4 18C18.4 19.8778 16.8778 21.4 15 21.4V22.6C17.5405 22.6 19.6 20.5405 19.6 18H18.4ZM15 14.6C16.8778 14.6 18.4 16.1222 18.4 18H19.6C19.6 15.4595 17.5405 13.4 15 13.4V14.6ZM9 13.4C6.45949 13.4 4.4 15.4595 4.4 18H5.6C5.6 16.1222 7.12223 14.6 9 14.6V13.4Z" fill="#9CA3AF" />
-                            </svg>
-                            Гость
+                        <div class="additional-status-date">
+                            <div class="additional-status">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.4 7C15.4 8.87777 13.8778 10.4 12 10.4V11.6C14.5405 11.6 16.6 9.54051 16.6 7H15.4ZM12 10.4C10.1222 10.4 8.6 8.87777 8.6 7H7.4C7.4 9.54051 9.45949 11.6 12 11.6V10.4ZM8.6 7C8.6 5.12223 10.1222 3.6 12 3.6V2.4C9.45949 2.4 7.4 4.45949 7.4 7H8.6ZM12 3.6C13.8778 3.6 15.4 5.12223 15.4 7H16.6C16.6 4.45949 14.5405 2.4 12 2.4V3.6ZM9 14.6H15V13.4H9V14.6ZM15 21.4H9V22.6H15V21.4ZM9 21.4C7.12223 21.4 5.6 19.8778 5.6 18H4.4C4.4 20.5405 6.45949 22.6 9 22.6V21.4ZM18.4 18C18.4 19.8778 16.8778 21.4 15 21.4V22.6C17.5405 22.6 19.6 20.5405 19.6 18H18.4ZM15 14.6C16.8778 14.6 18.4 16.1222 18.4 18H19.6C19.6 15.4595 17.5405 13.4 15 13.4V14.6ZM9 13.4C6.45949 13.4 4.4 15.4595 4.4 18H5.6C5.6 16.1222 7.12223 14.6 9 14.6V13.4Z" fill="#9CA3AF" />
+                                </svg>
+                                Гость
+                            </div>
+                            <div class="comment__one-date-mob"><?php echo esc_html($comment_date); ?> в <?php echo esc_html($comment_time); ?></div>
                         </div>
+
                     </div>
                 </div>
                 <div class="additional-comment__content"><?php echo esc_html($comment_content); ?></div>
-                <div class="additional-row">
+                <div class="additional-row additional-row-btns">
                     <div class="additional-btns">
-                        <div class="comment__one-date mr-md-4 order-md-1"><?php echo esc_html($comment_date); ?></div>
+                        <div class="comment__one-date mr-md-4 order-md-1"><?php echo esc_html($comment_date); ?> в <?php echo esc_html($comment_time); ?></div>
                         <button class="reply-button btn" data-comment-id="<?php echo esc_attr($comment_id); ?>">Ответить</button>
                     </div>
 

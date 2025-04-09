@@ -235,6 +235,7 @@ else:
                                 <path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
+
                         <h2>Кредитный калькулятор</h2>
                         <!-- Блок калькулятора -->
                         <div class="calc__content" id="calc" data-type="creditCalc">
@@ -320,7 +321,17 @@ else:
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="c-col-3">
+                                    <div id="calc__progress" class="c-col-3 progress">
+
+
+                                        <!-- <div class="progress__circle" style="--graph-danger: 5%;">
+                                            <div class="progress__text">
+                                                <span class="progress__percent">75</span>%
+                                            </div>
+                                        </div> -->
+
+
+
                                         <div class="benefit">
                                             <div class="b-lines">
                                                 <div class="b-line active"></div>
@@ -334,12 +345,14 @@ else:
                                                 <div class="b-line"></div>
                                                 <div class="b-line"></div>
                                             </div>
-                                            <p>
+                                            <p class="progress__description">
                                                 По нашим подсчетам, рассчитанный
-                                                кредит <span>на 75% выгоден</span>
+                                                кредит <span>на</span> <span class="progress__percent">80</span> <span>% выгоден</span>
                                             </p>
                                         </div>
                                     </div>
+
+
                                 </div>
 
                             </div>
@@ -351,6 +364,8 @@ else:
                             </div>
 
                         </div>
+
+
                     </div>
 
                 </div>
@@ -511,10 +526,12 @@ else:
                             </div>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
-                            <div class="pagination__description mt-4">
-                                Показано <span class="count_view"><?php echo $counter ?></span>
-                                продуктов из <span class="count_all"><?php echo $query->found_posts; ?></span>
-                            </div>
+                            <!-- <div class="pagination__description mt-4">
+                                Показано <span class="count_view"><?php // echo $counter 
+                                                                    ?></span>
+                                продуктов из <span class="count_all"><?php // echo $query->found_posts; 
+                                                                        ?></span>
+                            </div> -->
                             <!-- pagination -->
                             <div class="pagination flex-column mb-3">
                                 <?php if ($paged < $max_pages): ?>
@@ -825,14 +842,15 @@ else:
                 <div class="popular-products">
 
                     <?php
+                    // Параметры меню (оставляем без изменений)
                     $massiv_vhodnih_parametrov = array(
-                        'container' => '',
-                        'depth' => 0,
-                        'echo' => false,
-                        'link_class' => 'filter__btn',
+                        'container'      => '',
+                        'depth'          => 0,
+                        'echo'           => false,
+                        'link_class'     => 'filter__btn',
                         'theme_location' => 'sidebar_menu_creditcard',
-                        'before' => '<div class="filter__section" id="collist">',
-                        'after' => '</div>',
+                        'before'         => '<div class="filter__section" id="collist">',
+                        'after'          => '</div>',
                     );
                     ?>
                     <?php echo strip_tags(wp_nav_menu($massiv_vhodnih_parametrov), '<a>,'); ?>
@@ -848,39 +866,39 @@ else:
 
                         if ($cats) {
                             // ID категорий, которые НЕ ДОЛЖНЫ выводиться
-                            $exclude_categories = array(98); // Запретим вывод ID 99 и 150
+                            $exclude_categories = array(98); // Например, исключаем категорию с ID 98
 
                             // Массив с желаемым порядком категорий (ID категории => порядок сортировки)
                             $custom_order = array(
-                                97  => 1, // Эта категория будет первой
-
+                                97 => 1, // Эта категория будет первой
                             );
 
-                            // Функция сортировки по пользовательскому порядку
+                            // Сортировка по пользовательскому порядку
                             usort($cats, function ($a, $b) use ($custom_order) {
-                                $orderA = $custom_order[$a->term_id] ?? PHP_INT_MAX; // Если ID нет в массиве, ставим в конец
+                                $orderA = $custom_order[$a->term_id] ?? PHP_INT_MAX;
                                 $orderB = $custom_order[$b->term_id] ?? PHP_INT_MAX;
                                 return $orderA - $orderB;
                             });
 
-                            $first_category = 0;
+                            $visible_count = 0; // Число элементов, показываемых по умолчанию
+                            $first_category = 0; // Счётчик категорий (первая – с индексом 0)
 
                             foreach ($cats as $cat) {
-                                // Проверяем, есть ли ID категории в массиве исключений
+                                // Пропускаем исключённые категории
                                 if (in_array($cat->term_id, $exclude_categories)) {
-                                    continue; // Пропускаем категорию и НЕ выводим её
+                                    continue;
                                 }
                                 $args_coll = array(
-                                    'post_type' => 'collection',
-                                    'taxonomy'  => 'tags-category',
-                                    'tax_query' => [
-                                        [
+                                    'post_type'      => 'collection',
+                                    'taxonomy'       => 'tags-category',
+                                    'tax_query'      => array(
+                                        array(
                                             'taxonomy' => 'tags-category',
                                             'terms'    => $cat->term_id,
                                             'field'    => 'id',
                                             'operator' => 'IN',
-                                        ]
-                                    ],
+                                        )
+                                    ),
                                     'posts_per_page' => -1,
                                     'orderby'        => 'date',
                                     'order'          => 'DESC',
@@ -897,45 +915,59 @@ else:
                                 if ($query->have_posts()) {
                         ?>
                                     <div class="filter">
-
-                                        <div class="filter-title"><?= $cat->name; ?></div>
+                                        <div class="filter-title"><?= esc_html($cat->name); ?></div>
                                         <div class="filter__section" id="collist_<?= $cat->term_id; ?>">
-                                            <?php $counter_col = 0; ?>
-                                            <?php while ($query->have_posts()) {
+                                            <?php
+                                            $counter_col = 0;
+                                            while ($query->have_posts()) {
                                                 $query->the_post();
-                                                $counter_col += 1;
+                                                $counter_col++;
+
+                                                // Для всех категорий элементы с индексом больше $visible_count получают класс "coll_li"
+                                                // Для первой категории (first_category == 0) по умолчанию показываем все (без класса "coll__hidden"),
+                                                // а для остальных — скрываем элементы с номером > $visible_count
+                                                $classes = "filter__btn";
+                                                if ($counter_col > $visible_count) {
+                                                    $classes .= " coll_li";
+                                                    if ($first_category !== 0) {
+                                                        $classes .= " coll__hidden";
+                                                    }
+                                                }
+                                                // Добавляем класс active_post, если необходимо
+                                                if (isset($current_id) && $current_id == get_the_ID()) {
+                                                    $classes .= " active_post";
+                                                }
                                             ?>
-                                                <a class="filter__btn 
-                            <?php if ($first_category !== 0 && $counter_col > 0) echo 'coll_li coll__hidden'; ?>
-                            <?php if ($current_id == get_the_ID()) echo ' active_post'; ?>"
-                                                    href="<?php the_permalink(); ?>">
+                                                <a class="<?= $classes; ?>" href="<?php the_permalink(); ?>">
                                                     <?php the_title(); ?>
                                                 </a>
                                             <?php } ?>
                                         </div>
-
-                                        <?php if ($first_category !== 0 && $counter_col > 0): ?>
+                                        <?php if ($counter_col > $visible_count): ?>
                                             <button class="btn__collmore_cat" data-text-open="" data-text-hide="" data-id="collist_<?= $cat->term_id; ?>">
                                                 <span class="btn__collmore-icon">
                                                     <svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M1 1L3.09677 3.20371C4.7689 4.96113 5.60497 5.83984 6.624 5.97514C6.87367 6.00829 7.12633 6.00829 7.376 5.97514C8.39503 5.83984 9.2311 4.96113 10.9032 3.20371L13 1" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" />
                                                     </svg>
                                                 </span>
+                                                <span class="btn__collmore-text"></span>
                                             </button>
                                         <?php endif; ?>
                                     </div>
                         <?php
-                                    $first_category++; // Увеличиваем счётчик
+                                    wp_reset_postdata();
+                                    $first_category++; // Увеличиваем счётчик категорий
                                 }
-                                wp_reset_query();
                             }
                         }
                         ?>
-
                     </div>
                 </div>
             </div>
             <!-- / popular -->
+
+
+
 
 
             <!-- card reviews -->
@@ -1132,12 +1164,12 @@ else:
                         </span>
                     </a>
                 </div>
-                <div class="horizontal__scroll row mb-5 mb-md-6">
+                <div class="horizontal__scroll row mb-md-6">
                     <div class="horizontal__scroll-container">
                         <?php
                         $args = array(
                             'post_type' => 'post',
-                            'cat' => 10,
+                            'cat' => 41,
                             'posts_per_page' => 4,
                             //    'meta_key' => 'views',
                             //    'orderby' => array( 'meta_value_num' => 'desc', 'name' => 'desc' ),
@@ -1224,7 +1256,7 @@ else:
                         </span>
                     </a>
                 </div>
-                <div class="horizontal__scroll row mb-5 mb-md-6">
+                <div class="horizontal__scroll row mb-md-6">
                     <div class="horizontal__scroll-container">
                         <?php
                         $args = array(
@@ -1615,6 +1647,7 @@ else:
 
         });
     </script>
+
 
     <?php get_footer(); ?>
 
