@@ -1524,7 +1524,7 @@ function card_filter_function()
 		'value' => true,
 		'compare' => 'NOT EXISTS'
 	);
-*/
+	*/
 	if (isset($summ_limit))
 		$args['meta_query'][] = array(
 			'key' => 'credit_max_sum',
@@ -2083,6 +2083,7 @@ function card_filter_function()
 
 	die();
 }
+
 
 
 
@@ -3736,32 +3737,52 @@ function myown_comment($comment, $args, $depth)
 	//    $test1 = true;
 	//}
 
-	function get_metrika_for_list($field)
+	// function get_metrika_for_list($field)
+	// {
+
+	// 	$arr_link = explode('/', $field);
+
+	// 	$with_referal = false;
+
+	// 	if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
+	// 		$with_referal = true;
+	// 	}
+
+	// 	if ($with_referal == true) {
+	// 		$metrika = "
+	//     ym(35020350,'reachGoal','click_oformit_listing');
+	//     ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');
+	//     ";
+	// 	} else {
+	// 		$metrika = "
+	//     ym(35020350,'reachGoal','click_oformit_listing'); 
+	//     ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki');
+	//     ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');
+	//     ";
+	// 	}
+
+	// 	return  $metrika;
+	// }
+
+	function get_metrika_for_list($card_bank_link)
 	{
-
-		$arr_link = explode('/', $field);
-
-		$with_referal = false;
-
-		if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
-			$with_referal = true;
-		}
-
-		if ($with_referal == true) {
+		if (!empty($card_bank_link)) {
+			// Если ссылка заполнена – используем этот набор событий
 			$metrika = "
-        ym(35020350,'reachGoal','click_oformit_listing');
-        ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');
-        ";
+				ym(35020350,'reachGoal','click_oformit_listing');
+				ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');
+			";
 		} else {
+			// Если ссылки нет – используем другой набор событий
 			$metrika = "
-        ym(35020350,'reachGoal','click_oformit_listing'); 
-        ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki');
-        ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');
-        ";
+				ym(35020350,'reachGoal','click_oformit_listing'); 
+				ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki');
+				ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');
+			";
 		}
-
-		return  $metrika;
+		return $metrika;
 	}
+
 
 	function get_metrika_for_best_pages($field)
 	{
@@ -3785,27 +3806,42 @@ function myown_comment($comment, $args, $depth)
 		return $metrika;
 	}
 
+	// function get_metrika_for_detail_page($field)
+	// {
+
+	// 	$arr_link = explode('/', $field);
+
+	// 	$with_referal = false;
+
+	// 	if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
+	// 		$with_referal = true;
+	// 	}
+
+	// 	if ($with_referal == true) {
+	// 		$metrika = "ym(35020350,'reachGoal','click_oformit_seychas', {URL: document.location.href});";
+	// 		$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');";
+	// 	} else {
+	// 		$metrika = "ym(35020350,'reachGoal','click_oformit_seychas', {URL: document.location.href});";
+	// 		$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
+	// 	}
+
+	// 	return $metrika;
+	// }
+
 	function get_metrika_for_detail_page($field)
 	{
-
-		$arr_link = explode('/', $field);
-
-		$with_referal = false;
-
-		if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
-			$with_referal = true;
-		}
-
-		if ($with_referal == true) {
+		if (!empty($field)) {
+			// Если ссылка присутствует — регистрируем событие для оформления с рефералом
 			$metrika = "ym(35020350,'reachGoal','click_oformit_seychas', {URL: document.location.href});";
 			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');";
 		} else {
+			// Если ссылка отсутствует — регистрируем событие для оформления без реферала
 			$metrika = "ym(35020350,'reachGoal','click_oformit_seychas', {URL: document.location.href});";
 			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
 		}
-
 		return $metrika;
 	}
+
 
 	function get_metrika_for_ajax_random_offers($field)
 	{

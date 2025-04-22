@@ -21910,7 +21910,7 @@ reference element's position.
           firstPayment
         )} ... ${helpers_numberFormat.to(lastPayment)}`;
 
-      // Пример динамического обновления прогресс-бара и соответствующих элементов
+      // Калькулятор Calc
       if (calcProgess) {
         // Получаем элементы прогресс-бара
         const circle = calcProgess.querySelector(".progress__circle");

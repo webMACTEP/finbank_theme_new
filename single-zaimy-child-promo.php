@@ -35,6 +35,9 @@ $block_about_bank = get_field('block_about_bank', $data_source_id);
 
 $bank_link = get_field('card_bank_link', $data_source_id);
 
+$encoded_link = get_field('card_bank_link', $data_source_id);
+$card_bank_link = base64_encode($encoded_link);
+
 
 ?>
 
@@ -225,8 +228,23 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                     <div class="credits__view-img">
                         <img src="<?php echo the_field('card_logo', $parent_id) ?>" alt="<?php echo $parent_title ?>">
                         <div class="credits__view-buttons d-flex justify-content-center py-3 py-sm-4">
-                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary mx-3"
-                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Оформить сейчас</a>
+                            <?php if ($card_bank_link): ?>
+                                <span
+                                    class="link-data btn btn-primary mx-3"
+                                    data-link="<?= esc_attr($card_bank_link); ?>"
+                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                    Оформить сейчас
+                                </span>
+
+                            <?php else: ?>
+                                <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                    class="btn btn-primary mx-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                    Оформить сейчас
+                                </span>
+
+                            <?php endif; ?>
+
 
 
                         </div>
@@ -429,11 +447,21 @@ $bank_link = get_field('card_bank_link', $data_source_id);
 
                                         <!-- Кнопка Оформить сейчас -->
                                         <div class="wm-fixed-button sidebar__field mb-3">
-                                            <a href="<?php echo esc_url($bank_link); ?>" target="_blank"
-                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($bank_link)); ?> return true;"
-                                                class="btn btn-primary">
-                                                Оформить сейчас
-                                            </a>
+                                            <?php if ($card_bank_link): ?>
+                                                <span
+                                                    class="link-data btn btn-primary"
+                                                    data-link="<?= esc_attr($card_bank_link); ?>"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                    Оформить сейчас
+                                                </span>
+
+                                            <?php else: ?>
+                                                <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                    class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                    Оформить сейчас
+                                                </span>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -526,7 +554,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                         <!-- /sidebar -->
 
                         <div class="article__news mb-5 p-4">
-                        <div class="article__news-title article__container-title mb-3">Статьи о займах</div>
+                            <div class="article__news-title article__container-title mb-3">Статьи о займах</div>
                             <?php
                             $args = array(
                                 'posts_per_page' => 5,
@@ -603,8 +631,23 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                     </div>
                                     <div class="right">
 
-                                        <a href="<?php echo esc_url($bank_link); ?>" target="_blank" class="btn btn-primary"
-                                            onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $parent_id)) ?> return true;">Перейти на сайт</a>
+                                        <?php if ($card_bank_link): ?>
+                                            <span
+                                                class="link-data btn btn-primary"
+                                                data-link="<?= esc_attr($card_bank_link); ?>"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                Перейти на сайт
+                                            </span>
+
+                                        <?php else: ?>
+                                            <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                Перейти на сайт
+                                            </span>
+                                        <?php endif; ?>
+
+
 
 
                                         <span><?php echo $time ?></span>
@@ -650,8 +693,22 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                                                 <div class="info-title">Срок</div>
                                                 <div class="info-text"> <?php echo $time ?></div>
                                             </div>
+                                            <?php if ($card_bank_link): ?>
+                                                <span
+                                                    class="link-data btn btn-primary"
+                                                    data-link="<?= esc_attr($card_bank_link); ?>"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                    Подробнее
+                                                </span>
 
-                                            <a target="_blank" href="<?php echo esc_url($bank_link); ?>" class="btn btn-primary">Подробнее</a>
+                                            <?php else: ?>
+                                                <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                    class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                    Подробнее
+                                                </span>
+                                            <?php endif; ?>
+
                                         </div>
                                         <div class="info">
                                             <?php echo $text ?>
@@ -687,7 +744,7 @@ $bank_link = get_field('card_bank_link', $data_source_id);
                         </span>
                     </a>
                 </div>
-                <div class="tabs offer-tabs">
+                <div class="offer-tabs">
                     <div class="forline">
                         <div class="horizontal__scroll">
                             <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">

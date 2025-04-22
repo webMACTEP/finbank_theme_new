@@ -1,0 +1,234 @@
+<?php
+// Инициализация переменных
+$query__card = get_field('archive') != true ? 'query__card' : '';
+$bank_id = get_field('bank_choise');
+$terms = wp_get_post_terms(get_the_ID(), 'bankcards', array('fields' => 'all'));
+$term_slug = '';
+if (! empty($terms) && ! is_wp_error($terms)) {
+    $term_slug = esc_attr($terms[0]->slug);
+}
+$bank_phone = get_field('bank_phone', $bank_id);
+$card_bank_link = get_field('card_bank_link');
+$bank_email = get_field('bank_email', $bank_id);
+$bank_license = get_field('bank_license', $bank_id);
+$non_percent_money = get_field('non_pecent_money');
+$card_stavka_ostatok = get_field('card_stavka_ostatok');
+$card_cashback = get_field('card_cashback');
+$card_overdraft = get_field('card_overdraft');
+$card_answ = get_field('card_answ');
+$card_cost = get_field('card_cost');
+$apply_now = get_field('apply_now_select_products', get_the_ID());
+$ratings_average = get_field('ratings_average');
+$views = get_post_meta(get_the_ID(), 'views', true);
+$about_item = get_field('about_item', get_the_ID());
+$if_in_tab = get_field('if_in_tab', get_the_ID());
+$plus_and_minus_tab = get_field('plus_and_minus_tab', get_the_ID());
+
+// Определение необходимости отображения кнопки "Подробнее"
+$show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_in_tab || $plus_and_minus_tab;
+?>
+<div class="card card__horizontal mb-4 <?php echo esc_attr($query__card); ?>">
+    <div class="card-container d-flex flex-wrap">
+        <div class="card__header d-flex justify-content-between align-items-center mb-3 flex-grow-1 order-1">
+            <div class="mb-0">
+                <a class="h4" href="<?php echo esc_url(get_permalink()); ?>">
+                    <?php echo esc_html(get_the_title()); ?>
+                </a>
+</div>
+            <div class="card__header_right">
+                <?php if (get_field('archive') == true): ?>
+                    <div class="card__archive">Архив</div>
+                <?php endif; ?>
+                <a class="btn__compare <?php echo esc_attr(my_compare_btn(get_the_ID())); ?>"
+                    data-id="<?php echo esc_attr(get_the_ID()); ?>"
+                    data-tax="<?php echo $term_slug; ?>">
+                    <!-- SVG иконка -->
+                </a>
+            </div>
+        </div>
+
+        <!-- Остальная часть кода -->
+
+        <div class="card__footer mb-md-3 flex-grow-1 order-3 order-md-2">
+            <p>
+                <?php if ($bank_phone): ?>
+                    <span class="mr-2 mr-md-5">
+                        <a href="tel:<?php echo esc_attr(preg_replace('![^0-9]+!', '', $bank_phone)); ?>">
+                            <?php echo esc_html($bank_phone); ?>
+                        </a>
+                    </span>
+                <?php endif; ?>
+
+                <span class="mr-2 mr-md-5">
+                    <?php if ($card_bank_link): ?>
+                        <a href="<?php echo esc_url($card_bank_link); ?>"
+                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                            target="_blank">
+                            <?php echo esc_html($bank_email); ?>
+                        </a>
+                    <?php else: ?>
+                        <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                            class="off_site_link <?php echo $apply_now ? 'apply_now_btm' : 'out_exit_link'; ?>"
+                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
+                            <?php echo esc_html($bank_email); ?>
+                        </a>
+                    <?php endif; ?>
+                </span>
+
+                <?php if ($bank_license): ?>
+                    <span class="mr-2 mr-md-5">Лицензия: <?php echo esc_html($bank_license); ?></span>
+                <?php endif; ?>
+
+                <?php if ($views): ?>
+                    <span><?php echo intval($views); ?> заявок</span>
+                <?php endif; ?>
+            </p>
+        </div>
+
+        <!-- Продолжение кода -->
+
+        <div class="row flex-grow-1 order-2 order-md-3">
+            <div class="col-12 col-md-6 col-lg-5 mb-3 mb-md-0">
+                <div class="card__image">
+                    <a href="<?php echo esc_url(get_permalink()); ?>">
+                        <?php
+                        $card_logo = get_field('card_logo');
+                        if ($card_logo):
+                            $logo_alt = get_post_meta($card_logo, '_wp_attachment_image_alt', true);
+                        ?>
+                            <img src="<?php echo esc_url($card_logo); ?>" alt="<?php echo esc_attr($logo_alt); ?>">
+                        <?php endif; ?>
+                    </a>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-7">
+                <div class="row">
+                    <div class="col-12 col-md-7">
+                        <div class="card__field my-1">
+                            <span class="card__field-title">Снятие без %:</span>
+                            <span class="card__field-num">до <?php echo number_format(intval($non_percent_money), 0, '.', ' '); ?> ₽</span>
+                        </div>
+                        <div class="card__field my-1">
+                            <span class="card__field-title">% на остаток:</span>
+                            <span class="card__field-num">до <?php echo esc_html($card_stavka_ostatok); ?> %</span>
+                        </div>
+                        <div class="card__field my-1">
+                            <span class="card__field-title">Кэшбэк:</span>
+                            <span class="card__field-num"><?php echo esc_html($card_cashback['label'] ?? ''); ?></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <div class="card__field my-1">
+                            <span class="card__field-title">Овердрафт:</span>
+                            <span class="card__field-num"><?php echo esc_html($card_overdraft); ?></span>
+                        </div>
+                        <div class="card__field my-1">
+                            <span class="card__field-title">Решение:</span>
+                            <span class="card__field-num"><?php echo esc_html($card_answ); ?></span>
+                        </div>
+                        <div class="card__field my-1">
+                            <span class="card__field-title">Стоимость:</span>
+                            <span class="card__field-num"><?php echo esc_html($card_cost); ?> ₽</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3 mx-n1 mx-md-n3">
+                    <?php if ($card_bank_link): ?>
+                        <div class="col-6 px-1 px-md-2">
+                            <a href="<?php echo esc_url($card_bank_link); ?>"
+                                target="_blank"
+                                onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                                class="btn btn-primary btn-block">Оформить</a>
+                        </div>
+                    <?php else: ?>
+                        <div class="col-6 px-1 px-md-2">
+                            <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                target="_blank"
+                                onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                                class="apply_now_btm btn btn-primary btn-block">Оформить</a>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="col-6 px-1 px-md-2">
+                        <a href="<?php echo esc_url(get_permalink()); ?>" class="btn btn-outline-alternative btn-block">Подробнее</a>
+                    </div>
+                </div>
+
+                <div class="d-sm-flex flex-wrap justify-content-between align-items-center mt-3">
+                    <a href="<?php echo esc_url(get_permalink($bank_id)); ?>" class="font-weight-semibold">
+                        <?php echo esc_html(get_the_title($bank_id)); ?>
+                    </a>
+                    <div class="ml-xl-auto d-flex align-items-center my-2 my-sm-0">
+                        <div class="card__rating d-flex align-items-center mr-3">
+                            <div class="mr-2">
+                                <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                </svg>
+                            </div>
+                            <?php echo esc_html($ratings_average); ?>
+                        </div>
+                        <div class="card__icon d-flex align-items-center mr-3">
+                            <div class="mr-2">
+                                <svg width="19" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.5 17.2" xml:space="preserve">
+                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#eye" x="0" y="0"></use>
+                                </svg>
+                            </div>
+                            <?php echo intval($views); ?>
+                        </div>
+                        <div class="position-relative card__icon d-flex align-items-center mr-3">
+                            <div class="mr-2">
+                                <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                                    <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                    </svg>
+                                </a>
+                            </div>
+                            <?php
+                            $comments_count = wp_count_comments(get_the_ID());
+                            echo intval($comments_count->approved);
+                            ?>
+                        </div>
+                        <div class="position-relative card__like d-flex align-items-center">
+                            <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-and-btns w-100">
+            <div class="card__footer-new w-100 d-flex justify-content-between align-items-center">
+                <?php
+                $ID = get_the_ID();
+                $about_item = get_field('about_item', $ID);
+                $if_in_tab = get_field('if_in_tab', $ID);
+                $plus_and_minus_tab = get_field('plus_and_minus_tab', $ID);
+                $show_btn_detail = have_rows('product_tar', $ID) || $about_item || $if_in_tab || $plus_and_minus_tab;
+                ?>
+
+                <?php if ($show_btn_detail): ?>
+                    <div data-id="<?php echo esc_attr($ID); ?>" data-close="Скрыть" data-open="Подробнее" class="open__dop-btn">
+                        <div class="open__dop-btn-text">Подробнее</div>
+                        <div class="navigation__item-arrow">
+                            <svg width="12" height="6" viewBox="0 0 12 6">
+                                <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#arrow" x="0" y="0"></use>
+                            </svg>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php
+                $date_actually = get_the_modified_date('d.m.Y', $bank_id);
+                if ($date_actually):
+                ?>
+                    <div class="date_actually">Обновлено: <?php echo esc_html($date_actually); ?></div>
+                <?php endif; ?>
+            </div>
+
+            <div class="tabs">
+                <!-- Здесь можно добавить содержимое вкладок -->
+            </div>
+        </div>
+    </div>
+</div>

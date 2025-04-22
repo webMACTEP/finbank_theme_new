@@ -13,7 +13,13 @@ $apply_now = get_field('apply_now_select_products', get_the_ID());
 
 // Дополнительные переменные для удобства
 $bank_phone = get_field('bank_phone', $bank_id);
-$card_bank_link = get_field('card_bank_link');
+
+//$card_bank_link = get_field('card_bank_link');
+
+$encoded_link = get_field('card_bank_link');
+$card_bank_link = base64_encode($encoded_link);
+
+
 $bank_email = get_field('bank_email', $bank_id);
 $bank_license = get_field('bank_license', $bank_id);
 $card_logo = get_field('card_logo');
@@ -165,21 +171,21 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
             <div class="item-buttons">
                 <?php if ($card_bank_link): ?>
                     <div class="item-buttons-cont">
-                        <a href="<?php echo esc_url($card_bank_link); ?>"
-                            target="_blank"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-                            class="btn btn-primary btn-block">
+
+                        <span
+                            class="link-data btn btn-primary btn-block"
+                            data-link="<?= esc_attr($card_bank_link); ?>"
+                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
                             Оформить
-                        </a>
+                        </span>
                     </div>
                 <?php else: ?>
                     <div class="item-buttons-cont">
-                        <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                            target="_blank"
+                        <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить
-                        </a>
+                            Оформить 0
+                        </span>
                     </div>
                 <?php endif; ?>
 

@@ -6768,14 +6768,20 @@ a.cld-like-dislike-trigger {
   margin: 0px 0px 0px 0px;
 }
 .newlisting .tariffs__list-header a {
-  color: #14b8ad;
+  color: var(--btn-primary-border);
 }
 .newlisting .best-offers-scroll {
   position: relative;
 }
+.newlisting .popular-products {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
 .newlisting .popular-products-wrapp {
-  -moz-columns: 3;
-       columns: 3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .newlisting .popular-products-wrapp .btn__collmore-icon {
   margin-right: 0;
@@ -6901,6 +6907,7 @@ a.cld-like-dislike-trigger {
 }
 .newlisting .open__dop-btn {
   width: auto;
+  color: var(--btn-primary-border);
 }
 .newlisting .listing-modal-close {
   position: absolute;
@@ -6908,7 +6915,7 @@ a.cld-like-dislike-trigger {
   right: -32px;
 }
 .newlisting .listing-modal-close-btn {
-  background: #14b8ad;
+  background: var(--btn-primary-border);
   width: 32px;
   height: 32px;
   border-radius: 32px;
@@ -7078,10 +7085,14 @@ a.cld-like-dislike-trigger {
 .newlisting .card .item-about {
   display: flex;
   gap: 16px;
+  min-width: 380px;
 }
 .newlisting .card .item-image img {
   border-radius: 12px;
   max-height: 72px;
+  max-width: 114px;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .newlisting .card .item-content {
   display: flex;
@@ -7107,11 +7118,11 @@ a.cld-like-dislike-trigger {
   stroke: var(--gray-700);
 }
 .newlisting .views-buttons div.active svg path {
-  stroke: #14b8ad;
+  stroke: var(--btn-primary-border);
 }
 .newlisting .views-buttons div:hover svg path {
   transition: 0.3s;
-  stroke: #14b8ad;
+  stroke: var(--btn-primary-border);
 }
 .newlisting .credits__list-right {
   display: flex;
@@ -7476,7 +7487,7 @@ a.cld-like-dislike-trigger {
 }
 .newlisting .tab-item.active {
   position: relative;
-  color: #14b8ad;
+  color: var(--btn-primary-border);
   border-bottom: none;
 }
 .newlisting .tab-item.active::before {
@@ -7487,7 +7498,7 @@ a.cld-like-dislike-trigger {
   left: 0;
   width: 100%;
   height: 3px;
-  background: #14b8ad;
+  background: var(--btn-primary-border);
   border-radius: 3px;
 }
 .newlisting .forline {
@@ -7533,6 +7544,7 @@ a.cld-like-dislike-trigger {
 }
 .newlisting .list_posts .card__footer-new {
   padding: 0px 15px 0px 0px;
+  margin-top: 0;
 }
 .newlisting .list_posts.cards {
   flex-direction: row;
@@ -7571,6 +7583,9 @@ a.cld-like-dislike-trigger {
   margin-top: 0;
   padding: 0px 0px 0px 0px;
 }
+.newlisting .list_posts.cards .card .item-about {
+  min-width: 100%;
+}
 .newlisting .list_posts.cards .card .item-content {
   flex-direction: column;
   gap: 6px;
@@ -7584,8 +7599,22 @@ a.cld-like-dislike-trigger {
 .newlisting.zaimy-new .plus-minus__row:first-child {
   border-top: none;
 }
+.newlisting .horisont-butt.active svg path {
+  stroke: var(--btn-primary-border);
+}
+.newlisting .listing-modal-close .open__dop-btn svg path {
+  stroke: #fff;
+}
+.newlisting .calc-butt svg path,
+.newlisting .filtr-butt svg path,
+.newlisting .open__dop-btn svg path {
+  stroke: var(--btn-primary-border);
+}
+.newlisting .open__dop-btn-text {
+  color: var(--btn-primary-border);
+}
 .newlisting .load_more_btn {
-  border-color: #14b8ad;
+  border-color: var(--btn-primary-border);
   background-color: var(--body-bg);
 }
 .newlisting .archive_title {
@@ -7642,6 +7671,25 @@ a.cld-like-dislike-trigger {
   display: none;
 }
 
+.out_exit_link,
+.apply_now_btm,
+.link-data {
+  cursor: pointer;
+}
+
+.tab-content > .active {
+  display: block;
+}
+
+.btn-up {
+  background: var(--btn-primary-border) url("../img/uparroww.svg") center center no-repeat;
+  background-size: 24px;
+}
+
+.present-icon {
+  background: var(--btn-primary-border);
+}
+
 @media (max-width: 1090px) {
   .newlisting .new-calc-content,
   .newlisting .new-filter-modal-content {
@@ -7649,6 +7697,12 @@ a.cld-like-dislike-trigger {
   }
 }
 @media (max-width: 768px) {
+  .newlisting .popular-products {
+    flex-direction: column;
+  }
+  .newlisting .card .item-about {
+    min-width: 100%;
+  }
   .comment__one-date {
     display: none;
   }

@@ -7,6 +7,7 @@ $about_item = get_field('product_tar', $ID);
 $if_in_tab = get_field('if_in_tab', $ID);
 $bank_id = get_field('bank_choise', $ID);
 $bank_logo = get_field('bank_logo', $bank_id);
+
 $plus_and_minus_tab = get_field('product_plus_minus', $ID);
 $tab_details = get_field('tab_details', $ID);
 $post_type = get_post_type($ID);
@@ -54,17 +55,50 @@ switch ($post_type) {
         </div>
         <div class="new-tab-head">
             <div class="new-tab-logo">
-                <img src="<?php echo $bank_logo ?>">
+                <?php if (!empty($bank_logo)): ?>
+                    <img src="<?php echo esc_url($bank_logo); ?>" alt="Логотип банка">
+                <?php endif; ?>
+
+                <?php
+                $bank_choise_rel = get_field('product_bank', $ID);
+                $bank_logo_field = get_field('bank_logo', $bank_choise_rel);
+                if (!empty($bank_logo_field)): ?>
+                    <img src="<?php echo esc_url($bank_logo_field); ?>" alt="Логотип банка">
+                <?php endif; ?>
             </div>
-            <div class="colmn">
-                <a href="<?php the_permalink($bank_id); ?>"><?php echo get_the_title($bank_id) ?></a>
-                <div class="card__rating d-flex align-items-center mr-3">
-                    <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
-                        </svg></div>
-                    <?php echo the_field('ratings_average', $bank_id); ?>
+            <?php if (!empty($bank_choise_rel) && get_the_title($bank_choise_rel)): ?>
+                <div class="colmn">
+                    <a href="<?php echo esc_url(get_permalink($bank_choise_rel)); ?>"><?php echo esc_html(get_the_title($bank_choise_rel)); ?></a>
+                    <?php $ratings_average = get_field('ratings_average', $bank_choise_rel); ?>
+                    <?php if (!empty($ratings_average)): ?>
+                        <div class="card__rating d-flex align-items-center mr-3">
+                            <div class="mr-2">
+                                <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                </svg>
+                            </div>
+                            <?php echo esc_html($ratings_average); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            </div>
+            <?php endif; ?>
+
+            <?php if (!empty($bank_id) && get_the_title($bank_id)): ?>
+                <div class="colmn">
+                    <a href="<?php echo esc_url(get_permalink($bank_id)); ?>"><?php echo esc_html(get_the_title($bank_id)); ?></a>
+                    <?php $ratings_average_bank = get_field('ratings_average', $bank_id); ?>
+                    <?php if (!empty($ratings_average_bank)): ?>
+                        <div class="card__rating d-flex align-items-center mr-3">
+                            <div class="mr-2">
+                                <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                </svg>
+                            </div>
+                            <?php echo esc_html($ratings_average_bank); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
 
         <ul class="tab-list">

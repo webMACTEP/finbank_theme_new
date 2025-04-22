@@ -110,7 +110,7 @@ else:
                 <div class="page__nav-container ">
                     <div class="horizontal__scroll">
                         <div class="horizontal__scroll-container-top">
-                            <a href="<?php echo get_term_link(2, '') ?>" class="nav-link-top active">Все кредитные карты</a>
+                            <a href="#" class="nav-link-top active">Все кредитные карты</a>
 
                             <a href="#top" class="nav-link-top">Сравнение</a>
                             <a href="#popular" class="nav-link-top">Подборки</a>
@@ -215,6 +215,24 @@ else:
                                                 <option value="grc40">более 200 дней</option>
                                             </select>
                                         </div>
+
+                                    </div>
+                                    <div class="row pb-3 pb-md-0">
+                                        <div class="col-12 col-md-4 ps_select">
+                                            <label class="form-label" for="ppss">Платежная система</label>
+                                            <select name="ps" id="ppss" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <option value="ps1">MasterCard</option>
+                                                <option value="ps2">VISA</option>
+                                                <option value="ps3">МИР</option>
+                                                <option value="ps4">UnionPay</option>
+                                                <option value="ps5">JCB</option>
+
+
+                                            </select>
+                                        </div>
+
+
                                     </div>
                                 </div>
 
@@ -834,6 +852,10 @@ else:
                 </div>
             </div>
 
+
+
+
+
             <!-- Popular -->
             <div id="popular" class="section anchor">
                 <div class="section__header d-flex justify-content-between align-items-center mb-4">
@@ -842,126 +864,110 @@ else:
                 <div class="popular-products">
 
                     <?php
-                    // Параметры меню (оставляем без изменений)
-                    $massiv_vhodnih_parametrov = array(
+                    // Меню слева
+                    $massiv_vhodnih_parametrov = [
                         'container'      => '',
                         'depth'          => 0,
                         'echo'           => false,
                         'link_class'     => 'filter__btn',
-                        'theme_location' => 'sidebar_menu_creditcard',
+                        'theme_location' => 'sidebar_menu_kredity',
                         'before'         => '<div class="filter__section" id="collist">',
                         'after'          => '</div>',
-                    );
+                    ];
+                    echo strip_tags(wp_nav_menu($massiv_vhodnih_parametrov), '<a>,');
                     ?>
-                    <?php echo strip_tags(wp_nav_menu($massiv_vhodnih_parametrov), '<a>,'); ?>
 
-                    <div class="popular-products-wrapp">
-                        <?php
-                        $args = array(
-                            'hide_empty' => true,
-                            'taxonomy'   => 'tags-category',
-                        );
+                    <?php
+                    // Тут вручную задаёте три группы: в каждую — массив ID категорий
+                    $wrappers = [
+                        ['cats' => [97]],
+                        ['cats' => [91, 96, 87, 95, 94]],
+                        ['cats' => [90, 92, 88, 89, 93]],
+                    ];
 
-                        $cats = get_categories($args);
+                    $visible_count = 0; // число элементов, показываемых по умолчанию
+                    ?>
 
-                        if ($cats) {
-                            // ID категорий, которые НЕ ДОЛЖНЫ выводиться
-                            $exclude_categories = array(98); // Например, исключаем категорию с ID 98
+                    <?php foreach ($wrappers as $wrapper_index => $wrapper) : ?>
+                        <div class="popular-products-wrapp">
 
-                            // Массив с желаемым порядком категорий (ID категории => порядок сортировки)
-                            $custom_order = array(
-                                97 => 1, // Эта категория будет первой
-                            );
+                            <?php foreach ($wrapper['cats'] as $cat_id) {
+                                $cat = get_term($cat_id, 'tags-category');
+                                if (! $cat || is_wp_error($cat)) continue;
 
-                            // Сортировка по пользовательскому порядку
-                            usort($cats, function ($a, $b) use ($custom_order) {
-                                $orderA = $custom_order[$a->term_id] ?? PHP_INT_MAX;
-                                $orderB = $custom_order[$b->term_id] ?? PHP_INT_MAX;
-                                return $orderA - $orderB;
-                            });
-
-                            $visible_count = 0; // Число элементов, показываемых по умолчанию
-                            $first_category = 0; // Счётчик категорий (первая – с индексом 0)
-
-                            foreach ($cats as $cat) {
-                                // Пропускаем исключённые категории
-                                if (in_array($cat->term_id, $exclude_categories)) {
-                                    continue;
-                                }
-                                $args_coll = array(
+                                // Подготовка запроса
+                                $args_coll = [
                                     'post_type'      => 'collection',
-                                    'taxonomy'       => 'tags-category',
-                                    'tax_query'      => array(
-                                        array(
-                                            'taxonomy' => 'tags-category',
-                                            'terms'    => $cat->term_id,
-                                            'field'    => 'id',
-                                            'operator' => 'IN',
-                                        )
-                                    ),
+                                    'tax_query'      => [[
+                                        'taxonomy' => 'tags-category',
+                                        'terms'    => $cat_id,
+                                        'field'    => 'id',
+                                    ]],
                                     'posts_per_page' => -1,
                                     'orderby'        => 'date',
                                     'order'          => 'DESC',
-                                    'meta_query'     => array(
-                                        array(
-                                            'key'     => 'coll-type',
-                                            'value'   => 'creditcard',
-                                            'compare' => '=',
-                                        ),
-                                    )
-                                );
-
+                                    'meta_query'     => [[
+                                        'key'     => 'coll-type',
+                                        'value'   => 'creditcard',
+                                        'compare' => '=',
+                                    ]],
+                                ];
                                 $query = new WP_Query($args_coll);
-                                if ($query->have_posts()) {
-                        ?>
-                                    <div class="filter">
-                                        <div class="filter-title"><?= esc_html($cat->name); ?></div>
-                                        <div class="filter__section" id="collist_<?= $cat->term_id; ?>">
-                                            <?php
-                                            $counter_col = 0;
-                                            while ($query->have_posts()) {
-                                                $query->the_post();
-                                                $counter_col++;
 
-                                                // Для всех категорий элементы с индексом больше $visible_count получают класс "coll_li"
-                                                // Для первой категории (first_category == 0) по умолчанию показываем все (без класса "coll__hidden"),
-                                                // а для остальных — скрываем элементы с номером > $visible_count
-                                                $classes = "filter__btn";
-                                                if ($counter_col > $visible_count) {
-                                                    $classes .= " coll_li";
-                                                    if ($first_category !== 0) {
-                                                        $classes .= " coll__hidden";
-                                                    }
-                                                }
-                                                // Добавляем класс active_post, если необходимо
-                                                if (isset($current_id) && $current_id == get_the_ID()) {
-                                                    $classes .= " active_post";
-                                                }
-                                            ?>
-                                                <a class="<?= $classes; ?>" href="<?php the_permalink(); ?>">
-                                                    <?php the_title(); ?>
-                                                </a>
-                                            <?php } ?>
-                                        </div>
-                                        <?php if ($counter_col > $visible_count): ?>
-                                            <button class="btn__collmore_cat" data-text-open="" data-text-hide="" data-id="collist_<?= $cat->term_id; ?>">
-                                                <span class="btn__collmore-icon">
-                                                    <svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 1L3.09677 3.20371C4.7689 4.96113 5.60497 5.83984 6.624 5.97514C6.87367 6.00829 7.12633 6.00829 7.376 5.97514C8.39503 5.83984 9.2311 4.96113 10.9032 3.20371L13 1" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" />
-                                                    </svg>
-                                                </span>
-                                                <span class="btn__collmore-text"></span>
-                                            </button>
-                                        <?php endif; ?>
-                                    </div>
-                        <?php
+                                if (! $query->have_posts()) {
                                     wp_reset_postdata();
-                                    $first_category++; // Увеличиваем счётчик категорий
+                                    continue;
                                 }
-                            }
-                        }
-                        ?>
-                    </div>
+
+                                // Выводим блок категории
+                            ?>
+                                <div class="filter">
+                                    <div class="filter-title"><?= esc_html($cat->name); ?></div>
+                                    <div class="filter__section" id="collist_<?= $cat_id; ?>">
+                                        <?php
+                                        $counter_col = 0;
+                                        while ($query->have_posts()) {
+                                            $query->the_post();
+                                            $counter_col++;
+                                            // Класс для ссылки
+                                            $classes = 'filter__btn';
+                                            if ($counter_col > $visible_count) {
+                                                $classes .= ' coll_li';
+                                                // для НЕ первой группы сразу скрываем
+                                                if ($wrapper_index !== 0) {
+                                                    $classes .= ' coll__hidden';
+                                                }
+                                            }
+                                            if (isset($current_id) && $current_id == get_the_ID()) {
+                                                $classes .= ' active_post';
+                                            }
+                                        ?>
+                                            <a class="<?= $classes; ?>" href="<?php the_permalink(); ?>">
+                                                <?php the_title(); ?>
+                                            </a>
+                                        <?php } // конец цикла постов 
+                                        ?>
+                                    </div>
+
+                                    <?php if ($counter_col > $visible_count) : ?>
+                                        <button class="btn__collmore_cat" data-text-open="" data-text-hide="" data-id="collist_<?= $cat_id; ?>">
+                                            <span class="btn__collmore-icon">
+                                                <svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 1L3.09677 3.20371C4.7689 4.96113 5.60497 5.83984 6.624 5.97514C6.87367 6.00829 7.12633 6.00829 7.376 5.97514C8.39503 5.83984 9.2311 4.96113 10.9032 3.20371L13 1" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" />
+                                                </svg>
+                                            </span>
+                                            <span class="btn__collmore-text"></span>
+                                        </button>
+                                    <?php endif; ?>
+
+                                </div>
+                            <?php
+                                wp_reset_postdata();
+                            } // конец foreach категорий 
+                            ?>
+                        </div>
+                    <?php endforeach; ?>
+
                 </div>
             </div>
             <!-- / popular -->
@@ -1155,7 +1161,7 @@ else:
             <div id="news" class="section anchor">
                 <div class="section__header mb-4 d-flex justify-content-between align-items-center">
                     <h2 class="title mb-0">Новости о кредитных картах</h2>
-                    <a href="<?php echo get_category_link('10') ?>" class="btn btn-primary btn-sm btn-all">
+                    <a href="<?php echo get_category_link('41') ?>" class="btn btn-primary btn-sm btn-all">
                         Все
                         <span class="icon ml-2">
                             <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">
@@ -1233,7 +1239,7 @@ else:
                         <?php wp_reset_query() ?>
                     </div>
                 </div>
-                <a href="<?php echo get_category_link('10') ?>" class="btn btn-primary btn-sm btn-all-mob">
+                <a href="<?php echo get_category_link('41') ?>" class="btn btn-primary btn-sm btn-all-mob">
                     Все
                     <span class="icon ml-2">
                         <svg width="21" height="12" viewBox="0 0 21 12" xmlns="http://www.w3.org/2000/svg">

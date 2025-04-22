@@ -2892,4 +2892,24 @@ jQuery(function ($) {
   });
 
   // submit-button
+
+  // Декодирование реферальных ссылок
+  $(".link-data").on("click", function () {
+    var encodedUrl = $(this).attr("data-link");
+
+    try {
+      // Декодируем URL
+      var decodedUrl = atob(encodedUrl);
+
+      // Если необходимо выполнить дополнительные действия, например, отправить событие аналитики,
+      // можно добавить их здесь, например:
+      // ym(35020350, 'reachGoal', 'click_oformit_listing');
+      // ym(35020350, 'reachGoal', 'click_na_vse_oformit_s_referalkoy');
+
+      // Открываем декодированный URL в новом окне/вкладке
+      window.open(decodedUrl, "_blank");
+    } catch (e) {
+      console.error("Ошибка декодирования URL", e);
+    }
+  });
 });

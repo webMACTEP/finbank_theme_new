@@ -1,6 +1,6 @@
 <?php get_header() ?>
 
-<?php 
+<?php
 /*
 $ID = $_SESSION['post_review_id'];
 $TAX = $_SESSION['data_tax_reviews'];
@@ -13,12 +13,12 @@ $term_slug = $terms[0]->slug;
 $term_id = $terms[0]->term_id;
 */
 
-       $tax_id = 2;
-       $title_term1 = "Кредиты";
-       $title_term2 = "все кредиты";
-       $calc_link = get_page_link(149);
-       $link = get_post_type_archive_link('kredity');
-       $news_id = "18";
+$tax_id = 2;
+$title_term1 = "Кредиты";
+$title_term2 = "все кредиты";
+$calc_link = get_page_link(149);
+$link = get_post_type_archive_link('kredity');
+$news_id = "18";
 ?>
 <main>
     <div class="container">
@@ -60,31 +60,31 @@ $term_id = $terms[0]->term_id;
     </div>
 
 
-<?php
-//reviews_list
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-$ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
-$custom_offset = ($paged - 1)*$ppp;
+    <?php
+    //reviews_list
+    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+    $ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+    $custom_offset = ($paged - 1) * $ppp;
 
-// fetch posts in all those categories
-$posts = get_cpt_ids('kredity');
+    // fetch posts in all those categories
+    $posts = get_cpt_ids('kredity');
 
-$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
- FROM {$wpdb->comments} WHERE
- comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
- ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+    $sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+        FROM {$wpdb->comments} WHERE
+        comment_post_ID in (" . implode(',', $posts) . ") AND comment_approved = 1 AND comment_parent = 0
+        ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
 
-$sql_posts_total =  $wpdb->get_var("SELECT COUNT(*)  FROM {$wpdb->comments} WHERE
- comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
- ORDER by comment_date DESC");
+    $sql_posts_total =  $wpdb->get_var("SELECT COUNT(*)  FROM {$wpdb->comments} WHERE
+        comment_post_ID in (" . implode(',', $posts) . ") AND comment_approved = 1 AND comment_parent = 0
+        ORDER by comment_date DESC");
 
-$max_num_pages = ceil($sql_posts_total / $ppp);
+    $max_num_pages = ceil($sql_posts_total / $ppp);
 
-$comments_list = $wpdb->get_results( $sql );
-global $wp_query;
-$count_items = count( $comments_list );
-//reviews_list END
-?>
+    $comments_list = $wpdb->get_results($sql);
+    global $wp_query;
+    $count_items = count($comments_list);
+    //reviews_list END
+    ?>
 
     <!-- / page nav -->
     <div class="container">
@@ -107,7 +107,7 @@ $count_items = count( $comments_list );
                     wp_reset_query(); ?>
                     <div class="pagination__description mt-4 mt-sm-0">
                         Показано <span class="count_view"><?php echo $count_items; ?></span>
-                        отзывов из <span class="count_all"><?php echo $sql_posts_total;?></span>
+                        отзывов из <span class="count_all"><?php echo $sql_posts_total; ?></span>
                     </div>
                 </div>
             </div>

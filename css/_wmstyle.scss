@@ -1508,7 +1508,7 @@
             margin: 0px 0px 0px 0px;
         }
         a {
-            color: #14b8ad;
+            color: var(--btn-primary-border);
         }
         display: flex;
         align-items: center;
@@ -1518,7 +1518,14 @@
         position: relative;
     }
 
+    .popular-products{
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+    }
+
     .popular-products-wrapp {
+        width: 100%;
         .btn__collmore-icon {
             margin-right: 0;
         }
@@ -1544,7 +1551,9 @@
 
         // gap: 1rem;
         // align-items: start;
-        columns: 3;
+        //columns: 3;
+        display: flex;
+        flex-direction: column;
     }
     .tariffs__list-tags {
         ul {
@@ -1670,6 +1679,7 @@
     }
     .open__dop-btn {
         width: auto;
+        color: var(--btn-primary-border);
     }
     .listing-modal-close {
         position: absolute;
@@ -1677,7 +1687,7 @@
         right: -32px;
     }
     .listing-modal-close-btn {
-        background: #14b8ad;
+        background: var(--btn-primary-border);
         width: 32px;
         height: 32px;
         border-radius: 32px;
@@ -1866,11 +1876,14 @@
         .item-about {
             display: flex;
             gap: 16px;
+            min-width: 380px;
         }
         .item-image {
             img {
                 border-radius: 12px;
                 max-height: 72px;
+                max-width: 114px;
+                object-fit: cover;
             }
         }
         .item-content {
@@ -1891,7 +1904,7 @@
             &.active {
                 svg {
                     path {
-                        stroke: #14b8ad;
+                        stroke: var(--btn-primary-border);
                     }
                 }
             }
@@ -1899,7 +1912,7 @@
                 svg {
                     path {
                         transition: 0.3s;
-                        stroke: #14b8ad;
+                        stroke: var(--btn-primary-border);
                     }
                 }
             }
@@ -2308,7 +2321,7 @@
         z-index: 99;
         &.active {
             position: relative;
-            color: #14b8ad;
+            color: var(--btn-primary-border);
             border-bottom: none;
             &::before {
                 content: "";
@@ -2318,7 +2331,7 @@
                 left: 0;
                 width: 100%;
                 height: 3px;
-                background: #14b8ad;
+                background: var(--btn-primary-border);
                 border-radius: 3px;
             }
         }
@@ -2364,6 +2377,7 @@
         }
         .card__footer-new {
             padding: 0px 15px 0px 0px;
+            margin-top: 0;
         }
         &.cards {
             .rait-cards {
@@ -2405,6 +2419,7 @@
                 }
                 .item-about {
                     //flex-direction: column;
+                    min-width: 100%;
                 }
                 .item-info {
                     //position: relative;
@@ -2434,8 +2449,37 @@
             border-top: none;
         }
     }
+    .horisont-butt.active{
+        svg {
+            path {
+                stroke: var(--btn-primary-border);
+            }
+        }
+    }
+    .listing-modal-close{
+        .open__dop-btn {
+            svg {
+                path {
+                    stroke: #fff;
+                }
+            }
+        }
+    }
+    .calc-butt,
+    .filtr-butt,
+    .open__dop-btn {
+        svg {
+            path {
+                stroke: var(--btn-primary-border);
+            }
+        }
+    }
+
+    .open__dop-btn-text {
+        color: var(--btn-primary-border);
+    }
     .load_more_btn {
-        border-color: #14b8ad;
+        border-color: var(--btn-primary-border);
         background-color: var(--body-bg);
     }
     .archive_title {
@@ -2490,6 +2534,22 @@
 .comment__one-date-mob {
     display: none;
 }
+.out_exit_link,
+.apply_now_btm,
+.link-data {
+    cursor: pointer;
+}
+.tab-content > .active {
+    display: block;
+}
+.btn-up{
+    background: var(--btn-primary-border) url("../img/uparroww.svg") center center no-repeat;
+    background-size: 24px;
+}
+.present-icon{
+    background: var(--btn-primary-border);
+}
+
 @media (max-width: 1090px) {
     .newlisting .new-calc-content,
     .newlisting .new-filter-modal-content {
@@ -2497,6 +2557,12 @@
     }
 }
 @media (max-width: 768px) {
+    .newlisting .popular-products{
+        flex-direction: column;
+    }
+    .newlisting .card .item-about {
+        min-width: 100%;
+    }
     .comment__one-date {
         display: none;
     }
@@ -3192,7 +3258,7 @@
     .newlisting .list_posts.cards .card .item-buttons {
         max-width: 100%;
     }
-    .reply-button.btn{
+    .reply-button.btn {
         padding: 0;
     }
     .newlisting {

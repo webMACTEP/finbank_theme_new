@@ -21,6 +21,9 @@ $apply_now = get_field('apply_now_select_products', $ID);
 
 $current_url = get_permalink();
 
+$encoded_link = get_field('card_bank_link');
+$card_bank_link = base64_encode($encoded_link);
+
 ?>
 <?php // get_template_part('all_template/popap_apply_now', null, ['DATA' => $apply_now]); 
 ?>
@@ -177,12 +180,21 @@ $current_url = get_permalink();
                         <div class="credits__view-buttons d-flex justify-content-center py-3 py-sm-4">
                             <?php //if(get_field('card_bank_link', $ID)):
                             ?>
-                            <?php if (reclink($ID)): ?>
-                                <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary mx-3"
-                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Оформить сейчас</a>
+                            <?php if ($card_bank_link): ?>
+                                <span
+                                    class="link-data btn btn-primary mx-3"
+                                    data-link="<?= esc_attr($card_bank_link); ?>"
+                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                    Оформить сейчас
+                                </span>
+
                             <?php else: ?>
-                                <a href="#" class="btn btn-primary mx-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Оформить сейчас</a>
+                                <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                    class="btn btn-primary mx-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                    Оформить сейчас
+                                </span>
+
                             <?php endif; ?>
 
 
@@ -193,7 +205,7 @@ $current_url = get_permalink();
                 <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
                 <?php if ($date_actually): ?>
 
-                    <div class="date_actually date_actually-single-kredity">Обновлено1: <?php $date_actually ?></div>
+                    <div class="date_actually date_actually-single-kredity">Обновлено: <?php $date_actually ?></div>
 
                 <?php endif; ?>
 
@@ -414,17 +426,24 @@ $current_url = get_permalink();
 
 
                                         <div class="wm-fixed-button sidebar__field mb-3">
-                                            <?php //if(get_field('card_bank_link', $ID)):
-                                            ?>
-                                            <?php if (reclink($ID)): ?>
-                                                <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank"
-                                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
-                                                    class="btn btn-primary">Оформить сейчас</a>
+                                            <?php if ($card_bank_link): ?>
+                                                <span
+                                                    class="link-data btn btn-primary"
+                                                    data-link="<?= esc_attr($card_bank_link); ?>"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                    Оформить сейчас
+                                                </span>
+
                                             <?php else: ?>
-                                                <a href="#" class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                                    onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
-                                                    Оформить сейчас</a>
+                                                <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                    class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                    Оформить сейчас
+                                                </span>
                                             <?php endif; ?>
+
+
+
 
                                         </div>
                                     </div>
@@ -628,12 +647,20 @@ $current_url = get_permalink();
 
                                         </div>
 
-                                        <?php if (reclink($ID)): ?>
-                                            <a href="<?php echo the_field('card_bank_link', $ID) ?>" target="_blank" class="btn btn-primary "
-                                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">Перейти на сайт</a>
+                                        <?php if ($card_bank_link): ?>
+                                            <span
+                                                class="link-data btn btn-primary"
+                                                data-link="<?= esc_attr($card_bank_link); ?>"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                Перейти на сайт
+                                            </span>
+
                                         <?php else: ?>
-                                            <a href="#" class="btn btn-primary  <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>"
-                                                onclick="<?php get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return false;">Перейти на сайт</a>
+                                            <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                Перейти на сайт
+                                            </span>
                                         <?php endif; ?>
                                     </div>
                                 <?php endwhile; ?>
@@ -1115,7 +1142,22 @@ $current_url = get_permalink();
                                                 </div>
                                                 <!-- Кнопка "Получить деньги" -->
                                                 <div class="row">
-                                                    <a class="btn btn-primary mt-3" href="<?php echo the_field('card_bank_link', $ID) ?>" id="applyNow">Получить деньги</a>
+                                                <?php if ($card_bank_link): ?>
+                                                    <span
+                                                        class="link-data btn btn-primary  mt-3"
+                                                        data-link="<?= esc_attr($card_bank_link); ?>"
+                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                        Получить деньги
+                                                    </span>
+
+                                                <?php else: ?>
+                                                    <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                        class="btn btn-primary  mt-3 <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                        Получить деньги
+                                                    </span>
+                                                <?php endif; ?>
+                                                    
                                                 </div>
 
                                             </div>
@@ -1566,7 +1608,22 @@ $current_url = get_permalink();
                                                 <button class="" type="button" id="restartQuiz">Начать заново</button>
 
                                                 <!-- Кнопка "Оформить сейчас" -->
-                                                <a class="btn btn-primary" href="<?php echo the_field('card_bank_link', $ID) ?>" id="applyNow">Оформить сейчас</a>
+                                                <?php if ($card_bank_link): ?>
+                                                    <span
+                                                        class="link-data btn btn-primary"
+                                                        data-link="<?= esc_attr($card_bank_link); ?>"
+                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                        Оформить сейчас
+                                                    </span>
+
+                                                <?php else: ?>
+                                                    <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                        class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                        Оформить сейчас
+                                                    </span>
+                                                <?php endif; ?>
+
                                             </div>
                                         </div>
                                     </div>
@@ -2115,7 +2172,7 @@ $current_url = get_permalink();
                         </span>
                     </a>
                 </div>
-                <div class="tabs offer-tabs">
+                <div class="offer-tabs">
                     <div class="forline">
                         <div class="horizontal__scroll">
                             <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">
