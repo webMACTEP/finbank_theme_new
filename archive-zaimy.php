@@ -1,78 +1,66 @@
 <?php
-// Начало PHP-кода
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+// Инициализация переменной $query__card
+$query__card = get_field('archive') ? '' : 'query__card';
+
+// Получение поля 'apply_now_select_products'
+$apply_now = get_field('apply_now_select_products', get_the_ID());
+
+// Инициализация пагинации
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+// Аргументы для WP_Query
+$items_args = array(
+    'paged' => $paged,
+    'orderby' => 'name',
+    'order' => 'DESC',
+    'post_type' => 'zaimy',
+    'post_status' => 'publish',
+    'post_parent' => 0, // Только родительские записи
+    'meta_query' => array(
+        array(
+            'key' => 'archive',
+            'value' => '0',
+            'compare' => '=', // Рекомендуется явно указать оператор сравнения
+        )
+    )
+);
+
+// Создание нового запроса
+$query_items = new WP_Query($items_args);
+
+// Проверка наличия постов
+if (!$query_items->have_posts()) {
+    global $wp_query;
+    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
+    wp_redirect($url_clear, 301);
+    exit; // Всегда используйте exit после wp_redirect
 }
 
-// Определение имени поля для получения bank_id, с возможностью переопределения через аргументы
-$bank_id_field_name = 'product_bank'; // bank_choice
-if (isset($args['bank_id__field_name']) && !empty($args['bank_id__field_name'])) {
-    $bank_id_field_name = $args['bank_id__field_name'];
-}
-
-
-
-
-// Проверка наличия параметра 'change_template' в URL
-if (isset($_GET['change_template'])):
-    get_template_part('template-parts/new-collection-kredity');
-else:
-    get_header();
-
-    // Получение текущего термина
-    $term = get_queried_object();
-    $ID = $term->ID;
-
-    // Инициализация переменных
-    $mt = false;
-    $cred_limit = 0;
-    $cred_day_period = 0;
-
-    $card_bank_link = get_field('card_bank_link', $ID);
-
-    // Проверка наличия фильтра в сессии
-    if (isset($_SESSION['filter_kredity']) && !empty($_SESSION['filter_kredity'])):
-        $mt = 1;
-        $cred_limit = $_SESSION['filter_kredity'][0];
-        $cred_day_period = $_SESSION['filter_kredity'][1];
-    endif;
-    unset($_SESSION['filter_kredity']);
-
-    $summ_limit = 1000000;
-    $cred_summ_period = 24;
-    $summ_limit = 0;
-    $cred_summ_period = 0;
-    if (isset($_SESSION['filter_kredity']) && !empty($_SESSION['filter_kredity'])):
-        $mt = 1;
-        $summ_limit = $_SESSION['filter_kredity'][0];
-        $cred_summ_period = $_SESSION['filter_kredity'][1];
-    endif;
-    unset($_SESSION['filter_kredity']);
+// Продолжение выполнения, если посты найдены
 ?>
 
-    <?php if ($mt): ?>
+<?php if ($_REQUEST['change_template']) {
+    get_template_part('template-parts/new-collection-kredity');
+} else { ?>
+
+    <?php get_header(); ?>
+
+    <?php
+    // Инициализация переменных
+    $z_sum = 0;
+    $z_time = 0;
+
+    if (isset($_SESSION['filter_zaimy']) && !empty($_SESSION['filter_zaimy'])) {
+        $mt = 1;
+        $z_sum = sanitize_text_field($_SESSION['filter_zaimy'][0]);
+        $z_time = sanitize_text_field($_SESSION['filter_zaimy'][1]);
+    }
+    unset($_SESSION['filter_zaimy']);
+    ?>
+
+    <?php if (isset($mt) && $mt): ?>
         <div class="start-func-credit-card-filter"></div>
     <?php endif; ?>
-
-    <?php $args = array(
-        'post_type'             => 'zaimy',
-        'posts_per_page'        => -1,
-        'orderby' => 'date',
-        'order' => 'ASC',
-    );
-
-    $query = new WP_Query($args);
-
-    // Цикл
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $date = get_the_date('d.m.y');
-        }
-    }
-    wp_reset_query() ?>
-
-
 
     <main class="newlisting zaimy-new" term="zaimy">
 
@@ -168,8 +156,101 @@ else:
                                     </div>
                                 </div>
 
+                                <div id="filter__details" class="col-12 mt-md-4 order-4 order-md-5">
+                                    <div class="row pb-3 pb-md-0">
+
+                                        <div class="col-12 col-md-4 zct_select">
+                                            <label class="form-label" for="zct">Способ получения</label>
+                                            <select name="zct" id="zct" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <option value="zct1">На карту</option>
+                                                <option value="zct2">Наличными</option>
+                                                <option value="zct3">Юмани</option>
+                                                <option value="zct4">Золотая корона</option>
+                                                <option value="zct5">Банковский счет</option>
 
 
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-4 oz_select">
+                                            <label class="form-label" for="oz">Способ получения</label>
+                                            <select name="oz" id="oz" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <option value="oz1">Турбозайм</option>
+                                                <option value="oz2">Займер</option>
+                                                <option value="oz3">E-капуста</option>
+                                                <option value="oz4">MoneyMan</option>
+                                                <option value="oz5">Деньга</option>
+                                                <option value="oz6">Веб-займ</option>
+                                                <option value="oz7">Zaymigo</option>
+                                                <option value="oz8">WEBBANKIR</option>
+                                                <option value="oz9">СМСФинанс</option>
+                                                <option value="oz10">Срочноденьги</option>
+                                                <option value="oz11">Platiza</option>
+                                                <option value="oz12">Pay P S</option>
+                                                <option value="oz13">Отличные наличные</option>
+                                                <option value="oz14">OneClickMoney</option>
+                                                <option value="oz15">МИГКРЕДИТ</option>
+                                                <option value="oz16">Лови займ</option>
+                                                <option value="oz17">Лига денег</option>
+                                                <option value="oz18">Кредито24</option>
+                                                <option value="oz19">CreditPlus</option>
+                                                <option value="oz20">Конга</option>
+                                                <option value="oz21">GreenMoney</option>
+                                                <option value="oz22">ГлавФинанс</option>
+                                                <option value="oz23">Ezaem</option>
+                                                <option value="oz24">JoyMoney</option>
+                                                <option value="oz25">До зарплаты</option>
+                                                <option value="oz26">Деньги Сразу</option>
+                                                <option value="oz27">Честное слово</option>
+                                                <option value="oz28">Быстроденьги</option>
+                                                <option value="oz30">Умные наличные</option>
+                                                <option value="oz31">Свои Люди</option>
+                                                <option value="oz32">Привет, сосед!</option>
+                                                <option value="oz33">Небус</option>
+                                                <option value="oz34">Надо денег</option>
+                                                <option value="oz35">Moneza</option>
+                                                <option value="oz36">Мир денег</option>
+                                                <option value="oz37">MFOБанк</option>
+                                                <option value="oz38">Max.Credit</option>
+                                                <option value="oz39">Lime</option>
+                                                <option value="oz40">Кнопка Деньги</option>
+                                                <option value="oz41">Финтерра</option>
+                                                <option value="oz42">Финансовая Розница</option>
+                                                <option value="oz43">FastMoney</option>
+                                                <option value="oz44">ДоброЗайм</option>
+                                                <option value="oz45">Creditter</option>
+                                                <option value="oz46">Credit7</option>
+                                                <option value="oz47">Целевые финансы</option>
+                                                <option value="oz48">Cashtoyou</option>
+                                                <option value="oz49">CarMoney</option>
+                                                <option value="oz50">Boostra</option>
+                                                <option value="oz51">БериБеру</option>
+                                                <option value="oz52">Белка Кредит</option>
+                                                <option value="oz53">АЛИЗАЙМ</option>
+                                                <option value="oz54">А Деньги</option>
+                                                <option value="oz55">495 кредит</option>
+                                                <option value="oz56">Viva Деньги</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12 col-md-4 zos_select">
+                                            <label class="form-label" for="zos">Прочие условия</label>
+                                            <select name="zos" id="zos" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <option value="zos1">Под 0% первый займ</option>
+                                                <option value="zos2">Моментальное решение</option>
+                                                <option value="zos3">Без справок о доходах</option>
+                                                <option value="zos4">С 18 лет</option>
+                                                <option value="zos5">С любой КИ</option>
+                                                <option value="zos6">Под залог ПТС</option>
+                                            </select>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
 
                                 <div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
                                     <div class="btn btn-primary btn-block submit-button">Показать</div>
@@ -737,7 +818,7 @@ else:
                 </div>
             </div>
 
-            
+
 
             <!-- Popular -->
             <div id="popular" class="section anchor">
@@ -1271,192 +1352,9 @@ else:
         </div>
 
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            function toggleModal(modalSelector) {
-                var modal = document.querySelector(modalSelector);
-                if (modal) {
-                    modal.classList.toggle("active");
-                }
-            }
-
-            function closeModal(modalSelector) {
-                var modal = document.querySelector(modalSelector);
-                if (modal) {
-                    modal.classList.remove("active");
-                }
-            }
-
-            // Универсальная функция для кликов по кнопкам
-            function setupModalToggle(buttonSelector, modalSelector) {
-                document.querySelectorAll(buttonSelector).forEach(function(btn) {
-                    btn.addEventListener("click", function() {
-                        toggleModal(modalSelector);
-                    });
-                });
-            }
-
-            function setupModalClose(buttonSelector, modalSelector) {
-                document.querySelectorAll(buttonSelector).forEach(function(btn) {
-                    btn.addEventListener("click", function() {
-                        closeModal(modalSelector);
-                    });
-                });
-            }
-
-            // Фильтр
-            setupModalToggle(".filtr-butt", ".new-filter-modal");
-            setupModalClose(".new-filter-modal-close", ".new-filter-modal");
-            setupModalClose(".submit-button", ".new-filter-modal");
-
-
-            // Калькулятор
-            setupModalToggle(".calc-butt", ".new-calc-modal");
-            setupModalClose(".new-calc-close, .new-calc-btn-close", ".new-calc-modal");
-
-            // Закрытие модального окна при клике вне области .new-calc-content и .new-filter-content
-            document.addEventListener("click", function(event) {
-                document.querySelectorAll(".new-filter-modal, .new-calc-modal").forEach(function(modal) {
-                    let isClickInsideContent = event.target.closest(".new-filter-modal-content, .new-calc-content");
-                    let isClickInsideModal = event.target.closest(".new-filter-modal, .new-calc-modal");
-                    let isClickOnButton = event.target.closest(".filtr-butt, .calc-butt");
-
-                    if (modal.classList.contains("active") && !isClickInsideContent && isClickInsideModal && !isClickOnButton) {
-                        modal.classList.remove("active");
-                    }
-                });
-            });
-
-            var topmoreButton = document.querySelector(".top-offers-more");
-            var topulElement = document.querySelector(".top-offers-wrapper ul");
-
-            if (topmoreButton && topulElement) {
-                topmoreButton.addEventListener("click", function() {
-                    topulElement.classList.add("active");
-                    topmoreButton.classList.add("hide");
-                });
-            }
-
-            const moreButton = document.querySelector('.page__heading-description-more');
-            const descriptionElement = document.querySelector('.page__heading-description');
-
-            if (moreButton && descriptionElement) {
-                moreButton.addEventListener('click', () => {
-                    const isActive = descriptionElement.classList.toggle('active'); // Переключаем класс active
-
-                    // Меняем текст кнопки
-                    moreButton.textContent = isActive ? 'Свернуть' : 'Развернуть';
-                });
-            }
-
-
-            const moreButton2 = document.querySelector('.type-desc-more');
-            const descriptionElement2 = document.querySelector('.type-desc');
-
-            if (moreButton && descriptionElement) {
-                moreButton2.addEventListener('click', () => {
-                    const isActive = descriptionElement2.classList.toggle('active'); // Переключаем класс active
-
-                    // Меняем текст кнопки
-                    moreButton2.textContent = isActive ? 'Свернуть' : 'Раскрыть';
-                });
-            }
-
-
-
-
-            const openAdCommentForm = document.getElementById("openAdditionalCommentForm");
-
-            const adCommentForm = document.getElementById("additional-comment-form");
-
-            openAdCommentForm.addEventListener("click", () => {
-                adCommentForm.classList.add("active");
-            });
-
-
-
-
-            const openCommentForm = document.getElementById("openCommentForm");
-
-            const commentForm = document.getElementById("commentForm");
-
-            openCommentForm.addEventListener("click", () => {
-                commentForm.classList.add("active");
-            });
-
-
-
-        });
-
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // Получаем контейнер скролла
-            const scrollContainer = document.querySelector('.best-offers-scroll-container');
-
-            // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-            document.querySelector('.offers-horiz-next').addEventListener('click', () => {
-                scrollContainer.scrollBy({
-                    left: 300,
-                    behavior: 'smooth'
-                });
-            });
-
-            // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-            document.querySelector('.offers-horiz-prew').addEventListener('click', () => {
-                scrollContainer.scrollBy({
-                    left: -300,
-                    behavior: 'smooth'
-                });
-            });
-
-
-            // Получаем контейнер скролла
-            const scrollContainer2 = document.querySelector('.reviews-scroll-container');
-
-            // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-            document.querySelector('.reviews-horiz-next').addEventListener('click', () => {
-                scrollContainer2.scrollBy({
-                    left: 400,
-                    behavior: 'smooth'
-                });
-            });
-
-            // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-            document.querySelector('.reviews-horiz-prew').addEventListener('click', () => {
-                scrollContainer2.scrollBy({
-                    left: -400,
-                    behavior: 'smooth'
-                });
-            });
-
-
-            const wrapper = document.querySelector('.tags-list_wrapper');
-
-            // При клике на кнопку "предыдущий" прокручиваем влево на 200px
-            document.querySelector('.tags-list_prev').addEventListener('click', function() {
-                wrapper.scrollBy({
-                    left: -200,
-                    behavior: 'smooth'
-                });
-            });
-
-            // При клике на кнопку "следующий" прокручиваем вправо на 200px
-            document.querySelector('.tags-list_next').addEventListener('click', function() {
-                wrapper.scrollBy({
-                    left: 200,
-                    behavior: 'smooth'
-                });
-            });
-
-
-
-        });
-    </script>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/new-listing.js"></script>
 
 
     <?php get_footer(); ?>
 
-<?php endif; ?>
+<?php } ?>

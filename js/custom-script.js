@@ -1487,48 +1487,65 @@ jQuery(function ($) {
 
   // Кастомные правки ссылок
 
-  $(document).ready(function () {
-    $(".offer-tabs .nav-link").click(function () {
-      $(".offers-link-main").attr("href", $(this).attr("data-link"));
-    });
-    $(".article-tabs .nav-link").click(function () {
-      $(".article-link-main").attr("href", $(this).attr("data-link"));
-    });
-    $(".reviews-tabs .nav-link").click(function () {
-      //$( '.reviews-link-main' ).attr('data-tax', $(this).attr('data-tax'));
-      var datatax = $(this).attr("data-tax");
-      console.log(datatax);
-      if (datatax == "banks")
-        $(".reviews-link-main").attr(
-          "href",
-          "https://" + document.domain + "/reviews-banks"
-        );
-      if (datatax == "kredity")
-        $(".reviews-link-main").attr(
-          "href",
-          "https://" + document.domain + "/reviews-kredity"
-        );
-      if (datatax == "creditcard")
-        $(".reviews-link-main").attr(
-          "href",
-          "https://" + document.domain + "/reviews-creditcard"
-        );
-      if (datatax == "debetcard")
-        $(".reviews-link-main").attr(
-          "href",
-          "https://" + document.domain + "/reviews-debetcard"
-        );
-      if (datatax == "installmentcard")
-        $(".reviews-link-main").attr(
-          "href",
-          "https://" + document.domain + "/reviews-installmentcard"
-        );
-      if (datatax == "zaimy")
-        $(".reviews-link-main").attr(
-          "href",
-          "https://" + document.domain + "/reviews-zaimy"
-        );
-    });
+  $(".offer-tabs .nav-link").click(function () {
+    $(".offers-link-main").attr("href", $(this).attr("data-link"));
+  });
+  $(".article-tabs .nav-link").click(function () {
+    $(".article-link-main").attr("href", $(this).attr("data-link"));
+  });
+  $(".reviews-tabs .nav-link").click(function () {
+    //$( '.reviews-link-main' ).attr('data-tax', $(this).attr('data-tax'));
+    var datatax = $(this).attr("data-tax");
+    console.log(datatax);
+    if (datatax == "banks")
+      $(".reviews-link-main").attr(
+        "href",
+        "https://" + document.domain + "/reviews-banks"
+      );
+    if (datatax == "kredity")
+      $(".reviews-link-main").attr(
+        "href",
+        "https://" + document.domain + "/reviews-kredity"
+      );
+    if (datatax == "creditcard")
+      $(".reviews-link-main").attr(
+        "href",
+        "https://" + document.domain + "/reviews-creditcard"
+      );
+    if (datatax == "debetcard")
+      $(".reviews-link-main").attr(
+        "href",
+        "https://" + document.domain + "/reviews-debetcard"
+      );
+    if (datatax == "installmentcard")
+      $(".reviews-link-main").attr(
+        "href",
+        "https://" + document.domain + "/reviews-installmentcard"
+      );
+    if (datatax == "zaimy")
+      $(".reviews-link-main").attr(
+        "href",
+        "https://" + document.domain + "/reviews-zaimy"
+      );
+  });
+  // Декодирование реферальных ссылок
+  $(".link-data").on("click", function () {
+    var encodedUrl = $(this).attr("data-link");
+
+    try {
+      // Декодируем URL
+      var decodedUrl = atob(encodedUrl);
+
+      // Если необходимо выполнить дополнительные действия, например, отправить событие аналитики,
+      // можно добавить их здесь, например:
+      // ym(35020350, 'reachGoal', 'click_oformit_listing');
+      // ym(35020350, 'reachGoal', 'click_na_vse_oformit_s_referalkoy');
+
+      // Открываем декодированный URL в новом окне/вкладке
+      window.open(decodedUrl, "_blank");
+    } catch (e) {
+      console.error("Ошибка декодирования URL", e);
+    }
   });
 });
 
@@ -2892,24 +2909,4 @@ jQuery(function ($) {
   });
 
   // submit-button
-
-  // Декодирование реферальных ссылок
-  $(".link-data").on("click", function () {
-    var encodedUrl = $(this).attr("data-link");
-
-    try {
-      // Декодируем URL
-      var decodedUrl = atob(encodedUrl);
-
-      // Если необходимо выполнить дополнительные действия, например, отправить событие аналитики,
-      // можно добавить их здесь, например:
-      // ym(35020350, 'reachGoal', 'click_oformit_listing');
-      // ym(35020350, 'reachGoal', 'click_na_vse_oformit_s_referalkoy');
-
-      // Открываем декодированный URL в новом окне/вкладке
-      window.open(decodedUrl, "_blank");
-    } catch (e) {
-      console.error("Ошибка декодирования URL", e);
-    }
-  });
 });

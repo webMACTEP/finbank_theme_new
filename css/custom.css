@@ -5739,6 +5739,10 @@ a.cld-like-dislike-trigger {
   margin-left: 0;
   margin-right: 0;
 }
+.zaimy-new .horizontal__scroll-container .card {
+  margin: 0px 0px 0px 0px;
+  padding-bottom: 0;
+}
 .zaimy-new .quiz-calc {
   background: var(--white);
   border-radius: 12px;

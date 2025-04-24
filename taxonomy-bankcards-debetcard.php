@@ -203,6 +203,23 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row pb-3 pb-md-0 mt-3">
+                                        <div class="col-12 col-md-4 ps_select">
+                                            <label class="form-label" for="ppss">Платежная система</label>
+                                            <select name="ps" id="ppss" class="styledSelect" placeholder="">
+                                                <option value="">Любой</option>
+                                                <option value="ps1">VISA</option>
+                                                <option value="ps2">MasterCard</option>
+                                                <option value="ps3">МИР</option>
+                                                <option value="ps4">UnionPay</option>
+                                                <option value="ps5">JCB</option>
+
+
+                                            </select>
+                                        </div>
+
+
+                                    </div>
                                 </div>
 
                                 <div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
@@ -1438,190 +1455,7 @@
         </div>
 
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            function toggleModal(modalSelector) {
-                var modal = document.querySelector(modalSelector);
-                if (modal) {
-                    modal.classList.toggle("active");
-                }
-            }
-
-            function closeModal(modalSelector) {
-                var modal = document.querySelector(modalSelector);
-                if (modal) {
-                    modal.classList.remove("active");
-                }
-            }
-
-            // Универсальная функция для кликов по кнопкам
-            function setupModalToggle(buttonSelector, modalSelector) {
-                document.querySelectorAll(buttonSelector).forEach(function(btn) {
-                    btn.addEventListener("click", function() {
-                        toggleModal(modalSelector);
-                    });
-                });
-            }
-
-            function setupModalClose(buttonSelector, modalSelector) {
-                document.querySelectorAll(buttonSelector).forEach(function(btn) {
-                    btn.addEventListener("click", function() {
-                        closeModal(modalSelector);
-                    });
-                });
-            }
-
-            // Фильтр
-            setupModalToggle(".filtr-butt", ".new-filter-modal");
-            setupModalClose(".new-filter-modal-close", ".new-filter-modal");
-            setupModalClose(".submit-button", ".new-filter-modal");
-
-
-            // Калькулятор
-            setupModalToggle(".calc-butt", ".new-calc-modal");
-            setupModalClose(".new-calc-close, .new-calc-btn-close", ".new-calc-modal");
-
-            // Закрытие модального окна при клике вне области .new-calc-content и .new-filter-content
-            document.addEventListener("click", function(event) {
-                document.querySelectorAll(".new-filter-modal, .new-calc-modal").forEach(function(modal) {
-                    let isClickInsideContent = event.target.closest(".new-filter-modal-content, .new-calc-content");
-                    let isClickInsideModal = event.target.closest(".new-filter-modal, .new-calc-modal");
-                    let isClickOnButton = event.target.closest(".filtr-butt, .calc-butt");
-
-                    if (modal.classList.contains("active") && !isClickInsideContent && isClickInsideModal && !isClickOnButton) {
-                        modal.classList.remove("active");
-                    }
-                });
-            });
-
-            var topmoreButton = document.querySelector(".top-offers-more");
-            var topulElement = document.querySelector(".top-offers-wrapper ul");
-
-            if (topmoreButton && topulElement) {
-                topmoreButton.addEventListener("click", function() {
-                    topulElement.classList.add("active");
-                    topmoreButton.classList.add("hide");
-                });
-            }
-
-            const moreButton = document.querySelector('.page__heading-description-more');
-            const descriptionElement = document.querySelector('.page__heading-description');
-
-            if (moreButton && descriptionElement) {
-                moreButton.addEventListener('click', () => {
-                    const isActive = descriptionElement.classList.toggle('active'); // Переключаем класс active
-
-                    // Меняем текст кнопки
-                    moreButton.textContent = isActive ? 'Свернуть' : 'Развернуть';
-                });
-            }
-
-
-            const moreButton2 = document.querySelector('.type-desc-more');
-            const descriptionElement2 = document.querySelector('.type-desc');
-
-            if (moreButton && descriptionElement) {
-                moreButton2.addEventListener('click', () => {
-                    const isActive = descriptionElement2.classList.toggle('active'); // Переключаем класс active
-
-                    // Меняем текст кнопки
-                    moreButton2.textContent = isActive ? 'Свернуть' : 'Раскрыть';
-                });
-            }
-
-
-
-
-            const openAdCommentForm = document.getElementById("openAdditionalCommentForm");
-
-            const adCommentForm = document.getElementById("additional-comment-form");
-
-            openAdCommentForm.addEventListener("click", () => {
-                adCommentForm.classList.add("active");
-            });
-
-
-
-
-            const openCommentForm = document.getElementById("openCommentForm");
-
-            const commentForm = document.getElementById("commentForm");
-
-            openCommentForm.addEventListener("click", () => {
-                commentForm.classList.add("active");
-            });
-
-
-
-        });
-
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // Получаем контейнер скролла
-            const scrollContainer = document.querySelector('.best-offers-scroll-container');
-
-            // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-            document.querySelector('.offers-horiz-next').addEventListener('click', () => {
-                scrollContainer.scrollBy({
-                    left: 300,
-                    behavior: 'smooth'
-                });
-            });
-
-            // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-            document.querySelector('.offers-horiz-prew').addEventListener('click', () => {
-                scrollContainer.scrollBy({
-                    left: -300,
-                    behavior: 'smooth'
-                });
-            });
-
-
-            // Получаем контейнер скролла
-            const scrollContainer2 = document.querySelector('.reviews-scroll-container');
-
-            // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-            document.querySelector('.reviews-horiz-next').addEventListener('click', () => {
-                scrollContainer2.scrollBy({
-                    left: 400,
-                    behavior: 'smooth'
-                });
-            });
-
-            // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-            document.querySelector('.reviews-horiz-prew').addEventListener('click', () => {
-                scrollContainer2.scrollBy({
-                    left: -400,
-                    behavior: 'smooth'
-                });
-            });
-
-
-            const wrapper = document.querySelector('.tags-list_wrapper');
-
-            // При клике на кнопку "предыдущий" прокручиваем влево на 200px
-            document.querySelector('.tags-list_prev').addEventListener('click', function() {
-                wrapper.scrollBy({
-                    left: -200,
-                    behavior: 'smooth'
-                });
-            });
-
-            // При клике на кнопку "следующий" прокручиваем вправо на 200px
-            document.querySelector('.tags-list_next').addEventListener('click', function() {
-                wrapper.scrollBy({
-                    left: 200,
-                    behavior: 'smooth'
-                });
-            });
-
-
-
-        });
-    </script>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/new-listing.js"></script>
 
 
 

@@ -1366,14 +1366,10 @@ function card_filter_function()
 		$cat_cards = $_POST['cat_cards'];
 		$gracePeriodSelect = $_POST['period'];
 
+		// Получаем значение платежной системы из POST-запроса
+		$payment_system = !empty($_POST['ps']) ? $_POST['ps'] : '';
 
 
-
-		$ps1 = !empty($_POST['ps1']) ? $_POST['ps1'] : '';
-		$ps2 = !empty($_POST['ps2']) ? $_POST['ps2'] : '';
-		$ps3 = !empty($_POST['ps3']) ? $_POST['ps3'] : '';
-		$ps4 = !empty($_POST['ps4']) ? $_POST['ps4'] : '';
-		$ps5 = !empty($_POST['ps5']) ? $_POST['ps5'] : '';
 		$os1 = !empty($_POST['os1']) ? $_POST['os1'] : '';
 		$os2 = !empty($_POST['os2']) ? $_POST['os2'] : '';
 		$os3 = !empty($_POST['os3']) ? $_POST['os3'] : '';
@@ -1386,6 +1382,9 @@ function card_filter_function()
 		$cdt2 = !empty($_POST['cdt2']) ? $_POST['cdt2'] : '';
 		$cdt3 = !empty($_POST['cdt3']) ? $_POST['cdt3'] : '';
 		$cdt4 = !empty($_POST['cdt4']) ? $_POST['cdt4'] : '';
+
+
+
 		if (isset($order) && $order != '')
 			$args = array(
 				'meta_key' => $order,
@@ -1506,6 +1505,91 @@ function card_filter_function()
 				'post_status' => 'publish',
 			);
 		if ($postarr) $args['post__in'] = $postarr;
+
+		// Получаем значение способа получения из POST-запроса
+		$zct = !empty($_POST['zct']) ? sanitize_text_field($_POST['zct']) : '';
+
+		// Получаем значение организации займов из POST-запроса
+		$oz = !empty($_POST['oz']) ? sanitize_text_field($_POST['oz']) : '';
+
+
+		// Получаем значение "Прочие условия" из POST-запроса
+		$zos = !empty($_POST['zos']) ? sanitize_text_field($_POST['zos']) : '';
+
+
+		$args = array(
+			'post_type' => 'zaimy',
+			'post_status' => 'publish',
+			'orderby' => 'name',
+			'order' => $order_type,
+			'meta_query' => array(
+				'relation' => 'AND',
+			),
+		);
+
+		// Добавляем фильтр по способу получения, если значение указано
+		if (!empty($zct)) {
+			$args['meta_query'][] = array(
+				'key' => 'z_get_type', // Ключ мета-поля ACF
+				'value' => $zct,       // Значение, переданное из формы
+				'compare' => 'LIKE',   // Используем LIKE, так как это поле ACF Checkbox
+			);
+		}
+
+
+		// Добавляем фильтр по организации займов, если значение указано
+		if (!empty($oz)) {
+			$args['meta_query'][] = array(
+				'key' => 'z_organization', // Ключ мета-поля ACF
+				'value' => $oz,           // Значение, переданное из формы
+				'compare' => 'LIKE',      // Используем LIKE, так как это поле ACF Checkbox
+			);
+		}
+
+		// Добавляем фильтр по "Прочим условиям", если значение указано
+		if (!empty($zos)) {
+			$args['meta_query'][] = array(
+				'key' => 'z_other_statements', // Ключ мета-поля ACF
+				'value' => $zos,             // Значение, переданное из формы
+				'compare' => 'LIKE',         // Используем LIKE, так как это поле ACF Checkbox
+			);
+		}
+
+		if ($postarr) {
+			$args['post__in'] = $postarr;
+		}
+
+		query_posts($args);
+		$item_count = 0;
+		global $wp_query;
+		$ii = 1;
+
+		if (have_posts()) : ?>
+			<?php ob_start(); // start buffering because we do not need to print the posts now 
+			?>
+		<?php while (have_posts()): the_post();
+
+				$item_count++;
+
+				get_template_part('template-parts/filter-zaimy-posts');
+
+				$ii++;
+			endwhile;
+			$posts_html = ob_get_contents(); // we pass the posts to variable
+			ob_end_clean(); // clear the buffer
+		else:
+			$posts_html = '<p>Ничего не найдено по заданым фильтрам.</p>';
+		endif;
+
+		echo json_encode(array(
+			'posts' => json_encode($wp_query->query_vars),
+			'max_page' => $wp_query->max_num_pages,
+			'found_posts' => $wp_query->found_posts,
+			'content' => $posts_html,
+			'item_count' => $item_count
+		));
+
+		die();
 	endif;
 
 	$args['meta_query'] = array('relation' => 'AND');
@@ -1889,40 +1973,14 @@ function card_filter_function()
 			'compare' => '='
 		);
 
-	if (isset($ps1) && $ps1 == 'on')
+	// Добавляем фильтр по платежной системе, если значение указано
+	if (!empty($payment_system)) {
 		$args['meta_query'][] = array(
-			'key' => 'card_payment_sys', // name of custom field
-			'value' => 'ps1', // matches exactly "red"
-			'compare' => 'LIKE',
+			'key' => 'card_payment_sys', // Ключ мета-поля ACF
+			'value' => $payment_system, // Значение, переданное из формы
+			'compare' => 'LIKE' // Используем LIKE, так как это поле ACF Checkbox
 		);
-
-	if (isset($ps2) && $ps2 == 'on')
-		$args['meta_query'][] = array(
-			'key' => 'card_payment_sys', // name of custom field
-			'value' => 'ps2', // matches exactly "red"
-			'compare' => 'LIKE',
-		);
-
-	if (isset($ps3) && $ps3 == 'on')
-		$args['meta_query'][] = array(
-			'key' => 'card_payment_sys', // name of custom field
-			'value' => 'ps3', // matches exactly "red"
-			'compare' => 'LIKE',
-		);
-
-	if (isset($ps4) && $ps4 == 'on')
-		$args['meta_query'][] = array(
-			'key' => 'card_payment_sys', // name of custom field
-			'value' => 'ps4', // matches exactly "red"
-			'compare' => 'LIKE',
-		);
-
-	if (isset($ps5) && $ps5 == 'on')
-		$args['meta_query'][] = array(
-			'key' => 'card_payment_sys', // name of custom field
-			'value' => 'ps5', // matches exactly "red"
-			'compare' => 'LIKE',
-		);
+	}
 
 	if (isset($os1) && $os1 == 'on')
 		$args['meta_query'][] = array(

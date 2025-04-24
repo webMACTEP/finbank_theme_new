@@ -3,7 +3,7 @@ $query__card = get_field('archive') ? '' : 'query__card';
 $apply_now = get_field('apply_now_select_products', get_the_ID());
 $organization_phone = get_field('z_organization_phone');
 $organization_site = get_field('z_organization_site');
-$card_bank_link = get_field('card_bank_link');
+//$card_bank_link = get_field('card_bank_link');
 $z_sum = get_field('z_sum');
 $z_history = get_field('z_history');
 $z_stavka = get_field('z_stavka');
@@ -16,6 +16,9 @@ $views = get_post_meta(get_the_ID(), 'views', true);
 $logo_id = get_field('card_logo', get_the_ID(), false);
 $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
 $date_actually = get_the_modified_date('d.m.Y', get_the_ID());
+
+$encoded_link = get_field('card_bank_link');
+$card_bank_link = base64_encode($encoded_link);
 
 // Функция YearTextArg должна быть определена ранее в коде
 // function YearTextArg($number) { /* реализация */ }

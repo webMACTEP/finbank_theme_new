@@ -11,7 +11,9 @@ $bank_logo = get_field('bank_logo', $bank_id);
 $plus_and_minus_tab = get_field('product_plus_minus', $ID);
 $tab_details = get_field('tab_details', $ID);
 $post_type = get_post_type($ID);
-$card_bank_link = get_field('card_bank_link', $ID);
+//$card_bank_link = get_field('card_bank_link', $ID);
+$encoded_link = get_field('card_bank_link', $ID);
+$card_bank_link = base64_encode($encoded_link);
 $card_other_state =  get_field('card_other_state', $ID);
 
 $active_first = $active_three = '';
@@ -288,24 +290,27 @@ switch ($post_type) {
             </div>
             <div class="new-tab-footer-btns">
                 <?php if ($card_bank_link): ?>
-                    <div class="new-tab-footer-btn">
-                        <a href="<?php echo esc_url($card_bank_link); ?>"
-                            target="_blank"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-                            class="btn btn-primary btn-block">
+                    <div class="item-buttons-cont">
+
+                        <span
+                            class="link-data btn btn-primary btn-block"
+                            data-link="<?= esc_attr($card_bank_link); ?>"
+                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
                             Оформить
-                        </a>
+                        </span>
                     </div>
                 <?php else: ?>
-                    <div class="new-tab-footer-btn">
-                        <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                            target="_blank"
+                    <div class="item-buttons-cont">
+                        <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить
-                        </a>
+                            Оформить 0
+                        </span>
                     </div>
                 <?php endif; ?>
+
+
+
                 <a class="btn__compare <?php echo my_compare_btn($ID); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo $ID; ?>" data-tax="<?php echo 'creditcard'; ?>">
                     <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
                         <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
@@ -316,3 +321,27 @@ switch ($post_type) {
         </div>
     </div>
 </div>
+<script>
+    jQuery(document).ready(function($) {
+
+        // Декодирование реферальных ссылок
+        $(".link-data").on("click", function() {
+            var encodedUrl = $(this).attr("data-link");
+
+            try {
+                // Декодируем URL
+                var decodedUrl = atob(encodedUrl);
+
+                // Если необходимо выполнить дополнительные действия, например, отправить событие аналитики,
+                // можно добавить их здесь, например:
+                // ym(35020350, 'reachGoal', 'click_oformit_listing');
+                // ym(35020350, 'reachGoal', 'click_na_vse_oformit_s_referalkoy');
+
+                // Открываем декодированный URL в новом окне/вкладке
+                window.open(decodedUrl, "_blank");
+            } catch (e) {
+                console.error("Ошибка декодирования URL", e);
+            }
+        });
+    });
+</script>

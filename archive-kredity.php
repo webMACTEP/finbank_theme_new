@@ -795,125 +795,125 @@ else:
 				</div>
 			</div>
 
-			
 
 
 
-			 <!-- Popular -->
-			 <div id="popular" class="section anchor">
-                <div class="section__header d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="title mb-0">Популярные категории</h2>
-                </div>
-                <div class="popular-products">
 
-                    <?php
-                    // Меню слева
-                    $massiv_vhodnih_parametrov = [
-                        'container'      => '',
-                        'depth'          => 0,
-                        'echo'           => false,
-                        'link_class'     => 'filter__btn',
-                        'theme_location' => 'sidebar_menu_kredity',
-                        'before'         => '<div class="filter__section" id="collist">',
-                        'after'          => '</div>',
-                    ];
-                    echo strip_tags(wp_nav_menu($massiv_vhodnih_parametrov), '<a>,');
-                    ?>
+			<!-- Popular -->
+			<div id="popular" class="section anchor">
+				<div class="section__header d-flex justify-content-between align-items-center mb-4">
+					<h2 class="title mb-0">Популярные категории</h2>
+				</div>
+				<div class="popular-products">
 
-                    <?php
-                    // Тут вручную задаёте три группы: в каждую — массив ID категорий
-                    $wrappers = [
-                        ['cats' => [109]],
-                        ['cats' => [107, 99, 104, 108, 101]],
-                        ['cats' => [105, 102, 103, 106, 100]],
-                    ];
+					<?php
+					// Меню слева
+					$massiv_vhodnih_parametrov = [
+						'container'      => '',
+						'depth'          => 0,
+						'echo'           => false,
+						'link_class'     => 'filter__btn',
+						'theme_location' => 'sidebar_menu_kredity',
+						'before'         => '<div class="filter__section" id="collist">',
+						'after'          => '</div>',
+					];
+					echo strip_tags(wp_nav_menu($massiv_vhodnih_parametrov), '<a>,');
+					?>
 
-                    $visible_count = 0; // число элементов, показываемых по умолчанию
-                    ?>
+					<?php
+					// Тут вручную задаёте три группы: в каждую — массив ID категорий
+					$wrappers = [
+						['cats' => [109]],
+						['cats' => [107, 99, 104, 108, 101]],
+						['cats' => [105, 102, 103, 106, 100]],
+					];
 
-                    <?php foreach ($wrappers as $wrapper_index => $wrapper) : ?>
-                        <div class="popular-products-wrapp">
+					$visible_count = 0; // число элементов, показываемых по умолчанию
+					?>
 
-                            <?php foreach ($wrapper['cats'] as $cat_id) {
-                                $cat = get_term($cat_id, 'tags-category');
-                                if (! $cat || is_wp_error($cat)) continue;
+					<?php foreach ($wrappers as $wrapper_index => $wrapper) : ?>
+						<div class="popular-products-wrapp">
 
-                                // Подготовка запроса
-                                $args_coll = [
-                                    'post_type'      => 'collection',
-                                    'tax_query'      => [[
-                                        'taxonomy' => 'tags-category',
-                                        'terms'    => $cat_id,
-                                        'field'    => 'id',
-                                    ]],
-                                    'posts_per_page' => -1,
-                                    'orderby'        => 'date',
-                                    'order'          => 'DESC',
-                                    'meta_query'     => [[
-                                        'key'     => 'coll-type',
-                                        'value'   => 'kredity',
-                                        'compare' => '=',
-                                    ]],
-                                ];
-                                $query = new WP_Query($args_coll);
+							<?php foreach ($wrapper['cats'] as $cat_id) {
+								$cat = get_term($cat_id, 'tags-category');
+								if (! $cat || is_wp_error($cat)) continue;
 
-                                if (! $query->have_posts()) {
-                                    wp_reset_postdata();
-                                    continue;
-                                }
+								// Подготовка запроса
+								$args_coll = [
+									'post_type'      => 'collection',
+									'tax_query'      => [[
+										'taxonomy' => 'tags-category',
+										'terms'    => $cat_id,
+										'field'    => 'id',
+									]],
+									'posts_per_page' => -1,
+									'orderby'        => 'date',
+									'order'          => 'DESC',
+									'meta_query'     => [[
+										'key'     => 'coll-type',
+										'value'   => 'kredity',
+										'compare' => '=',
+									]],
+								];
+								$query = new WP_Query($args_coll);
 
-                                // Выводим блок категории
-                            ?>
-                                <div class="filter">
-                                    <div class="filter-title"><?= esc_html($cat->name); ?></div>
-                                    <div class="filter__section" id="collist_<?= $cat_id; ?>">
-                                        <?php
-                                        $counter_col = 0;
-                                        while ($query->have_posts()) {
-                                            $query->the_post();
-                                            $counter_col++;
-                                            // Класс для ссылки
-                                            $classes = 'filter__btn';
-                                            if ($counter_col > $visible_count) {
-                                                $classes .= ' coll_li';
-                                                // для НЕ первой группы сразу скрываем
-                                                if ($wrapper_index !== 0) {
-                                                    $classes .= ' coll__hidden';
-                                                }
-                                            }
-                                            if (isset($current_id) && $current_id == get_the_ID()) {
-                                                $classes .= ' active_post';
-                                            }
-                                        ?>
-                                            <a class="<?= $classes; ?>" href="<?php the_permalink(); ?>">
-                                                <?php the_title(); ?>
-                                            </a>
-                                        <?php } // конец цикла постов 
-                                        ?>
-                                    </div>
+								if (! $query->have_posts()) {
+									wp_reset_postdata();
+									continue;
+								}
 
-                                    <?php if ($counter_col > $visible_count) : ?>
-                                        <button class="btn__collmore_cat" data-text-open="" data-text-hide="" data-id="collist_<?= $cat_id; ?>">
-                                            <span class="btn__collmore-icon">
-                                                <svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 1L3.09677 3.20371C4.7689 4.96113 5.60497 5.83984 6.624 5.97514C6.87367 6.00829 7.12633 6.00829 7.376 5.97514C8.39503 5.83984 9.2311 4.96113 10.9032 3.20371L13 1" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" />
-                                                </svg>
-                                            </span>
-                                            <span class="btn__collmore-text"></span>
-                                        </button>
-                                    <?php endif; ?>
+								// Выводим блок категории
+							?>
+								<div class="filter">
+									<div class="filter-title"><?= esc_html($cat->name); ?></div>
+									<div class="filter__section" id="collist_<?= $cat_id; ?>">
+										<?php
+										$counter_col = 0;
+										while ($query->have_posts()) {
+											$query->the_post();
+											$counter_col++;
+											// Класс для ссылки
+											$classes = 'filter__btn';
+											if ($counter_col > $visible_count) {
+												$classes .= ' coll_li';
+												// для НЕ первой группы сразу скрываем
+												if ($wrapper_index !== 0) {
+													$classes .= ' coll__hidden';
+												}
+											}
+											if (isset($current_id) && $current_id == get_the_ID()) {
+												$classes .= ' active_post';
+											}
+										?>
+											<a class="<?= $classes; ?>" href="<?php the_permalink(); ?>">
+												<?php the_title(); ?>
+											</a>
+										<?php } // конец цикла постов 
+										?>
+									</div>
 
-                                </div>
-                            <?php
-                                wp_reset_postdata();
-                            } // конец foreach категорий 
-                            ?>
-                        </div>
-                    <?php endforeach; ?>
+									<?php if ($counter_col > $visible_count) : ?>
+										<button class="btn__collmore_cat" data-text-open="" data-text-hide="" data-id="collist_<?= $cat_id; ?>">
+											<span class="btn__collmore-icon">
+												<svg width="14" height="7" viewBox="0 0 14 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M1 1L3.09677 3.20371C4.7689 4.96113 5.60497 5.83984 6.624 5.97514C6.87367 6.00829 7.12633 6.00829 7.376 5.97514C8.39503 5.83984 9.2311 4.96113 10.9032 3.20371L13 1" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" />
+												</svg>
+											</span>
+											<span class="btn__collmore-text"></span>
+										</button>
+									<?php endif; ?>
 
-                </div>
-            </div>
-            <!-- / popular -->
+								</div>
+							<?php
+								wp_reset_postdata();
+							} // конец foreach категорий 
+							?>
+						</div>
+					<?php endforeach; ?>
+
+				</div>
+			</div>
+			<!-- / popular -->
 
 
 
@@ -922,7 +922,7 @@ else:
 			<!-- card reviews -->
 			<div id="reviews" class="section anchor">
 				<div class="section__header d-flex justify-content-between align-items-center mb-4">
-					<h2 class="title mb-0">Отзывы о картах рассрочки</h2>
+					<h2 class="title mb-0">Отзывы о кредитах</h2>
 					<a href="<?php echo  get_page_link(4973); //1503 tax-reviews 
 								?>" class="btn btn-primary btn-sm btn-all" data-tax="kredity">
 						Все
@@ -1415,190 +1415,7 @@ else:
 		</div>
 
 	</main>
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-
-			function toggleModal(modalSelector) {
-				var modal = document.querySelector(modalSelector);
-				if (modal) {
-					modal.classList.toggle("active");
-				}
-			}
-
-			function closeModal(modalSelector) {
-				var modal = document.querySelector(modalSelector);
-				if (modal) {
-					modal.classList.remove("active");
-				}
-			}
-
-			// Универсальная функция для кликов по кнопкам
-			function setupModalToggle(buttonSelector, modalSelector) {
-				document.querySelectorAll(buttonSelector).forEach(function(btn) {
-					btn.addEventListener("click", function() {
-						toggleModal(modalSelector);
-					});
-				});
-			}
-
-			function setupModalClose(buttonSelector, modalSelector) {
-				document.querySelectorAll(buttonSelector).forEach(function(btn) {
-					btn.addEventListener("click", function() {
-						closeModal(modalSelector);
-					});
-				});
-			}
-
-			// Фильтр
-			setupModalToggle(".filtr-butt", ".new-filter-modal");
-			setupModalClose(".new-filter-modal-close", ".new-filter-modal");
-			setupModalClose(".submit-button", ".new-filter-modal");
-
-
-			// Калькулятор
-			setupModalToggle(".calc-butt", ".new-calc-modal");
-			setupModalClose(".new-calc-close, .new-calc-btn-close", ".new-calc-modal");
-
-			// Закрытие модального окна при клике вне области .new-calc-content и .new-filter-content
-			document.addEventListener("click", function(event) {
-				document.querySelectorAll(".new-filter-modal, .new-calc-modal").forEach(function(modal) {
-					let isClickInsideContent = event.target.closest(".new-filter-modal-content, .new-calc-content");
-					let isClickInsideModal = event.target.closest(".new-filter-modal, .new-calc-modal");
-					let isClickOnButton = event.target.closest(".filtr-butt, .calc-butt");
-
-					if (modal.classList.contains("active") && !isClickInsideContent && isClickInsideModal && !isClickOnButton) {
-						modal.classList.remove("active");
-					}
-				});
-			});
-
-			var topmoreButton = document.querySelector(".top-offers-more");
-			var topulElement = document.querySelector(".top-offers-wrapper ul");
-
-			if (topmoreButton && topulElement) {
-				topmoreButton.addEventListener("click", function() {
-					topulElement.classList.add("active");
-					topmoreButton.classList.add("hide");
-				});
-			}
-
-			const moreButton = document.querySelector('.page__heading-description-more');
-			const descriptionElement = document.querySelector('.page__heading-description');
-
-			if (moreButton && descriptionElement) {
-				moreButton.addEventListener('click', () => {
-					const isActive = descriptionElement.classList.toggle('active'); // Переключаем класс active
-
-					// Меняем текст кнопки
-					moreButton.textContent = isActive ? 'Свернуть' : 'Развернуть';
-				});
-			}
-
-
-			const moreButton2 = document.querySelector('.type-desc-more');
-			const descriptionElement2 = document.querySelector('.type-desc');
-
-			if (moreButton && descriptionElement) {
-				moreButton2.addEventListener('click', () => {
-					const isActive = descriptionElement2.classList.toggle('active'); // Переключаем класс active
-
-					// Меняем текст кнопки
-					moreButton2.textContent = isActive ? 'Свернуть' : 'Раскрыть';
-				});
-			}
-
-
-
-
-			const openAdCommentForm = document.getElementById("openAdditionalCommentForm");
-
-			const adCommentForm = document.getElementById("additional-comment-form");
-
-			openAdCommentForm.addEventListener("click", () => {
-				adCommentForm.classList.add("active");
-			});
-
-
-
-
-			const openCommentForm = document.getElementById("openCommentForm");
-
-			const commentForm = document.getElementById("commentForm");
-
-			openCommentForm.addEventListener("click", () => {
-				commentForm.classList.add("active");
-			});
-
-
-
-		});
-
-
-
-		document.addEventListener('DOMContentLoaded', () => {
-
-			// Получаем контейнер скролла
-			const scrollContainer = document.querySelector('.best-offers-scroll-container');
-
-			// Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-			document.querySelector('.offers-horiz-next').addEventListener('click', () => {
-				scrollContainer.scrollBy({
-					left: 300,
-					behavior: 'smooth'
-				});
-			});
-
-			// Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-			document.querySelector('.offers-horiz-prew').addEventListener('click', () => {
-				scrollContainer.scrollBy({
-					left: -300,
-					behavior: 'smooth'
-				});
-			});
-
-
-			// Получаем контейнер скролла
-			const scrollContainer2 = document.querySelector('.reviews-scroll-container');
-
-			// Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-			document.querySelector('.reviews-horiz-next').addEventListener('click', () => {
-				scrollContainer2.scrollBy({
-					left: 400,
-					behavior: 'smooth'
-				});
-			});
-
-			// Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-			document.querySelector('.reviews-horiz-prew').addEventListener('click', () => {
-				scrollContainer2.scrollBy({
-					left: -400,
-					behavior: 'smooth'
-				});
-			});
-
-
-			const wrapper = document.querySelector('.tags-list_wrapper');
-
-			// При клике на кнопку "предыдущий" прокручиваем влево на 200px
-			document.querySelector('.tags-list_prev').addEventListener('click', function() {
-				wrapper.scrollBy({
-					left: -200,
-					behavior: 'smooth'
-				});
-			});
-
-			// При клике на кнопку "следующий" прокручиваем вправо на 200px
-			document.querySelector('.tags-list_next').addEventListener('click', function() {
-				wrapper.scrollBy({
-					left: 200,
-					behavior: 'smooth'
-				});
-			});
-
-
-
-		});
-	</script>
+	<script src="<?php echo get_template_directory_uri(); ?>/js/new-listing.js"></script>
 
 
 	<?php get_footer(); ?>
