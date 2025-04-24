@@ -292,6 +292,7 @@ jQuery(function ($) {
         action: "loadmorebutton", // the parameter for admin-ajax.php
         query: card_loadmore_params.posts, // loop parameters passed by wp_localize_script()
         page: card_loadmore_params.current_page, // current page
+        posts_per_page:  12,
         order: order,
         term: term,
         exclude_post: exclude_post,

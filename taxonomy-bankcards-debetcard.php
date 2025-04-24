@@ -54,7 +54,7 @@
             <nav aria-label="breadcrumb" class="horizontal__scroll">
                 <ol class="breadcrumb horizontal__scroll-container">
                     <li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Дебетовые карты</li>
+
                 </ol>
             </nav>
         </div>
@@ -95,7 +95,7 @@
                 <div class="page__nav-container ">
                     <div class="horizontal__scroll">
                         <div class="horizontal__scroll-container-top">
-                            <a href="#" class="nav-link-top active">Все дебетовые карты</a>
+
 
                             <a href="#top" class="nav-link-top">Сравнение</a>
                             <a href="#popular" class="nav-link-top">Подборки</a>
@@ -386,26 +386,32 @@
                     </svg>
                 </div>
                 <div class="tags-list_wrapper">
-                    <a class="nav-link" href="/collection/onlajn/">Онлайн на карту</a>
-                    <a class="nav-link" href="/collection/kreditnaya-karta-virtualnye/">Виртуальные</a>
-                    <a class="nav-link" href="/collection/refinansirovanie-kreditnoy-karty/">Рефинансирование</a>
-                    <a class="nav-link" href="/collection/dlja-snjatija-nalichnyh/">Для снятия наличных</a>
-                    <a class="nav-link" href="/collection/bez-spravok-o-dohodah/">Без справок о доходах</a>
-                    <a class="nav-link" href="/collection/s-plohoj-istoriej/">С плохой КИ</a>
-                    <a class="nav-link" href="/collection/s-kjeshbek/">С кэшбеком</a>
-                    <a class="nav-link" href="/collection/pod-nizkij-procent/">Под низкий процент</a>
-                    <a class="nav-link" href="/collection/kreditnye-karty-s-besplatnym-snjatiem-nalichnyh-v-2024-godu/">С бесплатным снятием наличных</a>
-                    <a class="nav-link" href="/collection/kreditnaya-karta-pensioneram/">Пенсионерам</a>
-                    <a class="nav-link" href="/collection/onlajn/">Онлайн на карту</a>
-                    <a class="nav-link" href="/collection/kreditnaya-karta-virtualnye/">Виртуальные</a>
-                    <a class="nav-link" href="/collection/refinansirovanie-kreditnoy-karty/">Рефинансирование</a>
-                    <a class="nav-link" href="/collection/dlja-snjatija-nalichnyh/">Для снятия наличных</a>
-                    <a class="nav-link" href="/collection/bez-spravok-o-dohodah/">Без справок о доходах</a>
-                    <a class="nav-link" href="/collection/s-plohoj-istoriej/">С плохой КИ</a>
-                    <a class="nav-link" href="/collection/s-kjeshbek/">С кэшбеком</a>
-                    <a class="nav-link" href="/collection/pod-nizkij-procent/">Под низкий процент</a>
-                    <a class="nav-link" href="/collection/kreditnye-karty-s-besplatnym-snjatiem-nalichnyh-v-2024-godu/">С бесплатным снятием наличных</a>
-                    <a class="nav-link" href="/collection/kreditnaya-karta-pensioneram/">Пенсионерам</a>
+                    <?php
+                    $args = [
+                        'post_type' => 'collection', // Укажите ваш тип записи
+                        'tax_query' => [
+                            [
+                                'taxonomy' => 'tags-category', // Укажите вашу таксономию
+                                'field'    => 'id',
+                                'terms'    => 81, // ID категории
+                            ],
+                        ],
+                        'posts_per_page' => -1, // Получаем все записи
+                    ];
+                    $query = new WP_Query($args);
+
+                    // Проверяем, есть ли записи
+                    if ($query->have_posts()) :
+                        while ($query->have_posts()) : $query->the_post();
+                    ?>
+                            <a class="nav-link" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                        <?php
+                        endwhile;
+                        wp_reset_postdata(); // Сбрасываем данные запроса
+                    else :
+                        ?>
+                        <p>Нет записей в этой категории.</p>
+                    <?php endif; ?>
                 </div>
                 <div class="tags-list_next"><svg width="6" height="12" viewBox="0 0 6 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1.5 1.5L3.15278 3.07258C4.47085 4.32668 5.12988 4.95373 5.23135 5.718C5.25622 5.90526 5.25622 6.09474 5.23135 6.282C5.12988 7.04627 4.47085 7.67332 3.15278 8.92742L1.5 10.5" stroke="#626B84" stroke-width="1.2" stroke-linecap="round" />
@@ -414,6 +420,7 @@
             </div>
         </div>
         <!-- / tags -->
+
 
         <div class="container">
             <!-- credits list -->
@@ -495,7 +502,7 @@
                                     <div class="credits__list-dropdown dropdown  px-0">
                                         <select name="" class="styledSelect cred-order-select">
                                             <option value="" selected disabled>Сортировать</option>
-                                            <option value="">Сортировать</option>
+                                            <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
                                             <option value="views">По количеству заявок</option>
                                             <option value="card_cred_limit">По обслуживанию</option>
@@ -636,7 +643,7 @@
                         <?php
                         $args = array(
                             'post_type'             => 'bankcard',
-                            'posts_per_page'        => 10,
+                            'posts_per_page'        => 100,
                             'meta_key' => 'ratings_average',
                             'orderby' => 'meta_value_num',
                             'order' => 'DESC',
@@ -708,23 +715,27 @@
                                             </div>
                                         </ul>
                                         <div class="card__actions mt-3 d-flex">
-                                            <?php if ($card_bank_link): ?>
+                                            <?php
+                                            $encoded_link = get_field('card_bank_link');
+                                            $card_bank_link = base64_encode($encoded_link);
+
+                                            if ($card_bank_link): ?>
                                                 <div class="card__actions-btns">
-                                                    <a href="<?php echo esc_url($card_bank_link); ?>"
-                                                        target="_blank"
-                                                        onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-                                                        class="apply_now_btm btn btn-primary btn-block">
+
+                                                    <span
+                                                        class="link-data btn btn-primary btn-block"
+                                                        data-link="<?= esc_attr($card_bank_link); ?>"
+                                                        onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
                                                         Оформить
-                                                    </a>
+                                                    </span>
                                                 </div>
                                             <?php else: ?>
                                                 <div class="card__actions-btns">
-                                                    <a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                                                        target="_blank"
+                                                    <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                                                         onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                                                         class="apply_now_btm btn btn-primary btn-block">
                                                         Оформить
-                                                    </a>
+                                                    </span>
                                                 </div>
                                             <?php endif; ?>
 
@@ -840,11 +851,11 @@
                 </div>
             </div>
 
-            
+
 
 
             <!-- Popular -->
-			 <div id="popular" class="section anchor">
+            <div id="popular" class="section anchor">
                 <div class="section__header d-flex justify-content-between align-items-center mb-4">
                     <h2 class="title mb-0">Популярные категории</h2>
                 </div>

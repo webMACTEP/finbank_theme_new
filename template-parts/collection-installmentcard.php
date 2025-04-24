@@ -78,7 +78,7 @@ $type_collection = 'installmentcard';
 			<ol class="breadcrumb horizontal__scroll-container">
 				<li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
 				<li class="breadcrumb-item" aria-current="page"><a href="<?php echo get_term_link(8) ?>">Карты рассрочки</a></li>
-				<li class="breadcrumb-item active" aria-current="page"><?php the_title(); ?></li>
+
 			</ol>
 		</nav>
 	</div>
@@ -125,7 +125,7 @@ $type_collection = 'installmentcard';
 			<div class="page__nav-container ">
 				<div class="horizontal__scroll">
 					<div class="horizontal__scroll-container-top">
-						<a href="#" class="nav-link-top active">Все дебетовые карты</a>
+						<a class="nav-link-top" href="<?php echo get_term_link(8) ?>">Все карты рассрочки</a>
 
 						<a href="#top" class="nav-link-top">Сравнение</a>
 						<a href="#popular" class="nav-link-top">Подборки</a>
@@ -525,6 +525,7 @@ $type_collection = 'installmentcard';
 								<div class="credits__list-dropdown dropdown  px-0">
 									<select name="" class="styledSelect cred-order-select">
 										<option value="" selected disabled>Сортировать</option>
+										<option value="">Сбросить сортировку</option>
 										<option value="">Сортировать</option>
 										<option value="ratings_average">По рейтингу</option>
 										<option value="views">По количеству заявок</option>
@@ -666,7 +667,7 @@ $type_collection = 'installmentcard';
 					<?php
 					$args = array(
 						'post_type'             => 'bankcard',
-						'posts_per_page'        => 10,
+						'posts_per_page'        => 100,
 						'meta_key' => 'ratings_average',
 						'orderby' => 'meta_value_num',
 						'order' => 'DESC',
@@ -738,23 +739,27 @@ $type_collection = 'installmentcard';
 										</div>
 									</ul>
 									<div class="card__actions mt-3 d-flex">
-										<?php if ($card_bank_link): ?>
+										<?php
+										$encoded_link = get_field('card_bank_link');
+										$card_bank_link = base64_encode($encoded_link);
+
+										if ($card_bank_link): ?>
 											<div class="card__actions-btns">
-												<a href="<?php echo esc_url($card_bank_link); ?>"
-													target="_blank"
-													onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
-													class="apply_now_btm btn btn-primary btn-block">
+
+												<span
+													class="link-data btn btn-primary btn-block"
+													data-link="<?= esc_attr($card_bank_link); ?>"
+													onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
 													Оформить
-												</a>
+												</span>
 											</div>
 										<?php else: ?>
 											<div class="card__actions-btns">
-												<a data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-													target="_blank"
+												<span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
 													onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
 													class="apply_now_btm btn btn-primary btn-block">
 													Оформить
-												</a>
+												</span>
 											</div>
 										<?php endif; ?>
 

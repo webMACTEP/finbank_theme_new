@@ -6691,6 +6691,9 @@ a.cld-like-dislike-trigger {
 .newlisting {
   position: relative;
 }
+.newlisting #news .card__author {
+  display: none !important;
+}
 .newlisting .reviews__item-body {
   box-shadow: 0 2px 4px var(--tag-shadow);
 }
@@ -7701,6 +7704,13 @@ a.cld-like-dislike-trigger {
   }
 }
 @media (max-width: 768px) {
+  .newlisting .tabs-and-btns .tabs .tab-content {
+    overflow-x: hidden;
+  }
+  .newlisting .list_posts .rait-cards,
+  .newlisting .list_posts.cards .rait-cards {
+    margin: 0px 0px 0px 0px;
+  }
   .newlisting .popular-products {
     flex-direction: column;
   }
@@ -7970,7 +7980,6 @@ a.cld-like-dislike-trigger {
   }
   .newlisting .list_posts .rait-cards {
     display: block;
-    margin: 10px 0px 10px 0px;
   }
   .newlisting .list_posts .rait-hor {
     display: none;
@@ -8314,7 +8323,9 @@ a.cld-like-dislike-trigger {
 .wysiwyg table {
   display: block;
   overflow: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
 @media (max-width: 575px) {

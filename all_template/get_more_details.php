@@ -304,7 +304,7 @@ switch ($post_type) {
                         <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить 0
+                            Оформить
                         </span>
                     </div>
                 <?php endif; ?>

@@ -1203,6 +1203,11 @@ function card_loadmore_ajax_handler()
 	$params['paged'] = $_POST['page'] + 1; // we need next page to be loaded
 	$params['post_status'] = 'publish';
 
+	// если пришёл posts_per_page — ставим его, иначе оставляем что было в исходном $params
+	if (! empty($_POST['posts_per_page'])) {
+		$params['posts_per_page'] = intval($_POST['posts_per_page']);
+	}
+
 	if (isset($_POST['order'])) {
 		$params['meta_key'] = $_POST['order'];
 	}

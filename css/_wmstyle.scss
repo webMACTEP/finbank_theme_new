@@ -376,7 +376,7 @@
         padding-left: 0;
     }
     .horizontal__scroll-container {
-        .card{
+        .card {
             margin: 0px 0px 0px 0px;
             padding-bottom: 0;
         }
@@ -1429,6 +1429,9 @@
     }
 }
 .newlisting {
+    #news .card__author{
+        display: none !important;
+    }
     .reviews__item-body {
         box-shadow: 0 2px 4px var(--tag-shadow);
     }
@@ -1522,7 +1525,7 @@
         position: relative;
     }
 
-    .popular-products{
+    .popular-products {
         display: flex;
         gap: 12px;
         justify-content: space-between;
@@ -2456,14 +2459,14 @@
             border-top: none;
         }
     }
-    .horisont-butt.active{
+    .horisont-butt.active {
         svg {
             path {
                 stroke: var(--btn-primary-border);
             }
         }
     }
-    .listing-modal-close{
+    .listing-modal-close {
         .open__dop-btn {
             svg {
                 path {
@@ -2549,11 +2552,11 @@
 .tab-content > .active {
     display: block;
 }
-.btn-up{
+.btn-up {
     background: var(--btn-primary-border) url("../img/uparroww.svg") center center no-repeat;
     background-size: 24px;
 }
-.present-icon{
+.present-icon {
     background: var(--btn-primary-border);
 }
 
@@ -2564,7 +2567,14 @@
     }
 }
 @media (max-width: 768px) {
-    .newlisting .popular-products{
+    .newlisting .tabs-and-btns .tabs .tab-content{
+        overflow-x: hidden;
+    }
+    .newlisting .list_posts .rait-cards,
+    .newlisting .list_posts.cards .rait-cards{
+        margin: 0px 0px 0px 0px;
+    }
+    .newlisting .popular-products {
         flex-direction: column;
     }
     .newlisting .card .item-about {
@@ -2846,7 +2856,7 @@
         .list_posts {
             .rait-cards {
                 display: block;
-                margin: 10px 0px 10px 0px;
+                //margin: 10px 0px 10px 0px;
             }
             .rait-hor {
                 display: none;
@@ -3247,7 +3257,9 @@
 .wysiwyg table {
     display: block;
     overflow: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
 }
 
 @media (max-width: 575px) {
