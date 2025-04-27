@@ -6020,6 +6020,7 @@ a.cld-like-dislike-trigger {
 }
 .zaimy-new .rating-footer h3 {
   margin-bottom: 0;
+  text-align: center;
 }
 .zaimy-new .rating-footer .post-ratings {
   position: relative;

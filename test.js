@@ -265,21 +265,18 @@ jQuery(function ($) {
       $(btnSelector).on("click", function (e) {
         e.preventDefault();
 
-        // 1) Подготовка
         const nextPage = card_loadmore_params.current_page + 1;
         const perPage = 12;
         const term = termValue;
         const order = $(".cred-order-select option:selected").val();
         const exclude = $(".article__item-first").data("id") || "";
 
-        // 2) Сбор фильтров
         let postData = formSelector ? $(formSelector).serialize() : "";
         if (asideSelector) {
           const aside = $(asideSelector).serialize();
           if (aside) postData += (postData ? "&" : "") + aside;
         }
 
-        // 3) Служебные параметры
         postData +=
           (postData ? "&" : "") +
           "action=cardfilter" +
@@ -295,7 +292,6 @@ jQuery(function ($) {
 
         console.log("Load more postData:", postData);
 
-        // 4) AJAX
         $.ajax({
           url: card_loadmore_params.ajaxurl,
           data: postData,
@@ -308,20 +304,16 @@ jQuery(function ($) {
             if (!data.content) {
               return $(btnSelector).hide();
             }
-            // вставляем новые карточки
             $("#response-cred-card").append(data.content);
 
-            // обновляем текущую страницу и максимум
             card_loadmore_params.current_page = nextPage;
             card_loadmore_params.max_page = data.max_page;
 
-            // обновляем счётчики
             $(".pagination__description .count_view").text(
               $(".query__card").length
             );
             $(".pagination__description .count_all").text(data.found_posts);
 
-            // прячем или обновляем кнопку
             if (nextPage >= data.max_page) {
               $(btnSelector).hide();
             } else {
@@ -332,17 +324,12 @@ jQuery(function ($) {
       });
     }
 
-    // === Инициализация ===
-    // 1) Для кредитных карт — фильтрующая форма + aside
     initLoadMore(
       ".load_more_btn",
       "#credit-card-filter",
       "#credit-card-filter-aside",
       $("main").attr("term") || "creditcard"
     );
-
-    // 2) Для коллекций, где отдельная кнопка и нет формы фильтра
-    initLoadMore(".load_more_btn1", "#collection-card", null, "collection");
   })(jQuery);
 
   // Запуск фильтров, если человек передал ssession, за это отвечает mt
@@ -352,7 +339,7 @@ jQuery(function ($) {
 
   function filter_main_start() {
     var filter = $("#credit-card-filter");
-    var order = $(".cred-order-select").find("option").attr("value");
+    const order = $(".cred-order-select option:selected").val();
 
     var mydata = filter.serialize();
 
@@ -479,7 +466,7 @@ jQuery(function ($) {
 
   // Фильтр сортировки коллекции
   $(".collection-order").change(function () {
-    var order = $(".collection-order").find("option").attr("value");
+    const order = $(".cred-order-select option:selected").val();
     var filter = $("#collection-card");
     var mydata = filter.serialize();
     //var checkboxes = $('#credit-card-filter-aside').serialize();
@@ -528,7 +515,7 @@ jQuery(function ($) {
   });
 
   function cred_order_select() {
-    var order = $(".cred-order-select").find("option").attr("value");
+    const order = $(".cred-order-select option:selected").val();
     var filter = $("#credit-card-filter");
     var mydata = filter.serialize();
     var checkboxes = $("#credit-card-filter-aside").serialize();
@@ -2556,4 +2543,16 @@ jQuery(function ($) {
   });
 
   // submit-button
+});
+
+$(document).ready(function () {
+  if (!card_loadmore_params.current_page) {
+    card_loadmore_params.current_page = 1;
+  }
+  if (!card_loadmore_params.max_page) {
+    card_loadmore_params.max_page = 1;
+  }
+  console.log("Current Page:", card_loadmore_params.current_page);
+  console.log("Max Page:", card_loadmore_params.max_page);
+  console.log("Order:", $(".cred-order-select option:selected").val());
 });

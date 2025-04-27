@@ -185,9 +185,9 @@ $type_collection = 'zaimy';
 										</select>
 									</div>
 									<div class="col-12 col-md-4 oz_select">
-										<label class="form-label" for="oz">Способ получения</label>
+										<label class="form-label" for="oz">Компания</label>
 										<select name="oz" id="oz" class="styledSelect" placeholder="">
-											<option value="">Любой</option>
+											<option value="">Любая</option>
 											<option value="oz1">Турбозайм</option>
 											<option value="oz2">Займер</option>
 											<option value="oz3">E-капуста</option>
@@ -535,8 +535,8 @@ $type_collection = 'zaimy';
 								<div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
 								<div class="credits__list-dropdown dropdown px-0">
 									<select name="order" class="styledSelect cred-order-select">
-									<option value="" selected disabled>Сортировать</option>
-									<option value="">Сбросить сортировку</option>
+										<option value="" selected disabled>Сортировать</option>
+										<option value="">Сбросить сортировку</option>
 										<option value="ratings_average">По рейтингу</option>
 										<option value="views">По количеству заявок</option>
 										<option value="z_sum">По сумме займа</option>
@@ -1317,16 +1317,17 @@ $type_collection = 'zaimy';
 		<!-- / wysiwyg text -->
 
 		<!-- footer-raiting -->
-		<div class="section">
-			<div class="container">
-				<div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
-					<?php
-					$title = get_sub_field('rz_title');
-					echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
-					// Дополнительный рейтинговый блок
-					if (have_rows('rz_additional_ratings_list')) :
+		<?php if (have_rows('additional_ratings_list')) : ?>
+			<div class="section">
+				<div class="container">
+					<div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
+						<?php
+						$title = get_sub_field('title');
+						echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
+						// Дополнительный рейтинговый блок
+
 						$additional_index = 0;
-						while (have_rows('rz_additional_ratings_list')) : the_row();
+						while (have_rows('additional_ratings_list')) : the_row();
 							$title = get_sub_field('title');
 							$rating_total = get_sub_field('rating_total');
 							$rating_count = get_sub_field('rating_count');
@@ -1340,18 +1341,18 @@ $type_collection = 'zaimy';
 							}
 
 							if ($title || $average_rating > 0) :
-								echo '<div class="rating-item" data-rating-index="' . $additional_index . '" data-rating-block="rz_additional_ratings_list">';
+								echo '<div class="rating-item" data-rating-index="' . $additional_index . '" data-rating-block="additional_ratings_list">';
 								if ($title) {
 									echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
 								}
 
 								if ($average_rating > 0) {
 									// Передаём правильный блок в функцию отображения рейтинга
-									display_star_rating($average_rating, 'rz_additional_ratings_list');
+									display_star_rating($average_rating, 'additional_ratings_list');
 								} else {
 									echo '<div class="stars">';
 									for ($i = 1; $i <= 5; $i++) {
-										echo '<span class="star" data-value="' . $i . '" data-rating-block="rz_additional_ratings_list">☆</span>';
+										echo '<span class="star" data-value="' . $i . '" data-rating-block="additional_ratings_list">☆</span>';
 									}
 									echo '</div>';
 								}
@@ -1366,13 +1367,14 @@ $type_collection = 'zaimy';
 
 							$additional_index++;
 						endwhile;
-					endif;
-					?>
+
+						?>
+					</div>
+
+
 				</div>
-
-
 			</div>
-		</div>
+		<?php endif; ?>
 		<!-- / footer-raiting -->
 	</div>
 

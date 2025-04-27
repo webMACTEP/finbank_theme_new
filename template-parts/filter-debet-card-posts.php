@@ -194,7 +194,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     </div>
                 <?php endif; ?>
 
-                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="<?php echo 'debetcard'; ?>">
+                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="debetcard">
                     <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
                         <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
                     </svg>

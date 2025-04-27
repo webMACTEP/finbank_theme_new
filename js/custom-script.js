@@ -260,444 +260,90 @@ jQuery(function ($) {
     '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
   );
 
-  $(".load_more_btn").click(function () {
-    // console.log(card_loadmore_params);
+  (function ($) {
+    function initLoadMore(btnSelector, formSelector, asideSelector, termValue) {
+      $(btnSelector).on("click", function (e) {
+        e.preventDefault();
 
-    var parsedJson = $.parseJSON(card_loadmore_params.posts);
+        // 1) Подготовка
+        const nextPage = card_loadmore_params.current_page + 1;
+        const perPage = 12;
+        const term = termValue;
+        const order = $(".cred-order-select option:selected").val();
+        const exclude = $(".article__item-first").data("id") || "";
 
-    console.log(card_loadmore_params);
-
-    /// Зачем это было сделано ??
-    // if($('#response-cred-card').data('json')){
-    // 	card_loadmore_params.posts = JSON.stringify($('#response-cred-card').data('json'))
-    // }
-
-    var order = $(".cred-order-select").find("option").attr("value");
-    var term = $("main").attr("term");
-    var exclude_post = $(".article__item-first").attr("data-id");
-
-    var view_template, view_type;
-
-    if ($(".use_new_template_v1").length) {
-      view_type = window.localStorage.getItem("view_type");
-      if (!view_type) {
-        view_type = "card_list";
-      }
-      view_template = 1;
-    }
-
-    $.ajax({
-      url: card_loadmore_params.ajaxurl, // AJAX handler
-      data: {
-        action: "loadmorebutton", // the parameter for admin-ajax.php
-        query: card_loadmore_params.posts, // loop parameters passed by wp_localize_script()
-        page: card_loadmore_params.current_page, // current page
-        posts_per_page:  12,
-        order: order,
-        term: term,
-        exclude_post: exclude_post,
-        view_template: view_template,
-        view_type: view_type,
-      },
-      type: "POST",
-      beforeSend: function (xhr) {
-        $(".load_more_btn").text("Загрузка..."); // some type of preloader
-      },
-      success: function (posts) {
-        // console.log(posts)
-
-        if (posts && posts != null && typeof posts !== "undefined") {
-          $(".load_more_btn").text("Больше решений");
-          $("#response-cred-card").append(posts); // insert new posts
-          $(".pagination__description .count_view").html(
-            $(".query__card").length
-          );
-          $(".pagination__description.article_desc .count_view").html(
-            $(".query__card .col-12").length - 1
-          );
-          card_loadmore_params.current_page++;
-          ajax_random_offers(0, card_loadmore_params.current_page);
-          if (
-            card_loadmore_params.current_page == card_loadmore_params.max_page
-          )
-            $(".load_more_btn").hide(); // if last page, HIDE the button
-        } else {
-          $(".load_more_btn").hide(); // if no data, HIDE the button as well
+        // 2) Сбор фильтров
+        let postData = formSelector ? $(formSelector).serialize() : "";
+        if (asideSelector) {
+          const aside = $(asideSelector).serialize();
+          if (aside) postData += (postData ? "&" : "") + aside;
         }
-        for (var i = 0; i < $(".query__card").length; i++) {
-          var currentChild = $(".query__card").eq(i);
-          currentChild.find(".bank_num").html("№" + (i + 1));
-        }
-        $(".btn__compare").append(
-          '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
-        );
-      },
-    });
-    // Тут убираем кнопку показать еще, если 10 из 10
-    setTimeout(function () {
-      if (
-        parseInt($(".count_view").text()) == parseInt($(".count_all").text())
-      ) {
-        $(".load_more_btn").hide();
-      }
-    }, 2000);
 
-    return false;
-  });
+        // 3) Служебные параметры
+        postData +=
+          (postData ? "&" : "") +
+          "action=cardfilter" +
+          "&term=" +
+          encodeURIComponent(term) +
+          "&order=" +
+          encodeURIComponent(order) +
+          "&page=" +
+          nextPage +
+          "&posts_per_page=" +
+          perPage +
+          (exclude ? "&exclude_post=" + exclude : "");
 
-  $(".load_more_btn1").click(function () {
-    var order = $(".collection-order").find("option").attr("value");
-    //var term = $('main').attr('term');
-    var exclude_post = $(".btn__compare ").attr("data-id");
+        console.log("Load more postData:", postData);
 
-    if ($("#response-cred-card").data("json")) {
-      card_loadmore_params.posts = JSON.stringify(
-        $("#response-cred-card").data("json")
-      );
-    }
-
-    //console.log(exclude_post);
-    $.ajax({
-      url: card_loadmore_params.ajaxurl, // AJAX handler
-      data: {
-        action: "loadmorebutton", // the parameter for admin-ajax.php
-        query: card_loadmore_params.posts, // loop parameters passed by wp_localize_script()
-        //'query': parsedJson, // loop parameters passed by wp_localize_script()
-        page: card_loadmore_params.current_page, // current page
-        order: order,
-        term: "collection",
-        exclude_post: exclude_post,
-      },
-      type: "POST",
-      beforeSend: function (xhr) {
-        $(".load_more_btn1").text("Загрузка..."); // some type of preloader
-      },
-      success: function (posts) {
-        if (posts) {
-          $(".load_more_btn1").text("Больше решений");
-          $("#response-cred-card").append(posts); // insert new posts
-          $(".pagination__description .count_view").html(
-            $(".query__card").length
-          );
-          $(".pagination__description.article_desc .count_view").html(
-            $(".query__card .col-12").length - 1
-          );
-          card_loadmore_params.current_page++;
-          if (
-            card_loadmore_params.current_page == card_loadmore_params.max_page
-          )
-            $(".load_more_btn1").hide(); // if last page, HIDE the button
-        } else {
-          $(".load_more_btn1").hide(); // if no data, HIDE the button as well
-        }
-        for (var i = 0; i < $(".query__card").length; i++) {
-          var currentChild = $(".query__card").eq(i);
-          currentChild.find(".bank_num").html("№" + (i + 1));
-        }
-        $(".btn__compare").append(
-          '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
-        );
-      },
-    });
-
-    setTimeout(function () {
-      if (
-        parseInt($(".count_view").text()) == parseInt($(".count_all").text())
-      ) {
-        $(".load_more_btn1").hide();
-      }
-    }, 2000);
-
-    return false;
-  });
-
-  /* Collection cards */
-
-  if ($("#collection-card").length) {
-    var filter = $("#collection-card");
-    var order = $(".collection-order").find("option").attr("value");
-
-    var mydata = filter.serialize();
-    //var mydataArray = filter.serializeArray();
-    //var mydataValues = {};
-    //var mydata = $.param(mydataValues);
-
-    mydata += "&order=" + encodeURIComponent(order);
-
-    console.log("col_mydata= " + mydata);
-
-    $.ajax({
-      url: card_loadmore_params.ajaxurl, // обработчик
-      data: mydata, // данные
-      dataType: "json",
-      type: "POST", // тип запроса
-      beforeSend: function (xhr) {
-        filter.find(".submit-button").text("Загрузка..."); // изменяем текст кнопки
-      },
-      success: function (data) {
-        //console.log(data);
-        filter.find(".submit-button").text("Показать"); // возвращаеи текст кнопки
-        $("#response-cred-card.list_posts").html(data.content);
-        $(".pagination__description .count_all").html(data.found_posts);
-        $(".variants_count").html(data.found_posts);
-        $(".pagination__description .count_view").html(
-          $(".query__card").length
-        );
-        card_loadmore_params.current_page = 1;
-
-        // set the new query parameters
-        card_loadmore_params.posts = data.posts;
-
-        // set the new max page parameter
-        card_loadmore_params.max_page = data.max_page;
-        if (data.max_page < 2) {
-          $(".load_more_btn1").hide();
-        } else {
-          $(".load_more_btn1").show();
-        }
-        $(".btn__compare").append(
-          '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
-        );
-      },
-    });
-  }
-
-  $(".btn__collmore").click(function () {
-    $(this).toggleClass("btn__collmore_visible");
-    $("#collist").find(".coll_li").toggleClass("coll__hidden");
-    $(".btn__collmore .btn__collmore-text").text(
-      $(this).attr("data-text-open")
-    );
-    $(".btn__collmore.btn__collmore_visible .btn__collmore-text").text(
-      $(this).attr("data-text-hide")
-    );
-  });
-
-  $(".btn__collmore_cat, .filter-title").click(function () {
-    let parent = $(this).closest(".filter"); // Находим родительский элемент
-    let content = parent.find(".filter__section"); // Находим блок списка
-    let button = parent.find(".btn__collmore_cat"); // Кнопка "Показать больше"
-    let hiddenItems = content.find(".coll_li"); // Скрытые элементы списка
-
-    // Переключаем классы
-    hiddenItems.toggleClass("coll__hidden"); // Показываем/скрываем элементы
-    button.toggleClass("btn__collmore_visible"); // Меняем класс кнопки
-    parent.find(".filter-title").toggleClass("active"); // Делаем заголовок активным
-
-    // Обновляем текст кнопки
-    let textOpen = button.attr("data-text-open");
-    let textHide = button.attr("data-text-hide");
-
-    if (button.hasClass("btn__collmore_visible")) {
-      button.find(".btn__collmore-text").text(textHide);
-    } else {
-      button.find(".btn__collmore-text").text(textOpen);
-    }
-  });
-
-  /* Filter cards */
-
-  if (
-    $("#credit-card-filter").length &&
-    !$("#response-cred-card .card").length
-  ) {
-    console.log("start-filter");
-
-    var filter = $("#credit-card-filter");
-    var order = $(".cred-order-select").find("option").attr("value");
-
-    var mydata = filter.serialize();
-    var checkboxes = $("#credit-card-filter-aside").serialize();
-    //mydata += "&" + checkboxes;
-    //mydata += "&order=" + encodeURIComponent(order);
-    //mydata = "action=cardfilter&term=creditcard&cred_limit=&cred_day_period=&bank=&cat_cards=&period=";
-
-    /*
-		var mydataArray = filter.serializeArray();
-		var mydataValues = {};
-	    $.each(mydataArray, function(i, field){
-	    	if ((this.name == 'cred_limit') || (this.name == 'cred_day_period') || (this.name == 'z_sum') || (this.name == 'z_time') || (this.name == 'summ_limit') || (this.name == 'cred_summ_period') || (this.name == 'percent_limit') || (this.name == 'cashback_number') ){
-	    		mydataValues[this.name] = '';
-	    	} else {
-	    		mydataValues[this.name] = this.value;     	
-	    	}
-	    });
-    
-	    var mydata = $.param(mydataValues);
-*/
-
-    var mydataArray = filter.serializeArray();
-    var mydataValues = {};
-    $.each(mydataArray, function (i, field) {
-      if (
-        (this.name == "cred_limit" && this.value == 0) ||
-        (this.name == "cred_day_period" && this.value == 0) ||
-        (this.name == "z_sum" && this.value == 0) ||
-        (this.name == "z_time" && this.value == 0) ||
-        (this.name == "summ_limit" && this.value == 0) ||
-        (this.name == "cred_summ_period" && this.value == 0) ||
-        (this.name == "percent_limit" && this.value == 0) ||
-        (this.name == "cashback_number" && this.value == 0)
-      ) {
-        mydataValues[this.name] = "";
-      } else {
-        mydataValues[this.name] = this.value;
-      }
-    });
-    if (mydataValues["cred_limit"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["cred_day_period"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-    if (mydataValues["z_sum"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["z_time"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-    if (mydataValues["summ_limit"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["cred_summ_period"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-    if (mydataValues["percent_limit"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["cashback_number"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-
-    var mydata = $.param(mydataValues);
-    if (checkboxes) {
-      mydata += "&" + checkboxes;
-    }
-    mydata += "&order=" + encodeURIComponent(order);
-
-    // console.log('mydata1= ' + mydata);
-
-    $.ajax({
-      url: card_loadmore_params.ajaxurl, // обработчик
-      data: mydata, // данные
-      dataType: "json",
-      type: "POST", // тип запроса
-      beforeSend: function (xhr) {
-        filter.find(".submit-button").text("Загрузка..."); // изменяем текст кнопки
-      },
-      success: function (data) {
-        filter.find(".submit-button").text("Показать"); // возвращаеи текст кнопки
-        $("#response-cred-card.list_posts").html(data.content);
-        $(".pagination__description .count_all").html(data.found_posts);
-        $(".variants_count").html(data.found_posts);
-        $(".pagination__description .count_view").html(
-          $(".query__card").length
-        );
-        card_loadmore_params.current_page = 1;
-
-        // set the new query parameters
-        card_loadmore_params.posts = data.posts;
-        // set the new max page parameter
-        card_loadmore_params.max_page = data.max_page;
-        if (data.max_page < 2) {
-          $(".load_more_btn").hide();
-        } else {
-          $(".load_more_btn").show();
-        }
-        $(".btn__compare").append(
-          '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
-        );
-      },
-    });
-  }
-
-  setTimeout(function () {
-    ajax_random_offers(4);
-  }, 2000);
-
-  function ajax_random_offers(after_item_count, page) {
-    // if($('.ajax-random-offers').length){
-    //
-    // 	let $this = $('.ajax-random-offers');
-    // 	let id = $this.data('id');
-    // 	let current_cat_id = $this.data('current_cat_id');
-
-    // Matches exactly 'tcol1'
-
-    let term = "";
-
-    if ($('input[name="term"]').length) {
-      term = $('input[name="term"]').val();
-    }
-
-    // console.log(term)
-
-    $.ajax({
-      url: "/ajax-random-offers.php", // обработчик
-      data: {
-        id: "test",
-        term: term,
-
-        // 'current_cat_id': current_cat_id,
-      }, // данные
-      dataType: "json",
-      type: "POST", // тип запроса
-      success: function (data) {
-        switch (after_item_count) {
-          case 4:
-            if (
-              $("#response-cred-card.list_posts .card__horizontal:nth-child(4)")
-                .length
-            ) {
-              $(
-                "#response-cred-card.list_posts .card__horizontal:nth-child(3)"
-              ).append(data.content);
+        // 4) AJAX
+        $.ajax({
+          url: card_loadmore_params.ajaxurl,
+          data: postData,
+          dataType: "json",
+          type: "POST",
+          beforeSend() {
+            $(btnSelector).text("Загрузка…");
+          },
+          success(data) {
+            if (!data.content) {
+              return $(btnSelector).hide();
             }
-            ajax_random_offers(10);
-            break;
-          case 10:
-            if (
-              $("#response-cred-card.list_posts .card__horizontal:nth-child(9)")
-                .length
-            ) {
-              $(
-                "#response-cred-card.list_posts .card__horizontal:nth-child(9)"
-              ).append(data.content);
+            // вставляем новые карточки
+            $("#response-cred-card").append(data.content);
+
+            // обновляем текущую страницу и максимум
+            card_loadmore_params.current_page = nextPage;
+            card_loadmore_params.max_page = data.max_page;
+
+            // обновляем счётчики
+            $(".pagination__description .count_view").text(
+              $(".query__card").length
+            );
+            $(".pagination__description .count_all").text(data.found_posts);
+
+            // прячем или обновляем кнопку
+            if (nextPage >= data.max_page) {
+              $(btnSelector).hide();
+            } else {
+              $(btnSelector).text("Больше решений");
             }
-            break;
-          default:
-        }
+          },
+        });
+      });
+    }
 
-        if (page) {
-          let obj_page = {
-            1: 9,
-            2: 19,
-            3: 29,
-            4: 39,
-          };
+    // === Инициализация ===
+    // 1) Для кредитных карт — фильтрующая форма + aside
+    initLoadMore(
+      ".load_more_btn",
+      "#credit-card-filter",
+      "#credit-card-filter-aside",
+      $("main").attr("term") || "creditcard"
+    );
 
-          let need_item = obj_page[page];
-          // console.log(need_item)
-
-          if (
-            $(
-              "#response-cred-card.list_posts .card__horizontal:nth-child(" +
-                need_item +
-                ")"
-            ).length
-          ) {
-            $(
-              "#response-cred-card.list_posts .card__horizontal:nth-child(" +
-                need_item +
-                ")"
-            ).append(data.content);
-          }
-        }
-      },
-    });
-
-    // }
-  }
+    // 2) Для коллекций, где отдельная кнопка и нет формы фильтра
+    initLoadMore(".load_more_btn1", "#collection-card", null, "collection");
+  })(jQuery);
 
   // Запуск фильтров, если человек передал ssession, за это отвечает mt
   if ($(".start-func-credit-card-filter").length) {

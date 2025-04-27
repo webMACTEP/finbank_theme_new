@@ -501,9 +501,16 @@ else:
 								<div class="credits__list-right">
 									<div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
 									<div class="credits__list-dropdown dropdown  px-0">
-										<select name="" class="styledSelect cred-order-select">
+										<!-- <select name="" class="styledSelect cred-order-select">
 											<option value="" selected disabled>Сортировать</option>
 											<option value="">Сбросить сортировку</option>
+											<option value="ratings_average">По рейтингу</option>
+											<option value="views">По количеству заявок</option>
+											<option value="credit_max_sum">По сумме займа</option>
+											<option value="credit_stavka">По процентной ставке</option>
+										</select> -->
+										<select name="" class="styledSelect cred-order-select">
+											<option value="" selected hidden>Сортировать</option>
 											<option value="ratings_average">По рейтингу</option>
 											<option value="views">По количеству заявок</option>
 											<option value="credit_max_sum">По сумме займа</option>

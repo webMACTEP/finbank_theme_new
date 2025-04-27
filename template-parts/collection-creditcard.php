@@ -703,7 +703,7 @@ $type_collection = 'creditcard';
 								<div class="card-container p-3">
 									<div class="card__header mb-2 d-flex">
 										<div class="card__header-img">
-											<img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
+											<img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_id()) ?>
 																		<?php echo the_field('bank_logo', $bank_choise_rel) ?>"
 												alt="<?
 														$bank_id = get_field('bank_logo', $bank_choise_rel, false);
@@ -1443,12 +1443,15 @@ $type_collection = 'creditcard';
 		<!-- / wysiwyg text -->
 
 		<!-- footer-raiting -->
-		<div class="section">
-			<div class="container">
-				<div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
-					<?php
-					// Дополнительный рейтинговый блок
-					if (have_rows('additional_ratings_list')) :
+		<?php if (have_rows('additional_ratings_list')) : ?>
+			<div class="section">
+				<div class="container">
+					<div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
+						<?php
+						$title = get_sub_field('title');
+						echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
+						// Дополнительный рейтинговый блок
+
 						$additional_index = 0;
 						while (have_rows('additional_ratings_list')) : the_row();
 							$title = get_sub_field('title');
@@ -1490,13 +1493,14 @@ $type_collection = 'creditcard';
 
 							$additional_index++;
 						endwhile;
-					endif;
-					?>
+
+						?>
+					</div>
+
+
 				</div>
-
-
 			</div>
-		</div>
+		<?php endif; ?>
 		<!-- / footer-raiting -->
 	</div>
 

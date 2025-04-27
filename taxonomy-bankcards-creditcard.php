@@ -389,6 +389,8 @@ else:
                 </div>
                 <!-- / calc popup -->
 
+
+
             </div>
         </div>
         <!-- / page navigation -->
@@ -514,8 +516,8 @@ else:
                                     <div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
                                     <div class="credits__list-dropdown dropdown  px-0">
                                         <select name="" class="styledSelect cred-order-select">
-                                        <option value="" selected disabled>Сортировать</option>
-                                        <option value="">Сбросить сортировку</option>
+                                            <option value="" selected disabled>Сортировать</option>
+                                            <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
                                             <option value="views">По количеству заявок</option>
                                             <option value="card_cred_limit">По кредитному лимиту</option>
@@ -1481,6 +1483,7 @@ else:
 
     </main>
     <script src="<?php echo get_template_directory_uri(); ?>/js/new-listing.js"></script>
+    
 
 
     <?php get_footer(); ?>

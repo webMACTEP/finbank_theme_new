@@ -14,6 +14,7 @@ $items_args = array(
     'orderby' => 'name',
     'order' => 'DESC',
     'post_type' => 'zaimy',
+    'posts_per_page' => 12,
     'post_status' => 'publish',
     'post_parent' => 0, // Только родительские записи
     'meta_query' => array(
@@ -173,9 +174,9 @@ if (!$query_items->have_posts()) {
                                             </select>
                                         </div>
                                         <div class="col-12 col-md-4 oz_select">
-                                            <label class="form-label" for="oz">Способ получения</label>
+                                            <label class="form-label" for="oz">Компания</label>
                                             <select name="oz" id="oz" class="styledSelect" placeholder="">
-                                                <option value="">Любой</option>
+                                                <option value="">Любая</option>
                                                 <option value="oz1">Турбозайм</option>
                                                 <option value="oz2">Займер</option>
                                                 <option value="oz3">E-капуста</option>
@@ -457,46 +458,38 @@ if (!$query_items->have_posts()) {
                 <div class="row">
 
                     <?php
-                    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                    $args = array(
-                        'orderby' => 'name',
-                        'order' => 'DESC',
-                        'post_type' => 'zaimy',
-                        'posts_per_page' => 12, // Добавлено для вывода 12 материалов
-                        'post_status' => 'publish',
-                        'paged' => $paged,
-                    );
-                    $args['meta_query'][] = array(
-                        'key' => 'archive',
-                        'value' => '0'
-                    );
-
+                    // Инициализация счетчика
                     $counter = 0;
-                    $query = new WP_Query($args);
 
-                    if ($query->have_posts()) {
-
-                        $max_pages = $query->max_num_pages;
+                    // Проверяем, есть ли посты в запросе
+                    if ($query_items->have_posts()) {
+                        // Используем существующий объект запроса
+                        $query = $query_items;
+                        $max_pages   = $query->max_num_pages;
                         $found_posts = $query->found_posts;
 
-                        if ($query->have_posts()) {
-                            ob_start();
-                            while ($query->have_posts()):
-                                $query->the_post();
-                                $counter++;
-                                get_template_part('template-parts/filter-zaimy-posts');
-                            endwhile;
+                        // Начинаем буферизацию вывода
+                        ob_start();
 
-                            $posts_html = ob_get_contents();
-                            ob_end_clean();
+                        // Проходим по всем постам в запросе
+                        while ($query->have_posts()) {
+                            $query->the_post();
+                            $counter++;
+                            // Подключаем шаблон для каждого поста
+                            get_template_part('template-parts/filter-zaimy-posts');
                         }
+
+                        // Получаем содержимое буфера и очищаем его
+                        $posts_html = ob_get_clean();
+
+                        // Сбрасываем глобальные данные поста
+                        wp_reset_postdata();
                     } else {
-                        $posts_html = '<p>Ничего не найдено по заданым фильтрам.</p>';
+                        // Сообщение, если посты не найдены
+                        $posts_html = '<p>Ничего не найдено по заданным фильтрам.</p>';
                     }
 
-                    $GLOBALS['wp_query']->max_num_pages = $query->max_num_pages;
-                    $max_pages = $wp_query->max_num_pages;
-
+                    // Выводим HTML контент
                     ?>
                     <!-- list -->
                     <div class="col-12 col-lg-12 order-lg-1">
@@ -519,9 +512,10 @@ if (!$query_items->have_posts()) {
                                 </div>
                                 <div class="credits__list-right">
                                     <div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
+
                                     <div class="credits__list-dropdown dropdown px-0">
-                                        <select name="order" class="styledSelect cred-order-select">
-                                            <option value="" selected disabled>Сортировать</option>
+                                        <select name="" class="styledSelect cred-order-select">
+                                            <option value="" selected hidden>Сортировать</option>
                                             <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
                                             <option value="views">По количеству заявок</option>
@@ -529,7 +523,9 @@ if (!$query_items->have_posts()) {
                                             <option value="z_time">По сроку</option>
                                             <option value="z_stavka">По процентной ставке</option>
                                         </select>
+
                                     </div>
+
                                     <div class="views-buttons">
                                         <div class="horisont-butt active">
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1303,14 +1299,15 @@ if (!$query_items->have_posts()) {
             <!-- / wysiwyg text -->
 
             <!-- footer-raiting -->
-            <div class="section">
-                <div class="container">
-                    <div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
-                        <?php
-                        $title = get_sub_field('rz_title', 'options');
-                        echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
-                        // Дополнительный рейтинговый блок
-                        if (have_rows('rz_additional_ratings_list', 'options')) :
+            <?php if (have_rows('rz_additional_ratings_list', 'options')) : ?>
+                <div class="section">
+                    <div class="container">
+                        <div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
+                            <?php
+                            $title = get_sub_field('rz_title', 'options');
+                            echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
+                            // Дополнительный рейтинговый блок
+
                             $additional_index = 0;
                             while (have_rows('rz_additional_ratings_list', 'options')) : the_row();
                                 $title = get_sub_field('title', 'options');
@@ -1352,13 +1349,14 @@ if (!$query_items->have_posts()) {
 
                                 $additional_index++;
                             endwhile;
-                        endif;
-                        ?>
+
+                            ?>
+                        </div>
+
+
                     </div>
-
-
                 </div>
-            </div>
+            <?php endif; ?>
             <!-- / footer-raiting -->
         </div>
 

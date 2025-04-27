@@ -1385,14 +1385,15 @@ $type_collection = 'kredity';
 		<!-- / wysiwyg text -->
 
 		<!-- footer-raiting -->
-		<div class="section">
-			<div class="container">
-				<div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
-					<?php
-					$title = get_sub_field('title');
-					echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
-					// Дополнительный рейтинговый блок
-					if (have_rows('additional_ratings_list')) :
+		<?php if (have_rows('additional_ratings_list')) : ?>
+			<div class="section">
+				<div class="container">
+					<div class="rating-footer client-rating" data-post-id="<?php echo get_the_ID(); ?>">
+						<?php
+						$title = get_sub_field('title');
+						echo '<h3 class="rating-title">' . esc_html($title) . '</h3>';
+						// Дополнительный рейтинговый блок
+
 						$additional_index = 0;
 						while (have_rows('additional_ratings_list')) : the_row();
 							$title = get_sub_field('title');
@@ -1434,13 +1435,14 @@ $type_collection = 'kredity';
 
 							$additional_index++;
 						endwhile;
-					endif;
-					?>
+
+						?>
+					</div>
+
+
 				</div>
-
-
 			</div>
-		</div>
+		<?php endif; ?>
 		<!-- / footer-raiting -->
 	</div>
 

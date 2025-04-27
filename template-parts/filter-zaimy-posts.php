@@ -1,5 +1,12 @@
 <?php
-$query__card = get_field('archive') ? '' : 'query__card';
+
+$query__card = get_field('archive') != true ? 'query__card' : '';
+$terms = wp_get_post_terms(get_the_ID(), 'zaimy', array('fields' => 'all'));
+$term_slug = '';
+
+if (!empty($terms) && !is_wp_error($terms)) {
+    $term_slug = esc_attr($terms[0]->slug);
+}
 $apply_now = get_field('apply_now_select_products', get_the_ID());
 $organization_phone = get_field('z_organization_phone');
 $organization_site = get_field('z_organization_site');
@@ -171,7 +178,7 @@ $card_bank_link = base64_encode($encoded_link);
                     </div>
                 <?php endif; ?>
 
-                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="<?php echo 'creditcard'; ?>">
+                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="zaimy">
                     <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
                         <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
                     </svg>

@@ -19,7 +19,7 @@ $bank_phone = get_field('bank_phone', $bank_id);
 $encoded_link = get_field('card_bank_link');
 $card_bank_link = base64_encode($encoded_link);
 
-
+$bank_choise_rel = get_field('product_bank', $ID);
 $bank_email = get_field('bank_email', $bank_id);
 $bank_license = get_field('bank_license', $bank_id);
 $card_logo = get_field('card_logo');
@@ -62,7 +62,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                 <div class="item-info">
 
                     <a href="<?php echo esc_url(get_permalink()); ?>" class="font-weight-semibold">
-                        <?php echo esc_html(get_the_title($bank_id)); ?>
+                    <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
                     </a>
                     <span class="item-title">
                         <?php
@@ -189,7 +189,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     </div>
                 <?php endif; ?>
 
-                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="<?php echo 'creditcard'; ?>">
+                <a class="btn__compare <?php echo my_compare_btn(get_the_id()); ?> btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center" data-id="<?php echo get_the_id() ?>" data-tax="kredity">
                     <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
                         <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
                     </svg>
