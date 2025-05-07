@@ -5819,7 +5819,6 @@ a.cld-like-dislike-trigger {
 }
 .zaimy-new .calc__total {
   margin: 0px 0px 0px auto;
-  flex: 0 0 50%;
 }
 .zaimy-new .calc__total-field {
   gap: 1rem;
@@ -7426,6 +7425,9 @@ a.cld-like-dislike-trigger {
 }
 .newlisting .new-filter-modal-show {
   margin-left: auto;
+}
+.newlisting .new-calc-modal .progress__description {
+  font-size: 14px;
 }
 .newlisting .new-calc-modal,
 .newlisting .new-filter-modal {

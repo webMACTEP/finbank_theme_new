@@ -1557,12 +1557,6 @@ function card_filter_function()
 
 
 
-
-
-
-
-
-
 add_action('wp_ajax_bankfilter', 'bank_filter_function');
 add_action('wp_ajax_nopriv_bankfilter', 'bank_filter_function');
 

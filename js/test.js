@@ -22023,18 +22023,40 @@ reference element's position.
 
       if (calcProgess) {
         const circle = calcProgess.querySelector(".progress__circle");
-        const circleText = calcProgess.querySelectorAll(".progress__percent");
+        const circleTexts = calcProgess.querySelectorAll(".progress__percent");
+        const bLines = calcProgess.querySelectorAll(".b-lines .b-line");
+
+        // Вычисляем процент выгоды
         const graphText = (
           100 -
           (overpayment / (amountCredit + overpayment)) * 100
         ).toFixed();
-        const graphDanger = `${
-          (overpayment / (amountCredit + overpayment)) * 100
-        }%`;
+        const graphDanger = `${(
+          (overpayment / (amountCredit + overpayment)) *
+          100
+        ).toFixed(2)}%`;
         const graphWarning = `0%`;
 
-        circle.style.cssText = `--graph-danger: ${graphDanger}; --graph-warning: ${graphWarning}`;
-        circleText.forEach((item) => (item.innerText = graphText));
+        // Обновляем круг
+        if (circle) {
+          circle.style.cssText = `--graph-danger: ${graphDanger}; --graph-warning: ${graphWarning}`;
+        }
+
+        // Обновляем текст процента
+        circleTexts.forEach((item) => (item.innerText = graphText));
+
+        // ---- Новая логика для .b-lines ----
+        // Сколько линий активировать (каждая — 10%)
+        const percentValue = Number(graphText);
+        const activeCount = Math.floor(percentValue / 10);
+
+        bLines.forEach((line, idx) => {
+          if (idx < activeCount) {
+            line.classList.add("active");
+          } else {
+            line.classList.remove("active");
+          }
+        });
       }
     };
 

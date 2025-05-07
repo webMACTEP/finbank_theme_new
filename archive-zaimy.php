@@ -263,7 +263,7 @@ if (!$query_items->have_posts()) {
                 <!-- / filter popup -->
 
                 <!-- calc popup -->
-                <div class="new-calc-modal">
+                <div class="new-calc-modal active">
                     <div class="new-calc-content">
                         <div class="new-calc-close">
                             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -271,134 +271,119 @@ if (!$query_items->have_posts()) {
                             </svg>
                         </div>
 
-                        <h2>Кредитный калькулятор</h2>
+                        <h2>Калькулятор займов</h2>
                         <!-- Блок калькулятора -->
-                        <div class="calc__content" id="calc" data-type="creditCalc">
+                        <form id="calc-credit-card-filter" action="" method="POST">
+                            <input type="hidden" name="action" value="cardfilter" />
+                            <input type="hidden" name="term" value="zaimy" />
+                            
+                            <div class="calc__content" id="calc" data-type="loanCalc">
 
-                            <div class="calc-row">
-                                <div class="row">
-                                    <div class="calc__content-buttons d-flex">
-                                        <label class="btn__radio">
-                                            <input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
-                                            <span class="btn__radio-text">Аннуентный</span>
-                                        </label>
-                                        <label class="btn__radio">
-                                            <input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
-                                            <span class="btn__radio-text">Дифференцированный</span>
-                                        </label>
-                                    </div>
-                                </div>
+                                <div class="calc-row mt-5">
 
-                                <div class="c-row">
-                                    <div class="c-col-1">
 
-                                        <div class="calc__field">
-                                            <div class="calc__field-wrap">
-                                                <div class="calc__field-label">Кредитный лимит</div>
-                                                <input type="text" class="range__value form-control calc__input" value="1000000" min="0" max="10000000" data-field="limit">
-                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
+                                    <div class="c-row">
+                                        <div class="c-col-1">
+
+                                            <div class="calc__field">
+                                                <div class="calc__field-wrap">
+                                                    <div class="calc__field-label">Сумма займа</div>
+                                                    <input type="text" class="range__value form-control calc__input " value="10000" min="0" max="10000000" data-field="limit">
+                                                    <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
+                                                </div>
+                                            </div>
+                                            <div class="calc__field d-flex">
+                                                <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
+                                                    <div class="calc__field-label">Срок / дней</div>
+                                                    <input type="text" class="range__value form-control calc__input" value="14" min="1" max="10950" data-field="date">
+                                                    <input class="range__input calc__input" name="range2" type="range" min="1" max="10950" value="14" data-field="date" style="--range-progress:23.0769%;">
+                                                </div>
+                                                <div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
+                                                    <div class="calc__field-label">Ставка</div>
+                                                    <input type="text" class="range__value form-control calc__input" value="0.5%" maxlength="6" data-field="percent" pattern="[0-9]*">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="calc__field d-flex">
-                                            <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
-                                                <div class="calc__field-label">Срок / месяц</div>
-                                                <input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
-                                                <input class="range__input calc__input" name="range2" type="range" min="1" max="40" value="10" data-field="date" style="--range-progress:25%;">
-                                            </div>
-                                            <div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
-                                                <div class="calc__field-label">Ставка</div>
-                                                <input type="text" class="range__value form-control calc__input" value="15%" maxlength="6" data-field="percent" pattern="[0-9]*">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="c-col-2">
-                                        <div class="calc-result-wrapp">
+                                        <div class="c-col-2">
+                                            <div class="calc-result-wrapp">
 
-                                            <div class="calc__total">
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Сумма займа</div>
-                                                    <div class="calc__value">
-                                                        <span id="calc__sum" class="calc__value-text">8 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
+                                                <div class="calc__total">
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Сумма кредита</div>
+                                                        <div class="calc__value">
+                                                            <span id="calc__sum" class="calc__value-text">10 000</span>
+                                                            <span class="calc__value-char">₽</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Переплата</div>
+                                                        <div class="calc__total-value">
+                                                            <span id="calc__overpay" class="calc__value-text">70 031</span>
+                                                            <span class="calc__value-char">₽</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Общая сумма выплат</div>
+                                                        <div class="calc__total-value">
+                                                            <span id="calc__total" class="calc__value-text">1 070 031</span>
+                                                            <span class="calc__value-char">₽</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Полная стоимость займа</div>
+                                                        <div class="calc__total-value">
+                                                            <span id="calc__psk" class="calc__value-text">182.5</span>
+                                                            <span class="calc__value-char">%</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Переплата</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__overpay" class="calc__value-text">1 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">К возврату</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__total" class="calc__value-text">9 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Окончание кредита</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
-                                                    </div>
-                                                </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Платежи в месяц</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__payments" class="calc__value-text">500 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
-
-
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="calc__progress" class="c-col-3 progress">
-
-
-                                        <!-- <div class="progress__circle" style="--graph-danger: 5%;">
+                                        <!-- <div id="calc__progress" class="progress">
+                                        <div class="progress__circle" style="--graph-warning: 10%; --graph-danger: 5%;">
                                             <div class="progress__text">
                                                 <span class="progress__percent">75</span>%
                                             </div>
-                                        </div> -->
-
-
-
-                                        <div class="benefit">
-                                            <div class="b-lines">
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line"></div>
-                                                <div class="b-line"></div>
-                                                <div class="b-line"></div>
-                                            </div>
-                                            <p class="progress__description">
-                                                По нашим подсчетам, рассчитанный
-                                                кредит <span>на</span> <span class="progress__percent">80</span> <span>% выгоден</span>
-                                            </p>
                                         </div>
-                                    </div>
+                                        <div class="progress__description">По нашим подсчетам, расчитанный кредит на <span class="progress__percent">75</span>% выгоден</div>
+                                    </div> -->
+                                        <div id="calc__progress" class="progress">
 
+                                            <div class="benefit">
+                                                <div class="b-lines">
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line"></div>
+                                                    <div class="b-line"></div>
+                                                    <div class="b-line"></div>
+                                                </div>
+                                                <div class="progress__circle d-none" style="--graph-warning: 10%; --graph-danger: 5%;">
+                                                    <div class="progress__text">
+                                                        <span class="progress__percent">75</span>%
+                                                    </div>
+                                                </div>
+                                                <div class="progress__description">По нашим подсчетам, расчитанный кредит на <span class="progress__percent">75</span><span>%</span> выгоден</div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                                <div class="c-line"></div>
+                                <div class="c-footer">
+                                    <div class="btn btn-primary submit-button">Подобрать</div>
+                                    <div class="new-calc-btn-close btn">Закрыть</div>
+                                </div>
 
-                            <div class="c-line"></div>
-                            <div class="c-footer">
-                                <div class="btn btn-primary">Подобрать</div>
-                                <div class="new-calc-btn-close btn">Закрыть</div>
                             </div>
-
-                        </div>
+                        </form>
 
 
                     </div>
@@ -514,7 +499,7 @@ if (!$query_items->have_posts()) {
                                     <div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
 
                                     <div class="credits__list-dropdown dropdown px-0">
-                                        <select name="" class="styledSelect cred-order-select">
+                                        <select name="order" class="styledSelect cred-order-select">
                                             <option value="" selected hidden>Сортировать</option>
                                             <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
@@ -563,8 +548,11 @@ if (!$query_items->have_posts()) {
                             <!-- pagination -->
                             <div class="pagination flex-column mb-3">
                                 <?php if ($paged < $max_pages): ?>
-                                    <button class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
+                                    <button
+                                        class="btn btn-outline-gray btn-block load_more_btn"
+                                        data-max_pages="<?= $max_pages ?>"
+                                        data-paged="<?= $paged ?>"
+                                        data-posts_per_page="<?= $ppp ?>">
                                         Больше решений
                                     </button>
 
@@ -646,10 +634,18 @@ if (!$query_items->have_posts()) {
 
                         $args = array(
                             'post_type'             => 'zaimy',
-                            'posts_per_page'        => 100,
+                            'posts_per_page'        => 10,
                             'meta_key' => 'ratings_average',
                             'orderby' => array('meta_value_num' => 'desc', 'name' => 'desc'),
                             'order' => 'DESC',
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'card_bank_link',
+                                    'value'   => '',
+                                    'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+                                ),
+                            ),
+
                         );
 
                         $query = new WP_Query($args);
@@ -762,6 +758,13 @@ if (!$query_items->have_posts()) {
                             'meta_key' => 'ratings_average',
                             'orderby' => 'meta_value_num',
                             'order' => 'DESC',
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'card_bank_link',
+                                    'value'   => '',
+                                    'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+                                ),
+                            ),
 
                         );
 

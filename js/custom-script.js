@@ -265,68 +265,65 @@ jQuery(function ($) {
       $(btnSelector).on("click", function (e) {
         e.preventDefault();
 
-        // 1) Подготовка
-        const nextPage = card_loadmore_params.current_page + 1;
-        const perPage = 12;
-        const term = termValue;
-        const order = $(".cred-order-select option:selected").val();
-        const exclude = $(".article__item-first").data("id") || "";
+        const $btn = $(this);
+        const current = parseInt($btn.data("paged"), 10) || 1;
+        const maxPage = parseInt($btn.data("max_pages"), 10) || 1;
+        const nextPage = current + 1;
 
-        // 2) Сбор фильтров
+        // если дальше некуда — просто скрываем
+        if (nextPage > maxPage) {
+          return $btn.hide();
+        }
+
+        // собираем остальные параметры, как у тебя было
         let postData = formSelector ? $(formSelector).serialize() : "";
         if (asideSelector) {
           const aside = $(asideSelector).serialize();
-          if (aside) postData += (postData ? "&" : "") + aside;
+          if (aside) postData += "&" + aside;
         }
-
-        // 3) Служебные параметры
         postData +=
-          (postData ? "&" : "") +
-          "action=cardfilter" +
+          "&action=cardfilter" +
           "&term=" +
-          encodeURIComponent(term) +
+          encodeURIComponent(termValue) +
           "&order=" +
-          encodeURIComponent(order) +
+          encodeURIComponent($(".cred-order-select").val() || "") +
           "&page=" +
           nextPage +
           "&posts_per_page=" +
-          perPage +
-          (exclude ? "&exclude_post=" + exclude : "");
+          parseInt($btn.data("posts_per_page") || 12, 10);
 
-        console.log("Load more postData:", postData);
-
-        // 4) AJAX
         $.ajax({
           url: card_loadmore_params.ajaxurl,
           data: postData,
           dataType: "json",
           type: "POST",
           beforeSend() {
-            $(btnSelector).text("Загрузка…");
+            $btn.text("Загрузка…");
           },
           success(data) {
             if (!data.content) {
-              return $(btnSelector).hide();
+              return $btn.hide();
             }
-            // вставляем новые карточки
+            // вставляем
             $("#response-cred-card").append(data.content);
 
-            // обновляем текущую страницу и максимум
-            card_loadmore_params.current_page = nextPage;
-            card_loadmore_params.max_page = data.max_page;
+            // обновляем data-атрибуты
+            $btn
+              .data("paged", nextPage)
+              .data("max_pages", data.max_page)
+              .text(nextPage >= data.max_page ? "" : "Больше решений");
+
+            if (nextPage >= data.max_page) {
+              $btn.hide();
+            } else {
+              $btn.show();
+            }
 
             // обновляем счётчики
-            $(".pagination__description .count_view").text(
-              $(".query__card").length
-            );
-            $(".pagination__description .count_all").text(data.found_posts);
-
-            // прячем или обновляем кнопку
-            if (nextPage >= data.max_page) {
-              $(btnSelector).hide();
-            } else {
-              $(btnSelector).text("Больше решений");
-            }
+            $(".variants_count").text(data.found_posts);
+          },
+          error() {
+            $btn.text("Ошибка, попробуйте снова");
           },
         });
       });
@@ -352,7 +349,7 @@ jQuery(function ($) {
 
   function filter_main_start() {
     var filter = $("#credit-card-filter");
-    var order = $(".cred-order-select").find("option").attr("value");
+    var order = $(".cred-order-select option:selected").val() || "";
 
     var mydata = filter.serialize();
 
@@ -528,7 +525,7 @@ jQuery(function ($) {
   });
 
   function cred_order_select() {
-    var order = $(".cred-order-select").find("option").attr("value");
+    var order = $(".cred-order-select option:selected").val() || "";
     var filter = $("#credit-card-filter");
     var mydata = filter.serialize();
     var checkboxes = $("#credit-card-filter-aside").serialize();
@@ -1175,28 +1172,28 @@ jQuery(function ($) {
         "https://" + document.domain + "/reviews-zaimy"
       );
   });
-  // Декодирование реферальных ссылок
-  $(".link-data").on("click", function () {
+});
+
+jQuery(document).ready(function ($) {
+  // Делегируем на document (или на ближайший статичный контейнер, в котором появляются ссылки)
+  $(document).on("click", ".link-data", function () {
     var encodedUrl = $(this).attr("data-link");
 
     try {
       // Декодируем URL
       var decodedUrl = atob(encodedUrl);
 
-      // Если необходимо выполнить дополнительные действия, например, отправить событие аналитики,
-      // можно добавить их здесь, например:
+      // Здесь можно добавить аналитические события, если нужно:
       // ym(35020350, 'reachGoal', 'click_oformit_listing');
       // ym(35020350, 'reachGoal', 'click_na_vse_oformit_s_referalkoy');
 
-      // Открываем декодированный URL в новом окне/вкладке
+      // Открываем декодированный URL в новой вкладке
       window.open(decodedUrl, "_blank");
     } catch (e) {
       console.error("Ошибка декодирования URL", e);
     }
   });
-});
 
-jQuery(document).ready(function ($) {
   // Cache selectors
   var el = $(".article__one-contents, .mob-menutoc-contents");
   var topMenu = $("#menutoc, #menutocmob"),

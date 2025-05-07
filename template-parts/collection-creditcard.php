@@ -465,6 +465,7 @@ $type_collection = 'creditcard';
 				$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 				$args = array(
 					'post_type' => array('bankcard'),
+					'posts_per_page' => 12,
 					'post__in' => $allposts,
 					'orderby' => 'name',
 					'order' => 'DESC',
@@ -677,7 +678,7 @@ $type_collection = 'creditcard';
 					<?php
 					$args = array(
 						'post_type'             => 'bankcard',
-						'posts_per_page'        => 100,
+						'posts_per_page'        => 10,
 						'meta_key' => 'ratings_average',
 						'orderby' => 'meta_value_num',
 						'order' => 'DESC',
@@ -687,7 +688,14 @@ $type_collection = 'creditcard';
 								'field'    => 'slug',
 								'terms'    =>  'creditcard',
 							),
-						)
+						),
+						'meta_query'     => array(
+							array(
+								'key'     => 'card_bank_link',
+								'value'   => '',
+								'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+							),
+						),
 					);
 
 					$query = new WP_Query($args);
@@ -816,7 +824,14 @@ $type_collection = 'creditcard';
 								'field'    => 'slug',
 								'terms'    =>  'creditcard',
 							),
-						)
+						),
+						'meta_query'     => array(
+							array(
+								'key'     => 'card_bank_link',
+								'value'   => '',
+								'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+							),
+						),
 					);
 
 					$querytop = new WP_Query($argstop);

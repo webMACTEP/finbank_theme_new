@@ -735,22 +735,22 @@ $card_bank_link = base64_encode($encoded_link);
                                         </div>
 
                                         <?php if ($card_bank_link): ?>
-                                                <span
-                                                    class="link-data btn btn-primary"
-                                                    data-link="<?= esc_attr($card_bank_link); ?>"
-                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
-                                                    Перейти на сайт
-                                                </span>
+                                            <span
+                                                class="link-data btn btn-primary"
+                                                data-link="<?= esc_attr($card_bank_link); ?>"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                Перейти на сайт
+                                            </span>
 
-                                            <?php else: ?>
-                                                <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                                                    onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
-                                                    class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
-                                                    Перейти на сайт
-                                                </span>
-                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                class="btn btn-primary <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link<?php } ?>">
+                                                Перейти на сайт
+                                            </span>
+                                        <?php endif; ?>
 
-                                        
+
                                     </div>
                                 <?php endwhile; ?>
                             </div>
@@ -788,7 +788,7 @@ $card_bank_link = base64_encode($encoded_link);
                                         </div>
                                         <div id="collapse__item-<?php echo esc_attr($counter_about); ?>" class="accordion__collapse collapse" data-bs-parent="#accordion">
                                             <div class="accordion__body wysiwyg">
-                                                <p><?php echo esc_html($answer); ?></p>
+                                                <p><?php echo $answer; ?></p>
                                             </div>
                                         </div>
                                     </div>

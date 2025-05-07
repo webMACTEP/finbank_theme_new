@@ -515,7 +515,7 @@ else:
                                 <div class="credits__list-right">
                                     <div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
                                     <div class="credits__list-dropdown dropdown  px-0">
-                                        <select name="" class="styledSelect cred-order-select">
+                                        <select name="order" class="styledSelect cred-order-select">
                                             <option value="" selected disabled>Сортировать</option>
                                             <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
@@ -562,8 +562,11 @@ else:
                             <!-- pagination -->
                             <div class="pagination flex-column mb-3">
                                 <?php if ($paged < $max_pages): ?>
-                                    <button class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
+                                    <button
+                                        class="btn btn-outline-gray btn-block load_more_btn"
+                                        data-max_pages="<?= $max_pages ?>"
+                                        data-paged="<?= $paged ?>"
+                                        data-posts_per_page="<?= $ppp ?>">
                                         Больше решений
                                     </button>
 
@@ -659,7 +662,7 @@ else:
                         <?php
                         $args = array(
                             'post_type'             => 'bankcard',
-                            'posts_per_page'        => 100,
+                            'posts_per_page'        => 10,
                             'meta_key' => 'ratings_average',
                             'orderby' => 'meta_value_num',
                             'order' => 'DESC',
@@ -669,7 +672,14 @@ else:
                                     'field'    => 'slug',
                                     'terms'    =>  'creditcard',
                                 ),
-                            )
+                            ),
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'card_bank_link',
+                                    'value'   => '',
+                                    'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+                                ),
+                            ),
                         );
 
                         $query = new WP_Query($args);
@@ -795,7 +805,14 @@ else:
                                     'field'    => 'slug',
                                     'terms'    =>  'creditcard',
                                 ),
-                            )
+                            ),
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'card_bank_link',
+                                    'value'   => '',
+                                    'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+                                ),
+                            ),
                         );
 
                         $querytop = new WP_Query($argstop);

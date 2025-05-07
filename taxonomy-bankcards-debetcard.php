@@ -240,121 +240,78 @@
                             </svg>
                         </div>
 
-                        <h2>Кредитный калькулятор</h2>
+                        <h2>Калькулятор кэшбэка</h2>
                         <!-- Блок калькулятора -->
-                        <div class="calc__content" id="calc" data-type="creditCalc">
+                        <div class="calc__content" id="calc" data-type="cashbackCalc">
 
-                            <div class="calc-row">
-                                <div class="row">
-                                    <div class="calc__content-buttons d-flex">
-                                        <label class="btn__radio">
-                                            <input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
-                                            <span class="btn__radio-text">Аннуентный</span>
-                                        </label>
-                                        <label class="btn__radio">
-                                            <input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
-                                            <span class="btn__radio-text">Дифференцированный</span>
-                                        </label>
-                                    </div>
-                                </div>
+                            <div class="calc-row mt-5">
 
                                 <div class="c-row">
-                                    <div class="c-col-1">
+                                    <div class="">
+                                        <div class="calc__field">
+                                            <div class="calc__field-wrap">
+                                                <div class="calc__field-label">Вид кэшбэка</div>
+                                                <select name="" id="cashbackTypeSelect" class="styledSelect calc__input" placeholder="" data-field="type">
+                                                    <option value="20000">На всё</option>
+                                                    <option value="5000">АЗС</option>
+                                                    <option value="15000">Кафе и Рестораны</option>
+                                                    <option value="15000">Красота и здоровье</option>
+                                                    <option value="15000">Одежда и обувь</option>
+                                                    <option value="50000">Путешествия</option>
+                                                    <option value="10000">Развлечения</option>
+                                                    <option value="10000">Такси и каршеринг</option>
+                                                    <option value="10000">У партнеров</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
 
                                         <div class="calc__field">
                                             <div class="calc__field-wrap">
-                                                <div class="calc__field-label">Кредитный лимит</div>
-                                                <input type="text" class="range__value form-control calc__input" value="1000000" min="0" max="10000000" data-field="limit">
-                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
+                                                <div class="calc__field-label">Ежемесячные расходы</div>
+                                                <input type="text" class="range__value form-control calc__input " value="10000" min="0" max="200000" data-field="limit">
+                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="200000" value="10000" data-field="limit" style="--range-progress:10%;">
                                             </div>
                                         </div>
-                                        <div class="calc__field d-flex">
-                                            <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
-                                                <div class="calc__field-label">Срок / месяц</div>
-                                                <input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
-                                                <input class="range__input calc__input" name="range2" type="range" min="1" max="40" value="10" data-field="date" style="--range-progress:25%;">
-                                            </div>
-                                            <div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
-                                                <div class="calc__field-label">Ставка</div>
-                                                <input type="text" class="range__value form-control calc__input" value="15%" maxlength="6" data-field="percent" pattern="[0-9]*">
-                                            </div>
-                                        </div>
+
+                                       
+
                                     </div>
-                                    <div class="c-col-2">
-                                        <div class="calc-result-wrapp">
+                                    <div class="">
 
-                                            <div class="calc__total">
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Сумма займа</div>
-                                                    <div class="calc__value">
-                                                        <span id="calc__sum" class="calc__value-text">8 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Переплата</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__overpay" class="calc__value-text">1 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">К возврату</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__total" class="calc__value-text">9 000 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
+                                       
 
+                                        <div class="calc__field ">
+                                            <div class="calc__field-wrap">
+                                                <div class="calc__field-label">Размер кэшбэка %</div>
+                                                <input type="text" class="range__value form-control calc__input " value="1" min="0" max="100" data-field="percent">
+                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="100" value="1" data-field="percent" style="--range-progress:1%;">
+                                            </div>
+                                        </div>
 
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Окончание кредита</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
-                                                    </div>
-                                                </div>
-                                                <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                                    <div class="calc__total-label">Платежи в месяц</div>
-                                                    <div class="calc__total-value">
-                                                        <span id="calc__payments" class="calc__value-text">500 000</span>
-                                                        <span class="calc__value-char">₽</span>
-                                                    </div>
-                                                </div>
+                                    </div>
 
-
+                                    <div class="calc__total">
+                                        <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                            <div class="calc__total-label">Ежемесячные расходы</div>
+                                            <div class="calc__value">
+                                                <span id="calc__sum" class="calc__value-text">10 000</span>
+                                                <span class="calc__value-char">₽</span>
+                                            </div>
+                                        </div>
+                                        <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                            <div class="calc__total-label">Суммарный кэшбэк в рублях</div>
+                                            <div class="calc__total-value">
+                                                <span id="calc__cashbackSum" class="calc__value-text">70 031</span>
+                                                <span class="calc__value-char">₽</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="calc__progress" class="c-col-3 progress">
-
-
-                                        <!-- <div class="progress__circle" style="--graph-danger: 5%;">
-                                    <div class="progress__text">
-                                        <span class="progress__percent">75</span>%
-                                    </div>
-                                </div> -->
 
 
 
-                                        <div class="benefit">
-                                            <div class="b-lines">
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line active"></div>
-                                                <div class="b-line"></div>
-                                                <div class="b-line"></div>
-                                                <div class="b-line"></div>
-                                            </div>
-                                            <p class="progress__description">
-                                                По нашим подсчетам, рассчитанный
-                                                кредит <span>на</span> <span class="progress__percent">80</span> <span>% выгоден</span>
-                                            </p>
-                                        </div>
-                                    </div>
+
 
 
                                 </div>
@@ -500,7 +457,7 @@
                                 <div class="credits__list-right">
                                     <div class="variants_count-container-mob"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
                                     <div class="credits__list-dropdown dropdown  px-0">
-                                        <select name="" class="styledSelect cred-order-select">
+                                        <select name="order" class="styledSelect cred-order-select">
                                             <option value="" selected disabled>Сортировать</option>
                                             <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
@@ -546,8 +503,11 @@
                             <!-- pagination -->
                             <div class="pagination flex-column mb-3">
                                 <?php if ($paged < $max_pages): ?>
-                                    <button class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
+                                    <button
+                                        class="btn btn-outline-gray btn-block load_more_btn"
+                                        data-max_pages="<?= $max_pages ?>"
+                                        data-paged="<?= $paged ?>"
+                                        data-posts_per_page="<?= $ppp ?>">
                                         Больше решений
                                     </button>
 
@@ -643,7 +603,7 @@
                         <?php
                         $args = array(
                             'post_type'             => 'bankcard',
-                            'posts_per_page'        => 100,
+                            'posts_per_page'        => 10,
                             'meta_key' => 'ratings_average',
                             'orderby' => 'meta_value_num',
                             'order' => 'DESC',
@@ -653,7 +613,14 @@
                                     'field'    => 'slug',
                                     'terms'    =>  'debetcard',
                                 ),
-                            )
+                            ),
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'card_bank_link',
+                                    'value'   => '',
+                                    'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+                                ),
+                            ),
                         );
 
                         $query = new WP_Query($args);
@@ -781,7 +748,14 @@
                                     'field'    => 'slug',
                                     'terms'    =>  'debetcard',
                                 ),
-                            )
+                            ),
+                            'meta_query'     => array(
+                                array(
+                                    'key'     => 'card_bank_link',
+                                    'value'   => '',
+                                    'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+                                ),
+                            ),
                         );
 
                         $querytop = new WP_Query($argstop);

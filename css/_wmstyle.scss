@@ -468,7 +468,7 @@
     }
     .calc__total {
         margin: 0px 0px 0px auto;
-        flex: 0 0 50%;
+        //flex: 0 0 50%;
     }
     .calc__total-field {
         gap: 1rem;
@@ -2261,6 +2261,11 @@
     }
     .new-filter-modal-show {
         margin-left: auto;
+    }
+    .new-calc-modal{
+        .progress__description{
+            font-size: 14px;
+        }
     }
     .new-calc-modal,
     .new-filter-modal {

@@ -182,3 +182,40 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 });
+
+jQuery(function ($) {
+  // слушаем именно кнопку "Подобрать" в вашем попапе калькулятора
+  $(".new-calc-modal .c-footer .btn.btn-primary").on("click", function (e) {
+    e.preventDefault();
+
+    // // 1) Считываем значения из калькулятора
+    // var limit = $('#calc input[data-field="limit"]').val();
+    // var period = $('#calc input[data-field="date"]').val();
+
+    // // 2) Находим форму фильтрации
+    // var form = $("#credit-card-filter");
+    // // определяем, что у нас за термин (чтобы понять, какие имена полей ставить)
+    // var term = form.find('[name="term"]').val();
+    // // для кредитных карт — cred_limit / cred_day_period
+    // // для займов (term=="zaimy")  — z_sum / z_time
+    // var nameLimit = term === "zaimy" ? "z_sum" : "cred_limit";
+    // var namePeriod = term === "zaimy" ? "z_time" : "cred_day_period";
+
+    // // 3) Если скрытых полей ещё нет — создаём их
+    // if (!form.find('[name="' + nameLimit + '"]').length) {
+    //   form.append('<input type="hidden" name="' + nameLimit + '" />');
+    // }
+    // if (!form.find('[name="' + namePeriod + '"]').length) {
+    //   form.append('<input type="hidden" name="' + namePeriod + '" />');
+    // }
+    // // 4) Кладём туда значения
+    // form.find('[name="' + nameLimit + '"]').val(limit);
+    // form.find('[name="' + namePeriod + '"]').val(period);
+
+    // 5) Скрываем попап
+   // $(".new-calc-modal").removeClass("active");
+
+    // 6) Триггерим клик на существующую кнопку фильтра (она же вызывает filter_main_start)
+    //form.find(".submit-button").trigger("click");
+  });
+});
