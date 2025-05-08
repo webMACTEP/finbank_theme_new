@@ -274,80 +274,84 @@ $type_collection = 'zaimy';
 			</div>
 			<!-- / filter popup -->
 
-			<!-- calc popup -->
-			<div class="new-calc-modal">
-				<div class="new-calc-content">
-					<div class="new-calc-close">
-						<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-						</svg>
-					</div>
+			 <!-- calc popup -->
+			 <div class="new-calc-modal">
+                    <div class="new-calc-content">
+                        <div class="new-calc-close">
+                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
 
-					<h2>Калькулятор займов</h2>
-					<!-- Блок калькулятора -->
-					<div class="calc__content" id="calc" data-type="loanCalc">
+                        <h2>Калькулятор займов</h2>
+                        <!-- Блок калькулятора -->
+                        <form id="calc-credit-card-filter" action="" method="POST">
+                            <input type="hidden" name="action" value="cardfilter" />
+                            <input type="hidden" name="term" value="zaimy" />
 
-						<div class="calc-row mt-5">
+                            <div class="calc__content" id="calc" data-type="loanCalc">
+
+                                <div class="calc-row mt-5">
 
 
-							<div class="c-row">
-								<div class="c-col-1">
+                                    <div class="c-row">
+                                        <div class="c-col-1">
 
-									<div class="calc__field">
-										<div class="calc__field-wrap">
-											<div class="calc__field-label">Сумма займа</div>
-											<input type="text" class="range__value form-control calc__input " value="10000" min="0" max="10000000" data-field="limit">
-											<input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
-										</div>
-									</div>
-									<div class="calc__field d-flex">
-										<div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
-											<div class="calc__field-label">Срок / дней</div>
-											<input type="text" class="range__value form-control calc__input" value="14" min="1" max="10950" data-field="date">
-											<input class="range__input calc__input" name="range2" type="range" min="1" max="10950" value="14" data-field="date" style="--range-progress:23.0769%;">
-										</div>
-										<div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
-											<div class="calc__field-label">Ставка</div>
-											<input type="text" class="range__value form-control calc__input" value="0.5%" maxlength="6" data-field="percent" pattern="[0-9]*">
-										</div>
-									</div>
-								</div>
-								<div class="c-col-2">
-									<div class="calc-result-wrapp">
+                                            <div class="calc__field">
+                                                <div class="calc__field-wrap">
+                                                    <div class="calc__field-label">Сумма займа</div>
+                                                    <input type="text" class="range__value form-control calc__input" value="1000" min="1000" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['max']); ?>" data-field="limit">
+                                                    <input class="range__input calc__input" name="clc_z_sum" type="range" min="1000" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['max']); ?>" value="<?php echo esc_attr($z_sum); ?>" data-field="limit" style="--range-progress:10%;">
+                                                </div>
+                                            </div>
+                                            <div class="calc__field d-flex">
+                                                <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
+                                                    <div class="calc__field-label">Срок / дней</div>
+                                                    <input type="text" class="range__value form-control calc__input" value="14" min="1" max="1095" data-field="date">
+                                                    <input class="range__input calc__input" name="calc_z_time" type="range" min="1" max="1095" value="14" data-field="date" style="--range-progress:23.0769%;">
+                                                </div>
+                                                <div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
+                                                    <div class="calc__field-label">Ставка</div>
+                                                    <input type="text" class="range__value form-control calc__input" value="0.5%" maxlength="6" data-field="percent" pattern="[0-9]*">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="c-col-2">
+                                            <div class="calc-result-wrapp">
 
-										<div class="calc__total">
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Сумма кредита</div>
-												<div class="calc__value">
-													<span id="calc__sum" class="calc__value-text">10 000</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Переплата</div>
-												<div class="calc__total-value">
-													<span id="calc__overpay" class="calc__value-text">70 031</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Общая сумма выплат</div>
-												<div class="calc__total-value">
-													<span id="calc__total" class="calc__value-text">1 070 031</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Полная стоимость займа</div>
-												<div class="calc__total-value">
-													<span id="calc__psk" class="calc__value-text">182.5</span>
-													<span class="calc__value-char">%</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- <div id="calc__progress" class="progress">
+                                                <div class="calc__total">
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Сумма кредита</div>
+                                                        <div class="calc__value">
+                                                            <span id="calc__sum" class="calc__value-text">10 000</span>
+                                                            <span class="calc__value-char">₽</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Переплата</div>
+                                                        <div class="calc__total-value">
+                                                            <span id="calc__overpay" class="calc__value-text">70 031</span>
+                                                            <span class="calc__value-char">₽</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Общая сумма выплат</div>
+                                                        <div class="calc__total-value">
+                                                            <span id="calc__total" class="calc__value-text">1 070 031</span>
+                                                            <span class="calc__value-char">₽</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                        <div class="calc__total-label">Полная стоимость займа</div>
+                                                        <div class="calc__total-value">
+                                                            <span id="calc__psk" class="calc__value-text">182.5</span>
+                                                            <span class="calc__value-char">%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div id="calc__progress" class="progress">
                                         <div class="progress__circle" style="--graph-warning: 10%; --graph-danger: 5%;">
                                             <div class="progress__text">
                                                 <span class="progress__percent">75</span>%
@@ -355,48 +359,49 @@ $type_collection = 'zaimy';
                                         </div>
                                         <div class="progress__description">По нашим подсчетам, расчитанный кредит на <span class="progress__percent">75</span>% выгоден</div>
                                     </div> -->
-								<div id="calc__progress" class="progress">
+                                        <div id="calc__progress" class="progress">
 
-									<div class="benefit">
-										<div class="b-lines">
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line"></div>
-											<div class="b-line"></div>
-											<div class="b-line"></div>
-										</div>
-										<div class="progress__circle d-none" style="--graph-warning: 10%; --graph-danger: 5%;">
-											<div class="progress__text">
-												<span class="progress__percent">75</span>%
-											</div>
-										</div>
-										<div class="progress__description">По нашим подсчетам, расчитанный кредит на <span class="progress__percent">75</span><span>%</span> выгоден</div>
-									</div>
-								</div>
-
-
-							</div>
-
-						</div>
-
-						<div class="c-line"></div>
-						<div class="c-footer">
-							<div class="btn btn-primary">Подобрать</div>
-							<div class="new-calc-btn-close btn">Закрыть</div>
-						</div>
-
-					</div>
+                                            <div class="benefit">
+                                                <div class="b-lines">
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line active"></div>
+                                                    <div class="b-line"></div>
+                                                    <div class="b-line"></div>
+                                                    <div class="b-line"></div>
+                                                </div>
+                                                <div class="progress__circle d-none" style="--graph-warning: 10%; --graph-danger: 5%;">
+                                                    <div class="progress__text">
+                                                        <span class="progress__percent">75</span>%
+                                                    </div>
+                                                </div>
+                                                <div class="progress__description">По нашим подсчетам, расчитанный кредит на <span class="progress__percent">75</span><span>%</span> выгоден</div>
+                                            </div>
+                                        </div>
 
 
-				</div>
+                                    </div>
 
-			</div>
-			<!-- / calc popup -->
+                                </div>
+
+                                <div class="c-line"></div>
+                                <div class="c-footer">
+                                    <div class="btn btn-primary submit-button">Подобрать</div>
+                                    <div class="new-calc-btn-close btn">Закрыть</div>
+                                </div>
+
+                            </div>
+                        </form>
+
+
+                    </div>
+
+                </div>
+                <!-- / calc popup -->
 
 		</div>
 	</div>

@@ -263,7 +263,7 @@ if (!$query_items->have_posts()) {
                 <!-- / filter popup -->
 
                 <!-- calc popup -->
-                <div class="new-calc-modal active">
+                <div class="new-calc-modal">
                     <div class="new-calc-content">
                         <div class="new-calc-close">
                             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -276,7 +276,7 @@ if (!$query_items->have_posts()) {
                         <form id="calc-credit-card-filter" action="" method="POST">
                             <input type="hidden" name="action" value="cardfilter" />
                             <input type="hidden" name="term" value="zaimy" />
-                            
+
                             <div class="calc__content" id="calc" data-type="loanCalc">
 
                                 <div class="calc-row mt-5">
@@ -288,15 +288,15 @@ if (!$query_items->have_posts()) {
                                             <div class="calc__field">
                                                 <div class="calc__field-wrap">
                                                     <div class="calc__field-label">Сумма займа</div>
-                                                    <input type="text" class="range__value form-control calc__input " value="10000" min="0" max="10000000" data-field="limit">
-                                                    <input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
+                                                    <input type="text" class="range__value form-control calc__input" value="1000" min="1000" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['max']); ?>" data-field="limit">
+                                                    <input class="range__input calc__input" name="clc_z_sum" type="range" min="1000" max="<?php echo esc_attr($filter_price['zaimy_inputs_range']['max']); ?>" value="<?php echo esc_attr($z_sum); ?>" data-field="limit" style="--range-progress:10%;">
                                                 </div>
                                             </div>
                                             <div class="calc__field d-flex">
                                                 <div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
                                                     <div class="calc__field-label">Срок / дней</div>
-                                                    <input type="text" class="range__value form-control calc__input" value="14" min="1" max="10950" data-field="date">
-                                                    <input class="range__input calc__input" name="range2" type="range" min="1" max="10950" value="14" data-field="date" style="--range-progress:23.0769%;">
+                                                    <input type="text" class="range__value form-control calc__input" value="14" min="1" max="1095" data-field="date">
+                                                    <input class="range__input calc__input" name="calc_z_time" type="range" min="1" max="1095" value="14" data-field="date" style="--range-progress:23.0769%;">
                                                 </div>
                                                 <div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
                                                     <div class="calc__field-label">Ставка</div>

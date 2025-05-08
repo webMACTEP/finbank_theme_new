@@ -232,104 +232,100 @@
                 <!-- / filter popup -->
 
                 <!-- calc popup -->
-                <div class="new-calc-modal">
-                    <div class="new-calc-content">
-                        <div class="new-calc-close">
-                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
+                <form id="calc-credit-card-filter" action="" method="POST">
+                    <input type="hidden" name="action" value="cardfilter" />
+                    <input type="hidden" name="term" value="debetcard" />
 
-                        <h2>Калькулятор кэшбэка</h2>
-                        <!-- Блок калькулятора -->
-                        <div class="calc__content" id="calc" data-type="cashbackCalc">
+                    <div class="new-calc-modal">
+                        <div class="new-calc-content">
+                            <div class="new-calc-close">
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
 
-                            <div class="calc-row mt-5">
+                            <h2>Калькулятор кэшбэка</h2>
+                            <!-- Блок калькулятора -->
+                            <div class="calc__content" id="calc" data-type="cashbackCalc">
 
-                                <div class="c-row">
-                                    <div class="">
-                                        <div class="calc__field">
-                                            <div class="calc__field-wrap">
-                                                <div class="calc__field-label">Вид кэшбэка</div>
-                                                <select name="" id="cashbackTypeSelect" class="styledSelect calc__input" placeholder="" data-field="type">
-                                                    <option value="20000">На всё</option>
-                                                    <option value="5000">АЗС</option>
-                                                    <option value="15000">Кафе и Рестораны</option>
-                                                    <option value="15000">Красота и здоровье</option>
-                                                    <option value="15000">Одежда и обувь</option>
-                                                    <option value="50000">Путешествия</option>
-                                                    <option value="10000">Развлечения</option>
-                                                    <option value="10000">Такси и каршеринг</option>
-                                                    <option value="10000">У партнеров</option>
-                                                </select>
+                                <div class="calc-row mt-5">
+
+                                    <div class="c-row">
+                                        <div class="">
+                                            <div class="calc__field">
+                                                <div class="calc__field-wrap">
+                                                    <div class="calc__field-label">Вид кэшбэка</div>
+                                                    <select name="" id="cashbackTypeSelect" class="styledSelect calc__input" placeholder="" data-field="type">
+                                                        <option value="20000">На всё</option>
+                                                        <option value="5000">АЗС</option>
+                                                        <option value="15000">Кафе и Рестораны</option>
+                                                        <option value="15000">Красота и здоровье</option>
+                                                        <option value="15000">Одежда и обувь</option>
+                                                        <option value="50000">Путешествия</option>
+                                                        <option value="10000">Развлечения</option>
+                                                        <option value="10000">Такси и каршеринг</option>
+                                                        <option value="10000">У партнеров</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="">
+                                            <div class="calc__field">
+                                                <div class="calc__field-wrap">
+                                                    <div class="calc__field-label">Ежемесячные расходы</div>
+                                                    <input type="text" class="range__value form-control calc__input " value="10000" min="0" max="200000" data-field="limit">
+                                                    <input class="range__input calc__input" name="range1" type="range" min="0" max="200000" value="10000" data-field="limit" style="--range-progress:10%;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="calc__field ">
+                                                <div class="calc__field-wrap">
+                                                    <div class="calc__field-label">Размер кэшбэка %</div>
+                                                    <input type="text" class="range__value form-control calc__input " value="1" min="0" max="100" data-field="percent">
+                                                    <input class="range__input calc__input" name="cashback_number" type="range" min="0" max="100" value="1" data-field="percent" style="--range-progress:1%;">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="calc__total">
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">Ежемесячные расходы</div>
+                                                <div class="calc__value">
+                                                    <span id="calc__sum" class="calc__value-text">10 000</span>
+                                                    <span class="calc__value-char">₽</span>
+                                                </div>
+                                            </div>
+                                            <div class="calc__total-field d-flex justify-content-between align-items-center">
+                                                <div class="calc__total-label">Суммарный кэшбэк в рублях</div>
+                                                <div class="calc__total-value">
+                                                    <span id="calc__cashbackSum" class="calc__value-text">70 031</span>
+                                                    <span class="calc__value-char">₽</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
                                     </div>
-                                    <div class="">
 
-                                        <div class="calc__field">
-                                            <div class="calc__field-wrap">
-                                                <div class="calc__field-label">Ежемесячные расходы</div>
-                                                <input type="text" class="range__value form-control calc__input " value="10000" min="0" max="200000" data-field="limit">
-                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="200000" value="10000" data-field="limit" style="--range-progress:10%;">
-                                            </div>
-                                        </div>
+                                </div>
 
-                                       
-
-                                    </div>
-                                    <div class="">
-
-                                       
-
-                                        <div class="calc__field ">
-                                            <div class="calc__field-wrap">
-                                                <div class="calc__field-label">Размер кэшбэка %</div>
-                                                <input type="text" class="range__value form-control calc__input " value="1" min="0" max="100" data-field="percent">
-                                                <input class="range__input calc__input" name="range1" type="range" min="0" max="100" value="1" data-field="percent" style="--range-progress:1%;">
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="calc__total">
-                                        <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                            <div class="calc__total-label">Ежемесячные расходы</div>
-                                            <div class="calc__value">
-                                                <span id="calc__sum" class="calc__value-text">10 000</span>
-                                                <span class="calc__value-char">₽</span>
-                                            </div>
-                                        </div>
-                                        <div class="calc__total-field d-flex justify-content-between align-items-center">
-                                            <div class="calc__total-label">Суммарный кэшбэк в рублях</div>
-                                            <div class="calc__total-value">
-                                                <span id="calc__cashbackSum" class="calc__value-text">70 031</span>
-                                                <span class="calc__value-char">₽</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-
-
+                                <div class="c-line"></div>
+                                <div class="c-footer">
+                                    <div class="btn btn-primary submit-button">Подобрать</div>
+                                    <div class="new-calc-btn-close btn">Закрыть</div>
                                 </div>
 
                             </div>
 
-                            <div class="c-line"></div>
-                            <div class="c-footer">
-                                <div class="btn btn-primary">Подобрать</div>
-                                <div class="new-calc-btn-close btn">Закрыть</div>
-                            </div>
 
                         </div>
-
-
                     </div>
-
-                </div>
+                </form>
                 <!-- / calc popup -->
 
             </div>

@@ -70,6 +70,45 @@ jQuery(function ($) {
     }
   });
 
+  $(document).on("click", ".btn__collmore_cat, .filter-title", function () {
+    // Определяем, с какого элемента клик:
+    const $isTitle = $(this).is(".filter-title");
+    let $btn, $section;
+
+    if ($isTitle) {
+      // если клик — по заголовку, ищем рядом кнопку и секцию
+      $btn = $(this).siblings(".btn__collmore_cat");
+      $section = $(this).siblings(".filter__section");
+    } else {
+      // если клик — по кнопке, как было
+      $btn = $(this);
+      const id = $btn.data("id");
+      $section = $btn.parent().find("#" + id);
+    }
+
+    // Если у этой группы нечего показывать — выходим
+    if (!$btn.length || $btn.data("click") == 0) {
+      return;
+    }
+
+    // Переключаем «открыто/закрыто» на кнопке
+    $btn.toggleClass("btn__collmore_visible");
+
+    // Показываем/скрываем элементы списка
+    $section.find(".coll_li").toggleClass("coll__hidden");
+
+    // Обновляем тексты внутри кнопки
+    const textOpen = $btn.data("text-open");
+    const textHide = $btn.data("text-hide");
+
+    // Сначала сбросим всем на text-open
+    $(".btn__collmore_cat .btn__collmore-text").text(textOpen);
+    // А для открытой кнопки — text-hide
+    $(".btn__collmore_cat.btn__collmore_visible .btn__collmore-text").text(
+      textHide
+    );
+  });
+
   // $('.js-phone').mask("+7(999)999-9999", {autoclear: false});
 
   // добавляем правило для валидации телефона
@@ -334,6 +373,7 @@ jQuery(function ($) {
     initLoadMore(
       ".load_more_btn",
       "#credit-card-filter",
+      //"#calc-credit-card-filter",
       "#credit-card-filter-aside",
       $("main").attr("term") || "creditcard"
     );
@@ -347,103 +387,197 @@ jQuery(function ($) {
     filter_main_start();
   }
 
-  function filter_main_start() {
-    var filter = $("#credit-card-filter");
-    var order = $(".cred-order-select option:selected").val() || "";
+  // function filter_main_start() {
+  //   var filter = $("#credit-card-filter, #calc-credit-card-filter");
+  //   var order = $(".cred-order-select option:selected").val() || "";
 
-    var mydata = filter.serialize();
+  //   var mydata = filter.serialize();
 
-    var checkboxes = $("#credit-card-filter-aside").serialize();
+  //   var checkboxes = $("#credit-card-filter-aside").serialize();
 
-    // ВОТ ТУТ ВОЗМОЖНО ОШИБКА
-    // mydata += "&" + checkboxes;
-    // mydata += "&order=" + encodeURIComponent(order);
+  //   // ВОТ ТУТ ВОЗМОЖНО ОШИБКА
+  //   // mydata += "&" + checkboxes;
+  //   // mydata += "&order=" + encodeURIComponent(order);
 
-    var mydataArray = filter.serializeArray();
-    // var mydataJson = JSON.stringify(mydataArray);
-    // console.log(mydataJson)
+  //   var mydataArray = filter.serializeArray();
+  //   // var mydataJson = JSON.stringify(mydataArray);
+  //   // console.log(mydataJson)
 
-    var mydataValues = {};
-    $.each(mydataArray, function (i, field) {
+  //   var mydataValues = {};
+  //   $.each(mydataArray, function (i, field) {
+  //     if (
+  //       (this.name == "cred_limit" && this.value == 0) ||
+  //       (this.name == "cred_day_period" && this.value == 0) ||
+  //       (this.name == "z_sum" && this.value == 0) ||
+  //       (this.name == "z_time" && this.value == 0) ||
+  //       (this.name == "summ_limit" && this.value == 0) ||
+  //       (this.name == "cred_summ_period" && this.value == 0) ||
+  //       (this.name == "percent_limit" && this.value == 0) ||
+  //       (this.name == "cashback_number" && this.value == 0)
+  //     ) {
+  //       mydataValues[this.name] = "";
+  //     } else {
+  //       mydataValues[this.name] = this.value;
+  //     }
+  //   });
+  //   if (mydataValues["cred_limit"] == 0) {
+  //     $(".cred_limit").val("Любой");
+  //   }
+  //   if (mydataValues["cred_day_period"] == 0) {
+  //     $(".cred_trat").val("Любой");
+  //   }
+  //   if (mydataValues["z_sum"] == 0) {
+  //     $(".cred_limit").val("Любой");
+  //   }
+  //   if (mydataValues["z_time"] == 0) {
+  //     $(".cred_trat").val("Любой");
+  //   }
+  //   if (mydataValues["summ_limit"] == 0) {
+  //     $(".cred_limit").val("Любой");
+  //   }
+  //   if (mydataValues["cred_summ_period"] == 0) {
+  //     $(".cred_trat").val("Любой");
+  //   }
+  //   if (mydataValues["percent_limit"] == 0) {
+  //     $(".cred_limit").val("Любой");
+  //   }
+  //   if (mydataValues["cashback_number"] == 0) {
+  //     $(".cred_trat").val("Любой");
+  //   }
+
+  //   var mydata = $.param(mydataValues);
+  //   if (checkboxes) {
+  //     mydata += "&" + checkboxes;
+  //   }
+
+  //   if ($(".use_new_template_v1").length) {
+  //     var view_type = window.localStorage.getItem("view_type");
+  //     if (!view_type) {
+  //       view_type = "card_list";
+  //     }
+
+  //     mydata += "&view_template=1&view_type=" + view_type;
+  //   }
+
+  //   mydata += "&order=" + encodeURIComponent(order);
+
+  //   //console.log('mydata2= ' + mydata);
+  //   $.ajax({
+  //     url: card_loadmore_params.ajaxurl, // обработчик
+  //     data: mydata, // данные
+  //     dataType: "json",
+  //     type: "POST", // тип запроса
+  //     beforeSend: function (xhr) {
+  //       filter.find(".submit-button").text("Загрузка..."); // изменяем текст кнопки
+  //     },
+  //     success: function (data) {
+  //       filter.find(".submit-button").text("Показать"); // возвращаеи текст кнопки
+  //       $("#response-cred-card.list_posts").html(data.content);
+  //       $(".pagination__description .count_all").html(data.found_posts);
+  //       $(".variants_count").html(data.found_posts);
+  //       $(".pagination__description .count_view").html(
+  //         $(".query__card").length
+  //       );
+  //       card_loadmore_params.current_page = 1;
+
+  //       // set the new query parameters
+  //       card_loadmore_params.posts = data.posts;
+
+  //       // set the new max page parameter
+  //       card_loadmore_params.max_page = data.max_page;
+  //       if (data.max_page < 2) {
+  //         $(".load_more_btn").hide();
+  //       } else {
+  //         $(".load_more_btn").show();
+  //       }
+  //       $(".btn__compare").append(
+  //         '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
+  //       );
+  //     },
+  //   });
+
+  //   yandex_metrika_filter_click();
+
+  //   // $('.pagination__container div').hide();
+
+  //   return false;
+  // }
+
+  // Общая функция фильтра/калькулятора
+  // Общая функция фильтра/калькулятора
+
+  // Общая функция фильтра/калькулятора
+
+  function filter_main_start(formSelector) {
+    const $form = $(formSelector);
+    const order = $form.find(".cred-order-select option:selected").val() || "";
+    const checkboxes = $("#credit-card-filter-aside").serialize();
+
+    // Сериализуем все поля формы
+    const arr = $form.serializeArray();
+    const data = {};
+
+    arr.forEach((field) => {
+      let name = field.name;
+      const val = field.value;
+
+      // Переименовываем поля из калькулятора
+      if (name === "clc_z_sum") name = "z_sum";
+      if (name === "calc_z_time" || name === "range2") name = "z_time";
+      if (name === "calc_cred_limit" || name === "range1") name = "cred_limit";
+
+      // Обнуляем нулевые числовые поля
       if (
-        (this.name == "cred_limit" && this.value == 0) ||
-        (this.name == "cred_day_period" && this.value == 0) ||
-        (this.name == "z_sum" && this.value == 0) ||
-        (this.name == "z_time" && this.value == 0) ||
-        (this.name == "summ_limit" && this.value == 0) ||
-        (this.name == "cred_summ_period" && this.value == 0) ||
-        (this.name == "percent_limit" && this.value == 0) ||
-        (this.name == "cashback_number" && this.value == 0)
+        [
+          "z_sum",
+          "z_time",
+          "cred_limit",
+          "summ_limit",
+          "cred_day_period",
+          "cred_summ_period",
+          "percent_limit",
+          "cashback_number",
+        ].includes(name) &&
+        Number(val) === 0
       ) {
-        mydataValues[this.name] = "";
+        data[name] = "";
       } else {
-        mydataValues[this.name] = this.value;
+        data[name] = val;
       }
     });
-    if (mydataValues["cred_limit"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["cred_day_period"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-    if (mydataValues["z_sum"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["z_time"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-    if (mydataValues["summ_limit"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["cred_summ_period"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
-    if (mydataValues["percent_limit"] == 0) {
-      $(".cred_limit").val("Любой");
-    }
-    if (mydataValues["cashback_number"] == 0) {
-      $(".cred_trat").val("Любой");
-    }
 
-    var mydata = $.param(mydataValues);
-    if (checkboxes) {
-      mydata += "&" + checkboxes;
-    }
+    // Финальный параметр order
+    data["order"] = order;
 
+    // Собираем строку GET-параметров
+    let params = $.param(data);
+    if (checkboxes) params += "&" + checkboxes;
+
+    // Если используется новая версия шаблона
     if ($(".use_new_template_v1").length) {
-      var view_type = window.localStorage.getItem("view_type");
-      if (!view_type) {
-        view_type = "card_list";
-      }
-
-      mydata += "&view_template=1&view_type=" + view_type;
+      const vt = window.localStorage.getItem("view_type") || "card_list";
+      params += "&view_template=1&view_type=" + vt;
     }
 
-    mydata += "&order=" + encodeURIComponent(order);
-
-    //console.log('mydata2= ' + mydata);
+    // AJAX-запрос
     $.ajax({
-      url: card_loadmore_params.ajaxurl, // обработчик
-      data: mydata, // данные
+      url: card_loadmore_params.ajaxurl,
+      type: "POST",
       dataType: "json",
-      type: "POST", // тип запроса
-      beforeSend: function (xhr) {
-        filter.find(".submit-button").text("Загрузка..."); // изменяем текст кнопки
+      data: params,
+      beforeSend() {
+        $form.find(".submit-button").text("Загрузка...");
       },
-      success: function (data) {
-        filter.find(".submit-button").text("Показать"); // возвращаеи текст кнопки
+      success(data) {
+        $form.find(".submit-button").text("Показать");
         $("#response-cred-card.list_posts").html(data.content);
-        $(".pagination__description .count_all").html(data.found_posts);
-        $(".variants_count").html(data.found_posts);
-        $(".pagination__description .count_view").html(
+        $(".pagination__description .count_all").text(data.found_posts);
+        $(".variants_count").text(data.found_posts);
+        $(".pagination__description .count_view").text(
           $(".query__card").length
         );
         card_loadmore_params.current_page = 1;
-
-        // set the new query parameters
         card_loadmore_params.posts = data.posts;
-
-        // set the new max page parameter
         card_loadmore_params.max_page = data.max_page;
         if (data.max_page < 2) {
           $(".load_more_btn").hide();
@@ -451,17 +585,42 @@ jQuery(function ($) {
           $(".load_more_btn").show();
         }
         $(".btn__compare").append(
-          '<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>'
+          '<span class="tool-add">Добавить в сравнение</span>' +
+            '<span class="tool-remove">Удалить из сравнения</span>'
         );
       },
     });
 
+    // Событие метрики
     yandex_metrika_filter_click();
-
-    // $('.pagination__container div').hide();
-
     return false;
   }
+
+  // Привязки кнопок
+  $("#credit-card-filter .submit-button").on("click", function () {
+    return filter_main_start("#credit-card-filter");
+  });
+  $("#calc-credit-card-filter .submit-button").on("click", function () {
+    return filter_main_start("#calc-credit-card-filter");
+  });
+
+  // Привязки кнопок
+  $("#credit-card-filter .submit-button").on("click", function () {
+    return filter_main_start("#credit-card-filter");
+  });
+  $("#calc-credit-card-filter .submit-button").on("click", function () {
+    return filter_main_start("#calc-credit-card-filter");
+  });
+
+  // Привязываем кнопку фильтра
+  $("#credit-card-filter .submit-button").on("click", function () {
+    return filter_main_start("#credit-card-filter");
+  });
+
+  // Привязываем кнопку калькулятора
+  $("#calc-credit-card-filter .submit-button").on("click", function () {
+    return filter_main_start("#calc-credit-card-filter");
+  });
 
   function yandex_metrika_filter_click() {
     ym(35020350, "reachGoal", "click_pokazat_filtr");
@@ -469,7 +628,7 @@ jQuery(function ($) {
   }
 
   $(
-    "#credit-card-filter .submit-button, #credit-card-filter-aside .submit-button"
+    "#credit-card-filter .submit-button, #credit-card-filter-aside .submit-button, #calc-credit-card-filter .submit-button"
   ).click(function () {
     filter_main_start();
   });

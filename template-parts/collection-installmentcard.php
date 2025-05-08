@@ -261,147 +261,154 @@ $type_collection = 'installmentcard';
 			<!-- / filter popup -->
 
 			<!-- calc popup -->
-			<div class="new-calc-modal">
-				<div class="new-calc-content">
-					<div class="new-calc-close">
-						<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-						</svg>
-					</div>
+			<form id="calc-credit-card-filter" action="" method="POST">
+				<input type="hidden" name="action" value="cardfilter" />
+				<input type="hidden" name="term" value="installmentcard" />
+				<?php if (!empty($sessfiltercard)): ?>
+					<input type="hidden" name="sessfiltercard" value="<?= $sessfiltercard; ?>" />
+				<?php endif; ?>
+				<div class="new-calc-modal">
+					<div class="new-calc-content">
+						<div class="new-calc-close">
+							<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+							</svg>
+						</div>
 
-					<h2>Кредитный калькулятор</h2>
-					<!-- Блок калькулятора -->
-					<div class="calc__content" id="calc" data-type="creditCalc">
+						<h2>Кредитный калькулятор</h2>
+						<!-- Блок калькулятора -->
+						<div class="calc__content" id="calc" data-type="creditCalc">
 
-						<div class="calc-row">
-							<div class="row">
-								<div class="calc__content-buttons d-flex">
-									<label class="btn__radio">
-										<input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
-										<span class="btn__radio-text">Аннуентный</span>
-									</label>
-									<label class="btn__radio">
-										<input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
-										<span class="btn__radio-text">Дифференцированный</span>
-									</label>
+							<div class="calc-row">
+								<div class="row">
+									<div class="calc__content-buttons d-flex">
+										<label class="btn__radio">
+											<input class="calc__input" type="radio" name="caclType" data-field="type" value="1" checked="">
+											<span class="btn__radio-text">Аннуентный</span>
+										</label>
+										<label class="btn__radio">
+											<input class="calc__input" type="radio" name="caclType" data-field="type" value="2">
+											<span class="btn__radio-text">Дифференцированный</span>
+										</label>
+									</div>
 								</div>
+
+								<div class="c-row">
+									<div class="c-col-1">
+
+										<div class="calc__field">
+											<div class="calc__field-wrap">
+												<div class="calc__field-label">Кредитный лимит</div>
+												<input type="text" class="range__value form-control calc__input" value="1000" min="0" max="2000000" data-field="limit">
+												<input class="range__input calc__input" name="range1" type="range" min="0" max="2000000" value="1000" data-field="limit" style="--range-progress:10%;">
+											</div>
+										</div>
+										<div class="calc__field d-flex">
+											<div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
+												<div class="calc__field-label">Срок / месяц</div>
+												<input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
+												<input class="range__input calc__input" name="range2" type="range" min="1" max="40" value="10" data-field="date" style="--range-progress:25%;">
+											</div>
+											<div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
+												<div class="calc__field-label">Ставка</div>
+												<input type="text" class="range__value form-control calc__input" value="15%" maxlength="6" data-field="percent" pattern="[0-9]*">
+											</div>
+										</div>
+									</div>
+									<div class="c-col-2">
+										<div class="calc-result-wrapp">
+
+											<div class="calc__total">
+												<div class="calc__total-field d-flex justify-content-between align-items-center">
+													<div class="calc__total-label">Сумма займа</div>
+													<div class="calc__value">
+														<span id="calc__sum" class="calc__value-text">8 000 000</span>
+														<span class="calc__value-char">₽</span>
+													</div>
+												</div>
+												<div class="calc__total-field d-flex justify-content-between align-items-center">
+													<div class="calc__total-label">Переплата</div>
+													<div class="calc__total-value">
+														<span id="calc__overpay" class="calc__value-text">1 000 000</span>
+														<span class="calc__value-char">₽</span>
+													</div>
+												</div>
+												<div class="calc__total-field d-flex justify-content-between align-items-center">
+													<div class="calc__total-label">К возврату</div>
+													<div class="calc__total-value">
+														<span id="calc__total" class="calc__value-text">9 000 000</span>
+														<span class="calc__value-char">₽</span>
+													</div>
+												</div>
+
+
+												<div class="calc__total-field d-flex justify-content-between align-items-center">
+													<div class="calc__total-label">Окончание кредита</div>
+													<div class="calc__total-value">
+														<span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
+													</div>
+												</div>
+												<div class="calc__total-field d-flex justify-content-between align-items-center">
+													<div class="calc__total-label">Платежи в месяц</div>
+													<div class="calc__total-value">
+														<span id="calc__payments" class="calc__value-text">500 000</span>
+														<span class="calc__value-char">₽</span>
+													</div>
+												</div>
+
+
+											</div>
+										</div>
+									</div>
+									<div id="calc__progress" class="c-col-3 progress">
+
+
+										<!-- <div class="progress__circle" style="--graph-danger: 5%;">
+                                            <div class="progress__text">
+                                                <span class="progress__percent">75</span>%
+                                            </div>
+                                        </div> -->
+
+
+
+										<div class="benefit">
+											<div class="b-lines">
+												<div class="b-line active"></div>
+												<div class="b-line active"></div>
+												<div class="b-line active"></div>
+												<div class="b-line active"></div>
+												<div class="b-line active"></div>
+												<div class="b-line active"></div>
+												<div class="b-line active"></div>
+												<div class="b-line"></div>
+												<div class="b-line"></div>
+												<div class="b-line"></div>
+											</div>
+											<p class="progress__description">
+												По нашим подсчетам, рассчитанный
+												кредит <span>на</span> <span class="progress__percent">80</span> <span>% выгоден</span>
+											</p>
+										</div>
+									</div>
+
+
+								</div>
+
 							</div>
 
-							<div class="c-row">
-								<div class="c-col-1">
-
-									<div class="calc__field">
-										<div class="calc__field-wrap">
-											<div class="calc__field-label">Кредитный лимит</div>
-											<input type="text" class="range__value form-control calc__input" value="1000000" min="0" max="10000000" data-field="limit">
-											<input class="range__input calc__input" name="range1" type="range" min="0" max="10000000" value="1000000" data-field="limit" style="--range-progress:10%;">
-										</div>
-									</div>
-									<div class="calc__field d-flex">
-										<div class="calc__field-wrap mt-3 mt-md-4 flex-grow-1">
-											<div class="calc__field-label">Срок / месяц</div>
-											<input type="text" class="range__value form-control calc__input" value="10" min="1" max="40" data-field="date">
-											<input class="range__input calc__input" name="range2" type="range" min="1" max="40" value="10" data-field="date" style="--range-progress:25%;">
-										</div>
-										<div class="calc__field-wrap calc__field-min mt-3 mt-md-4 ml-3">
-											<div class="calc__field-label">Ставка</div>
-											<input type="text" class="range__value form-control calc__input" value="15%" maxlength="6" data-field="percent" pattern="[0-9]*">
-										</div>
-									</div>
-								</div>
-								<div class="c-col-2">
-									<div class="calc-result-wrapp">
-
-										<div class="calc__total">
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Сумма займа</div>
-												<div class="calc__value">
-													<span id="calc__sum" class="calc__value-text">8 000 000</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Переплата</div>
-												<div class="calc__total-value">
-													<span id="calc__overpay" class="calc__value-text">1 000 000</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">К возврату</div>
-												<div class="calc__total-value">
-													<span id="calc__total" class="calc__value-text">9 000 000</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-
-
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Окончание кредита</div>
-												<div class="calc__total-value">
-													<span id="calc__dateEnd" class="calc__value-text">15.05.2022</span>
-												</div>
-											</div>
-											<div class="calc__total-field d-flex justify-content-between align-items-center">
-												<div class="calc__total-label">Платежи в месяц</div>
-												<div class="calc__total-value">
-													<span id="calc__payments" class="calc__value-text">500 000</span>
-													<span class="calc__value-char">₽</span>
-												</div>
-											</div>
-
-
-										</div>
-									</div>
-								</div>
-								<div id="calc__progress" class="c-col-3 progress">
-
-
-									<!-- <div class="progress__circle" style="--graph-danger: 5%;">
-							<div class="progress__text">
-								<span class="progress__percent">75</span>%
-							</div>
-						</div> -->
-
-
-
-									<div class="benefit">
-										<div class="b-lines">
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line active"></div>
-											<div class="b-line"></div>
-											<div class="b-line"></div>
-											<div class="b-line"></div>
-										</div>
-										<p class="progress__description">
-											По нашим подсчетам, рассчитанный
-											кредит <span>на</span> <span class="progress__percent">80</span> <span>% выгоден</span>
-										</p>
-									</div>
-								</div>
-
-
+							<div class="c-line"></div>
+							<div class="c-footer">
+								<div class="btn btn-primary submit-button">Подобрать</div>
+								<div class="new-calc-btn-close btn">Закрыть</div>
 							</div>
 
 						</div>
 
-						<div class="c-line"></div>
-						<div class="c-footer">
-							<div class="btn btn-primary">Подобрать</div>
-							<div class="new-calc-btn-close btn">Закрыть</div>
-						</div>
 
 					</div>
-
 
 				</div>
-
-			</div>
+			</form>
 			<!-- / calc popup -->
 
 		</div>

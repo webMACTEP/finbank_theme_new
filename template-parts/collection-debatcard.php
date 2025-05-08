@@ -263,106 +263,128 @@ $type_collection = 'debetcard';
 			</div>
 			<!-- / filter popup -->
 
-			<!-- calc popup -->
-			<div class="new-calc-modal">
-				<div class="new-calc-content">
-					<div class="new-calc-close">
+			<!-- filter popup -->
+			<div class="new-filter-modal">
+				<div class="new-filter-modal-content">
+					<div class="new-filter-modal-close">
 						<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M9 1L1 9M1 1L9 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
 						</svg>
 					</div>
-
-					<h2>Калькулятор кэшбэка</h2>
-					<!-- Блок калькулятора -->
-					<div class="calc__content" id="calc" data-type="cashbackCalc">
-
-						<div class="calc-row mt-5">
-
-							<div class="c-row">
-								<div class="">
-									<div class="calc__field">
-										<div class="calc__field-wrap">
-											<div class="calc__field-label">Вид кэшбэка</div>
-											<select name="" id="cashbackTypeSelect" class="styledSelect calc__input" placeholder="" data-field="type">
-												<option value="20000">На всё</option>
-												<option value="5000">АЗС</option>
-												<option value="15000">Кафе и Рестораны</option>
-												<option value="15000">Красота и здоровье</option>
-												<option value="15000">Одежда и обувь</option>
-												<option value="50000">Путешествия</option>
-												<option value="10000">Развлечения</option>
-												<option value="10000">Такси и каршеринг</option>
-												<option value="10000">У партнеров</option>
-											</select>
-										</div>
+					<form id="credit-card-filter" action="" method="POST">
+						<input type="hidden" name="action" value="cardfilter" />
+						<input type="hidden" name="term" value="debetcard" />
+						<h2>Все фильтры</h2>
+						<div class="row">
+							<div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
+								<div class="range">
+									<div class="d-flex justify-content-between">
+										<div class="range__label">Снятие без %, ₽</div>
+										<input max="<?= $filter_price['debet_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" value="<?php echo $percent_limit ?>" min="0">
 									</div>
+									<input max="<?= $filter_price['debet_inputs_range']['max']; ?>" class="range__input" name="percent_limit" type="range" min="0" value="<?php echo $percent_limit ?>">
 								</div>
-								<div class="">
-
-									<div class="calc__field">
-										<div class="calc__field-wrap">
-											<div class="calc__field-label">Ежемесячные расходы</div>
-											<input type="text" class="range__value form-control calc__input " value="10000" min="0" max="200000" data-field="limit">
-											<input class="range__input calc__input" name="range1" type="range" min="0" max="200000" value="10000" data-field="limit" style="--range-progress:10%;">
-										</div>
+							</div>
+							<div class="col-12 col-md-6 col-lg-6 col-xl-6 order-2 ortamrg">
+								<div class="range">
+									<div class="d-flex justify-content-between">
+										<div class="range__label">Кэшбек, %</div>
+										<input max="<?= $filter_price['debet_inputs_range']['day_max']; ?>" type="text" class="range__value cred_trat" value="<?php echo $cashback_number ?>" min="0">
 									</div>
-
-
-
+									<input max="<?= $filter_price['debet_inputs_range']['day_max']; ?>" class="range__input" name="cashback_number" type="range" min="0" value="<?php echo $cashback_number ?>">
 								</div>
-								<div class="">
-
-
-
-									<div class="calc__field ">
-										<div class="calc__field-wrap">
-											<div class="calc__field-label">Размер кэшбэка %</div>
-											<input type="text" class="range__value form-control calc__input " value="1" min="0" max="100" data-field="percent">
-											<input class="range__input calc__input" name="range1" type="range" min="0" max="100" value="1" data-field="percent" style="--range-progress:1%;">
-										</div>
-									</div>
-
-								</div>
-
-								<div class="calc__total">
-									<div class="calc__total-field d-flex justify-content-between align-items-center">
-										<div class="calc__total-label">Ежемесячные расходы</div>
-										<div class="calc__value">
-											<span id="calc__sum" class="calc__value-text">10 000</span>
-											<span class="calc__value-char">₽</span>
-										</div>
-									</div>
-									<div class="calc__total-field d-flex justify-content-between align-items-center">
-										<div class="calc__total-label">Суммарный кэшбэк в рублях</div>
-										<div class="calc__total-value">
-											<span id="calc__cashbackSum" class="calc__value-text">70 031</span>
-											<span class="calc__value-char">₽</span>
-										</div>
-									</div>
-								</div>
-
-
-
-
-
-
 							</div>
 
+
+							<div id="filter__details" class="col-12 show mt-md-4 order-4 order-md-4">
+								<div class="row pb-3 pb-md-0">
+									<div class="col-12 col-md-4 banks_select">
+										<label class="form-label" for="bankSelect">Банки</label>
+										<select name="bank" id="bankSelect" class="styledSelect" placeholder="">
+											<option value="">Любой</option>
+											<?php
+											$args = array(
+												'posts_per_page' => -1,
+												'post_type' => 'banks',
+												'orderby' => 'name',
+												'order' => 'DESC',
+											);
+
+											$wp_query = new WP_Query($args);
+
+											// Цикл
+											if ($wp_query->have_posts()) {
+												$counter = 0;
+												while ($wp_query->have_posts()) {
+													$wp_query->the_post();
+													$counter += 1;
+											?>
+													<option value="<?php echo get_the_id() ?>"><?php echo the_title() ?></option>
+											<?php
+												}
+											} ?>
+											<?php wp_reset_query() ?>
+										</select>
+									</div>
+									<div class="col-12 col-md-4 card_cat_select">
+										<label class="form-label" for="bankTop">Категория карты</label>
+										<select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
+											<option value="">Все</option>
+											<?php
+											$field = get_field_object('card_category', 167);
+											//$value = $field['value'];
+											//$label = $field['choices'][ $value ];
+											if (!empty($field['choices'])): ?>
+												<?php foreach ($field['choices'] as $value => $label): ?>
+													<option value="<?php echo $value ?>"><?php echo $label ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+
+										</select>
+									</div>
+									<div class="col-12 col-md-4 grace_period_select">
+										<label class="form-label" for="gracePeriod">Кэшбек</label>
+										<select name="cashback" id="gracePeriod" class="styledSelect" placeholder="">
+											<option value="">Любой</option>
+											<?php
+											$field = get_field_object('card_cashback', 167);
+											//$value = $field['value'];
+											//$label = $field['choices'][ $value ];
+											if (!empty($field['choices'])): ?>
+												<?php foreach ($field['choices'] as $value => $label): ?>
+													<option value="<?php echo $value ?>"><?php echo $label ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+								</div>
+								<div class="row pb-3 pb-md-0 mt-3">
+									<div class="col-12 col-md-4 ps_select">
+										<label class="form-label" for="ppss">Платежная система</label>
+										<select name="ps" id="ppss" class="styledSelect" placeholder="">
+											<option value="">Любой</option>
+											<option value="ps1">VISA</option>
+											<option value="ps2">MasterCard</option>
+											<option value="ps3">МИР</option>
+											<option value="ps4">UnionPay</option>
+											<option value="ps5">JCB</option>
+
+
+										</select>
+									</div>
+
+
+								</div>
+							</div>
+
+							<div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
+								<div class="btn btn-primary btn-block submit-button">Показать</div>
+							</div>
 						</div>
-
-						<div class="c-line"></div>
-						<div class="c-footer">
-							<div class="btn btn-primary">Подобрать</div>
-							<div class="new-calc-btn-close btn">Закрыть</div>
-						</div>
-
-					</div>
-
-
+					</form>
 				</div>
-
 			</div>
-			<!-- / calc popup -->
+			<!-- / filter popup -->
 
 		</div>
 	</div>
