@@ -1430,7 +1430,7 @@
     }
 }
 .newlisting {
-    #news .card__author{
+    #news .card__author {
         display: none !important;
     }
     .reviews__item-body {
@@ -2246,7 +2246,9 @@
         justify-content: center;
         cursor: pointer;
     }
-
+    .choices__item--disabled {
+        display: none;
+    }
     .new-calc-content,
     .new-filter-modal-content {
         padding: 2rem;
@@ -2262,8 +2264,8 @@
     .new-filter-modal-show {
         margin-left: auto;
     }
-    .new-calc-modal{
-        .progress__description{
+    .new-calc-modal {
+        .progress__description {
             font-size: 14px;
         }
     }
@@ -2573,11 +2575,11 @@
     }
 }
 @media (max-width: 768px) {
-    .newlisting .tabs-and-btns .tabs .tab-content{
+    .newlisting .tabs-and-btns .tabs .tab-content {
         overflow-x: hidden;
     }
     .newlisting .list_posts .rait-cards,
-    .newlisting .list_posts.cards .rait-cards{
+    .newlisting .list_posts.cards .rait-cards {
         margin: 0px 0px 0px 0px;
     }
     .newlisting .popular-products {

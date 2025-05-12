@@ -7411,6 +7411,9 @@ a.cld-like-dislike-trigger {
   justify-content: center;
   cursor: pointer;
 }
+.newlisting .choices__item--disabled {
+  display: none;
+}
 .newlisting .new-calc-content,
 .newlisting .new-filter-modal-content {
   padding: 2rem;

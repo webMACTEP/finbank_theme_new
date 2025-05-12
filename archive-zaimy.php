@@ -500,7 +500,7 @@ if (!$query_items->have_posts()) {
 
                                     <div class="credits__list-dropdown dropdown px-0">
                                         <select name="order" class="styledSelect cred-order-select">
-                                            <option value="" selected hidden>Сортировать</option>
+                                            <option value="" selected disabled>Сортировать</option>
                                             <option value="">Сбросить сортировку</option>
                                             <option value="ratings_average">По рейтингу</option>
                                             <option value="views">По количеству заявок</option>
