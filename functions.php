@@ -939,6 +939,8 @@ function fix_svg_mime_type($data, $file, $filename, $mimes, $real_mime = '')
 
 function my_pagination($total = '', $currentPage = '')
 {
+
+
 	global $wp_query;
 
 	// Определение текущей страницы
@@ -1477,6 +1479,7 @@ function card_filter_function()
 	if ($term === 'zaimy') {
 		$args = [
 			'post_type' => 'zaimy',
+			'post_parent'    => 0,
 			'post_status' => 'publish',
 			'posts_per_page' => $ppp,
 			'paged'          => $paged,
@@ -2306,9 +2309,7 @@ function myown_comment($comment, $args, $depth)
 
 			<?php if ($type) { ?>
 
-				<div class="section__header d-flex justify-content-between align-items-center mb-4">
-					<h2 class="title mb-0">Сравнение условий ТОП предложений месяца</h2>
-				</div>
+
 
 			<?php } ?>
 
@@ -2636,17 +2637,24 @@ function myown_comment($comment, $args, $depth)
 
 		$type = $type_collection; ?>
 
-			<div class="code3wrapper" id="table_collection">
+			<?php if ($type) { ?>
+
+
+
+			<?php } ?>
+
+
+
+			<div class="code3wrapper  new_table_collection_func" id="table_collection">
 
 				<?php if ($type == 'kredity') { ?>
-					<div class="code3"><span class="frecom">Финабанк рекомендует!</span>
+					<div class="code3">
+						<!--     <span class="frecom">Финабанк рекомендует!</span>-->
 						<div class="code3head">
-							<div class="w30">Предложение</div>
-							<div class="text-center">Мин. сумма</div>
-							<div class="text-center">Макс. сумма</div>
-							<div class="text-center">Ставка</div>
+							<div class="w30">Кредит/ Банк</div>
+							<div class="text-center">Сумма</div>
 							<div class="text-center">Срок</div>
-							<div class="text-center">Рейтинг</div>
+							<div class="text-center">ПСК</div>
 						</div>
 						<?php
 						$query = new WP_Query(
@@ -2670,40 +2678,31 @@ function myown_comment($comment, $args, $depth)
 						while ($query->have_posts()) {
 							$query->the_post(); ?>
 							<div class="code3text">
-								<div class="w30 strong td2"><a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
-										<img src="<?= get_field('bank_logo', get_field('product_bank', get_the_ID())) ?>" alt="<?php the_title(); ?>">
+								<div class="w30 strong td2">
+									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
+										<img src="<?php echo get_field('bank_logo', get_field('product_bank', get_the_ID())); ?>" alt="<?php the_title(); ?>">
 										<?php the_title(); ?>
-									</a></div>
-								<div class="td text-center">
-									<div class="hidden-lg">Мин. сумма</div>
-									<div class="td-val"><?= number_format(get_field('credit_min_sum'), 0, '.', ' '); ?> ₽</div>
+									</a>
 								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Макс. сумма</div>
-									<div class="td-val"><?= number_format(get_field('credit_max_sum'), 0, '.', ' '); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Ставка</div>
-									<div class="td-val">От <?php echo the_field('credit_stavka') ?>%</div>
+								<div class="w30 td text-center">
+									<div class="hidden-lg">Сумма</div>
+									<div class="td-val"><?php echo number_format(get_field('credit_min_sum'), 0, '.', ' '); ?> - <?php echo number_format(get_field('credit_max_sum'), 0, '.', ' '); ?> ₽</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Срок</div>
 									<div class="td-val">до <?php $field = get_field('credit_period');
-															//$value = $field['value'];
-															//$label = $field['choices'][ $value ];
-															echo $field['label'] ?></div>
+															echo $field['label']; ?></div>
 								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Рейтинг</div>
-									<div class="rate3 td-val text-center">
-										<div>
-											<svg style="margin-right:5px;fill:var(--warning)" width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
-											</svg>
-										</div>
-										<div><?= get_field('ratings_average'); ?></div>
+
+								<?php if (get_field('opisanie_psk_1')): ?>
+
+									<div class="w30 td text-center">
+										<div class="hidden-lg">ПСК</div>
+										<div class="td-val"><?php echo get_field('opisanie_psk_1'); ?>% - <?php echo get_field('opisanie_psk_2'); ?>%</div>
 									</div>
-								</div>
+
+								<?php endif; ?>
+
 							</div>
 						<?php } ?>
 					</div>
@@ -2741,30 +2740,31 @@ function myown_comment($comment, $args, $depth)
 						$counter_prod = 1;
 						while ($query->have_posts()) {
 							$query->the_post(); ?>
-							<div class="code3text <?php if ($counter_prod > 10): echo 'div__hidden';
-													endif; ?>">
+							<div class="code3text <?php if ($counter_prod > 10) {
+														echo 'div__hidden';
+													} ?>">
 								<div class="w30 strong td2">
 									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_shortcode_sheet'); return true;">
-										<img src="<?= get_field('z_organization_logo') ?>" alt="<?php the_title(); ?>">
+										<img src="<?php echo get_field('z_organization_logo'); ?>" alt="<?php the_title(); ?>">
 										<?php the_title(); ?>
 
 									</a>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Сумма</div>
-									<div class="td-val"><?= number_format(get_field('z_sum'), 0, '.', ' '); ?> ₽</div>
+									<div class="td-val"><?php echo number_format(get_field('z_sum'), 0, '.', ' '); ?> ₽</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Кредитная история</div>
-									<div class="td-val"><?= get_field('z_history') ?></div>
+									<div class="td-val"><?php echo get_field('z_history'); ?></div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">% ставка</div>
-									<div class="td-val srok1">От <?= get_field('z_stavka') ?>%</div>
+									<div class="td-val srok1">От <?php echo get_field('z_stavka'); ?>%</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Срок</div>
-									<div class="td-val">до <?= get_field('z_time'); ?> дней</div>
+									<div class="td-val">до <?php echo get_field('z_time'); ?> дней</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Рейтинг</div>
@@ -2774,7 +2774,7 @@ function myown_comment($comment, $args, $depth)
 												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
 											</svg>
 										</div>
-										<div><?= get_field('ratings_average'); ?></div>
+										<div><?php echo get_field('ratings_average'); ?></div>
 									</div>
 								</div>
 							</div>
@@ -2785,7 +2785,7 @@ function myown_comment($comment, $args, $depth)
 							<span class="btn__details-text">Показать еще</span>
 						</button>
 					</div>
-				<?php }	?>
+				<?php } ?>
 
 				<?php if ($type == 'creditcard' || $type == 'installmentcard') { ?>
 					<div class="code3"><span class="frecom">Финабанк рекомендует!</span>
@@ -2820,33 +2820,38 @@ function myown_comment($comment, $args, $depth)
 						while ($query->have_posts()) {
 							$query->the_post(); ?>
 							<div class="code3text">
-								<div class="w30 strong td2"><a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
-										<img src="<?= get_field('bank_logo', get_field('bank_choise', get_the_ID())) ?>" alt="<?php the_title(); ?>">
+								<div class="w30 strong td2">
+									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
+										<img src="<?php echo get_field('bank_logo', get_field('bank_choise', get_the_ID())); ?>" alt="<?php the_title(); ?>">
 										<?php the_title(); ?>
-									</a></div>
+									</a>
+								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Кредитный лимит</div>
-									<div class="td-val"><?= number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
+									<div class="td-val"><?php echo number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Льготный период</div>
-									<div class="td-val"><?php $field = get_field('card_period');
-														$value = $field['value'];
-														$label = $field['choices'][$value];
-														echo $field['label'] ?></div>
+									<div class="td-val">
+										<?php
+										$field = get_field('card_period');
+										$value = $field['value'];
+										$label = $field['choices'][$value];
+										echo $label;
+										?>
+									</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">% ставка</div>
-									<div class="td-val srok1">От <?php echo the_field('card_stavka') ?>%</div>
+									<div class="td-val srok1">От <?php echo get_field('card_stavka'); ?>%</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Кэшбек</div>
-									<div class="td-val srok1"><?php $card_cashback = get_field('card_cashback');
-																echo $card_cashback; ?></div>
+									<div class="td-val srok1"><?php echo get_field('card_cashback'); ?></div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Стоимость</div>
-									<div class="td-val srok1">От <?php echo the_field('card_cost') ?> ₽</div>
+									<div class="td-val srok1">От <?php echo get_field('card_cost'); ?> ₽</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Рейтинг</div>
@@ -2856,11 +2861,11 @@ function myown_comment($comment, $args, $depth)
 												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
 											</svg>
 										</div>
-										<div><?= get_field('ratings_average'); ?></div>
+										<div><?php echo get_field('ratings_average'); ?></div>
 									</div>
 								</div>
 							</div>
-						<?php }	?>
+						<?php } ?>
 					</div>
 				<?php } ?>
 
@@ -2899,31 +2904,37 @@ function myown_comment($comment, $args, $depth)
 						while ($query->have_posts()) {
 							$query->the_post(); ?>
 							<div class="code3text">
-								<div class="w30 strong td2"><a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
-										<img src="<?= get_field('bank_logo', get_field('bank_choise', get_the_ID())) ?>" alt="<?php the_title(); ?>">
+								<div class="w30 strong td2">
+									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
+										<img src="<?php echo get_field('bank_logo', get_field('bank_choise', get_the_ID())); ?>" alt="<?php the_title(); ?>">
 										<?php the_title(); ?>
-									</a></div>
+									</a>
+								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Кэшбек</div>
-									<div class="td-val"><?php $field = get_field('card_cashback');
-														$value = $field['value'];
-														echo $field['label'] ?></div>
+									<div class="td-val">
+										<?php
+										$field = get_field('card_cashback');
+										$value = $field['value'];
+										echo $field['label'];
+										?>
+									</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">% на остаток</div>
-									<div class="td-val">до <?php echo the_field('card_stavka_ostatok') ?> %</div>
+									<div class="td-val">до <?php echo get_field('card_stavka_ostatok'); ?>%</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Снятие без %</div>
-									<div class="td-val srok1">до <?= number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
+									<div class="td-val srok1">до <?php echo number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Овердрафт</div>
-									<div class="td-val srok1"><?php echo the_field('card_overdraft') ?></div>
+									<div class="td-val srok1"><?php echo get_field('card_overdraft'); ?></div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Стоимость</div>
-									<div class="td-val srok1"><?php echo the_field('card_cost') ?> ₽</div>
+									<div class="td-val srok1"><?php echo get_field('card_cost'); ?> ₽</div>
 								</div>
 								<div class="td text-center">
 									<div class="hidden-lg">Рейтинг</div>
@@ -2933,7 +2944,7 @@ function myown_comment($comment, $args, $depth)
 												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
 											</svg>
 										</div>
-										<div><?= get_field('ratings_average'); ?></div>
+										<div><?php echo get_field('ratings_average'); ?></div>
 									</div>
 								</div>
 							</div>
@@ -3231,24 +3242,37 @@ function myown_comment($comment, $args, $depth)
 	// 	return  $metrika;
 	// }
 
+	// function get_metrika_for_list($card_bank_link)
+	// {
+	// 	if (!empty($card_bank_link)) {
+	// 		// Если ссылка заполнена – используем этот набор событий
+	// 		$metrika = "
+	// 			ym(35020350,'reachGoal','click_oformit_listing');
+	// 			ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');
+	// 		";
+	// 	} else {
+	// 		// Если ссылки нет – используем другой набор событий
+	// 		$metrika = "
+	// 			ym(35020350,'reachGoal','click_oformit_listing'); 
+	// 			ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki');
+	// 			ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');
+	// 		";
+	// 	}
+	// 	return $metrika;
+	// }
+
 	function get_metrika_for_list($card_bank_link)
 	{
-		if (!empty($card_bank_link)) {
-			// Если ссылка заполнена – используем этот набор событий
-			$metrika = "
-				ym(35020350,'reachGoal','click_oformit_listing');
-				ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');
-			";
+		if (! empty($card_bank_link)) {
+			// Ссылка есть — два события в одну строку
+			$metrika = "ym(35020350,'reachGoal','click_oformit_listing'); ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');";
 		} else {
-			// Если ссылки нет – используем другой набор событий
-			$metrika = "
-				ym(35020350,'reachGoal','click_oformit_listing'); 
-				ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki');
-				ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');
-			";
+			// Ссылки нет — другой набор событий
+			$metrika = "ym(35020350,'reachGoal','click_oformit_listing'); ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki'); ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
 		}
 		return $metrika;
 	}
+
 
 
 	function get_metrika_for_best_pages($field)
@@ -3304,6 +3328,7 @@ function myown_comment($comment, $args, $depth)
 		} else {
 			// Если ссылка отсутствует — регистрируем событие для оформления без реферала
 			$metrika = "ym(35020350,'reachGoal','click_oformit_seychas', {URL: document.location.href});";
+			$metrika .= " ym(35020350,'reachGoal','Click_na_oformit_seychas_bez_referalki');";
 			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
 		}
 		return $metrika;
@@ -3378,19 +3403,12 @@ function myown_comment($comment, $args, $depth)
 		return $metrika;
 	}
 
+
+
 	function get_metrika_for_category_offer($field)
 	{
-		$arr_link = explode('/', $field);
-		$with_referal = false;
-		if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
-			$with_referal = true;
-		}
-		if ($with_referal == true) {
-			$metrika = " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy'); ";
-		} else {
-			$metrika = " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki'); ";
-		}
 
+		$metrika = "ym(35020350,'reachGoal','click_oformit_journal');";
 		return $metrika;
 	}
 
@@ -3399,40 +3417,29 @@ function myown_comment($comment, $args, $depth)
 
 	function get_metrika_for_exit_popap($field)
 	{
-		$arr_link = explode('/', $field);
-		$with_referal = false;
-		if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
-			$with_referal = true;
-		}
 
-		$metrika = "ym(35020350,'reachGoal','1EX_POPUP_cr'); ym(35020350,'reachGoal','exit_popup_click'); ym(35020350,'reachGoal','exit_popup_click_test'); return true;";
-
-		if ($with_referal == true) {
-			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy'); ";
+		if (!empty($field)) {
+			// Если ссылка присутствует — регистрируем событие для оформления с рефералом
+			$metrika = "ym(35020350,'reachGoal','1EX_POPUP_cr'); ym(35020350,'reachGoal','exit_popup_click'); ym(35020350,'reachGoal','exit_popup_click_test'); ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy'); return true;";
 		} else {
-			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki'); ";
+			// Если ссылка отсутствует — регистрируем событие для оформления без реферала
+			$metrika = "ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
 		}
-
 		return $metrika;
 	}
 
 
+
 	function get_metrika_for_exit_popap_with_tag($field)
 	{
-		$arr_link = explode('/', $field);
-		$with_referal = false;
-		if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
-			$with_referal = true;
-		}
 
-		$metrika = "ym(35020350,'reachGoal','2EX_POPUP_cr'); ym(35020350,'reachGoal','exit_popup_click'); ym(35020350,'reachGoal','exit_popup_click_test'); return true;";
-
-		if ($with_referal == true) {
-			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy'); ";
+		if (!empty($field)) {
+			// Если ссылка присутствует — регистрируем событие для оформления с рефералом
+			$metrika = "ym(35020350,'reachGoal','2EX_POPUP_cr'); ym(35020350,'reachGoal','exit_popup_click'); ym(35020350,'reachGoal','exit_popup_click_test'); ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy'); return true;";
 		} else {
-			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki'); ";
+			// Если ссылка отсутствует — регистрируем событие для оформления без реферала
+			$metrika = "ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki'); ";
 		}
-
 		return $metrika;
 	}
 
@@ -3642,6 +3649,8 @@ function myown_comment($comment, $args, $depth)
 
 		die();
 	}
+
+
 
 
 

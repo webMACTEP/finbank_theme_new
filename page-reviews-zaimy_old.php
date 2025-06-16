@@ -1,7 +1,7 @@
 <?php get_header() ?>
 
 <?php 
-
+/*
 $ID = $_SESSION['post_review_id'];
 $TAX = $_SESSION['data_tax_reviews'];
 $DISPLAY = $_SESSION['display_type'];
@@ -9,22 +9,17 @@ $DISPLAY = $_SESSION['display_type'];
 $post_type = get_post_type($ID);
 $tags = get_the_tags( $ID );
 $terms = wp_get_post_terms( $ID, 'bankcards', array('fields' => 'all') );
-if (!empty($terms)):
 $term_slug = $terms[0]->slug;
 $term_id = $terms[0]->term_id;
-endif;
+*/
 
-// Отзывы вариант 1
-
-$tax_id = 7;
-$title_term1 = "Отзывы о дебетовых картах";
-$title_term2 = "все дебетовые карты";
-$calc_link = get_page_link(157);
-$news_id = "13";
-$link = get_term_link($tax_id, '');
-
+       $tax_id = 2;
+       $title_term1 = "Отзывы о микрозаймах";
+       $title_term2 = "все займы";
+       $calc_link = get_page_link(159);
+       $link = get_post_type_archive_link('zaimy'); 
+       $news_id = "12";
 ?>
- 
 <main>
     <div class="container">
         <nav aria-label="breadcrumb" class="horizontal__scroll">
@@ -63,40 +58,40 @@ $link = get_term_link($tax_id, '');
             </div>
         </div>
     </div>
+
+<?php
+//reviews_list
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+$custom_offset = ($paged - 1)*$ppp;
+
+
+// fetch posts in all those categories
+$posts = get_cpt_ids('zaimy');
+$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+
+$sql_posts_total =  $wpdb->get_var( "SELECT  COUNT(*)  FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC");
+
+$max_num_pages = ceil($sql_posts_total / $ppp);
+$comments_list = $wpdb->get_results( $sql );
+$count_items = count( $comments_list );
+//reviews_list END
+?>
     <!-- / page nav -->
     <div class="container">
         <div class="section">
+
             <div class="row reviews-page-list" id="reviews">
-                <?php
-
-                $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                $ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
-                $offset = ($paged - 1)*$ppp;
-
-                // fetch posts in all those categories
-                $posts = get_objects_in_term( $tax_id, 'bankcards' );
-
-                $sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
-                 FROM {$wpdb->comments} WHERE
-                 comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1
-                 ORDER by comment_date DESC LIMIT $ppp OFFSET $offset";
-
-                $sql_posts_total = $wpdb->get_var( "SELECT  COUNT(*)  FROM {$wpdb->comments} WHERE
-                 comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1
-                 ORDER by comment_date DESC LIMIT 0, 15");
-                $max_num_pages = ceil($sql_posts_total / $ppp);
-                $comments_list = $wpdb->get_results( $sql );
-
-                $count_items = count($comments_list);
-
-                get_template_part('all_template/reviews_list', null,
-                    ['TYPE' => 'bankcards', 'DATA' => $comments_list, 'bank_id__field_name' => 'bank_choise']); ?>
-
+                <?php get_template_part('all_template/reviews_list', null, ['TYPE' => 'zaimy', 'DATA' => $comments_list]); ?>
             </div>
+
             <!-- pagination -->
-
             <div class="pagination flex-column mb-5 mb-md-0">
-
                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
                     <div class="pagination__links">
                         <?php my_pagination($max_num_pages); ?>
@@ -111,10 +106,10 @@ $link = get_term_link($tax_id, '');
                 </div>
             </div>
             <!-- / pagination -->
+
         </div>
     </div>
 </main>
-
 
 
 <?php get_footer() ?>

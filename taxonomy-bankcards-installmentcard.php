@@ -194,15 +194,11 @@ else:
                                             <label class="form-label" for="bankTop">Категория карты</label>
                                             <select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
                                                 <option value="">Все</option>
-                                                <?php
-                                                $field = get_field_object('card_category', 95);
-                                                //$value = $field['value'];
-                                                //$label = $field['choices'][ $value ];
-                                                if ($field['choices']): ?>
-                                                    <?php foreach ($field['choices'] as $value => $label): ?>
-                                                        <option value="<?php echo $value ?>"><?php echo $label ?></option>
-                                                    <?php endforeach; ?>
-                                                <?php endif; ?>
+                                                <option value="cc10">Электронная</option>
+                                                <option value="cc20">Классическая</option>
+                                                <option value="cc30">Золотая</option>
+                                                <option value="cc40">Премиальная</option>
+                                                <option value="cc50">Виртуальная</option>
 
                                             </select>
                                         </div>
@@ -225,7 +221,7 @@ else:
                                                 <option value="ps2">MasterCard</option>
                                                 <option value="ps3">МИР</option>
                                                 <option value="ps4">UnionPay</option>
-                                                <option value="ps5">JCB</option>
+
 
 
                                             </select>
@@ -236,7 +232,7 @@ else:
                                 </div>
 
                                 <div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
-                                    <div class="btn btn-primary btn-block submit-button">Показать</div>
+                                    <div class="btn btn-primary btn-block submit-button" onclick="ym(35020350,'reachGoal','filtr_listing');">Показать</div>
                                 </div>
                             </div>
                         </form>
@@ -453,7 +449,7 @@ else:
                         'orderby'        => 'name',
                         'order'          => 'DESC',
                         'post_type'      => 'bankcard',
-                        'posts_per_page' => 12, // Добавлено для вывода 12 материалов
+                        'posts_per_page' => 20, // Добавлено для вывода 12 материалов
                         'tax_query'      => array(
                             array(
                                 'taxonomy' => 'bankcards',
@@ -492,6 +488,8 @@ else:
                     } else {
                         $posts_html = '<p>Ничего не найдено по заданым фильтрам.</p>';
                     }
+
+
 
                     $GLOBALS['wp_query']->max_num_pages = $query->max_num_pages;
                     $max_pages = $wp_query->max_num_pages;
@@ -607,7 +605,11 @@ else:
                                     <?php endwhile;
                                     wp_reset_postdata(); ?>
                                 </div>
-                            <?php endif; ?>
+                            <?php
+                                wp_reset_postdata();
+
+                            endif; ?>
+
                             <!-- /archive posts -->
 
 
@@ -662,7 +664,7 @@ else:
                         </svg>
 
                     </div>
-                    <div class="horizontal__scroll-container best-offers-scroll-container">
+                    <div class="best-offers-slider horizontal__scroll-container best-offers-scroll-container">
                         <?php
                         $args = array(
                             'post_type'      => 'bankcard',

@@ -37,7 +37,7 @@ $about_item = get_field('about_item', get_the_ID());
 $if_in_tab = get_field('if_in_tab', get_the_ID());
 $plus_and_minus_tab = get_field('plus_and_minus_tab', get_the_ID());
 //$card_other_state = get_field('card_other_state');
-$card_other_state =  get_field('card_other_state', $ID);
+$card_other_state =  get_field('credit_other_statements', $ID);
 
 
 // Определение необходимости отображения кнопки "Подробнее"
@@ -92,7 +92,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                             </div>
                             <div class="position-relative card__icon d-flex align-items-center mr-3">
                                 <div class="mr-2">
-                                    <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                                    <a href="<?php echo esc_url(get_permalink()); ?>comments" data-target="comments" class="stretched-link">
                                         <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
                                             <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
                                         </svg>
@@ -136,7 +136,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     </div>
                     <div class="position-relative card__icon d-flex align-items-center mr-3">
                         <div class="mr-2">
-                            <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                            <a href="<?php echo esc_url(get_permalink()); ?>comments" data-target="comments" class="stretched-link">
                                 <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
                                     <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
                                 </svg>
@@ -175,14 +175,14 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                         <span
                             class="link-data btn btn-primary btn-block"
                             data-link="<?= esc_attr($card_bank_link); ?>"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
+                            onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;">
                             Оформить
                         </span>
                     </div>
                 <?php else: ?>
                     <div class="item-buttons-cont">
                         <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                            onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
                             Оформить
                         </span>

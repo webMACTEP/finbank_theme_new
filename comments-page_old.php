@@ -513,16 +513,9 @@ if ($TAX != '' && $DISPLAY == 'reviews'):
                 <!-- pagination -->
                 <div class="pagination flex-column">
                     <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                        <button
-                        btn btn-outline-gray btn-block
-                            class="btn btn-outline-gray btn-block"
-                            data-post-id="<?php echo get_the_ID(); ?>"
-                            data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                            Загрузить еще
-                        </button>
-                    </div>
-                    <div class="pagination__description mt-4">
-                        Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                        <div class="pagination__description mt-4 mt-sm-0">
+                            Показано <span class="review-tax-count"></span> отзывов из <span class="review-tax-count-all"></span>
+                        </div>
                     </div>
                 </div>
                 <!-- / pagination -->
@@ -670,18 +663,22 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
 
 
                     <!-- pagination -->
-                    <div class="pagination flex-column">
+                    <div class="pagination flex-column mb-5 mb-md-0 ">
+
                         <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                            <button
-                                id="load-more-comments"
-                                class="btn btn-outline-gray btn-block"
-                                data-post-id="<?php echo get_the_ID(); ?>"
-                                data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                                Загрузить еще
-                            </button>
-                        </div>
-                        <div class="pagination__description mt-4">
-                            Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                            <div class="pagination__links">
+                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination); 
+                                ?>
+
+                                <?php my_pagination($max_page, $current_page); ?>
+                            </div>
+
+                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                            wp_reset_query(); ?>
+                            <div class="pagination__description mt-4 mt-sm-0">
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
+                            </div>
                         </div>
                     </div>
                     <!-- / pagination -->
@@ -827,18 +824,22 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                         <?php comments_template('/comments2.php'); ?>
                     </div>
                     <!-- pagination -->
-                    <div class="pagination flex-column">
+                    <div class="pagination flex-column mb-5 mb-md-0 ">
+
                         <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                            <button
-                                id="load-more-comments"
-                                class="btn btn-outline-gray btn-block"
-                                data-post-id="<?php echo get_the_ID(); ?>"
-                                data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                                Загрузить еще
-                            </button>
-                        </div>
-                        <div class="pagination__description mt-4">
-                            Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                            <div class="pagination__links">
+                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination); 
+                                ?>
+
+                                <?php my_pagination($max_page, $current_page); ?>
+                            </div>
+
+                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                            wp_reset_query(); ?>
+                            <div class="pagination__description mt-4 mt-sm-0">
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
+                            </div>
                         </div>
                     </div>
                     <!-- / pagination -->
@@ -961,18 +962,22 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                         <?php comments_template('/comments2.php'); ?>
                     </div>
                     <!-- pagination -->
-                    <div class="pagination flex-column">
+                    <div class="pagination flex-column mb-5 mb-md-0 ">
+
                         <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                            <button
-                                id="load-more-comments"
-                                class="btn btn-outline-gray btn-block"
-                                data-post-id="<?php echo get_the_ID(); ?>"
-                                data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                                Загрузить еще
-                            </button>
-                        </div>
-                        <div class="pagination__description mt-4">
-                            Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                            <div class="pagination__links">
+                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination); 
+                                ?>
+
+                                <?php my_pagination($max_page, $current_page); ?>
+                            </div>
+
+                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                            wp_reset_query(); ?>
+                            <div class="pagination__description mt-4 mt-sm-0">
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
+                            </div>
                         </div>
                     </div>
                     <!-- / pagination -->
@@ -1109,18 +1114,22 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
 
                     <!-- pagination -->
 
-                    <div class="pagination flex-column">
+                    <div class="pagination flex-column mb-5 mb-md-0 ">
+
                         <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                            <button
-                                id="load-more-comments"
-                                class="btn btn-outline-gray btn-block"
-                                data-post-id="<?php echo get_the_ID(); ?>"
-                                data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                                Загрузить еще
-                            </button>
-                        </div>
-                        <div class="pagination__description mt-4">
-                            Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                            <div class="pagination__links">
+                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination); 
+                                ?>
+
+                                <?php my_pagination($max_page, $current_page); ?>
+                            </div>
+
+                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                            wp_reset_query(); ?>
+                            <div class="pagination__description mt-4 mt-sm-0">
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
+                            </div>
                         </div>
                     </div>
                     <!-- / pagination -->
@@ -1253,18 +1262,23 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                     </div>
 
                     <!-- pagination -->
-                    <div class="pagination flex-column">
+                    <div class="pagination flex-column mb-5 mb-md-0 ">
+
                         <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                            <button
-                                id="load-more-comments"
-                                class="btn btn-outline-gray btn-block"
-                                data-post-id="<?php echo get_the_ID(); ?>"
-                                data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                                Загрузить еще
-                            </button>
-                        </div>
-                        <div class="pagination__description mt-4">
-                            Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                            <div class="pagination__links">
+                                <?php //echo $pagination = str_replace("next", "pagination__links-last", $pagination);
+                                ?>
+
+                                <?php my_pagination($max_page, $current_page); ?>
+                            </div>
+
+                            <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                            wp_reset_query(); ?>
+                            <div class="pagination__description mt-4 mt-sm-0">
+                                Показано <span class="count_view"><?php echo $count_items; ?></span>
+                                отзывов из <span class="count_all"><?php echo $total_comments; ?></span>
+                            </div>
+
                         </div>
                     </div>
                     <!-- / pagination -->
@@ -1440,9 +1454,9 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                     $posts_merge =  array_merge($posts, $posts2, $posts3);
 
                     $sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
-                        FROM {$wpdb->comments} WHERE
-                            comment_post_ID in (" . implode(',', $posts_merge) . ") AND comment_approved = 1 AND comment_parent = 0
-                        ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (" . implode(',', $posts_merge) . ") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
 
                     $comments_list = $wpdb->get_results($sql);
 
@@ -1554,16 +1568,9 @@ if ($ID != ''  && $DISPLAY == 'comments'): ?>
                 <!-- pagination -->
                 <div class="pagination flex-column">
                     <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                        <button
-                            id="load-more-comments"
-                            class="btn btn-outline-gray btn-block"
-                            data-post-id="<?php echo get_the_ID(); ?>"
-                            data-total-comments="<?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?>">
-                            Загрузить еще
-                        </button>
-                    </div>
-                    <div class="pagination__description mt-4">
-                        Показано <span class="new-review-tax-count">10</span> отзывов из <span class="new-review-tax-count-all"><?php echo get_comments(array('post_id' => get_the_ID(), 'status' => 'approve', 'count' => true)); ?></span>
+                        <div class="pagination__description mt-4 mt-sm-0">
+                            Показано <span class="review-tax-count"></span> отзывов из <span class="review-tax-count-all"></span>
+                        </div>
                     </div>
                 </div>
                 <!-- / pagination -->

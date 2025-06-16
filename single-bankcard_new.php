@@ -991,12 +991,12 @@ wp_reset_postdata();
                         $responses = count($comments_children); ?>
                                <!-- item -->
                                <div class="comments__item mb-3 " id="comment-<?php echo $comment_id ?>">
-                                <!-- comment -->
+                                    <!-- comment -->
                                    <div class="comment__one">
                                        <div class="comment__one-header d-flex align-items-center">
                                            <div class="comment__one-img mr-3">
                                                <img src="<?php echo get_avatar_url( $comment, array(
-                   'default'=>'identicon',) ); ?>" alt="<?= $comment->comment_author ?>">
+                                                    'default'=>'identicon',) ); ?>" alt="<?= $comment->comment_author ?>">
                                            </div>
                                            <div class="d-md-flex justify-content-md-between w-100">
                                                <div class="comment__one-title mb-2 mb-md-0">

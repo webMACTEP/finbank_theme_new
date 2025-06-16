@@ -93,7 +93,7 @@ if($TAX != '' && $DISPLAY == 'reviews'):
             <div class="page__heading-top d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="page__heading-title mb-0"><?php echo $title_term1 ?></h1>
-                    <h3 class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</h3>
+                    <div class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</div>
                 </div>
                 <div class="page__heading-icon"><img src="<?php bloginfo('template_url'); ?>/img/icon__title-like.png" alt=""></div>
             </div>
@@ -1607,7 +1607,7 @@ if($TAX =='' && $ID == ''): ?>
             <div class="page__heading-top d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="page__heading-title mb-0">Отзывы</h1>
-                    <h3 class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</h3>
+                    <div class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</div>
                 </div>
                 <div class="page__heading-icon"><img src="<?php bloginfo('template_url'); ?>/img/icon__title-like.png" alt=""></div>
             </div>

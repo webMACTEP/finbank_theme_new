@@ -1,11 +1,12 @@
 <?php 
 // Получение списка комментариев из переданных аргументов
-$comments_list = isset($args['DATA']) && is_array($args['DATA']) ? $args['DATA'] : [];
+$comments_list = $args['DATA'];
 
 // Определение имени поля для получения bank_id, с возможностью переопределения через аргументы
-$bank_id_field_name = isset($args['bank_id__field_name']) && !empty($args['bank_id__field_name']) 
-    ? $args['bank_id__field_name'] 
-    : 'product_bank';
+$bank_id_field_name = 'product_bank'; // bank_choice
+if ( isset($args['bank_id__field_name']) && !empty($args['bank_id__field_name']) ) {
+    $bank_id_field_name = $args['bank_id__field_name'];
+}
 ?>
 
 <?php if ( count( $comments_list ) > 0 ): ?>

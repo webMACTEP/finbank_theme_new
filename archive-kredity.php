@@ -234,7 +234,7 @@ else:
 								</div>
 
 								<div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
-									<div class="btn btn-primary btn-block submit-button">Показать</div>
+									<div class="btn btn-primary btn-block submit-button" onclick="ym(35020350,'reachGoal','filtr_listing');">Показать</div>
 								</div>
 							</div>
 						</form>
@@ -442,7 +442,7 @@ else:
 						'orderby' => 'name',
 						'order' => 'DESC',
 						'post_type' => 'kredity',
-						'posts_per_page' => 12, // Добавлено для вывода 12 материалов
+						'posts_per_page' => 20, // Добавлено для вывода 12 материалов
 						'post_status' => 'publish',
 						'paged' => $paged,
 					);
@@ -632,7 +632,7 @@ else:
 						</svg>
 
 					</div>
-					<div class="horizontal__scroll-container best-offers-scroll-container">
+					<div class="best-offers-slider horizontal__scroll-container best-offers-scroll-container">
 						<?php
 						$args = array(
 							'post_type'             => 'kredity',
@@ -855,8 +855,8 @@ else:
 					// Тут вручную задаёте три группы: в каждую — массив ID категорий
 					$wrappers = [
 						['cats' => [109]],
-						['cats' => [107, 99, 104, 108, 101]],
-						['cats' => [105, 102, 103, 106, 100]],
+						['cats' => [107, 104, 108, 101, 105]],
+						['cats' => [102, 103, 106, 100]],
 					];
 
 					$visible_count = 0; // число элементов, показываемых по умолчанию

@@ -117,25 +117,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Получаем контейнер скролла
-  const scrollContainer = document.querySelector(
-    ".best-offers-scroll-container"
-  );
+  // const scrollContainer = document.querySelector(
+  //   ".best-offers-scroll-container"
+  // );
 
-  // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
-  document.querySelector(".offers-horiz-next").addEventListener("click", () => {
-    scrollContainer.scrollBy({
-      left: 300,
-      behavior: "smooth",
-    });
-  });
+  // // Обработчик для кнопки "horiz-next": прокручиваем вправо (scrollLeft увеличивается)
+  // document.querySelector(".offers-horiz-next").addEventListener("click", () => {
+  //   scrollContainer.scrollBy({
+  //     left: 300,
+  //     behavior: "smooth",
+  //   });
+  // });
 
-  // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
-  document.querySelector(".offers-horiz-prew").addEventListener("click", () => {
-    scrollContainer.scrollBy({
-      left: -300,
-      behavior: "smooth",
-    });
-  });
+  // // Обработчик для кнопки "horiz-prew": прокручиваем влево (scrollLeft уменьшается)
+  // document.querySelector(".offers-horiz-prew").addEventListener("click", () => {
+  //   scrollContainer.scrollBy({
+  //     left: -300,
+  //     behavior: "smooth",
+  //   });
+  // });
 
   // Получаем контейнер скролла
   const scrollContainer2 = document.querySelector(".reviews-scroll-container");
@@ -184,6 +184,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 jQuery(function ($) {
+  const $slider = $(".best-offers-slider");
+  if (!$slider.length) return;
+
+  $slider.slick({
+    infinite: true, // бесконечная прокрутка
+    slidesToShow: 4, // кол-во видимых карточек
+    slidesToScroll: 1, // кол-во прокручиваемых за раз
+    arrows: true, // покажем стрелки
+    prevArrow: $(".offers-horiz-prew"),
+    nextArrow: $(".offers-horiz-next"),
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: { slidesToShow: 3 },
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 2 },
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 1 },
+      },
+    ],
+  });
+
   // слушаем именно кнопку "Подобрать" в вашем попапе калькулятора
   $(".new-calc-modal .c-footer .btn.btn-primary").on("click", function (e) {
     e.preventDefault();

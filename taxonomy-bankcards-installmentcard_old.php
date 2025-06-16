@@ -966,6 +966,7 @@
                 </div>
             </div>
             <!-- / card reviews -->
+            
             <!-- best offers -->
             <div class="section" id="best-products">
                 <div class="section__header d-flex justify-content-between align-items-center mb-4">
@@ -1149,6 +1150,7 @@
             </div>
             <!-- / wysiwyg text -->
         </div>
+       
     </main>
     <?php get_footer(); ?>
 

@@ -260,7 +260,7 @@ $zaim_link =  '/zaimy/';
                     </span>
                 </a>
             </div>
-            <div class="tabs offer-tabs">
+            <div class="tabs-new offer-tabs">
                 <div class="horizontal__scroll">
                     <ul class="nav nav-tabs horizontal__scroll-container row mb-4" role="tablist">
                         <li class="nav-item">
@@ -286,32 +286,31 @@ $zaim_link =  '/zaimy/';
                             <div class="horizontal__scroll-container">
                                 <?php
                                 $args = array(
-                                    'post_type'             => 'bankcard',
-                                    'posts_per_page'        => 4,
-                                    'meta_key' => 'ratings_average',
-                                    'orderby' => 'meta_value_num',
-                                    'order' => 'DESC',
-                                    'tax_query' => array(
+                                    'post_type'      => 'bankcard',
+                                    'posts_per_page' => 4,
+                                    'meta_key'       => 'ratings_average',
+                                    'orderby'        => 'meta_value_num',
+                                    'order'          => 'DESC',
+                                    'tax_query'      => array(
                                         array(
                                             'taxonomy' => 'bankcards',
                                             'field'    => 'slug',
-                                            'terms'    =>  'creditcard',
+                                            'terms'    => 'creditcard',
                                         ),
-                                        //array(
-                                        //    'meta_key'      => 'archive',
-                                        //    'meta_value'    => false
-                                        //),
-                                    )
-                                );
-
-                                $args['meta_query'][] = array(
-                                    'key' => 'archive',
-                                    'value' => '0'
-                                );
-                                $args['meta_query'][] = array(
-                                    'key' => 'card_bank_link',
-                                    'value' => '/recommends/',
-                                    'compare' => 'LIKE',
+                                    ),
+                                    'meta_query'     => array(
+                                        // Только те записи, у которых поле "archive" = 0
+                                        array(
+                                            'key'   => 'archive',
+                                            'value' => '0',
+                                        ),
+                                        // Только те записи, у которых поле "card_bank_link" не пустое
+                                        array(
+                                            'key'     => 'card_bank_link',
+                                            'value'   => '',
+                                            'compare' => '!=',
+                                        ),
+                                    ),
                                 );
 
 
@@ -429,28 +428,31 @@ $zaim_link =  '/zaimy/';
                             <div class="horizontal__scroll-container">
                                 <?php
                                 $args = array(
-                                    'post_type'             => 'bankcard',
-                                    'posts_per_page'        => 4,
-                                    'meta_key' => 'ratings_average',
-                                    'orderby' => 'meta_value_num',
-                                    'order' => 'DESC',
-                                    'tax_query' => array(
+                                    'post_type'      => 'bankcard',
+                                    'posts_per_page' => 4,
+                                    'meta_key'       => 'ratings_average',
+                                    'orderby'        => 'meta_value_num',
+                                    'order'          => 'DESC',
+                                    'tax_query'      => array(
                                         array(
                                             'taxonomy' => 'bankcards',
                                             'field'    => 'slug',
-                                            'terms'    =>  'debetcard',
+                                            'terms'    => 'debetcard',
                                         ),
-                                    )
-                                );
-
-                                $args['meta_query'][] = array(
-                                    'key' => 'archive',
-                                    'value' => '0'
-                                );
-                                $args['meta_query'][] = array(
-                                    'key' => 'card_bank_link',
-                                    'value' => '/recommends/',
-                                    'compare' => 'LIKE',
+                                    ),
+                                    'meta_query'     => array(
+                                        // Только те записи, у которых поле "archive" = 0
+                                        array(
+                                            'key'   => 'archive',
+                                            'value' => '0',
+                                        ),
+                                        // Только те записи, у которых поле "card_bank_link" не пустое
+                                        array(
+                                            'key'     => 'card_bank_link',
+                                            'value'   => '',
+                                            'compare' => '!=',
+                                        ),
+                                    ),
                                 );
 
                                 $query = new WP_Query($args);
@@ -566,28 +568,31 @@ $zaim_link =  '/zaimy/';
                             <div class="horizontal__scroll-container">
                                 <?php
                                 $args = array(
-                                    'post_type'             => 'bankcard',
-                                    'posts_per_page'        => 4,
-                                    'meta_key' => 'ratings_average',
-                                    'orderby' => 'meta_value_num',
-                                    'order' => 'DESC',
-                                    'tax_query' => array(
+                                    'post_type'      => 'bankcard',
+                                    'posts_per_page' => 4,
+                                    'meta_key'       => 'ratings_average',
+                                    'orderby'        => 'meta_value_num',
+                                    'order'          => 'DESC',
+                                    'tax_query'      => array(
                                         array(
                                             'taxonomy' => 'bankcards',
                                             'field'    => 'slug',
-                                            'terms'    =>  'installmentcard',
+                                            'terms'    => 'installmentcard',
                                         ),
-                                    )
-                                );
-
-                                $args['meta_query'][] = array(
-                                    'key' => 'archive',
-                                    'value' => '0'
-                                );
-                                $args['meta_query'][] = array(
-                                    'key' => 'card_bank_link',
-                                    'value' => '/recommends/',
-                                    'compare' => 'LIKE',
+                                    ),
+                                    'meta_query'     => array(
+                                        // Только те записи, у которых поле "archive" = 0
+                                        array(
+                                            'key'   => 'archive',
+                                            'value' => '0',
+                                        ),
+                                        // Только те записи, у которых поле "card_bank_link" не пустое
+                                        array(
+                                            'key'     => 'card_bank_link',
+                                            'value'   => '',
+                                            'compare' => '!=',
+                                        ),
+                                    ),
                                 );
 
                                 $query = new WP_Query($args);
@@ -701,21 +706,26 @@ $zaim_link =  '/zaimy/';
                             <div class="horizontal__scroll-container">
                                 <?php
                                 $args = array(
-                                    'post_type'             => 'kredity',
-                                    'posts_per_page'        => 4,
-                                    'meta_key' => 'ratings_average',
-                                    'orderby' => array('meta_value_num' => 'desc', 'name' => 'desc'),
-                                    'order' => 'DESC',
-                                );
-
-                                $args['meta_query'][] = array(
-                                    'key' => 'archive',
-                                    'value' => '0'
-                                );
-                                $args['meta_query'][] = array(
-                                    'key' => 'card_bank_link',
-                                    'value' => '/recommends/',
-                                    'compare' => 'LIKE',
+                                    'post_type'      => 'kredity',
+                                    'posts_per_page' => 4,
+                                    'meta_key'       => 'ratings_average',
+                                    'orderby'        => array(
+                                        'meta_value_num' => 'DESC',
+                                        'name'            => 'DESC',
+                                    ),
+                                    'meta_query'     => array(
+                                        // Только записи, у которых поле "archive" = 0
+                                        array(
+                                            'key'   => 'archive',
+                                            'value' => '0',
+                                        ),
+                                        // Только записи, у которых поле "card_bank_link" не пустое
+                                        array(
+                                            'key'     => 'card_bank_link',
+                                            'value'   => '',
+                                            'compare' => '!=',
+                                        ),
+                                    ),
                                 );
 
                                 $query = new WP_Query($args);
@@ -829,11 +839,24 @@ $zaim_link =  '/zaimy/';
                             <div class="horizontal__scroll-container">
                                 <?php
                                 $args = array(
-                                    'post_type'             => 'zaimy',
-                                    'posts_per_page'        => 4,
-                                    'meta_key' => 'ratings_average',
-                                    'orderby' => 'meta_value_num',
-                                    'order' => 'DESC',
+                                    'post_type'      => 'zaimy',
+                                    'posts_per_page' => 4,
+                                    'meta_key'       => 'ratings_average',
+                                    'orderby'        => 'meta_value_num',
+                                    'order'          => 'DESC',
+                                    'meta_query'     => array(
+                                        // Только записи, у которых поле "archive" = 0
+                                        array(
+                                            'key'   => 'archive',
+                                            'value' => '0',
+                                        ),
+                                        // Только записи, у которых поле "card_bank_link" не пустое
+                                        array(
+                                            'key'     => 'card_bank_link',
+                                            'value'   => '',
+                                            'compare' => '!=',
+                                        ),
+                                    ),
                                 );
 
                                 $query = new WP_Query($args);

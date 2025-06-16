@@ -15,7 +15,7 @@ $term_id = $terms[0]->term_id;
 endif;
 // Отзывы вариант 1
 $tax_id = 2;
-$title_term1 = "Кредитные карты";
+$title_term1 = "Отзывы о кредитных картах";
 $title_term2 = "все кредитные карты";
 $calc_link = get_page_link(149);
 $link = get_term_link($tax_id, '');
@@ -38,7 +38,7 @@ $news_id = "14";
             <div class="page__heading-top d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="page__heading-title mb-0"><?php echo $title_term1 ?></h1>
-                    <h3 class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</h3>
+                    <div class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</div>
                 </div>
                 <div class="page__heading-icon"><img src="<?php bloginfo('template_url'); ?>/img/icon__title-like.png" alt=""></div>
             </div>

@@ -441,7 +441,7 @@ $type_collection = 'kredity';
 				$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 				$args = array(
 					'post_type' => array('kredity'),
-					'posts_per_page' => 12,
+					'posts_per_page' => 20,
 					'paged' => $paged,
 					'post__in' => $allposts,
 					'orderby' => 'name',
@@ -865,8 +865,8 @@ $type_collection = 'kredity';
 				// Тут вручную задаёте три группы: в каждую — массив ID категорий
 				$wrappers = [
 					['cats' => [109]],
-					['cats' => [107, 99, 104, 108, 101]],
-					['cats' => [105, 102, 103, 106, 100]],
+					['cats' => [107, 104, 108, 101, 105]],
+					['cats' => [102, 103, 106, 100]],
 				];
 
 				$visible_count = 0; // число элементов, показываемых по умолчанию

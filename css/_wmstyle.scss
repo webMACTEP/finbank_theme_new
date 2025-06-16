@@ -1,4 +1,16 @@
 :root[data-theme="dark"] {
+    .cld-common-wrap .cld-like-trigger{
+        background: url("../img/like2.svg");
+        transform: rotate(180deg);
+    }
+    .oform {
+        &:hover {
+            color: #14b8ad;
+        }
+    }
+    .exit1_offer_name {
+        color: var(--leader-color);
+    }
     .newlisting .credits__list-right .choices[data-type*="select-one"]:after {
         background-image: url("../img/switch-vertical-02.svg");
     }
@@ -109,6 +121,7 @@
     display: flex !important;
 }
 .zaimy-new {
+    
     .quiz {
         #quizResult {
             //display: none;
@@ -933,6 +946,7 @@
 
         //font-style: italic;
         margin-bottom: 1rem;
+        margin-top: 1rem;
     }
 
     .rating-footer {
@@ -1689,6 +1703,9 @@
         color: var(--tab-color);
     }
     .open__dop-btn {
+        &:hover {
+            color: #fff;
+        }
         width: auto;
         color: var(--btn-primary-border);
     }
@@ -2515,6 +2532,9 @@
         border-color: #14b8ad00;
         background-color: var(--gray-400);
         &:hover {
+            svg {
+                fill: #ffffff;
+            }
             background-color: var(--primary-outline-hover-bg);
         }
         &.btn_compare_on {
@@ -2567,6 +2587,14 @@
 .present-icon {
     background: var(--btn-primary-border);
 }
+.new_mob{
+    display: none;
+}
+/* Скрываем все комментарии после 10-го */
+.additional-comments-level-0 li:nth-child(n+21) {
+    display: none;
+  }
+  
 
 @media (max-width: 1090px) {
     .newlisting .new-calc-content,
@@ -2575,6 +2603,12 @@
     }
 }
 @media (max-width: 768px) {
+    .new_mob{
+        display: block;
+    }
+    .new_dt{
+        display: none;
+    }
     .newlisting .tabs-and-btns .tabs .tab-content {
         overflow-x: hidden;
     }
@@ -2923,7 +2957,7 @@
     }
     .newlisting .horiz-next,
     .newlisting .horiz-prew {
-        display: none;
+        display: none !important;
     }
     .page__nav-container {
         .horizontal__scroll {
@@ -3044,6 +3078,7 @@
                 //padding: 10px 30px 12px 30px;
             }
             position: fixed;
+            z-index: 999;
             left: 50%;
             bottom: 16px;
             width: fit-content;
@@ -3118,7 +3153,7 @@
         }
         .forline {
             position: relative;
-            margin: 0px 0px 1rem 0px;
+            margin: 0px 0px 0rem 0px;
             &::after {
                 content: "";
                 position: absolute;
@@ -3153,7 +3188,8 @@
         margin-left: -14px;
         margin-right: -14px;
         padding: 1rem 0px 0px 0px !important;
-        background: none;
+        //background: none;
+        background: var(--body-bg);
         border-radius: 0;
         box-shadow: none;
     }

@@ -14,7 +14,7 @@ $items_args = array(
     'orderby' => 'name',
     'order' => 'DESC',
     'post_type' => 'zaimy',
-    'posts_per_page' => 12,
+    'posts_per_page' => 20,
     'post_status' => 'publish',
     'post_parent' => 0, // Только родительские записи
     'meta_query' => array(
@@ -254,7 +254,7 @@ if (!$query_items->have_posts()) {
                                 </div>
 
                                 <div class="new-filter-modal-show col-12 col-md-6 col-lg-3 col-xl-2 mt-4 order-5 order-md-5">
-                                    <div class="btn btn-primary btn-block submit-button">Показать</div>
+                                    <div class="btn btn-primary btn-block submit-button" onclick="ym(35020350,'reachGoal','filtr_listing');">Показать</div>
                                 </div>
                             </div>
                         </form>
@@ -627,7 +627,7 @@ if (!$query_items->have_posts()) {
                         </svg>
 
                     </div>
-                    <div class="horizontal__scroll-container best-offers-scroll-container">
+                    <div class="best-offers-slider horizontal__scroll-container best-offers-scroll-container">
                         <?php
 
 
@@ -855,8 +855,8 @@ if (!$query_items->have_posts()) {
                     // Тут вручную задаёте три группы: в каждую — массив ID категорий
                     $wrappers = [
                         ['cats' => [75]],
-                        ['cats' => [76, 74, 80, 73]],
-                        ['cats' => [77, 78, 72]],
+                        ['cats' => [76, 74, 80]],
+                        ['cats' => [73, 77, 78]],
                     ];
 
                     $visible_count = 0; // число элементов, показываемых по умолчанию

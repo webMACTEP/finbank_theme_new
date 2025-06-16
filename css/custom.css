@@ -5408,6 +5408,16 @@ a.cld-like-dislike-trigger {
 
 /* use_new_template_v1*/
 /* NEW VIEW TEMPLATE */
+:root[data-theme=dark] .cld-common-wrap .cld-like-trigger {
+  background: url("../img/like2.svg");
+  transform: rotate(180deg);
+}
+:root[data-theme=dark] .oform:hover {
+  color: #14b8ad;
+}
+:root[data-theme=dark] .exit1_offer_name {
+  color: var(--leader-color);
+}
 :root[data-theme=dark] .newlisting .credits__list-right .choices[data-type*=select-one]:after {
   background-image: url("../img/switch-vertical-02.svg");
 }
@@ -6225,6 +6235,7 @@ a.cld-like-dislike-trigger {
   background: #f5f9fa;
   border-radius: 12px;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 .zaimy-new strong::before,
 .zaimy-new .dedicated::before {
@@ -6915,6 +6926,9 @@ a.cld-like-dislike-trigger {
 .newlisting .open__dop-btn {
   width: auto;
   color: var(--btn-primary-border);
+}
+.newlisting .open__dop-btn:hover {
+  color: #fff;
 }
 .newlisting .listing-modal-close {
   position: absolute;
@@ -7646,6 +7660,9 @@ a.cld-like-dislike-trigger {
 .newlisting .btn__compare:hover {
   background-color: var(--primary-outline-hover-bg);
 }
+.newlisting .btn__compare:hover svg {
+  fill: #ffffff;
+}
 .newlisting .btn__compare.btn_compare_on {
   background-color: var(--primary-outline-hover-bg);
 }
@@ -7703,6 +7720,15 @@ a.cld-like-dislike-trigger {
   background: var(--btn-primary-border);
 }
 
+.new_mob {
+  display: none;
+}
+
+/* Скрываем все комментарии после 10-го */
+.additional-comments-level-0 li:nth-child(n+21) {
+  display: none;
+}
+
 @media (max-width: 1090px) {
   .newlisting .new-calc-content,
   .newlisting .new-filter-modal-content {
@@ -7710,6 +7736,12 @@ a.cld-like-dislike-trigger {
   }
 }
 @media (max-width: 768px) {
+  .new_mob {
+    display: block;
+  }
+  .new_dt {
+    display: none;
+  }
   .newlisting .tabs-and-btns .tabs .tab-content {
     overflow-x: hidden;
   }
@@ -8029,7 +8061,7 @@ a.cld-like-dislike-trigger {
   }
   .newlisting .horiz-next,
   .newlisting .horiz-prew {
-    display: none;
+    display: none !important;
   }
   .page__nav-container .horizontal__scroll {
     max-width: 100%;
@@ -8130,6 +8162,7 @@ a.cld-like-dislike-trigger {
   }
   .zaimy-new .wm-fixed-button {
     position: fixed;
+    z-index: 999;
     left: 50%;
     bottom: 16px;
     width: -moz-fit-content;
@@ -8198,7 +8231,7 @@ a.cld-like-dislike-trigger {
   }
   .zaimy-new .sidebar .forline {
     position: relative;
-    margin: 0px 0px 1rem 0px;
+    margin: 0px 0px 0rem 0px;
   }
   .zaimy-new .sidebar .forline::after {
     content: "";
@@ -8228,7 +8261,7 @@ a.cld-like-dislike-trigger {
     margin-left: -14px;
     margin-right: -14px;
     padding: 1rem 0px 0px 0px !important;
-    background: none;
+    background: var(--body-bg);
     border-radius: 0;
     box-shadow: none;
   }

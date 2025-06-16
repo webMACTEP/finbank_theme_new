@@ -329,7 +329,7 @@ jQuery(function ($) {
           "&page=" +
           nextPage +
           "&posts_per_page=" +
-          parseInt($btn.data("posts_per_page") || 12, 10);
+          parseInt($btn.data("posts_per_page") || 20, 10);
 
         $.ajax({
           url: card_loadmore_params.ajaxurl,
@@ -1048,16 +1048,32 @@ jQuery(function ($) {
   });
 
   // Сравнение продуктов
+
+  let popupTimeout;
+
   $(document).on("click", ".btn__compare", function () {
     var post_id = $(this).attr("data-id");
     var post_tax = $(this).attr("data-tax");
-    //$(this).addClass("btn_compare_on");
+    var $popup = $(".popup_compare");
+
+    // переключаем активность кнопки
     $(this).toggleClass("btn_compare_on");
 
     if ($(this).hasClass("btn_compare_on")) {
-      $(".popup_compare").fadeIn();
+      // показ окна
+      $popup.fadeIn();
+
+      // если где-то уже висит предыдущий таймаут — сбросим
+      clearTimeout(popupTimeout);
+
+      // через 5 секунд автоматически скрываем
+      popupTimeout = setTimeout(function () {
+        $popup.fadeOut();
+      }, 5000);
     } else {
-      $(".popup_compare").fadeOut();
+      // при повторном клике — скрываем и очищаем таймаут
+      clearTimeout(popupTimeout);
+      $popup.fadeOut();
     }
 
     // popup_compare_btn
@@ -1141,6 +1157,7 @@ jQuery(function ($) {
 
   //$('.btn__compare').append('<span class="tool-add">Добавить в сравнение</span><span class="tool-remove">Удалить из сравнения</span>');
   $(document).on("click", ".popup_compare_close", function () {
+    clearTimeout(popupTimeout);
     $(".popup_compare").fadeOut();
   });
 
@@ -2711,5 +2728,7 @@ jQuery(function ($) {
     $(".filter_v1 .submit-button").click();
   });
 
-  // submit-button
+
+  
+
 });

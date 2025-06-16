@@ -461,7 +461,7 @@ $type_collection = 'zaimy';
 					'orderby' => 'name',
 					'order' => 'DESC',
 					'post_type' => 'zaimy',
-					'posts_per_page' => 12,
+					'posts_per_page' => 20,
 					'post_status' => 'publish',
 					'post__in' => $allposts,
 				);
@@ -870,8 +870,8 @@ $type_collection = 'zaimy';
 				// Тут вручную задаёте три группы: в каждую — массив ID категорий
 				$wrappers = [
 					['cats' => [75]],
-					['cats' => [76, 74, 80, 73]],
-					['cats' => [77, 78, 72]],
+					['cats' => [76, 74, 80]],
+					['cats' => [73, 77, 78]],
 				];
 
 				$visible_count = 0; // число элементов, показываемых по умолчанию

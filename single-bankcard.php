@@ -331,16 +331,16 @@ switch ($term_slug) {
                                     <span
                                         class="link-data btn btn-light mx-3"
                                         data-link="<?= esc_attr($card_bank_link); ?>"
-                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                        onclick="<?php echo (get_metrika_for_detail_page($card_bank_link)); ?> return true;">
                                         Оформить сейчас
                                     </span>
                                 </div>
                             <?php else: ?>
                                 <div class="item-buttons-cont">
                                     <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                        onclick="<?php echo (get_metrika_for_detail_page($card_bank_link)); ?> return true;"
                                         class="apply_now_btm btn btn-light mx-3">
-                                        Оформить сейчас 0
+                                        Оформить сейчас
                                     </span>
                                 </div>
                             <?php endif; ?>
@@ -495,17 +495,20 @@ switch ($term_slug) {
 
 
                                                 <?php if (reclink($ID)): ?>
-                                                    <a href="<?php echo the_field('card_bank_link', $ID) ?>"
-                                                        target="_blank"
-                                                        onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;"
+                                                    <span
+                                                        class="link-data off_site_link"
+                                                        data-link="<?= esc_attr($card_bank_link); ?>"
+                                                        onclick="<?php echo (get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                        <?= get_field('bank_email', $bank_id);  ?>
+                                                    </span>
+
+                                                <?php else: ?>
+                                                    <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
+                                                        onclick="<?php echo (get_metrika_for_detail_page($card_bank_link)); ?> return true;"
                                                         class="off_site_link">
                                                         <?= get_field('bank_email', $bank_id);  ?>
-                                                    </a>
-                                                <?php else: ?>
-                                                    <a class="off_site_link <?php if ($apply_now) { ?> apply_now_btm <?php } else { ?>out_exit_link <?php } ?>"
-                                                        onclick="<?= get_metrika_for_detail_page(get_field('card_bank_link', $ID)) ?> return true;">
-                                                        <?= get_field('bank_email', $bank_id);  ?>
-                                                    </a>
+                                                    </span>
+                                                   
                                                 <?php endif; ?>
 
 
@@ -548,16 +551,16 @@ switch ($term_slug) {
                                                     <span
                                                         class="link-data btn btn-primary"
                                                         data-link="<?= esc_attr($card_bank_link); ?>"
-                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;">
+                                                        onclick="<?php echo (get_metrika_for_detail_page($card_bank_link)); ?> return true;">
                                                         Оформить сейчас
                                                     </span>
                                                 </div>
                                             <?php else: ?>
                                                 <div class="apply_now_btm item-buttons-cont">
                                                     <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                                                        onclick="<?php echo esc_js(get_metrika_for_detail_page($card_bank_link)); ?> return true;"
+                                                        onclick="<?php echo (get_metrika_for_detail_page($card_bank_link)); ?> return true;"
                                                         class="btn btn-primary">
-                                                        Оформить сейчас 0
+                                                        Оформить сейчас
                                                     </span>
                                                 </div>
                                             <?php endif; ?>
@@ -1210,9 +1213,7 @@ switch ($term_slug) {
         <div class="section">
             <div class="section__header d-flex justify-content-between align-items-center mb-4">
                 <h2 class="title mb-0">Лучшие <?php echo $title_term ?> </h2>
-
                 <?php if ($term_id) : ?>
-
                     <a href="<?php echo get_term_link($term_id, '') ?>" class="btn btn-primary btn-sm btn-all">
                         Все
                         <span class="icon ml-2">
@@ -1221,9 +1222,7 @@ switch ($term_slug) {
                             </svg>
                         </span>
                     </a>
-
                 <?php endif; ?>
-
             </div>
             <div class="horizontal__scroll row">
                 <div class="horizontal__scroll-container">
@@ -1243,8 +1242,154 @@ switch ($term_slug) {
                         )
                     );
 
-                    get_template_part('all_template/the_best_offers_list', null, $args);
+                    $query = new WP_Query($args);
 
+                    // Цикл
+                    if ($query->have_posts()) {
+                        while ($query->have_posts()) {
+                            $query->the_post();
+                    ?>
+                            <!-- item -->
+                            <div class="card card__vertical size4 offer h-100">
+                                <div class="card-container p-3">
+                                    <div class="card__header mb-2 d-flex">
+                                        <div class="card__header-img">
+                                            <img src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
+                                   <?php echo the_field('bank_logo', $bank_choise_rel) ?>" alt="">
+                                        </div>
+                                        <div class="card__header-title"><a href="<?php echo the_permalink() ?>"><?php echo the_title() ?></a></div>
+                                    </div>
+                                    <div class="card__header-info d-flex align-items-center">
+                                        <div class="card__rating d-flex align-items-center mr-3">
+                                            <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                                </svg></div>
+                                            <?php echo the_field('ratings_average'); ?>
+                                        </div>
+                                        <div class="card__icon d-flex align-items-center mr-3">
+                                            <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                                </svg></div>
+                                            <?php $comments_count = wp_count_comments(get_the_ID());
+                                            echo $comments_count->total_comments ?>
+                                        </div>
+                                        <div class="card__like d-flex align-items-center">
+                                            <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
+                                        </div>
+                                        <div class="card__header-actions ml-auto">
+                                            <a href=""><svg width="20" height="20" viewBox="0 0 20 20">
+                                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#circledots" x="0" y="0"></use>
+                                                </svg></a>
+                                        </div>
+                                    </div>
+                                    <div class="card__image my-3">
+                                        <a href="<?php echo the_permalink() ?>"><img src="<?php echo the_field('card_logo') ?>" alt=""></a>
+                                    </div>
+
+                                    <ul class="leaders">
+                                        <?php $loop_terms = wp_get_post_terms(get_the_ID(), 'bankcards', array('fields' => 'all'));
+                                        $loop_term_slug = $loop_terms[0]->slug;
+                                        $loop_term_id = $terms[0]->term_id; ?>
+                                        <?php if ($loop_term_slug == 'creditcard'): ?>
+                                            <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Лимит</div>
+                                                    <div class="leaders__item-value"><?php echo the_field('card_cred_limit') ?> р</div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Без %</div>
+                                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
+                                                                                        //$value = $field['value'];
+                                                                                        //$label = $field['choices'][ $value ];
+                                                                                        echo $field['label'] ?></div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Кэшбэк</div>
+                                                    <div class="leaders__item-value"><?php $card_cashback = get_field('card_cashback', $ID);
+                                                                                        echo $card_cashback; ?></div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Ставка</div>
+                                                    <div class="leaders__item-value">от <?php echo the_field('card_stavka') ?>%</div>
+                                                </li>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($loop_term_slug == 'installmentcard'): ?>
+                                            <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Лимит</div>
+                                                    <div class="leaders__item-value"><?php echo the_field('card_cred_limit') ?> р</div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Без %</div>
+                                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
+                                                                                        //$value = $field['value'];
+                                                                                        //$label = $field['choices'][ $value ];
+                                                                                        echo $field['label'] ?></div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Кэшбэк</div>
+                                                    <div class="leaders__item-value"><?php $card_cashback = get_field('card_cashback', $ID);
+                                                                                        echo $card_cashback; ?></div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Ставка</div>
+                                                    <div class="leaders__item-value">от <?php echo the_field('card_stavka') ?>%</div>
+                                                </li>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if ($loop_term_slug == 'debetcard'): ?>
+                                            <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Снятие без %</div>
+                                                    <div class="leaders__item-value">До <?php echo the_field('non_pecent_money') ?> р</div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">% на остаток</div>
+                                                    <div class="leaders__item-value">До <?php echo the_field('card_stavka_ostatok') ?> %</div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Тип кешбэка</div>
+                                                    <div class="leaders__item-value"><?php $field = get_field('card_cashback_type');
+                                                                                        //$value = $field['value'];
+                                                                                        //$label = $field['choices'][ $value ];
+                                                                                        echo $field['label'] ?></div>
+                                                </li>
+                                                <li class="leaders__item mb-1">
+                                                    <div class="leaders__item-title">Кешбэк</div>
+                                                    <div class="leaders__item-value"><?php $field = get_field('card_cashback');
+                                                                                        //$value = $field['value'];
+                                                                                        //$label = $field['choices'][ $value ];
+                                                                                        echo $field['label'] ?></div>
+                                                </li>
+                                            </div>
+                                        <?php endif; ?>
+
+                                    </ul>
+                                    <div class="card__actions mt-3 d-flex">
+                                        <a href="<?php echo the_permalink() ?>" class="btn btn-outline-primary btn-sm btn-block font-weight-normal">Подробнее</a>
+                                        <a class="btn__compare btn btn-outline-primary btn-sm btn-icon d-flex align-items-center justify-content-center ml-3" data-id="<?php echo get_the_id() ?>" data-tax="<?php echo $term_slug; ?>">
+                                            <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 17" xml:space="preserve">
+                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#stats" x="0" y="0"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <div class="card__footer mt-3">
+                                        <p>
+                                            <span><?php echo the_field('bank_phone', $bank_choise_rel) ?></span>
+                                            <span><?php echo the_field('bank_email', $bank_choise_rel) ?></span>
+                                            <span>Лицензия: <?php echo the_field('bank_license', $bank_choise_rel) ?></span>
+                                            <span><?php echo the_field('views', get_the_id()) ?> заявок</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / item -->
+                    <?php
+                        }
+                    }
+                    // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    wp_reset_postdata();
                     ?>
                 </div>
             </div>

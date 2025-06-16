@@ -16,7 +16,7 @@
            <div class="page__heading-top d-flex pr-0 justify-content-between align-items-center">
                <div>
                    <h1 class="page__heading-title mb-0"><?php echo the_field('calc_title') ?></h1>
-                   <h3 class="font-weight-semibold mt-2 mb-0"><?php echo the_field('calc_description') ?></h3>
+                   <div class="font-weight-semibold mt-2 mb-0"><?php echo the_field('calc_description') ?></div>
                </div>
            </div>
        </div>

@@ -497,7 +497,7 @@ $parent_cat_id = $current_cat->parent;
                                         $subtitle = $banner['subtitle'];
                                         $img = $banner['img'];
                                         $offer_link = $banner['offer_link'];
-                                        $card_bank_link = base64_encode($offer_link);
+                                        $offer_link_code = base64_encode($offer_link);
                                         $product_link = $banner['product_link'];
                                         $description = $banner['description'];
                                     ?>
@@ -522,12 +522,12 @@ $parent_cat_id = $current_cat->parent;
                                                 </div>
                                                 <div class="d-flex">
                                                     <span
-                                                        class="link-data btn btn-primary btn-radius-sm mr-3"
+                                                        class="link-data btn btn-primary mx-3"
                                                         data-link="<?= esc_attr($card_bank_link); ?>"
-                                                        onclick="<?php echo (get_metrika_for_category_offer($card_bank_link)); ?> return true;">
+                                                        onclick="<?php echo esc_js(get_metrika_for_category_offer($card_bank_link)); ?> return true;">
                                                         Оформить
                                                     </span>
-                                                   
+                                                    <a href="<?php echo $card_bank_link ?>" onclick="<?= get_metrika_for_category_offer($card_bank_link); ?> ym(35020350,'reachGoal','click_oformit_journal'); return true;" class="btn btn-primary btn-radius-sm mr-3">Оформить</a>
                                                     <a href="<?php echo $product_link ?>" class="btn btn-gray btn-radius-sm">Подробнее</a>
                                                 </div>
                                             </div>

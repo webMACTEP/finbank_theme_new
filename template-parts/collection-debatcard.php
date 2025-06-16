@@ -207,15 +207,11 @@ $type_collection = 'debetcard';
 										<label class="form-label" for="bankTop">Категория карты</label>
 										<select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
 											<option value="">Все</option>
-											<?php
-											$field = get_field_object('card_category', 167);
-											//$value = $field['value'];
-											//$label = $field['choices'][ $value ];
-											if (!empty($field['choices'])): ?>
-												<?php foreach ($field['choices'] as $value => $label): ?>
-													<option value="<?php echo $value ?>"><?php echo $label ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
+											<option value="cc10">Электронная</option>
+											<option value="cc20">Классическая</option>
+											<option value="cc30">Золотая</option>
+											<option value="cc40">Премиальная</option>
+											<option value="cc50">Виртуальная</option>
 
 										</select>
 									</div>
@@ -330,15 +326,11 @@ $type_collection = 'debetcard';
 										<label class="form-label" for="bankTop">Категория карты</label>
 										<select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
 											<option value="">Все</option>
-											<?php
-											$field = get_field_object('card_category', 167);
-											//$value = $field['value'];
-											//$label = $field['choices'][ $value ];
-											if (!empty($field['choices'])): ?>
-												<?php foreach ($field['choices'] as $value => $label): ?>
-													<option value="<?php echo $value ?>"><?php echo $label ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
+											<option value="cc10">Электронная</option>
+											<option value="cc20">Классическая</option>
+											<option value="cc30">Золотая</option>
+											<option value="cc40">Премиальная</option>
+											<option value="cc50">Виртуальная</option>
 
 										</select>
 									</div>
@@ -442,7 +434,7 @@ $type_collection = 'debetcard';
 				$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 				$args = array(
 					'post_type' => array('bankcard'),
-					'posts_per_page' => 12,
+					'posts_per_page' => 20,
 					'post__in' => $allposts,
 					'orderby' => 'name',
 					'order' => 'DESC',
@@ -909,7 +901,7 @@ $type_collection = 'debetcard';
 				// Тут вручную задаёте три группы: в каждую — массив ID категорий
 				$wrappers = [
 					['cats' => [85]],
-					['cats' => [81, 86, 83]],
+					['cats' => [86, 83]],
 					['cats' => [82, 84]],
 				];
 

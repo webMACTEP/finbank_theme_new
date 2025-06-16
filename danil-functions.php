@@ -13,11 +13,25 @@ define('RATINGS_IMG_EXT', apply_filters('wp_postratings_image_extension', 'gif')
 //}
 
 
-function  get_clear_url($url = '')
+/**
+ * Очищает URL от пагинации /page/N/ (и любых query-строк),
+ * возвращая путь с завершающим слешем.
+ *
+ * @param  string $url Полный или относительный URL.
+ * @return string      Очищённый URL.
+ */
+function get_clear_url(string $url = ''): string
 {
-    $url_new = explode('/', $url);
-    $pageIndex = array_search('page', $url_new); // 3
-    $url_arr = array_slice($url_new, 0, $pageIndex);
-    $url_clear = implode('/', $url_arr);
-    return $url_clear . '/';
+    // Отделяем чистый путь от query-строки
+    $path = parse_url($url, PHP_URL_PATH);
+
+    // Убираем '/page/число/' в конце (если есть)
+    $path = preg_replace('#/page/\d+/?$#i', '/', $path);
+
+    // Гарантируем завершающий слеш
+    if (substr($path, -1) !== '/') {
+        $path .= '/';
+    }
+
+    return $path;
 }

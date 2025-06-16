@@ -25,7 +25,7 @@
 	    <div class="container">
 	        <div class="page__heading-top d-flex justify-content-between align-items-center">
 	            <div>
-	                <h1 class="page__heading-title mb-0">Лучшие предложения</h1>
+	                <h1 class="page__heading-title mb-0">Лучшие предложения по картам рассрочки</h1>
 	            </div>
 	            <div class="page__heading-icon"><img src="<?php bloginfo('template_url'); ?>/img/icon__title-hand.png" alt="Лучшие предложения"></div>
 	        </div>

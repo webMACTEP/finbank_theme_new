@@ -266,7 +266,7 @@ jQuery(function ($) {
         e.preventDefault();
 
         const nextPage = card_loadmore_params.current_page + 1;
-        const perPage = 12;
+        const perPage = 20;
         const term = termValue;
         const order = $(".cred-order-select option:selected").val();
         const exclude = $(".article__item-first").data("id") || "";
@@ -288,6 +288,7 @@ jQuery(function ($) {
           nextPage +
           "&posts_per_page=" +
           perPage +
+          "&post_parent=0" +
           (exclude ? "&exclude_post=" + exclude : "");
 
         console.log("Load more postData:", postData);

@@ -52,69 +52,133 @@ add_action('wp_enqueue_scripts', 'enqueue_ratings_scripts');
 add_action('wp_ajax_submit_rating', 'handle_submit_rating');
 add_action('wp_ajax_nopriv_submit_rating', 'handle_submit_rating');
 
+// function handle_submit_rating()
+// {
+//     // Проверка nonce
+//     $nonce = isset($_POST['security']) ? sanitize_text_field($_POST['security']) : '';
+//     if (!wp_verify_nonce($nonce, 'submit-rating-nonce')) {
+//         wp_send_json_error('Неверный токен безопасности.');
+//         wp_die();
+//     }
+
+//     // Получение данных
+//     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+//     $rating_block = isset($_POST['rating_block']) ? sanitize_text_field($_POST['rating_block']) : '';
+//     $rating_index = isset($_POST['rating_index']) ? intval($_POST['rating_index']) : -1;
+//     $rating_value = isset($_POST['rating_value']) ? intval($_POST['rating_value']) : 0;
+
+//     // Валидация данных
+//     if ($post_id <= 0 || $rating_index < 0 || $rating_value < 1 || $rating_value > 5) {
+//         wp_send_json_error('Некорректные данные рейтинга.');
+//         wp_die();
+//     }
+
+//     // Проверка существования поста
+//     if (!get_post($post_id)) {
+//         wp_send_json_error('Пост не найден.');
+//         wp_die();
+//     }
+
+//     // Получение Repeater полей на основе rating_block
+//     $field_name = $rating_block; // Например, 'ratings_list' или 'additional_ratings_list'
+
+//     if (have_rows($field_name, $post_id)) {
+//         $rows = get_field($field_name, $post_id);
+//         if (isset($rows[$rating_index])) {
+//             // Получение текущих значений
+//             $current_total = isset($rows[$rating_index]['rating_total']) ? intval($rows[$rating_index]['rating_total']) : 0;
+//             $current_count = isset($rows[$rating_index]['rating_count']) ? intval($rows[$rating_index]['rating_count']) : 0;
+
+//             // Обновление значений
+//             $new_total = $current_total + $rating_value;
+//             $new_count = $current_count + 1;
+//             $new_average = $new_total / $new_count;
+//             $new_average = round($new_average, 1);
+
+//             // Обновление Repeater строки
+//             $rows[$rating_index]['rating_total'] = $new_total;
+//             $rows[$rating_index]['rating_count'] = $new_count;
+//             $rows[$rating_index]['rating'] = $new_average;
+
+//             // Сохранение обновлённых данных
+//             update_field($field_name, $rows, $post_id);
+
+//             // Возвращаем успешный ответ
+//             wp_send_json_success(array('new_average' => $new_average));
+//         } else {
+//             wp_send_json_error('Неверный индекс рейтинга.');
+//         }
+//     } else {
+//         wp_send_json_error('Рейтинги не найдены.');
+//     }
+
+//     wp_die();
+// }
+
 function handle_submit_rating()
 {
     // Проверка nonce
     $nonce = isset($_POST['security']) ? sanitize_text_field($_POST['security']) : '';
-    if (!wp_verify_nonce($nonce, 'submit-rating-nonce')) {
+    if (! wp_verify_nonce($nonce, 'submit-rating-nonce')) {
         wp_send_json_error('Неверный токен безопасности.');
         wp_die();
     }
 
-    // Получение данных
-    $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-    $rating_block = isset($_POST['rating_block']) ? sanitize_text_field($_POST['rating_block']) : '';
-    $rating_index = isset($_POST['rating_index']) ? intval($_POST['rating_index']) : -1;
-    $rating_value = isset($_POST['rating_value']) ? intval($_POST['rating_value']) : 0;
+    // Получение данных из AJAX
+    $post_id       = isset($_POST['post_id'])       ? intval($_POST['post_id'])             : 0;
+    $rating_block  = isset($_POST['rating_block'])  ? sanitize_text_field($_POST['rating_block']) : '';
+    $rating_index  = isset($_POST['rating_index'])  ? intval($_POST['rating_index'])        : -1;
+    $rating_value  = isset($_POST['rating_value'])  ? intval($_POST['rating_value'])        : 0;
 
-    // Валидация данных
+    // Валидация
     if ($post_id <= 0 || $rating_index < 0 || $rating_value < 1 || $rating_value > 5) {
         wp_send_json_error('Некорректные данные рейтинга.');
         wp_die();
     }
-
-    // Проверка существования поста
-    if (!get_post($post_id)) {
+    if (! get_post($post_id)) {
         wp_send_json_error('Пост не найден.');
         wp_die();
     }
 
-    // Получение Repeater полей на основе rating_block
-    $field_name = $rating_block; // Например, 'ratings_list' или 'additional_ratings_list'
+    $field_name = $rating_block; // e.g. 'additional_ratings_list'
 
-    if (have_rows($field_name, $post_id)) {
-        $rows = get_field($field_name, $post_id);
-        if (isset($rows[$rating_index])) {
-            // Получение текущих значений
-            $current_total = isset($rows[$rating_index]['rating_total']) ? intval($rows[$rating_index]['rating_total']) : 0;
-            $current_count = isset($rows[$rating_index]['rating_count']) ? intval($rows[$rating_index]['rating_count']) : 0;
+    // 1) Пытаемся получить значения у конкретного поста
+    $rows    = get_field($field_name, $post_id);
+    $context = $post_id;
 
-            // Обновление значений
-            $new_total = $current_total + $rating_value;
-            $new_count = $current_count + 1;
-            $new_average = $new_total / $new_count;
-            $new_average = round($new_average, 1);
-
-            // Обновление Repeater строки
-            $rows[$rating_index]['rating_total'] = $new_total;
-            $rows[$rating_index]['rating_count'] = $new_count;
-            $rows[$rating_index]['rating'] = $new_average;
-
-            // Сохранение обновлённых данных
-            update_field($field_name, $rows, $post_id);
-
-            // Возвращаем успешный ответ
-            wp_send_json_success(array('new_average' => $new_average));
-        } else {
-            wp_send_json_error('Неверный индекс рейтинга.');
-        }
-    } else {
-        wp_send_json_error('Рейтинги не найдены.');
+    // 2) Если у поста нет своего Repeater — читаем из опций
+    if (empty($rows) || ! is_array($rows)) {
+        $rows    = get_field($field_name, 'option');
+        $context = 'option';
     }
 
+    // Проверяем, что такая строка действительно есть
+    if (! is_array($rows) || ! isset($rows[$rating_index])) {
+        wp_send_json_error('Рейтинги не найдены.');
+        wp_die();
+    }
+
+    // Получаем текущие метрики
+    $current_total  = isset($rows[$rating_index]['rating_total']) ? intval($rows[$rating_index]['rating_total']) : 0;
+    $current_count  = isset($rows[$rating_index]['rating_count']) ? intval($rows[$rating_index]['rating_count']) : 0;
+
+    // Пересчитываем
+    $new_total   = $current_total + $rating_value;
+    $new_count   = $current_count + 1;
+    $new_average = round($new_total / $new_count, 1);
+
+    // Обновляем массив строк
+    $rows[$rating_index]['rating_total'] = $new_total;
+    $rows[$rating_index]['rating_count'] = $new_count;
+    $rows[$rating_index]['rating']       = $new_average;
+
+    // Сохраняем обратно туда, где брали (в пост или в опции)
+    update_field($field_name, $rows, $context);
+
+    // Отдаем клиенту новый средний рейтинг
+    wp_send_json_success(array('new_average' => $new_average));
     wp_die();
 }
-
 
 
 // Регистрация Типа Записи additional_comment с поддержкой иерархии
@@ -201,8 +265,8 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
                 $avatar_num = ($random < 10) ? sprintf("0%d", $random) : $random;
                 // Формируем URL изображения; используем content_url(), чтобы получить URL к папке wp-content
                 $author_avatar = content_url("avatars/avatar{$avatar_num}.jpg");
-            }
-?>
+            } ?>
+
             <li class="additional-comment">
                 <div class="additional-comment__header">
                     <div class="additional-comment__avatar">
@@ -254,7 +318,7 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
                 <div class="reply-form-container" id="reply-form-container-<?php echo esc_attr($comment_id); ?>" style="display: none; margin-top: 15px;"></div>
                 <?php
                 // Рекурсивный вызов для отображения ответов
-                display_additional_comments(get_the_ID(), $comment_id, $level + 1);
+                display_additional_comments($post_id, $comment_id, $level + 1);
                 ?>
             </li>
     <?php
@@ -263,6 +327,7 @@ function display_additional_comments($post_id, $parent = 0, $level = 0)
         wp_reset_postdata();
     }
 }
+
 
 
 // Функция для установки заголовка комментария после сохранения через ACF
@@ -505,25 +570,8 @@ add_action('wp_ajax_handle_like_dislike_ajax', 'handle_like_dislike_ajax');
 add_action('wp_ajax_nopriv_handle_like_dislike_ajax', 'handle_like_dislike_ajax');
 
 
-/**
- * Фильтр для модификации sitemap_index в Yoast SEO
- * Название хука может меняться в зависимости от версии плагина.
- * В старых версиях он назывался 'wpseo_sitemap_index', 
- * в новых — 'wpseo_sitemap_index_xml'
- */
-add_filter('wpseo_sitemap_index', 'add_comments_sitemap');
 
-function add_comments_sitemap($sitemap_index)
-{
-    // Вставляем нужную строку со своей картой
-    // Важно: синтаксис XML должен быть корректен.
-    $new_sitemap = "\n<sitemap>\n<loc>" . home_url('comments-sitemap.xml') . "</loc>\n</sitemap>\n";
 
-    // Добавляем в конец существующего индекса
-    $sitemap_index .= $new_sitemap;
-
-    return $sitemap_index;
-}
 
 /**
  * Добавляем поле рейтинга (5 звёзд) к форме комментариев
@@ -553,7 +601,7 @@ function mytheme_add_comment_rating_field()
             <label for="rating-1" title="1 звезда">★</label>
         </span>
     </div>
-<?php
+    <?php
 }
 // Подключаем поле для авторизованных пользователей
 add_action('comment_form_logged_in_after', 'mytheme_add_comment_rating_field');
@@ -652,9 +700,11 @@ function is_collection_page()
 }
 function get_current_page_number_from_uri()
 {
-    $uri = $_SERVER['REQUEST_URI'];
-    if (preg_match('/\/page\/(\d+)(\/|$)/', $uri, $matches)) {
-        return intval($matches[1]);
+    if (is_paged()) {
+        $uri = $_SERVER['REQUEST_URI'];
+        if (preg_match('/\/page\/(\d+)(\/|$)/', $uri, $matches)) {
+            return intval($matches[1]);
+        }
     }
     return 1;
 }
@@ -763,3 +813,522 @@ add_filter('query_vars', 'add_comments_query_var');
 
 // Принудительно включить комментарии в XML-карту сайта Yoast SEO
 add_filter('wpseo_xml_sitemaps_exclude_comments', '__return_false');
+
+
+
+// Убираем любой query-стринг (включая ?v=...) из URL изображений
+function remove_image_version_query(string $url): string
+{
+    // Если нужно удалять только параметр v:
+    // return remove_query_arg( 'v', $url );
+    // А если убрать всё, что после знака ?:
+    return strtok($url, '?');
+}
+
+// Применяем фильтр ко всем URL вложений
+add_filter('wp_get_attachment_url', 'remove_image_version_query', 10, 1);
+
+// Для srcset (мобильная/десктопная подгрузка)
+add_filter('wp_calculate_image_srcset', function (array $sources): array {
+    foreach ($sources as &$src) {
+        $src['url'] = remove_image_version_query($src['url']);
+    }
+    return $sources;
+}, 10, 1);
+
+// Для фоновых изображений и прочих случаев, когда используется wp_get_attachment_image_src()
+add_filter('wp_get_attachment_image_src', function ($image): array {
+    if (is_array($image) && ! empty($image[0])) {
+        $image[0] = remove_image_version_query($image[0]);
+    }
+    return $image;
+}, 10, 1);
+
+
+/**
+ * Перехватим прямой запрос к /comments-sitemap.xml
+ * и отдадим наш sitemap — без всяких правил перезаписи.
+ */
+add_action('template_redirect', function () {
+    // Берём текущий URI
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    // Если он точно кончается на /comments-sitemap.xml
+    if (preg_match('#/comments-sitemap\.xml$#', $uri)) {
+        // Выводим карту сразу и выходим
+        render_comments_sitemap();
+    }
+});
+
+/**
+ * Функция, генерирующая XML-сайтмап комментариев.
+ */
+function render_comments_sitemap()
+{
+    header('Content-Type: application/xml; charset=' . get_bloginfo('charset'), true);
+
+    echo '<?xml version="1.0" encoding="' . get_bloginfo('charset') . '"?>' . "\n";
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+    $comments = get_comments([
+        'status' => 'approve',
+        'parent' => 0,
+        'type'   => 'comment',
+        'number' => 5000,
+    ]);
+
+    foreach ($comments as $c) {
+        $link = esc_url(get_comment_link($c));
+        $mod  = get_comment_date('c', $c);
+        echo "  <url>\n";
+        echo "    <loc>{$link}</loc>\n";
+        echo "    <lastmod>{$mod}</lastmod>\n";
+        echo "  </url>\n";
+    }
+
+    echo '</urlset>';
+    exit;
+}
+
+
+/**
+ * Фильтр для модификации sitemap_index в Yoast SEO
+ * Название хука может меняться в зависимости от версии плагина.
+ * В старых версиях он назывался 'wpseo_sitemap_index', 
+ * в новых — 'wpseo_sitemap_index_xml'
+ */
+add_filter('wpseo_sitemap_index', 'add_comments_sitemap', 10, 1);
+function add_comments_sitemap($sitemap_index)
+{
+    $sitemap_index .= "\n<sitemap>\n";
+    $sitemap_index .= "<loc>" . esc_url(home_url('/comments-sitemap.xml')) . "</loc>\n";
+    $sitemap_index .= "<lastmod>" . date('c') . "</lastmod>\n";
+    $sitemap_index .= "</sitemap>\n";
+    return $sitemap_index;
+}
+
+
+add_action('wp_ajax_load_more_banks',       'load_more_banks_callback');
+add_action('wp_ajax_nopriv_load_more_banks', 'load_more_banks_callback');
+
+function load_more_banks_callback()
+{
+    // 1) Получаем страницу
+    $paged = isset($_POST['paged']) ? intval($_POST['paged']) : 1;
+    // 2) Сколько выводим за раз — дублируем из шаблона
+    $posts_per_page = 20;
+
+    // 3) Сразу вычисляем стартовую величину для нумерации
+    $start_index = ($paged - 1) * $posts_per_page;
+    $counter     = $start_index;
+
+    // 4) Собираем запрос
+    $args = [
+        'post_type'      => 'banks',
+        'posts_per_page' => $posts_per_page,
+        'paged'          => $paged,
+        'orderby'        => [
+            'ratings_average' => 'DESC',
+            'name'            => 'DESC',
+        ],
+        'order'          => 'DESC',
+        'meta_query'     => [
+            'relation' => 'OR',
+            [
+                'key'     => 'ratings_average',
+                'compare' => 'EXISTS',
+            ],
+            [
+                'key'     => 'ratings_average',
+                'compare' => 'NOT EXISTS',
+            ],
+        ],
+    ];
+
+    $query = new WP_Query($args);
+    $html  = '';
+
+    if ($query->have_posts()) {
+        ob_start();
+        while ($query->have_posts()) {
+            $query->the_post();
+            // 5) Увеличиваем счётчик и выводим
+            $counter++;
+    ?>
+            <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-4 query__card">
+                <a href="<?php the_permalink() ?>" class="card card__horizontal bank__item">
+                    <div class="card-container p-2">
+                        <div class="d-flex">
+                            <div class="bank__item-img mr-2">
+                                <img src="<?php echo esc_url(get_field('bank_logo')); ?>"
+                                    alt="<?php echo esc_attr(get_post_meta(get_field('bank_logo', false), '_wp_attachment_image_alt', true)); ?>">
+                            </div>
+                            <div class="bank__item-content">
+                                <div class="card__header-title mt-1 mb-2"><?php the_title() ?></div>
+                                <div class="card__header-info d-flex align-items-center">
+                                    <div class="card__rating d-flex align-items-center mr-3">
+                                        <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                            </svg></div>
+                                        <?php echo esc_html(get_field('ratings_average')); ?>
+                                    </div>
+                                    <div class="position-relative card__icon d-flex align-items-center mr-3">
+                                        <a href="<?php the_permalink() ?>#comments" class="stretched-link mr-2">
+                                            <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                            </svg>
+                                        </a>
+                                        <?php echo esc_html(get_comments_number(get_the_ID())); ?>
+                                    </div>
+                                    <div class="card__header-num bank_num">
+                                        №<?php echo $counter; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <?php
+        }
+        wp_reset_postdata();
+        $html = ob_get_clean();
+    }
+
+    wp_send_json_success([
+        'html'     => $html,
+        'max_page' => $query->max_num_pages,
+    ]);
+}
+
+
+function theme_enqueue_load_more()
+{
+    // регистрируем и локализуем
+    wp_register_script(
+        'load-more-banks',
+        get_template_directory_uri() . '/js/load-more-banks.js',
+        ['jquery'],
+        null,
+        true
+    );
+    wp_localize_script('load-more-banks', 'load_more_banks', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+    ]);
+    wp_enqueue_script('load-more-banks');
+}
+add_action('wp_enqueue_scripts', 'theme_enqueue_load_more');
+
+/**
+ * Редирект всех пагинированных страниц архива banks на первую страницу
+ */
+function fb_redirect_banks_paged_to_root()
+{
+    // проверяем, что это архив кастомного типа записей "banks"
+    // и что мы находимся не на первой странице
+    if (is_post_type_archive('banks') && is_paged()) {
+        // получаем URL корневой страницы архива banks
+        $archive_url = get_post_type_archive_link('banks');
+        // делаем 301-редирект
+        wp_redirect($archive_url, 301);
+        exit;
+    }
+}
+add_action('template_redirect', 'fb_redirect_banks_paged_to_root');
+
+/**
+ * Редирект всех пагинированных таксономий bankcards на их корневую страницу
+ */
+function fb_redirect_bankcards_taxonomy_paged()
+{
+    if (is_tax('bankcards') && is_paged()) {
+        // Получаем текущий объект терма
+        $term = get_queried_object();
+        if ($term && ! is_wp_error($term)) {
+            // Ссылка на первую страницу архива терма
+            $term_link = get_term_link($term);
+            if (! is_wp_error($term_link)) {
+                wp_redirect($term_link, 301);
+                exit;
+            }
+        }
+    }
+}
+add_action('template_redirect', 'fb_redirect_bankcards_taxonomy_paged');
+
+
+
+function finbank_enqueue_scripts()
+{
+    wp_enqueue_script('finbank-scripts', get_template_directory_uri() . '/js/load-comments.js', array('jquery'), null, true);
+    wp_localize_script('finbank-scripts', 'finbank_ajax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'post_id' => get_the_ID(),
+    ));
+}
+add_action('wp_enqueue_scripts', 'finbank_enqueue_scripts');
+
+
+
+
+add_action('wp_ajax_load_more_comments', 'load_more_comments');
+add_action('wp_ajax_nopriv_load_more_comments', 'load_more_comments');
+
+function load_more_comments()
+{
+    // убираем вывод ошибок в AJAX
+    @ini_set('display_errors', 0);
+    @error_reporting(0);
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    $page              = max(1, intval($_POST['page']));
+    $post_id           = intval($_POST['post_id']);
+    $comments_per_page = intval($_POST['comments_per_page']);
+    $offset            = ($page - 1) * $comments_per_page;
+
+    $root_comments = get_comments([
+        'post_id'      => $post_id,
+        'status'       => 'approve',
+        'number'       => $comments_per_page,
+        'offset'       => $offset,
+        'hierarchical' => false,  // только корневые
+    ]);
+
+    if ($root_comments) {
+        foreach ($root_comments as $comment) {
+            $comment_id      = $comment->comment_ID;
+            $comment_post_id = $comment->comment_post_ID;
+
+            // собираем ответы
+            $children = get_comments([
+                'status'       => 'approve',
+                'parent'       => $comment_id,
+                'hierarchical' => false,
+            ]);
+            $responses = count($children);
+
+            // user info
+            $user      = get_userdata($comment->user_id);
+            $user_role = $user ? ($user->roles[0] ?? 'Гость') : 'Гость';
+
+            // --- открыли контейнер комментария ---
+        ?>
+            <div class="comments__item mb-3" id="comment-<?php echo $comment_id; ?>">
+                <div class="comment__one">
+                    <div class="comment__one-header d-flex align-items-center">
+                        <div class="comment__one-img mr-3">
+                            <img src="<?php echo esc_url(get_avatar_url($comment, ['default' => 'identicon'])); ?>"
+                                alt="<?php echo esc_attr($comment->comment_author); ?>">
+                        </div>
+                        <div class="d-md-flex justify-content-md-between w-100">
+                            <div class="comment__one-title mb-2 mb-md-0"><?php echo esc_html($comment->comment_author); ?></div>
+                            <div class="d-flex align-items-center">
+                                <div class="card__icon d-flex align-items-center ml-3 ml-sm-4">
+                                    <div class="mr-2">
+                                        <svg width="14" height="19">
+                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person"></use>
+                                        </svg>
+                                    </div>
+                                    <?php echo esc_html($user_role); ?>
+                                </div>
+                                <div class="card__icon d-flex align-items-center ml-3 ml-sm-4">
+                                    <div class="mr-2">
+                                        <svg width="18" height="19">
+                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#house"></use>
+                                        </svg>
+                                    </div>
+                                    <?php echo esc_html(get_the_title($comment_post_id)); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment__one-content">
+                        <?php echo wp_kses_post($comment->comment_content); ?>
+                    </div>
+                    <div class="comment__one-footer d-flex flex-wrap align-items-center">
+                        <?php
+                        // ссылка «Ответить»
+                        echo comment_reply_link([
+                            'reply_text' => 'Ответить',
+                            'depth'      => 1,
+                            'max_depth'  => 5
+                        ], $comment_id, $comment_post_id);
+                        ?>
+                        <div class="comment__one-date mr-md-4 order-md-1">
+                            <?php echo get_comment_date('d.m.y', $comment_id); ?> в <?php echo get_comment_date('H:i', $comment_id); ?>
+                        </div>
+                        <div class="comment__one-like order-md-4 ml-auto d-flex justify-content-between">
+                            <?php comments_like_dislike($comment_id); ?>
+                        </div>
+                        <?php if ($responses > 0): ?>
+                            <div class="comment__one-btn order-md-2 mr-md-4">
+                                <button class="btn btn-outline-light btn-xs collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#answ__<?php echo $comment_id; ?>"
+                                    aria-expanded="false">
+                                    <?php echo $responses; ?>
+                                    <?php
+                                    if ($responses === 1) {
+                                        echo 'Ответ';
+                                    } elseif ($responses <= 4) {
+                                        echo 'Ответа';
+                                    } else {
+                                        echo 'Ответов';
+                                    }
+                                    ?>
+                                    <svg width="12" height="6">
+                                        <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#arrow"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <?php if ($responses > 0): // здесь ваши ответы 
+                ?>
+                    <div class="comment__one-collapse collapse" id="answ__<?php echo $comment_id; ?>">
+                        <div class="comment__one-hidden">
+                            <?php foreach ($children as $reply):
+                                $reply_id       = $reply->comment_ID;
+                                $reply_date     = get_comment_date('d.m.y', $reply_id);
+                                $reply_time     = get_comment_date('H:i', $reply_id);
+                                $reply_user     = get_userdata($reply->user_id);
+                                $reply_role     = $reply_user ? ($reply_user->roles[0] ?? 'Гость') : 'Гость';
+                            ?>
+                                <div class="comment__one">
+                                    <div class="comment__one-header d-flex align-items-center">
+                                        <div class="comment__one-img mr-3">
+                                            <img src="<?php echo esc_url(get_avatar_url($reply, ['default' => 'identicon'])); ?>" alt="">
+                                        </div>
+                                        <div class="d-md-flex justify-content-md-between w-100">
+                                            <div class="comment__one-title mb-2 mb-md-0">
+                                                <?php echo esc_html($reply->comment_author); ?>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="card__icon d-flex align-items-center ml-3 ml-sm-4">
+                                                    <div class="mr-2">
+                                                        <svg width="14" height="19">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <?php echo esc_html($reply_role); ?>
+                                                </div>
+                                                <div class="card__icon d-flex align-items-center ml-3 ml-sm-4">
+                                                    <div class="mr-2">
+                                                        <svg width="18" height="19">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#house"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <?php echo esc_html(get_the_title($comment_post_id)); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment__one-content">
+                                        <?php echo wp_kses_post($reply->comment_content); ?>
+                                    </div>
+                                    <div class="comment__one-footer d-flex flex-wrap align-items-center">
+                                        <div class="comment__one-date mr-md-4 order-md-1">
+                                            <?php echo "{$reply_date} в {$reply_time}"; ?>
+                                        </div>
+                                        <div class="comment__one-like order-md-4 ml-auto d-flex justify-content-between">
+                                            <?php comments_like_dislike($reply_id); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+            </div><!-- /.comments__item -->
+    <?php
+        } // endforeach root_comments
+    } else {
+        echo '<p>Больше комментариев нет.</p>';
+    }
+
+    wp_die();
+}
+
+
+/**
+ * Выводит AJAX-пагинацию для комментариев CPT “zaimy”
+ * без перезагрузки URL.
+ *
+ * @param int|null $total_comments  Общее количество комментариев. 
+ *                                  Если не задано — считает автоматически.
+ * @param int|null $current_page    Текущая «страница» (партия). 
+ *                                  Если не задано — берётся из get_query_var('paged').
+ * @param int      $per_page        Сколько комментариев на партию.
+ */
+function my_comments_ajax_pagination($total_comments = null, $current_page = null, $per_page = 15)
+{
+    global $wpdb;
+
+    // Если $current_page не передан, попробуем взять из глобальной переменной шаблона:
+    if (empty($current_page) && isset($GLOBALS['paged'])) {
+        $current_page = intval($GLOBALS['paged']);
+    }
+
+    // Если всё ещё пусто — ставим 1
+    if (empty($current_page)) {
+        $current_page = 1;
+    }
+
+    // 2) Считаем общее число комментариев, если не передано
+    if (empty($total_comments)) {
+        $posts = get_cpt_ids('zaimy'); // ваш метод получения ID всех нужных записей
+        $in = implode(',', array_map('absint', $posts));
+        $total_comments = (int) $wpdb->get_var("
+            SELECT COUNT(*) 
+            FROM {$wpdb->comments}
+            WHERE comment_post_ID IN ({$in})
+              AND comment_approved = 1
+              AND comment_parent   = 0
+        ");
+    }
+
+    // 3) Вычисляем общее число «страниц»
+    $total_pages = (int) ceil($total_comments / $per_page);
+
+    // 4) Если всего одна страница — ничего не выводим
+    if ($total_pages <= 1) {
+        return;
+    }
+
+    // 5) Рендерим HTML-контейнер с кнопками
+    ?>
+    <div class="comments-ajax-pagination d-flex justify-content-center align-items-center"
+     data-post-id="<?php echo get_the_ID(); ?>"
+     data-total-pages="<?php echo esc_attr( $total_pages ); ?>"
+     data-current-page="<?php echo esc_attr( $current_page ); ?>"
+     data-per-page="<?php echo esc_attr( $per_page ); ?>">
+    <button class="btn btn-primary js-comments-next" data-page="<?php echo $current_page+1; ?>">
+        Загрузить ещё
+    </button>
+</div>
+
+<?php
+}
+
+add_action( 'wp_enqueue_scripts', function() {
+    // Подключаем скрипт
+    wp_enqueue_script(
+        'comments-ajax-pagination',
+        get_template_directory_uri() . '/js/comments-ajax-pagination.js',
+        [ 'jquery' ],
+        null,
+        true
+    );
+
+    // Передаём в JS URL для AJAX-запросов
+    wp_localize_script( 'comments-ajax-pagination', 'load_more_params', [
+        'ajax_url'          => admin_url( 'admin-ajax.php' ),
+        'comments_per_page' => 15,
+    ] );
+} );
+

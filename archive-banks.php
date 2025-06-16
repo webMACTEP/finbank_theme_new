@@ -54,6 +54,7 @@ $pagename = get_query_var('pagename');
                         $max_pages = $wp_query->max_num_pages;
                         $args = array(
                             'post_type' => 'banks',
+                            'posts_per_page' => 20, // сколько хотите выводить
                             //'meta_key' => 'ratings_average',
                             'orderby' => array('ratings_average' => 'desc', 'name' => 'desc',),
                             'order' => 'DESC',
@@ -124,8 +125,9 @@ $pagename = get_query_var('pagename');
                     <!-- pagination -->
                     <div class="pagination flex-column">
                         <?php if ($paged < $max_pages): ?>
-                            <button class="btn btn-outline-gray btn-block load_more_btn"
-                                data-max_pages="<?php echo $max_pages ?>" data-paged="<?php echo $paged ?>">
+                            <button class="btn btn-outline-gray btn-block load_more_btn_banks"
+                                data-max_pages="<?php echo $max_pages ?>"
+                                data-paged="<?php echo $paged ?>">
                                 Больше решений
                             </button>
                         <?php endif; ?>

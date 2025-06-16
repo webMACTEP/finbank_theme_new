@@ -79,13 +79,13 @@ global $wp_query; ?>
                <div class="col-12 col-md-8 col-lg-8">
                    <div class="expert__view-info">
                        <h1><?php echo the_title() ?></h1>
-                       <h4 class="font-weight-semibold"><?php echo the_field('expert_subtitle') ?></h4>
+                       <div class="font-weight-semibold"><?php echo the_field('expert_subtitle') ?></div>
                        <?php if( have_rows('expert_description') ): ?>
                             <?php while( have_rows('expert_description') ): the_row(); 
                                 $title = get_sub_field('title');
                                 $text = get_sub_field('text');
                                 ?>
-                                <h3 class="font-weight-semibold"><?php echo $title ?></h3>
+                                <h2 class="font-weight-semibold"><?php echo $title ?></h2>
                                 <p><?php echo $text ?></p>
                             <?php endwhile; ?>
                         <?php endif; ?>
@@ -296,7 +296,7 @@ $args = array(
     'order' => 'DESC',
     //'orderby' => 'date',
     //'posts_per_page' => -1,
-    'posts_per_page' => 12,
+    'posts_per_page' => 20,
     'paged' => $paged,
 ); ?>
 <?php $wp_query = new WP_Query( $args );

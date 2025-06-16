@@ -6,7 +6,7 @@ function code_type_1v2($atts)
     if (!empty($atts['id']) && !empty($atts['type'])):
         $meta = get_post_meta($atts['id']);
         $back = $atts['back'];
-        
+
         // Получаем альтернативный заголовок для текущей записи
         $alter_title = get_field('alter_title', $atts['id']);
         $title = !empty($alter_title) ? esc_html($alter_title) : esc_html(get_the_title($atts['id']));
@@ -175,6 +175,7 @@ function code_type_5v2($atts)
 
         // Получаем ссылку на пост
         $url = get_the_permalink($atts['id']);
+        
 
         // Формируем кнопки
         $oform = '<a href="' . esc_url($url) . '" class="oform" onclick="ym(35020350,\'reachGoal\',\'click_shortcode_CTA_product\'); return true;">Оформить</a>';
@@ -195,7 +196,7 @@ function code_type_5v2($atts)
                              <div class="code5title">' . $title . '</div>
                              <div class="code5description">' . $content . '</div>
                              <div class="code5chars ">';
-        
+
         // Обработка различных типов
         if ($type == 'credit_card') {
             if (!empty($meta['card_cred_limit'][0])) {
@@ -295,19 +296,19 @@ function code_type_5v2($atts)
         $html .= '			
                  </div>
                  <div class="code5footer">';
-        
+
         $html .= $oform;
         $html .= $more;
         $html .= '</div>
              </div>
              <div class="code5image">';
-             
+
         if (!empty($meta['card_logo'][0])) {
             $logo_alt = get_post_meta($meta['card_logo'][0], '_wp_attachment_image_alt', true);
             $image = wp_get_attachment_image_src($meta['card_logo'][0], 'large');
             $html .= '<img alt="' . esc_attr($logo_alt) . '" src="' . esc_url($image[0]) . '" />';
         }
-        
+
         $html .= '</div>
              
              <div class="code5footer_mobile"><div class="col5">';

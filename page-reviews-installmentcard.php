@@ -18,7 +18,7 @@ endif;
 // Отзывы вариант 1
 
 $tax_id = 8;
-$title_term1 = "Карты рассрочки";
+$title_term1 = "Отзывы о картах рассрочки";
 $title_term2 = "все карты рассрочки";
 $calc_link = get_page_link(149);
 $link = get_term_link($tax_id, '');
@@ -42,7 +42,7 @@ $news_id = "15";
             <div class="page__heading-top d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="page__heading-title mb-0"><?php echo $title_term1 ?></h1>
-                    <h3 class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</h3>
+                    <div class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</div>
                 </div>
                 <div class="page__heading-icon"><img src="<?php bloginfo('template_url'); ?>/img/icon__title-like.png" alt=""></div>
             </div>

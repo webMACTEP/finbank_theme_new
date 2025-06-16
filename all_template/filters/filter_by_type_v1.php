@@ -10,7 +10,7 @@ $filter_price = get_filter_price();
     <div class="col-12 col-md-6 col-lg-6 col-xl-6 order-1">
         <div class="range">
             <div class="d-flex justify-content-between">
-                <div class="range__label">Кредитный лимит111, ₽</div>
+                <div class="range__label">Кредитный лимит, ₽</div>
                 <input max="<?= $filter_price['install_inputs_range']['max']; ?>" type="text" class="range__value cred_limit" min="0">
             </div>
             <input max="<?= $filter_price['install_inputs_range']['max']; ?>" class="range__input" name="cred_limit" type="range" min="0">

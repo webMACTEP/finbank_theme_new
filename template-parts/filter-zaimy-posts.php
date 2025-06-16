@@ -26,6 +26,7 @@ $date_actually = get_the_modified_date('d.m.Y', get_the_ID());
 
 $encoded_link = get_field('card_bank_link');
 $card_bank_link = base64_encode($encoded_link);
+$card_other_state =  get_field('z_other_statements');
 
 // Функция YearTextArg должна быть определена ранее в коде
 // function YearTextArg($number) { /* реализация */ }
@@ -81,7 +82,7 @@ $card_bank_link = base64_encode($encoded_link);
                             </div>
                             <div class="position-relative card__icon d-flex align-items-center mr-3">
                                 <div class="mr-2">
-                                    <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                                    <a href="<?php echo esc_url(get_permalink()); ?>comments" data-target="comments" class="stretched-link">
                                         <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
                                             <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
                                         </svg>
@@ -125,17 +126,16 @@ $card_bank_link = base64_encode($encoded_link);
                     </div>
                     <div class="position-relative card__icon d-flex align-items-center mr-3">
                         <div class="mr-2">
-                            <a href="<?php echo esc_url(get_permalink()); ?>#comments" data-target="comments" class="stretched-link">
+                            <a href="<?php echo esc_url(get_permalink()); ?>comments" data-target="comments" class="stretched-link">
                                 <svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
                                     <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
                                 </svg>
                             </a>
                         </div>
                         <?php
-                        if ($comments_count && isset($comments_count->approved)) {
+                            $comments_count = wp_count_comments(get_the_ID());
                             echo intval($comments_count->approved);
-                        }
-                        ?>
+                            ?>
                     </div>
                     <div class="position-relative card__like d-flex align-items-center">
                         <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
@@ -164,14 +164,14 @@ $card_bank_link = base64_encode($encoded_link);
                         <span
                             class="link-data btn btn-primary btn-block"
                             data-link="<?= esc_attr($card_bank_link); ?>"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;">
+                            onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;">
                             Оформить
                         </span>
                     </div>
                 <?php else: ?>
                     <div class="item-buttons-cont">
                         <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
-                            onclick="<?php echo esc_js(get_metrika_for_list($card_bank_link)); ?> return true;"
+                            onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
                             Оформить
                         </span>
