@@ -105,7 +105,7 @@ $news_id = "18";
                 data-total="<?php echo $sql_posts_total; ?>"
                 data-taxonomy="kredity" 
                 data-term-id="<?php echo intval($term_id); ?>"
-                data-field-name="<?php echo esc_attr($args['bank_id__field_name'] ?? 'bank_logo'); ?>">
+                data-field-name="bank_logo">
                 Загрузить ещё
             </button>
 

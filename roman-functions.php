@@ -1344,17 +1344,31 @@ function load_more_reviews()
                     <div class="reviews__header-logo">
                     <?php if ($taxonomy === 'zaimy'): ?>
                             <!-- Логотип для займов -->
-                            <img src="<?php echo esc_url(get_field('z_organization_logo', $comm->comment_post_ID)); ?>" alt="
-                            <?php
+                            <img src="<?php echo esc_url(get_field('z_organization_logo', $comm->comment_post_ID)); ?>" alt="<?php
                             $logo_id = get_field('z_organization_logo', $comm->comment_post_ID, false);
                             $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
                             echo esc_attr($logo_alt);
                             ?>">
                         <?php elseif ($taxonomy === 'banks'): ?>
                             <!-- Логотип для банков -->
-                            <img src="<?php echo esc_url(get_field('bank_logo', $comm->comment_post_ID)); ?>" alt="
-                            <?php
+                            <img src="<?php echo esc_url(get_field('bank_logo', $comm->comment_post_ID)); ?>" alt="<?php
                             $logo_id = get_field('bank_logo', $comm->comment_post_ID, false);
+                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                            echo esc_attr($logo_alt);
+                            ?>">
+                        <?php elseif ($taxonomy === 'kredity'): ?>
+                            <!-- Логотип для кредиты -->
+                            <?php $bank_choise_rel = get_field('product_bank', $comm->comment_post_ID) ?>
+                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>" alt="<?php
+                            $logo_id = get_field('bank_logo', $bank_choise_rel, false);
+                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                            echo esc_attr($logo_alt);
+                            ?>
+                            ">
+                        <?php else: ?>
+                            <?php $bank_choise_rel = get_field('bank_choise', $comm->comment_post_ID) ?>
+                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>" alt="<?php
+                            $logo_id = get_field('bank_logo', $bank_choise_rel, false);
                             $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
                             echo esc_attr($logo_alt);
                             ?>">
