@@ -1245,7 +1245,7 @@ function load_more_comments()
                 <?php endif; ?>
 
             </div><!-- /.comments__item -->
-    <?php
+        <?php
         } // endforeach root_comments
     } else {
         echo '<p>Больше комментариев нет.</p>';
@@ -1255,80 +1255,193 @@ function load_more_comments()
 }
 
 
-/**
- * Выводит AJAX-пагинацию для комментариев CPT “zaimy”
- * без перезагрузки URL.
- *
- * @param int|null $total_comments  Общее количество комментариев. 
- *                                  Если не задано — считает автоматически.
- * @param int|null $current_page    Текущая «страница» (партия). 
- *                                  Если не задано — берётся из get_query_var('paged').
- * @param int      $per_page        Сколько комментариев на партию.
- */
-function my_comments_ajax_pagination($total_comments = null, $current_page = null, $per_page = 15)
+
+// Универсальный AJAX-обработчик "Загрузить ещё"
+// Универсальный AJAX-обработчик "Загрузить ещё"
+// Универсальный AJAX-обработчик "Загрузить ещё"
+// Универсальный AJAX-обработчик "Загрузить ещё"
+add_action('wp_ajax_load_more_reviews', 'load_more_reviews');
+add_action('wp_ajax_nopriv_load_more_reviews', 'load_more_reviews');
+function load_more_reviews()
 {
+    @ini_set('display_errors', 0);
+    while (ob_get_level()) ob_end_clean();
     global $wpdb;
 
-    // Если $current_page не передан, попробуем взять из глобальной переменной шаблона:
-    if (empty($current_page) && isset($GLOBALS['paged'])) {
-        $current_page = intval($GLOBALS['paged']);
+    $page      = max(1, intval($_POST['page']    ?? 1));
+    $per_page  = intval($_POST['per_page'] ?? 15);
+    $offset    = ($page - 1) * $per_page;
+
+    $taxonomy  = sanitize_text_field($_POST['taxonomy']   ?? '');
+    $term_id   = intval($_POST['term_id']    ?? 0);
+    $field_name = sanitize_text_field($_POST['field_name'] ?? 'bank_logo');
+
+    // Фильтрация для банков
+    if ($taxonomy === 'banks') {  // Если это банки
+        $posts = get_cpt_ids('banks');  // Получаем посты для банков
+    } elseif ($taxonomy === 'installmentcard') {  // Карты рассрочки
+        $posts = get_objects_in_term($term_id, 'bankcards');
+    } elseif ($taxonomy === 'creditcard') {  // Кредитные карты
+        $posts = get_objects_in_term($term_id, 'bankcards');
+    } elseif ($taxonomy === 'debetcard') {  // Дебетовые карты
+        $posts = get_objects_in_term($term_id, 'bankcards');
+    } elseif ($taxonomy === 'kredity') {  // Кредиты
+        $posts = get_cpt_ids('kredity');
+    } elseif ($taxonomy === 'zaimy') {  // Займы
+        $posts = get_cpt_ids('zaimy');
+    } else {
+        // По умолчанию выбираем все одобренные комментарии
+        $posts = $wpdb->get_col("SELECT DISTINCT comment_post_ID FROM {$wpdb->comments} WHERE comment_approved=1");
     }
 
-    // Если всё ещё пусто — ставим 1
-    if (empty($current_page)) {
-        $current_page = 1;
+    if (empty($posts)) wp_die();
+
+    $in = implode(',', array_map('intval', $posts));
+
+    // Получаем отзывы
+    $comments = $wpdb->get_results("
+      SELECT comment_ID, comment_post_ID
+      FROM {$wpdb->comments}
+      WHERE comment_post_ID IN ({$in})
+        AND comment_approved = 1
+        AND comment_parent  = 0
+      ORDER BY comment_date DESC
+      LIMIT {$per_page} OFFSET {$offset}
+    ");
+
+    if (empty($comments)) {
+        echo '';
+        wp_die();
     }
 
-    // 2) Считаем общее число комментариев, если не передано
-    if (empty($total_comments)) {
-        $posts = get_cpt_ids('zaimy'); // ваш метод получения ID всех нужных записей
-        $in = implode(',', array_map('absint', $posts));
-        $total_comments = (int) $wpdb->get_var("
-            SELECT COUNT(*) 
-            FROM {$wpdb->comments}
-            WHERE comment_post_ID IN ({$in})
-              AND comment_approved = 1
-              AND comment_parent   = 0
-        ");
-    }
+    foreach ($comments as $comm) {
+        $comment    = get_comment($comm->comment_ID);
+        $post_id    = $comm->comment_post_ID;
+        $author     = esc_html($comment->comment_author);
+        $content    = wp_kses_post($comment->comment_content);
+        $date       = get_comment_date('d.m.y', $comm->comment_ID);
+        $time       = get_comment_date('H:i',  $comm->comment_ID);
+        $rating     = esc_html(get_field('ratings_average', $post_id));
+        $cnt        = get_comments_number($post_id);
+        $user       = get_userdata($comment->user_id);
+        $role       = $user->roles[0] ?? 'Гость';
+        $city       = get_comment_meta($comm->comment_ID, 'city', true);
 
-    // 3) Вычисляем общее число «страниц»
-    $total_pages = (int) ceil($total_comments / $per_page);
 
-    // 4) Если всего одна страница — ничего не выводим
-    if ($total_pages <= 1) {
-        return;
-    }
 
-    // 5) Рендерим HTML-контейнер с кнопками
-    ?>
-    <div class="comments-ajax-pagination d-flex justify-content-center align-items-center"
-     data-post-id="<?php echo get_the_ID(); ?>"
-     data-total-pages="<?php echo esc_attr( $total_pages ); ?>"
-     data-current-page="<?php echo esc_attr( $current_page ); ?>"
-     data-per-page="<?php echo esc_attr( $per_page ); ?>">
-    <button class="btn btn-primary js-comments-next" data-page="<?php echo $current_page+1; ?>">
-        Загрузить ещё
-    </button>
-</div>
 
+
+
+
+
+
+
+        // Выводим данные для каждого комментария
+        ?>
+        <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item mt-4">
+            <div class="reviews__item-body">
+                <div class="reviews__header d-flex align-items-center mb-2">
+                    <div class="reviews__header-logo">
+                    <?php if ($taxonomy === 'zaimy'): ?>
+                            <!-- Логотип для займов -->
+                            <img src="<?php echo esc_url(get_field('z_organization_logo', $comm->comment_post_ID)); ?>" alt="
+                            <?php
+                            $logo_id = get_field('z_organization_logo', $comm->comment_post_ID, false);
+                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                            echo esc_attr($logo_alt);
+                            ?>">
+                        <?php elseif ($taxonomy === 'banks'): ?>
+                            <!-- Логотип для банков -->
+                            <img src="<?php echo esc_url(get_field('bank_logo', $comm->comment_post_ID)); ?>" alt="
+                            <?php
+                            $logo_id = get_field('bank_logo', $comm->comment_post_ID, false);
+                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                            echo esc_attr($logo_alt);
+                            ?>">
+                        <?php endif; ?>
+                        
+
+                    </div>
+                    <div class="reviews__header-meta ml-3">
+                        <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>" class="reviews__header-title h4 mb-2 stretched-link">
+                            <?php echo esc_html(get_the_title($post_id)); ?>
+                        </a>
+                        <div class="d-flex">
+                            <div class="card__rating d-flex align-items-center mr-3">
+                                <div class="mr-2">
+                                    <svg width="18" height="17">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#starLine"></use>
+                                    </svg>
+                                </div>
+                                <?php echo $rating; ?>
+                            </div>
+                            <div class="card__icon d-flex align-items-center">
+                                <div class="mr-2">
+                                    <svg width="18" height="17">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine"></use>
+                                    </svg>
+                                </div>
+                                <?php echo $cnt; ?>
+                            </div>
+                            <div class="card__date d-none d-md-block ml-auto">
+                                <?php echo "{$date} / {$time}"; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews__item-content">
+                    <p><?php echo $content; ?></p>
+                </div>
+            </div>
+            <div class="reviews__item-footer mb-3 ml-3">
+                <div class="reviews__author d-flex align-items-center mt-3">
+                    <div class="reviews__author-img mr-3">
+                        <img loading="lazy" src="<?php echo esc_url(get_avatar_url($comment, ['size' => 60, 'default' => 'identicon'])); ?>" alt="">
+                    </div>
+                    <div class="reviews__author-content">
+                        <span class="reviews__author-title d-block"><?php echo $author; ?></span>
+                        <div class="reviews__author-info d-flex">
+                            <div class="card__icon d-flex align-items-center mr-3">
+                                <svg width="14" height="19">
+                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#person"></use>
+                                </svg>
+                                <?php echo esc_html($role); ?>
+                            </div>
+                            <?php if ($city): ?>
+                                <div class="card__icon d-flex align-items-center">
+                                    <svg width="16" height="20">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#pointer"></use>
+                                    </svg>
+                                    <?php echo esc_html($city); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 <?php
+    }
+    wp_die();
 }
 
-add_action( 'wp_enqueue_scripts', function() {
-    // Подключаем скрипт
+
+
+
+
+
+// Подключаем скрипт загрузки
+function reviews_enqueue_scripts()
+{
     wp_enqueue_script(
-        'comments-ajax-pagination',
-        get_template_directory_uri() . '/js/comments-ajax-pagination.js',
-        [ 'jquery' ],
+        'reviews-load-more',
+        get_template_directory_uri() . '/js/load-reviews.js',
+        ['jquery'],
         null,
         true
     );
-
-    // Передаём в JS URL для AJAX-запросов
-    wp_localize_script( 'comments-ajax-pagination', 'load_more_params', [
-        'ajax_url'          => admin_url( 'admin-ajax.php' ),
-        'comments_per_page' => 15,
-    ] );
-} );
-
+    wp_localize_script('reviews-load-more', 'reviews_ajax', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+    ]);
+}
+add_action('wp_enqueue_scripts', 'reviews_enqueue_scripts');

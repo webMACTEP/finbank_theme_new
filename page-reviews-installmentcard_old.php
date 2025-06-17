@@ -1,24 +1,30 @@
 <?php get_header() ?>
 
 <?php
-/*
+
+global $wp_query;
+
 $ID = $_SESSION['post_review_id'];
 $TAX = $_SESSION['data_tax_reviews'];
 $DISPLAY = $_SESSION['display_type'];
 
 $post_type = get_post_type($ID);
-$tags = get_the_tags( $ID );
-$terms = wp_get_post_terms( $ID, 'bankcards', array('fields' => 'all') );
-$term_slug = $terms[0]->slug;
-$term_id = $terms[0]->term_id;
-*/
+$tags = get_the_tags($ID);
+$terms = wp_get_post_terms($ID, 'bankcards', array('fields' => 'all'));
+if (!empty($terms)):
+    $term_slug = $terms[0]->slug;
+    $term_id = $terms[0]->term_id;
+endif;
+// Отзывы вариант 1
 
-$tax_id = 2;
-$title_term1 = "Отзывы о кредитах";
-$title_term2 = "все кредиты";
+$tax_id = 8;
+$title_term1 = "Отзывы о картах рассрочки";
+$title_term2 = "все карты рассрочки";
 $calc_link = get_page_link(149);
-$link = get_post_type_archive_link('kredity');
-$news_id = "18";
+$link = get_term_link($tax_id, '');
+$news_id = "15";
+
+
 ?>
 <main>
     <div class="container">
@@ -59,68 +65,59 @@ $news_id = "18";
         </div>
     </div>
 
+ <?php
 
-    <?php
-    //reviews_list
-    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-    $ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
-    $custom_offset = ($paged - 1) * $ppp;
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+$custom_offset = ($paged - 1)*$ppp;
 
-    // fetch posts in all those categories
-    $posts = get_cpt_ids('kredity');
+// fetch posts in all those categories
+$posts = get_objects_in_term($tax_id, 'bankcards');
 
-    $sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
-        FROM {$wpdb->comments} WHERE
-        comment_post_ID in (" . implode(',', $posts) . ") AND comment_approved = 1 AND comment_parent = 0
-        ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (" . implode(',', $posts) . ") AND comment_approved = 1
+ ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
 
-    $sql_posts_total =  $wpdb->get_var("SELECT COUNT(*)  FROM {$wpdb->comments} WHERE
-        comment_post_ID in (" . implode(',', $posts) . ") AND comment_approved = 1 AND comment_parent = 0
-        ORDER by comment_date DESC");
 
-    $max_num_pages = ceil($sql_posts_total / $ppp);
+$sql_posts_total = $wpdb->get_var( "SELECT  COUNT(*)  FROM {$wpdb->comments} WHERE
+                 comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1
+                 ORDER by comment_date DESC LIMIT 0, 15");
 
-    $comments_list = $wpdb->get_results($sql);
-    global $wp_query;
-    $count_items = count($comments_list);
-    //reviews_list END
-    ?>
+$max_num_pages = ceil($sql_posts_total / $ppp);
+$wp_query->max_num_pages = $max_num_pages;
+$comments_list = $wpdb->get_results( $sql );
+
+$count_items = count( $comments_list );
+
+?>
 
     <!-- / page nav -->
     <div class="container">
         <div class="section">
-
             <div class="row reviews-page-list" id="reviews">
-                <?php get_template_part('all_template/reviews_list', null, ['TYPE' => 'kredity', 'DATA' => $comments_list]); ?>
+
+                <?php get_template_part('all_template/reviews_list', null, ['TYPE' => 'bankcards', 'DATA' => $comments_list, 'bank_id__field_name' => 'bank_choise']); ?>
+
             </div>
 
-
-
             <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="kredity" 
-                data-term-id="<?php echo intval($term_id); ?>"
-                data-field-name="<?php echo esc_attr($args['bank_id__field_name'] ?? 'bank_logo'); ?>">
-                Загрузить ещё
-            </button>
-
             <div class="pagination flex-column mb-5 mb-md-0">
-                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                    <div class="pagination__container d-sm-flex justify-content-between align-items-center">
 
-                        <div class="pagination__description mt-4 mt-sm-0">
-                            Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
-                        </div>
+                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    wp_reset_query(); ?>
+                    <div class="pagination__description mt-4 mt-sm-0">
+                        Показано <span class="count_view"><?php echo $count_items; ?></span>
+                        отзывов из <span class="count_all"><?php echo $sql_posts_total;?></span>
                     </div>
                 </div>
             </div>
             <!-- / pagination -->
-
         </div>
     </div>
 </main>

@@ -1,8 +1,13 @@
-<?php session_start(); ?>
 <?php get_header() ?>
 
-<?php 
-/*
+<?php
+
+
+//global $wp_query;
+//wp_reset_postdata();
+//wp_reset_query();
+//print_r2($wp_query);
+
 $ID = $_SESSION['post_review_id'];
 $TAX = $_SESSION['data_tax_reviews'];
 $DISPLAY = $_SESSION['display_type'];
@@ -10,21 +15,68 @@ $DISPLAY = $_SESSION['display_type'];
 $post_type = get_post_type($ID);
 $tags = get_the_tags( $ID );
 $terms = wp_get_post_terms( $ID, 'bankcards', array('fields' => 'all') );
+if (!empty($terms)):
 $term_slug = $terms[0]->slug;
 $term_id = $terms[0]->term_id;
+endif;
 
-*/
+//print_r2($_SESSION);
+
 // Отзывы вариант 1
-
- 
+if($TAX != '' && $DISPLAY == 'reviews'): 
+    switch ($TAX) {
+    case 'debetcard':
+       $tax_id = 7;
+       $title_term1 = "Дебетовые карты";
+       $title_term2 = "все дебетовые карты";
+       $calc_link = get_page_link(157);
+       $news_id = "13";
+       $link = get_term_link($tax_id, '');
+        break;
+    case 'installmentcard':
+       $tax_id = 8;
+       $title_term1 = "Карты рассрочки";
+       $title_term2 = "все карты рассрочки";
+       $calc_link = get_page_link(149);
+       $link = get_term_link($tax_id, '');
+       $news_id = "15";
+        break;
+    case 'creditcard':
+       $tax_id = 2;
+       $title_term1 = "Кредитные карты";
+       $title_term2 = "все кредитные карты";
+       $calc_link = get_page_link(149);
+       $link = get_term_link($tax_id, '');
+       $news_id = "14";
+        break;
+    case 'banks':
        $tax_id = 2;
        $title_term1 = "Банки";
        $title_term2 = "все банки";
        $link = get_post_type_archive_link('banks');
        $calc_link = get_page_link(149);
        $news_id = "16";
-
-?>
+       break;
+    case 'kredity':
+       $tax_id = 2;
+       $title_term1 = "Кредиты";
+       $title_term2 = "все кредиты";
+       $calc_link = get_page_link(149);
+       $link = get_post_type_archive_link('kredity');
+       $news_id = "18";
+        break;
+    case 'zaimy':
+       $tax_id = 2;
+       $title_term1 = "Займы";
+       $title_term2 = "все займы";
+       $calc_link = get_page_link(159);
+       $link = get_post_type_archive_link('zaimy');
+       $news_id = "12";
+        break;
+    default:
+       $tax_id = 2;
+       $title_term1 = "Отзывы";
+}   ?>
 <main>
     <div class="container">
         <nav aria-label="breadcrumb" class="horizontal__scroll">
@@ -68,11 +120,12 @@ $term_id = $terms[0]->term_id;
         <div class="section">
             <div class="row reviews-page-list" id="reviews">
 
-<?php
+<?php if($TAX == 'banks'): ?>
 
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+<?php 
+
 $ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
-$custom_offset = ($paged - 1)*$ppp;
+$custom_offset = 0;
 
 // fetch posts in all those categories
 $posts = get_cpt_ids('banks');
@@ -82,26 +135,7 @@ $sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
  comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
  ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
 
-$sql_posts_total =  $wpdb->get_var("SELECT COUNT(*)  FROM {$wpdb->comments} WHERE
- comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
- ORDER by comment_date DESC");
-
-
-$max_num_pages = ceil($sql_posts_total / $ppp);
 $comments_list = $wpdb->get_results( $sql );
-
-$count_items = count( $comments_list );
-
-//if($count_items < 1){
-//    global $wp_query;
-//    $url_clear = get_clear_url($_SERVER['REQUEST_URI']);
-//    wp_redirect( $url_clear, 301 );
-//    //$wp_query->set_404();
-//    //status_header( 404 );
-//    //nocache_headers();
-//    //require get_404_template();
-//}
-
 
 if ( count( $comments_list ) > 0 ) {
  foreach ( $comments_list as $comm ) {
@@ -120,15 +154,7 @@ if ( count( $comments_list ) > 0 ) {
         <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
             <div class="reviews__item-body">    
                 <div class="reviews__header d-flex align-items-center mb-2">
-                    <div class="reviews__header-logo">
-                        <img src="<?php echo the_field('bank_logo', $comment_post_id) ?>"
-                             alt="<?
-                             $bank_id = get_field('bank_logo' , $comment_post_id, false);
-                             $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
-                             echo $bank_alt;
-                             ?>"
-                        >
-                    </div>
+                    <div class="reviews__header-logo"><img src="<?php echo the_field('bank_logo', $comment_post_id) ?>" alt=""></div>
                     <div class="reviews__header-meta ml-3">
                         <a href="<?php echo get_comment_link($comment_id) ?>" class="reviews__header-title h4 mb-2 stretched-link"><?php echo get_the_title($comment_post_id) ?></a>
                         <div class="d-flex">
@@ -181,32 +207,172 @@ if ( count( $comments_list ) > 0 ) {
 }else{ ?>
 <p class="col-12">Пока нет отзывов.</p>
 <?php } ?>
+<?php elseif($TAX == 'zaimy'): ?>
+<?php 
+$ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+$custom_offset = 0;
 
+// fetch posts in all those categories
+$posts = get_cpt_ids('zaimy');
+
+$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+
+$sql_posts_total =  $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC");
+$max_num_pages = ceil($sql_posts_total / $ppp);
+
+$comments_list = $wpdb->get_results( $sql );
+
+if ( count( $comments_list ) > 0 ) {
+ foreach ( $comments_list as $comm ) {
+
+ $comment_id = $comm->comment_ID;
+ $comment = get_comment($comment_id);
+ $comment_post_id = $comment->comment_post_ID;
+ $bank_id = get_field('product_bank', $comment_post_id);
+ $user = get_userdata( $comment->user_id );
+ $user_email = $user->user_email;
+ $author = get_comment_author( $comment_id );
+ $user_role = $user->roles; 
+ $city = get_comment_meta( $comment_id, 'city', true ); ?>
+ <!-- item -->
+       <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
+           <div class="reviews__item-body">    
+               <div class="reviews__header d-flex align-items-center mb-2">
+                   <div class="reviews__header-logo"><img src="<?php echo the_field('z_organization_logo', $comment_post_id) ?>" alt=""></div>
+                   <div class="reviews__header-meta ml-3">
+                       <a href="<?php echo get_comment_link($comment_id) ?>" class="reviews__header-title h4 mb-2 stretched-link"><?php echo get_the_title($comment_post_id) ?></a>
+                       <div class="d-flex">
+                           <div class="card__rating d-flex align-items-center mr-3">
+                               <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use></svg></div>
+                               <?php echo the_field('ratings_average', $comment_post_id); ?> 
+                           </div>
+                           <div class="card__icon d-flex align-items-center">
+                               <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use></svg></div>
+                               <?php echo comments_number( '0', '1', '%', $comment_post_id); ?>
+                           </div>
+                           <div class="card__date d-none d-md-block ml-auto"><?php echo  get_comment_date( 'd.m.y'); ?> / <?php echo get_comment_date('H:i') ?></div>
+                       </div>
+                   </div>
+               </div>
+               <div class="reviews__item-content">
+                   <p><?php echo $comment->comment_content; ?></p>
+               </div>
+           </div>
+           <div class="reviews__item-footer">
+               <div class="reviews__author d-flex align-items-center mt-3">
+                   <div class="reviews__author-img mr-3"><img src="<?php echo get_avatar_url( $comment, array('size' => 60,
+                   'default'=>'identicon',) ); ?>" alt="<?php echo $author; ?>"></div>
+                   <div class="reviews__author-content">
+                       <a class="reviews__author-title mb-2 d-block stretched-link"><?php echo $author; ?></a>
+                       <div class="reviews__author-info d-flex">
+                           <div class="card__icon d-flex align-items-center mr-3">
+                               <div class="mr-2"><svg width="14" height="19" viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person" x="0" y="0"></use></svg></div>
+                               <?php if($user_role[0] == ''):
+                                    echo 'Гость';
+                                endif; 
+                                if($user_role[0] != ''):
+                                    echo $user_role[0]; 
+                                endif; ?>
+                           </div>
+                           <?php if($city != ''): ?>
+                           <div class="card__icon d-flex align-items-center">
+                               <div class="mr-2"><svg width="16" height="20" viewBox="0 0 16 20" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#pointer" x="0" y="0"></use></svg></div>
+                               <?php echo $city ?>
+                           </div>
+                        <?php endif; ?>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <!-- / item -->
+<?php } 
+}else{ ?>
+<p class="col-12">Пока нет отзывов.</p>
+<?php } ?>
+<?php elseif($TAX =='creditcard' || $TAX == 'debetcard' || $TAX == 'installmentcard'): ?>
+<?php 
+
+$ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+$custom_offset = 0;
+
+// fetch posts in all those categories
+$posts = get_objects_in_term( $tax_id, 'bankcards' );
+
+$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1
+ ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+
+$sql_posts_total =  $wpdb->get_var("SELECT  COUNT(*)  FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1
+ ORDER by comment_date DESC");
+$max_num_pages = ceil($sql_posts_total / $ppp);
+
+$comments_list = $wpdb->get_results( $sql );
+get_template_part('all_template/reviews_list', null, ['TYPE' => 'bankcards', 'DATA' => $comments_list, 'bank_id__field_name' => 'bank_choise']); ?>
+
+
+
+
+<?php elseif($TAX == 'kredity'): ?>
+<?php 
+
+$ppp = 15; // either use the WordPress global Posts per page setting or set a custom one like $ppp = 10;
+$custom_offset = 0;
+
+// fetch posts in all those categories
+$posts = get_cpt_ids('kredity');
+
+$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC LIMIT $ppp OFFSET $custom_offset";
+
+$sql_posts_total = $wpdb->get_var( "SELECT COUNT(*)  FROM {$wpdb->comments} WHERE
+comment_post_ID in (".implode(',', $posts).") AND comment_approved = 1 AND comment_parent = 0
+ORDER by comment_date DESC");
+$max_num_pages = ceil($sql_posts_total / $ppp);
+
+$comments_list = $wpdb->get_results( $sql );
+get_template_part('all_template/reviews_list', null, ['TYPE' => 'kredity', 'DATA' => $comments_list, 'bank_id__field_name' => 'product_bank']);
+
+?>
+
+
+
+<?php endif; ?>
             </div>
-            <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="banks" 
-                data-term-id="<?php echo intval($tax_id); ?>"
-                data-field-name="bank_choise">
-                Загрузить ещё
-            </button>
-            <div class="pagination flex-column mb-5 mb-md-0">
-                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                    <div class="pagination__description mt-4 mt-sm-0">
-                        Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
-                    </div>
-                </div>
-            </div>
-            <!-- / pagination -->
+           <!-- pagination -->
+<button
+    id="load-more-reviews"
+    class="btn btn-outline-gray btn-block mt-5"
+    data-page="1"
+    data-per-page="<?php echo $ppp; ?>"
+    data-total="<?php echo $sql_posts_total; ?>"
+    data-taxonomy="all_reviews"  <!-- Это можно изменить в зависимости от ваших нужд -->
+    data-term-id=""
+    data-field-name="bank_choise">
+    Загрузить ещё
+</button>
+<div class="pagination flex-column mb-5 mb-md-0">
+    <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+        <div class="pagination__description mt-4 mt-sm-0">
+            Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
+        </div>
+    </div>
+</div>
+<!-- / pagination -->
+
         </div>
     </div>
 </main>
-
+<?php endif; ?>
 
 
 
@@ -269,37 +435,46 @@ switch ($term_slug) {
 ?>
 
 <main>
-    <div class="container">
-        <nav aria-label="breadcrumb" class="horizontal__scroll">
-            <ol class="breadcrumb horizontal__scroll-container">
-                <li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo get_term_link($term_id, '') ?>"><?php echo $title_term1 ?></a></li>
-                <li class="breadcrumb-item"><a href="<?php echo get_the_permalink($ID) ?>"><?php echo get_the_title($ID) ?></a></li>
-                <li class="breadcrumb-item active" aria-current="page">Отзывы</li>
-            </ol>
-        </nav>
-        <div class="section">
-            <div class="section__header mb-4 d-sm-flex justify-content-between align-items-center">
-                <h2 class="title mb-0">Отзывы о <?php echo $title_term ?> "<?php echo get_the_title($ID) ?>"</h2>
-                <button class="btn btn-primary btn-sm btn-scroll section__header-btn mt-4 mt-sm-0" data-target="commentForm">Оставить отзыв</button>
+	<div class="container">
+	    <nav aria-label="breadcrumb" class="horizontal__scroll">
+	        <ol class="breadcrumb horizontal__scroll-container">
+	            <li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
+	            <li class="breadcrumb-item"><a href="<?php echo get_term_link($term_id, '') ?>"><?php echo $title_term1 ?></a></li>
+	            <li class="breadcrumb-item"><a href="<?php echo get_the_permalink($ID) ?>"><?php echo get_the_title($ID) ?></a></li>
+	            <li class="breadcrumb-item active" aria-current="page">Отзывы</li>
+	        </ol>
+	    </nav>
+	    <div class="section">
+	        <div class="section__header mb-4 d-sm-flex justify-content-between align-items-center">
+	            <h2 class="title mb-0">Отзывы о <?php echo $title_term ?> "<?php echo get_the_title($ID) ?>"</h2>
+	            <button class="btn btn-primary btn-sm btn-scroll section__header-btn mt-4 mt-sm-0" data-target="commentForm">Оставить отзыв</button>
+	        </div>
+	        <div class="comments comments-page-list" id="comments">
+	        		<?php comments_template(); ?>
+	        </div>
+            <!-- pagination -->
+
+            <div class="pagination flex-column mb-5 mb-md-0">
+
+                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    //wp_reset_query(); ?>
+                    <div class="pagination__description mt-4 mt-sm-0 d-none">
+                        Показано <span class="count_view"><?php echo $post_per_page; ?></span>
+                        отзывов из <span class="count_all"><?php echo $max_num_pages;?></span>
+                    </div>
+                </div>
             </div>
-            <div class="comments comments-page-list" id="comments">
-                    <?php comments_template(); ?>
-            </div>
-                <!-- pagination -->
-              <div class="pagination flex-column">
-                  <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                      <div class="pagination__description mt-4 mt-sm-0">
-                          Показано <span class="review-count"> отзывов</span> из <?php echo get_comments_number($ID) ?>
-                      </div>
-                  </div>
-              </div>
-              <!-- / pagination -->
-        </div>
-        <div class="section">
-            <!-- form -->
-            <div class="form" id="commentForm">
-                <?php 
+            <!-- / pagination -->
+	    </div>
+	    <div class="section">
+	        <!-- form -->
+	        <div class="form" id="commentForm">
+	            <?php 
                     // получим данные из куков
                     $commenter = wp_get_current_commenter();
                     $args = wp_parse_args( $args );
@@ -359,11 +534,11 @@ switch ($term_slug) {
                         'format'               => 'xhtml',
                     ];
                     echo comment_form( $defaults, $ID); ?>
-            </div>
-            <!-- / from -->
-        </div>
-        <div class="section">
-            <div class="section__header d-flex justify-content-between align-items-center mb-4">
+	        </div>
+	        <!-- / from -->
+	    </div>
+	    <div class="section">
+	        <div class="section__header d-flex justify-content-between align-items-center mb-4">
                <h2 class="title mb-0">Лучшие предложения </h2>
                <a href="<?php echo get_term_link($term_id, '') ?>" class="btn btn-primary btn-sm btn-all">
                    Все
@@ -372,8 +547,8 @@ switch ($term_slug) {
                    </span>
                </a>
            </div>
-            <div class="horizontal__scroll row">
-                               <div class="horizontal__scroll-container">
+	        <div class="horizontal__scroll row">
+	                           <div class="horizontal__scroll-container">
                 <?php 
 $args = array(
     'post_type'             => 'bankcard', 
@@ -429,7 +604,7 @@ if ( $query->have_posts() ) {
                            <ul class="leaders">
                             <?php $loop_terms = wp_get_post_terms( get_the_ID(), 'bankcards', array('fields' => 'all') );
                                  $loop_term_slug = $loop_terms[0]->slug;
-                                 $$loop_term_id = $terms[0]->term_id; ?>
+                                 $loop_term_id = $loop_terms[0]->term_id; ?>
                             <?php if($loop_term_slug == 'creditcard'): ?>
                            <div class="bank__item-footer text-center pt-3 pb-2 mx-n2 mt-2">
                                <li class="leaders__item mb-1">
@@ -439,8 +614,8 @@ if ( $query->have_posts() ) {
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Без %</div>
                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                                <li class="leaders__item mb-1">
@@ -463,8 +638,8 @@ if ( $query->have_posts() ) {
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Без %</div>
                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                                <li class="leaders__item mb-1">
@@ -531,9 +706,9 @@ wp_reset_postdata();
 ?>
 
                </div>
-            </div>
-        </div>
-    </div>
+	        </div>
+	    </div>
+	</div>
 </main>
 <?php endif; ?>
 <?php if($post_type == "banks"): ?>
@@ -555,15 +730,24 @@ wp_reset_postdata();
             <div class="comments comments-page-list" id="comments">
                     <?php comments_template(); ?>
             </div>
-                <!-- pagination -->
-              <div class="pagination flex-column">
-                  <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                      <div class="pagination__description mt-4 mt-sm-0">
-                          Показано <span class="review-count"> отзывов</span> из <?php echo get_comments_number($ID) ?>
-                      </div>
-                  </div>
-              </div>
-              <!-- / pagination -->
+            <!-- pagination -->
+
+            <div class="pagination flex-column mb-5 mb-md-0">
+
+                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    //wp_reset_query(); ?>
+                    <div class="pagination__description mt-4 mt-sm-0 d-none">
+                        Показано <span class="count_view"><?php echo $post_per_page; ?></span>
+                        отзывов из <span class="count_all"><?php echo $max_num_pages;?></span>
+                    </div>
+                </div>
+            </div>
+            <!-- / pagination -->
         </div>
         <div class="section">
             <!-- form -->
@@ -716,8 +900,8 @@ if ( $query->have_posts() ) {
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Срок кредита</div>
                                    <div class="leaders__item-value">от <?php $field = get_field('credit_period');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                            </ul>
@@ -783,15 +967,15 @@ if ( $query->have_posts() ) {
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Тип кешбэка</div>
                                    <div class="leaders__item-value"><?php $field = get_field('card_cashback_type');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Кешбэк</div>
                                    <div class="leaders__item-value"><?php $field = get_field('card_cashback');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                            </div>
@@ -850,8 +1034,8 @@ if ( $query->have_posts() ) {
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Без %</div>
                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                                <li class="leaders__item mb-1">
@@ -919,8 +1103,8 @@ if ( $query->have_posts() ) {
                                <li class="leaders__item mb-1">
                                    <div class="leaders__item-title">Без %</div>
                                    <div class="leaders__item-value"><?php $field = get_field('card_period');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                                <li class="leaders__item mb-1">
@@ -985,22 +1169,20 @@ wp_reset_query();
             <div class="comments comments-page-list" id="comments">
                     <?php comments_template(); ?>
             </div>
-             <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="banks" 
-                data-term-id="<?php echo intval($tax_id); ?>"
-                data-field-name="bank_choise">
-                Загрузить ещё
-            </button>
+            <!-- pagination -->
+
             <div class="pagination flex-column mb-5 mb-md-0">
+
                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                    <div class="pagination__description mt-4 mt-sm-0">
-                        Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    //wp_reset_query(); ?>
+                    <div class="pagination__description mt-4 mt-sm-0 d-none">
+                        Показано <span class="count_view"><?php echo $post_per_page; ?></span>
+                        отзывов из <span class="count_all"><?php echo $max_num_pages;?></span>
                     </div>
                 </div>
             </div>
@@ -1149,8 +1331,8 @@ if ( $query->have_posts() ) {
                                    <div class="leaders__item-value">до <?php
                                             // Переменные
                                             $field = get_field('credit_period');
-                                            $value = $field['value'];
-                                            $label = $field['choices'][ $value ];
+                                            //$value = $field['value'];
+                                            //$label = $field['choices'][ $value ];
                                             echo $field['label'] ?></div>
                                </li>
                            </ul>
@@ -1202,23 +1384,20 @@ wp_reset_postdata();
             <div class="comments comments-page-list" id="comments">
                     <?php comments_template(); ?>
             </div>
-               
-              <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="banks" 
-                data-term-id="<?php echo intval($tax_id); ?>"
-                data-field-name="bank_choise">
-                Загрузить ещё
-            </button>
+            <!-- pagination -->
+
             <div class="pagination flex-column mb-5 mb-md-0">
+
                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                    <div class="pagination__description mt-4 mt-sm-0">
-                        Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    //wp_reset_query(); ?>
+                    <div class="pagination__description mt-4 mt-sm-0 d-none">
+                        Показано <span class="count_view"><?php echo $post_per_page; ?></span>
+                        отзывов из <span class="count_all"><?php echo $max_num_pages;?></span>
                     </div>
                 </div>
             </div>
@@ -1389,6 +1568,269 @@ wp_reset_postdata();
 </main>
 <? endif; ?>
 <?php endif; ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Все отзывы при пустых кукис -->
+
+<?php
+
+//print_r2($TAX);
+//print_r2($ID);
+
+
+if($TAX =='' && $ID == ''): ?>
+<main>
+    <div class="container">
+        <nav aria-label="breadcrumb" class="horizontal__scroll">
+            <ol class="breadcrumb horizontal__scroll-container">
+                <li class="breadcrumb-item"><a href="<?php echo get_home_url() ?>">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Отзывы</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- page header -->
+    <div class="page__heading mb-4">
+        <div class="container">
+            <div class="page__heading-top d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="page__heading-title mb-0">Отзывы</h1>
+                    <div class="font-weight-semibold mt-2 mb-0">Благодаря честным отзывам вы сможете осуществить более разумный выбор</div>
+                </div>
+                <div class="page__heading-icon"><img src="<?php bloginfo('template_url'); ?>/img/icon__title-like.png" alt=""></div>
+            </div>
+        </div>
+    </div>
+    <!-- / page header -->
+    <!-- page nav -->
+    <div class="page__nav">
+        <div class="container">
+            <div class="page__nav-container nav-tabs">
+                <div class="horizontal__scroll">
+                    <div class="horizontal__scroll-container">
+                        <a href="<?php echo get_post_type_archive_link('banks'); ?>" class="nav-link">Все банки</a>
+                        <a href="" class="nav-link active">Отзывы</a>
+                        <a href="<?php echo get_page_link(149) ?>" class="nav-link">Калькулятор</a>
+                        <a href="<?php echo get_category_link(9) ?>" class="nav-link">Статьи</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / page nav -->
+    <div class="container">
+        <div class="section">
+            <div class="row reviews-page-list" id="reviews">
+<?php
+
+
+
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$post_per_page = 15;
+$offset = ($paged - 1)*$post_per_page;
+
+
+$args = array(
+    'posts_per_page' => 15,
+    'paged' => $paged
+);
+
+$custom_query = new WP_Query( $args );
+
+//print_r2($custom_query);
+
+
+//wp_reset_postdata();
+
+
+// fetch posts in all those categories
+$posts = get_cpt_ids('banks');
+$posts2 = get_cpt_ids('bankcard');
+$posts3 = get_cpt_ids('kredity');
+$posts_merge =  array_merge($posts, $posts2, $posts3);
+
+//$sql = "SELECT SQL_CALC_FOUND_ROWS, comment_ID, comment_date, comment_content, comment_post_ID
+// FROM {$wpdb->comments} WHERE
+// comment_post_ID in (".implode(',', $posts_merge).") AND comment_approved = 1 AND comment_parent = 0
+// ORDER by comment_date DESC LIMIT $offset, $post_per_page ";
+
+$sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+ FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts_merge).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC LIMIT $offset, $post_per_page ";
+
+$sql_posts_total = $wpdb->get_var( "SELECT  COUNT(*) FROM {$wpdb->comments} WHERE
+ comment_post_ID in (".implode(',', $posts_merge).") AND comment_approved = 1 AND comment_parent = 0
+ ORDER by comment_date DESC LIMIT 0, 15");
+
+
+
+
+$max_num_pages = ceil($sql_posts_total / $post_per_page);
+//$_SESSION['glob_max_num_pages'] = $custom_query->max_num_pages;
+
+$comments_list = $wpdb->get_results( $sql );
+
+if ( count( $comments_list ) > 0 ) {
+ foreach ( $comments_list as $comm ) {
+
+ $comment_id = $comm->comment_ID;
+ $comment = get_comment($comment_id);
+ $comment_post_id = $comment->comment_post_ID;
+ $parent_comment = $comment->comment_parent; 
+ $user = get_userdata( $comment->user_id );
+ $user_email = $user->user_email;
+ $author = get_comment_author( $comment_id );
+ $user_role = $user->roles; 
+ $city = get_comment_meta( $comment_id, 'city', true ); 
+ $post_type = get_post_type($comment_post_id); ?>
+ <?php if($parent_comment == 0): ?>
+ <!-- item -->
+        <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
+            <div class="reviews__item-body">    
+                <div class="reviews__header d-flex align-items-center mb-2">
+                    <div class="reviews__header-logo">
+                        <?php if($post_type == 'banks'): ?>
+                        <img src="<?php echo the_field('bank_logo', $comment_post_id) ?>" alt="<?
+                        $logo_id = get_field('bank_logo',$comment_post_id , false);
+                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                        echo $logo_alt;
+                        ?>">
+                        <?php endif; ?>
+                        <?php if($post_type == 'bankcard'): 
+                            $bank_id = get_field('bank_choise', $comment_post_id)?>
+                        <img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt="<?
+                        $logo_id = get_field('bank_logo',$bank_id , false);
+                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                        echo $logo_alt;
+                        ?>">
+                        <?php endif; ?>
+                        <?php if($post_type == 'kredity'): 
+                            $bank_id = get_field('product_bank', $comment_post_id)?>
+                        <img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt="<?
+                        $logo_id = get_field('bank_logo',$bank_id , false);
+                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                        echo $logo_alt;
+                        ?>">
+                        <?php endif; ?>
+                    </div>
+                    <div class="reviews__header-meta ml-3">
+                        <a href="<?php echo get_comment_link($comment_id) ?>" class="reviews__header-title h4 mb-2 stretched-link"><?php echo get_the_title($comment_post_id) ?></a>
+                        <div class="d-flex">
+                            <div class="card__rating d-flex align-items-center mr-3">
+                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use></svg></div>
+                                <?php echo the_field('ratings_average', $comment_post_id); ?>  
+                            </div>
+                            <div class="card__icon d-flex align-items-center">
+                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use></svg></div>
+                                <?php if($post_type == 'banks'): ?>
+                                    <?php echo comments_number( '0', '1', '%', $comment_post_id); ?>
+                                <?php endif; ?>
+                                <?php if($post_type == 'bankcard'): 
+                                        $bank_id = get_field('bank_choise', $comment_post_id)?>
+                                        <?php echo comments_number( '0', '1', '%', $bank_id); ?>
+                                <?php endif; ?>
+                                <?php if($post_type == 'kredity'): 
+                                        $bank_id = get_field('product_bank', $comment_post_id)?>
+                                        <?php echo comments_number( '0', '1', '%', $bank_id); ?>
+                                <?php endif; ?>
+                                
+                            </div>
+                            <div class="card__date d-none d-sm-block ml-auto"><?php echo  get_comment_date( 'd.m.y'); ?> / <?php echo get_comment_date('H:i') ?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews__item-content">
+                    <p><?php echo $comment->comment_content; ?></p>
+                </div>
+            </div>
+            <div class="reviews__item-footer">
+                <div class="reviews__author d-flex align-items-center mt-3">
+                    <div class="reviews__author-img mr-3"><img src="<?php echo get_avatar_url( $comment, array('size' => 60,
+                   'default'=>'identicon',) ); ?>" alt="<?php echo $author; ?>"></div>
+                    <div class="reviews__author-content">
+                        <a href="" class="reviews__author-title mb-2 d-block stretched-link"><?php echo $author; ?></a>
+                        <div class="reviews__author-info d-flex">
+                            <div class="card__icon d-flex align-items-center mr-3">
+                                <div class="mr-2"><svg width="14" height="19" viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person" x="0" y="0"></use></svg></div>
+                                <?php if($user_role[0] == ''):
+                                    echo 'Гость';
+                                endif; 
+                                if($user_role[0] != ''):
+                                    echo $user_role[0]; 
+                                endif; ?>
+                            </div>
+                            <?php if($city != ''): ?>
+                               <div class="card__icon d-flex align-items-center">
+                                   <div class="mr-2"><svg width="16" height="20" viewBox="0 0 16 20" xmlns="http://www.w3.org/2000/svg" xml:space="preserve"><use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#pointer" x="0" y="0"></use></svg></div>
+                                   <?php echo $city ?>
+                               </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / item -->
+    <?php endif; ?>
+
+
+
+
+
+<?php } 
+}else{ ?>
+<p class="col-12">Пока нет отзывов.</p>
+<?php } ?>
+            </div>
+
+
+
+
+            <!-- pagination -->
+
+            <div class="pagination flex-column mb-5 mb-md-0">
+
+                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    //wp_reset_query(); ?>
+                    <div class="pagination__description mt-4 mt-sm-0 d-none">
+                        Показано <span class="count_view"><?php echo $post_per_page; ?></span>
+                        отзывов из <span class="count_all"><?php echo $max_num_pages;?></span>
+                    </div>
+                </div>
+            </div>
+            <!-- / pagination -->
+        </div>
+    </div>
+</main>
+
+<?php
+    //wp_reset_postdata();
+
+    ?>
+<?php endif; ?>
+
+
 
 
 <?php get_footer() ?>

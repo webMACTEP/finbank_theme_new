@@ -1,337 +1,111 @@
+<?
+
+add_action('wp_ajax_load_more_reviews', 'load_more_reviews');
+add_action('wp_ajax_nopriv_load_more_reviews', 'load_more_reviews');
+function load_more_reviews()
+{
+    // не выводим лишнего
+    @ini_set('display_errors', 0);
+    while (ob_get_level()) ob_end_clean();
+
+    global $wpdb;
+    $page       = max(1, intval($_POST['page']));
+    $per_page   = intval($_POST['per_page']);
+    $offset     = ($page - 1) * $per_page;
+
+    // ваши ID всех постов zaimy
+    $posts = get_cpt_ids('zaimy');
+    if (empty($posts)) {
+        wp_die();
+    }
+    $in = implode(',', array_map('intval', $posts));
+
+    // берём комментарии
+    $comments = $wpdb->get_results(
+        "SELECT comment_ID, comment_date, comment_content, comment_post_ID
+     FROM {$wpdb->comments}
+     WHERE comment_post_ID IN ({$in})
+       AND comment_approved = 1
+       AND comment_parent = 0
+     ORDER BY comment_date DESC
+     LIMIT {$per_page} OFFSET {$offset}"
+    );
+
+    if (!$comments) {
+        echo '';
+        wp_die();
+    }
+
+    // выводим точно тот же шаблон, что и в get_template_part('all_template/reviews_list', …)
+    foreach ($comments as $comm) {
+        // здесь можно подключить ту же логику, что в reviews_list.php
+        // например:
+        setup_postdata(get_post($comm->comment_post_ID));
+        $comment = get_comment($comm->comment_ID);
+        ?>
+        <div class="reviews__item mt-4">
+            <div class="reviews__item-body">
+                <div class="reviews__header d-flex align-items-center mb-2">
+                    <div class="reviews__header-logo"><img src="<?php echo the_field('z_organization_logo', $comm->comment_post_ID) ?>" alt=""></div>
+                    <div class="reviews__header-meta ml-3">
+                        <a href="<?php echo get_comment_link($comm->comment_ID) ?>" class="reviews__header-title h4 mb-2 stretched-link"><?php echo get_the_title($comm->comment_post_ID) ?></a>
+                        <div class="d-flex">
+                            <div class="card__rating d-flex align-items-center mr-3">
+                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                    </svg></div>
+                                <?php echo the_field('ratings_average', $comm->comment_post_ID); ?>
+                            </div>
+                            <div class="card__icon d-flex align-items-center">
+                                <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                    </svg></div>
+                                <?php echo comments_number('0', '1', '%', $comm->comment_post_ID); ?>
+                            </div>
+                            <div class="card__date d-none d-md-block ml-auto"><?php echo get_comment_date('d.m.y', $comm->comment_ID) ?> / <?php echo get_comment_date('H:i', $comm->comment_ID) ?></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews__item-content">
+                    <p><?php echo wp_kses_post($comment->comment_content) ?></p>
+                </div>
+            </div>
+            <div class="reviews__item-footer mb-3 ml-3">
+                <div class="reviews__author d-flex align-items-center mt-3">
+                    <div class="reviews__author-img mr-3"><img src="<?php echo get_avatar_url($comment, ['size' => 60, 'default' => 'identicon']) ?>" alt=""></div>
+                    <div class="reviews__author-content">
+                        <span class="reviews__author-title d-block"><?php echo get_comment_author($comm->comment_ID) ?></span>
+                        <div class="reviews__author-info d-flex">
+                            <div class="card__icon d-flex align-items-center mr-3">
+                                <div class="mr-2">
+                                    <svg width="14" height="19" viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#person" x="0" y="0"></use>
+                                    </svg>
+                                </div>
+
+                                <?php echo get_userdata($comment->user_id)->roles[0] ?: 'Гость' ?>
+                            </div>
+                            <?php if ($city = get_comment_meta($comm->comment_ID, 'city', true)): ?>
+                                <div class="card__icon d-flex align-items-center"><svg width="16" height="20" viewBox="0 0 16 20" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#pointer" x="0" y="0"></use>
+                                    </svg><?php echo esc_html($city) ?></div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 <?php
-
-function new_table_collection_func($atts)
-	{
-		ob_start();
-		global $allposts_collection;
-		global $type_collection;
-
-		$type = $type_collection; ?>
-
-			<?php if ($type) { ?>
-
-				<div class="section__header d-flex justify-content-between align-items-center mb-4">
-					<h2 class="title mb-0">Сравнение условий ТОП предложений месяца</h2>
-				</div>
-
-			<?php } ?>
+    }
+    wp_die();
+}
 
 
-
-			<div class="code3wrapper  new_table_collection_func" id="table_collection">
-
-				<?php if ($type == 'kredity') { ?>
-					<div class="code3">
-						<!--     <span class="frecom">Финабанк рекомендует!</span>-->
-						<div class="code3head">
-							<div class="w30">Кредит/ Банк</div>
-							<div class="text-center">Сумма</div>
-							<div class="text-center">Срок</div>
-							<div class="text-center">ПСК</div>
-						</div>
-						<?php
-						$query = new WP_Query(
-							array(
-								'posts_per_page' => -1,
-								'post_type' => $type,
-								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
-								'orderby' => 'meta_value_num',
-								'order' => 'DESC',
-								'post_status' => 'publish',
-								'meta_query' => array(
-									array(
-										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
-							)
-						);
-
-						while ($query->have_posts()) {
-							$query->the_post(); ?>
-							<div class="code3text">
-								<div class="w30 strong td2">
-									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
-										<img src="<?php echo get_field('bank_logo', get_field('product_bank', get_the_ID())); ?>" alt="<?php the_title(); ?>">
-										<?php the_title(); ?>
-									</a>
-								</div>
-								<div class="w30 td text-center">
-									<div class="hidden-lg">Сумма</div>
-									<div class="td-val"><?php echo number_format(get_field('credit_min_sum'), 0, '.', ' '); ?> - <?php echo number_format(get_field('credit_max_sum'), 0, '.', ' '); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Срок</div>
-									<div class="td-val">до <?php $field = get_field('credit_period');
-															echo $field['label']; ?></div>
-								</div>
-
-								<?php if (get_field('opisanie_psk_1')): ?>
-
-									<div class="w30 td text-center">
-										<div class="hidden-lg">ПСК</div>
-										<div class="td-val"><?php echo get_field('opisanie_psk_1'); ?>% - <?php echo get_field('opisanie_psk_2'); ?>%</div>
-									</div>
-
-								<?php endif; ?>
-
-							</div>
-						<?php } ?>
-					</div>
-				<?php } ?>
-
-				<?php if ($type == 'zaimy') { ?>
-					<div class="code3"><span class="frecom">Финабанк рекомендует!</span>
-						<div class="code3head">
-							<div class="w30">Предложение</div>
-							<div class="text-center">Сумма</div>
-							<div class="text-center">Кредитная<br /> история</div>
-							<div class="text-center">% ставка</div>
-							<div class="text-center">Срок</div>
-							<div class="text-center">Рейтинг</div>
-						</div>
-
-						<?php
-						$query = new WP_Query(
-							array(
-								'posts_per_page' => -1,
-								'post_type' => $type,
-								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
-								'orderby' => 'meta_value_num',
-								'order' => 'DESC',
-								'post_status' => 'publish',
-								'meta_query' => array(
-									array(
-										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
-							)
-						);
-						$counter_prod = 1;
-						while ($query->have_posts()) {
-							$query->the_post(); ?>
-							<div class="code3text <?php if ($counter_prod > 10) {
-														echo 'div__hidden';
-													} ?>">
-								<div class="w30 strong td2">
-									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_shortcode_sheet'); return true;">
-										<img src="<?php echo get_field('z_organization_logo'); ?>" alt="<?php the_title(); ?>">
-										<?php the_title(); ?>
-
-									</a>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Сумма</div>
-									<div class="td-val"><?php echo number_format(get_field('z_sum'), 0, '.', ' '); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Кредитная история</div>
-									<div class="td-val"><?php echo get_field('z_history'); ?></div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">% ставка</div>
-									<div class="td-val srok1">От <?php echo get_field('z_stavka'); ?>%</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Срок</div>
-									<div class="td-val">до <?php echo get_field('z_time'); ?> дней</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Рейтинг</div>
-									<div class="rate3 text-center td-val">
-										<div>
-											<svg style="margin-right:5px;fill:var(--warning)" width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
-											</svg>
-										</div>
-										<div><?php echo get_field('ratings_average'); ?></div>
-									</div>
-								</div>
-							</div>
-						<?php $counter_prod++;
-						} ?>
-						<button class="btn__details" data-target="table_collection" data-text-open="Показать еще" data-text-hide="Скрыть">
-							<span class="btn__details-icon"></span>
-							<span class="btn__details-text">Показать еще</span>
-						</button>
-					</div>
-				<?php } ?>
-
-				<?php if ($type == 'creditcard' || $type == 'installmentcard') { ?>
-					<div class="code3"><span class="frecom">Финабанк рекомендует!</span>
-						<div class="code3head">
-							<div class="w30">Предложение</div>
-							<div class="text-center">Кредитный<br />лимит</div>
-							<div class="text-center">Льготный<br />период</div>
-							<div class="text-center">% ставка</div>
-							<div class="text-center">Кэшбек</div>
-							<div class="text-center">Стоимость</div>
-							<div class="text-center">Рейтинг</div>
-						</div>
-						<?php
-						$query = new WP_Query(
-							array(
-								'posts_per_page' => -1,
-								'post_type' => array('bankcard'),
-								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
-								'orderby' => 'meta_value_num',
-								'order' => 'DESC',
-								'post_status' => 'publish',
-								'meta_query' => array(
-									array(
-										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
-							)
-						);
-
-						while ($query->have_posts()) {
-							$query->the_post(); ?>
-							<div class="code3text">
-								<div class="w30 strong td2">
-									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
-										<img src="<?php echo get_field('bank_logo', get_field('bank_choise', get_the_ID())); ?>" alt="<?php the_title(); ?>">
-										<?php the_title(); ?>
-									</a>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Кредитный лимит</div>
-									<div class="td-val"><?php echo number_format(get_field('card_cred_limit'), 0, '.', ' '); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Льготный период</div>
-									<div class="td-val">
-										<?php
-										$field = get_field('card_period');
-										$value = $field['value'];
-										$label = $field['choices'][$value];
-										echo $label;
-										?>
-									</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">% ставка</div>
-									<div class="td-val srok1">От <?php echo get_field('card_stavka'); ?>%</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Кэшбек</div>
-									<div class="td-val srok1"><?php echo get_field('card_cashback'); ?></div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Стоимость</div>
-									<div class="td-val srok1">От <?php echo get_field('card_cost'); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Рейтинг</div>
-									<div class="rate3 text-center td-val">
-										<div>
-											<svg style="margin-right:5px;fill:var(--warning)" width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
-											</svg>
-										</div>
-										<div><?php echo get_field('ratings_average'); ?></div>
-									</div>
-								</div>
-							</div>
-						<?php } ?>
-					</div>
-				<?php } ?>
-
-
-				<?php if ($type == 'debetcard') { ?>
-					<div class="code3"><span class="frecom">Финабанк рекомендует!</span>
-						<div class="code3head">
-							<div class="w30">Предложение</div>
-							<div class="text-center">Кэшбек</div>
-							<div class="text-center">% на остаток</div>
-							<div class="text-center">Снятие без %</div>
-							<div class="text-center">Овердрафт</div>
-							<div class="text-center">Стоимость</div>
-							<div class="text-center">Рейтинг</div>
-						</div>
-
-						<?php
-						$query = new WP_Query(
-							array(
-								'posts_per_page' => -1,
-								'post_type' => array('bankcard'),
-								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
-								'orderby' => 'meta_value_num',
-								'order' => 'DESC',
-								'post_status' => 'publish',
-								'meta_query' => array(
-									array(
-										'key' => 'archive',
-										'value'    => '0'
-										),
-									array(
-										'key' => 'card_type',
-										'value' => 'debetcard',
-										'compare' => '='
-									),
-								)
-							)
-						);
-
-						while ($query->have_posts()) {
-							$query->the_post(); ?>
-							<div class="code3text">
-								<div class="w30 strong td2">
-									<a href="<?php the_permalink(); ?>" class="stretched-link" onclick="ym(35020350,'reachGoal','click_table_collection'); return true;">
-										<img src="<?php echo get_field('bank_logo', get_field('bank_choise', get_the_ID())); ?>" alt="<?php the_title(); ?>">
-										<?php the_title(); ?>
-									</a>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Кэшбек</div>
-									<div class="td-val">
-										<?php
-										$field = get_field('card_cashback');
-										$value = $field['value'];
-										echo $field['label'];
-										?>
-									</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">% на остаток</div>
-									<div class="td-val">до <?php echo get_field('card_stavka_ostatok'); ?>%</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Снятие без %</div>
-									<div class="td-val srok1">до <?php echo number_format(get_field('non_pecent_money'), 0, '.', ' '); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Овердрафт</div>
-									<div class="td-val srok1"><?php echo get_field('card_overdraft'); ?></div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Стоимость</div>
-									<div class="td-val srok1"><?php echo get_field('card_cost'); ?> ₽</div>
-								</div>
-								<div class="td text-center">
-									<div class="hidden-lg">Рейтинг</div>
-									<div class="rate3 text-center td-val">
-										<div>
-											<svg style="margin-right:5px;fill:var(--warning)" width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-												<use xlink:href="https://finabank.ru/wp-content/themes/finbank_theme/img/icons.svg#starLine" x="0" y="0"></use>
-											</svg>
-										</div>
-										<div><?php echo get_field('ratings_average'); ?></div>
-									</div>
-								</div>
-							</div>
-						<?php } ?>
-					</div>
-				<?php } ?>
-			</div>
-
-		<?php
-		$table_collection = ob_get_clean();
-		return $table_collection;
-	}
+function reviews_enqueue_scripts()
+{
+    wp_enqueue_script('reviews-load-more', get_template_directory_uri() . '/js/load-reviews.js', ['jquery'], null, true);
+    wp_localize_script('reviews-load-more', 'reviews_ajax', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+    ]);
+}
+add_action('wp_enqueue_scripts', 'reviews_enqueue_scripts');

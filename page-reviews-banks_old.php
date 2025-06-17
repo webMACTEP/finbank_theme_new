@@ -184,21 +184,18 @@ if ( count( $comments_list ) > 0 ) {
 
             </div>
             <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="banks" 
-                data-term-id="<?php echo intval($tax_id); ?>"
-                data-field-name="bank_choise">
-                Загрузить ещё
-            </button>
             <div class="pagination flex-column mb-5 mb-md-0">
+
                 <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                    <div class="pagination__links">
+                        <?php my_pagination($max_num_pages); ?>
+                    </div>
+
+                    <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
+                    wp_reset_query(); ?>
                     <div class="pagination__description mt-4 mt-sm-0">
-                        Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
+                        Показано <span class="count_view"><?php echo $count_items; ?></span>
+                        отзывов из <span class="count_all"><?php echo $sql_posts_total;?></span>
                     </div>
                 </div>
             </div>
@@ -985,26 +982,15 @@ wp_reset_query();
             <div class="comments comments-page-list" id="comments">
                     <?php comments_template(); ?>
             </div>
-             <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="banks" 
-                data-term-id="<?php echo intval($tax_id); ?>"
-                data-field-name="bank_choise">
-                Загрузить ещё
-            </button>
-            <div class="pagination flex-column mb-5 mb-md-0">
-                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                    <div class="pagination__description mt-4 mt-sm-0">
-                        Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
-                    </div>
-                </div>
-            </div>
-            <!-- / pagination -->
+                <!-- pagination -->
+              <div class="pagination flex-column">
+                  <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                      <div class="pagination__description mt-4 mt-sm-0">
+                          Показано <span class="review-count"> отзывов</span> из <?php echo get_comments_number($ID) ?>
+                      </div>
+                  </div>
+              </div>
+              <!-- / pagination -->
         </div>
         <div class="section">
             <!-- form -->
@@ -1202,27 +1188,15 @@ wp_reset_postdata();
             <div class="comments comments-page-list" id="comments">
                     <?php comments_template(); ?>
             </div>
-               
-              <!-- pagination -->
-            <button
-                id="load-more-reviews"
-                class="btn btn-outline-gray btn-block mt-5"
-                data-page="1"
-                data-per-page="<?php echo $ppp; ?>"
-                data-total="<?php echo $sql_posts_total; ?>"
-                data-taxonomy="banks" 
-                data-term-id="<?php echo intval($tax_id); ?>"
-                data-field-name="bank_choise">
-                Загрузить ещё
-            </button>
-            <div class="pagination flex-column mb-5 mb-md-0">
-                <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                    <div class="pagination__description mt-4 mt-sm-0">
-                        Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
-                    </div>
-                </div>
-            </div>
-            <!-- / pagination -->
+                <!-- pagination -->
+              <div class="pagination flex-column">
+                  <div class="pagination__container d-sm-flex justify-content-between align-items-center">
+                      <div class="pagination__description mt-4 mt-sm-0">
+                          Показано <span class="review-count"> отзывов</span> из <?php echo get_comments_number($ID) ?>
+                      </div>
+                  </div>
+              </div>
+              <!-- / pagination -->
         </div>
         <div class="section">
             <!-- form -->
