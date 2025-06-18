@@ -1338,47 +1338,60 @@ function load_more_reviews()
 
         // Выводим данные для каждого комментария
         ?>
-        <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item mt-4">
+        <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
             <div class="reviews__item-body">
                 <div class="reviews__header d-flex align-items-center mb-2">
                     <div class="reviews__header-logo">
-                    <?php if ($taxonomy === 'zaimy'): ?>
+                        <?php if ($taxonomy === 'zaimy'): ?>
                             <!-- Логотип для займов -->
-                            <img src="<?php echo esc_url(get_field('z_organization_logo', $comm->comment_post_ID)); ?>" alt="<?php
-                            $logo_id = get_field('z_organization_logo', $comm->comment_post_ID, false);
-                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                            echo esc_attr($logo_alt);
-                            ?>">
+                            <img src="<?php echo esc_url(get_field('z_organization_logo', $comm->comment_post_ID)); ?>"
+                                alt="<?php
+                                        $logo_id = get_field('z_organization_logo', $comm->comment_post_ID, false);
+                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                        echo esc_attr($logo_alt);
+                                        ?>">
                         <?php elseif ($taxonomy === 'banks'): ?>
                             <!-- Логотип для банков -->
-                            <img src="<?php echo esc_url(get_field('bank_logo', $comm->comment_post_ID)); ?>" alt="<?php
-                            $logo_id = get_field('bank_logo', $comm->comment_post_ID, false);
-                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                            echo esc_attr($logo_alt);
-                            ?>">
+                            <img src="<?php echo esc_url(get_field('bank_logo', $comm->comment_post_ID)); ?>"
+                                alt="<?php
+                                        $logo_id = get_field('bank_logo', $comm->comment_post_ID, false);
+                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                        echo esc_attr($logo_alt);
+                                        ?>">
                         <?php elseif ($taxonomy === 'kredity'): ?>
                             <!-- Логотип для кредиты -->
                             <?php $bank_choise_rel = get_field('product_bank', $comm->comment_post_ID) ?>
-                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>" alt="<?php
-                            $logo_id = get_field('bank_logo', $bank_choise_rel, false);
-                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                            echo esc_attr($logo_alt);
-                            ?>
+                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>"
+                                alt="<?php
+                                        $logo_id = get_field('bank_logo', $bank_choise_rel, false);
+                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                        echo esc_attr($logo_alt);
+                                        ?>
                             ">
                         <?php else: ?>
                             <?php $bank_choise_rel = get_field('bank_choise', $comm->comment_post_ID) ?>
-                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>" alt="<?php
-                            $logo_id = get_field('bank_logo', $bank_choise_rel, false);
-                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                            echo esc_attr($logo_alt);
-                            ?>">
+                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>"
+                                alt="<?php
+                                        $logo_id = get_field('bank_logo', $bank_choise_rel, false);
+                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                        echo esc_attr($logo_alt);
+                                        ?>">
                         <?php endif; ?>
-                        
+
 
                     </div>
                     <div class="reviews__header-meta ml-3">
                         <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>" class="reviews__header-title h4 mb-2 stretched-link">
+                        <?php if ($taxonomy === 'zaimy'): ?>
+                            <?php echo esc_html(get_the_title($post_id)); ?>                         
+                        <?php elseif ($taxonomy === 'banks'): ?>
                             <?php echo esc_html(get_the_title($post_id)); ?>
+                        <?php elseif ($taxonomy === 'kredity'): ?>
+                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
+                        <?php else: ?>
+                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
+                        <?php endif; ?>
+                           
                         </a>
                         <div class="d-flex">
                             <div class="card__rating d-flex align-items-center mr-3">
@@ -1407,7 +1420,7 @@ function load_more_reviews()
                     <p><?php echo $content; ?></p>
                 </div>
             </div>
-            <div class="reviews__item-footer mb-3 ml-3">
+            <div class="reviews__item-footer mb-2 ml-3">
                 <div class="reviews__author d-flex align-items-center mt-3">
                     <div class="reviews__author-img mr-3">
                         <img loading="lazy" src="<?php echo esc_url(get_avatar_url($comment, ['size' => 60, 'default' => 'identicon'])); ?>" alt="">
@@ -1416,9 +1429,11 @@ function load_more_reviews()
                         <span class="reviews__author-title d-block"><?php echo $author; ?></span>
                         <div class="reviews__author-info d-flex">
                             <div class="card__icon d-flex align-items-center mr-3">
-                                <svg width="14" height="19">
-                                    <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#person"></use>
-                                </svg>
+                                <div class="mr-2">
+                                    <svg width="14" height="19">
+                                        <use xlink:href="<?php echo esc_url(get_template_directory_uri()); ?>/img/icons.svg#person"></use>
+                                    </svg>
+                                </div>
                                 <?php echo esc_html($role); ?>
                             </div>
                             <?php if ($city): ?>

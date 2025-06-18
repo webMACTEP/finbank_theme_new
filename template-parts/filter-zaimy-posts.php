@@ -34,6 +34,10 @@ $card_other_state =  get_field('z_other_statements');
 ?>
 <div class="card mb-4 <?php echo esc_attr($query__card); ?>">
     <div class="card-container">
+        <!-- Добавляем метку "Архив", если это архивный пост -->
+        <?php if (get_field('archive') === true): ?>
+                    <div class="archive-label">Архив</div>
+                <?php endif; ?>
         <div class="item-content">
             <div class="item-about">
                 <!-- Изображение -->
@@ -165,7 +169,7 @@ $card_other_state =  get_field('z_other_statements');
                             class="link-data btn btn-primary btn-block"
                             data-link="<?= esc_attr($card_bank_link); ?>"
                             onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;">
-                            Оформить
+                            Подобрать
                         </span>
                     </div>
                 <?php else: ?>
@@ -173,7 +177,7 @@ $card_other_state =  get_field('z_other_statements');
                         <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;"
                             class="apply_now_btm btn btn-primary btn-block">
-                            Оформить
+                             000
                         </span>
                     </div>
                 <?php endif; ?>

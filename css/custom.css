@@ -7597,6 +7597,10 @@ a.cld-like-dislike-trigger {
 }
 .newlisting .list_posts.cards .card .btn-block {
   min-width: 170px;
+  font-size: 14px;
+  background-color: var(--card-bg);
+  border-color: var(--btn-primary-border);
+  color: var(--black) !important;
 }
 .newlisting .list_posts.cards .card .open__dop-btn {
   margin-right: auto;

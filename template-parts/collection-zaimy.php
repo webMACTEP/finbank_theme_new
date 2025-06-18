@@ -558,13 +558,7 @@ $type_collection = 'zaimy';
 						</div>
 						<?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
 						wp_reset_query(); ?>
-						<!-- <div class="pagination__description mt-4">
-						Показано <span class="count_view"><?php // echo $counter 
-															?></span>
-						продуктов из <span class="count_all"><?php // echo $query->found_posts; 
-																?></span>
-					</div> -->
-						<!-- pagination -->
+						
 						<div class="pagination flex-column mb-3">
 							<?php if ($paged < $max_pages): ?>
 								<button class="btn btn-outline-gray btn-block load_more_btn"

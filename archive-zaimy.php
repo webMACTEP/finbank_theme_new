@@ -9,22 +9,48 @@ $apply_now = get_field('apply_now_select_products', get_the_ID());
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 // Аргументы для WP_Query
+// $items_args = array(
+//     'paged' => $paged,
+//     'orderby' => 'name',
+//     'order' => 'DESC',
+//     'post_type' => 'zaimy',
+//     'posts_per_page' => 20,
+//     'post_status' => 'publish',
+//     'post_parent' => 0, // Только родительские записи
+//     'meta_query' => array(
+//         array(
+//             'key' => 'archive',
+//             'value' => '0',
+//             'compare' => '=', // Рекомендуется явно указать оператор сравнения
+//         )
+//     )
+// );
+
 $items_args = array(
     'paged' => $paged,
-    'orderby' => 'name',
-    'order' => 'DESC',
     'post_type' => 'zaimy',
     'posts_per_page' => 20,
     'post_status' => 'publish',
     'post_parent' => 0, // Только родительские записи
+    'orderby' => 'meta_value', // Сортировка по мета-полю
+    'order' => 'DESC', // Сначала выводим те записи, у которых есть card_bank_link
     'meta_query' => array(
+        'relation' => 'AND', // Для объединения условий
         array(
             'key' => 'archive',
             'value' => '0',
-            'compare' => '=', // Рекомендуется явно указать оператор сравнения
-        )
-    )
+            'compare' => '=', // Условие для поля archive
+        ),
+        array(
+            'key' => 'card_bank_link', // Ключ мета-поля
+            'value' => '', // Пропускаем пустые значения
+            'compare' => '!=', // Значение не должно быть пустым
+        ),
+    ),
 );
+
+
+
 
 // Создание нового запроса
 $query_items = new WP_Query($items_args);
@@ -539,13 +565,7 @@ if (!$query_items->have_posts()) {
                             </div>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
-                            <!-- <div class="pagination__description mt-4">
-                                Показано <span class="count_view"><?php // echo $counter 
-                                                                    ?></span>
-                                продуктов из <span class="count_all"><?php // echo $query->found_posts; 
-                                                                        ?></span>
-                            </div> -->
-                            <!-- pagination -->
+
                             <div class="pagination flex-column mb-3">
                                 <?php if ($paged < $max_pages): ?>
                                     <button
@@ -561,29 +581,7 @@ if (!$query_items->have_posts()) {
                             </div>
 
 
-                            <!-- archive posts -->
-                            <?php
-                            $args_archive = array(
-                                'post_type' => 'zaimy',
-                                'posts_per_page' => -1,
-                                'meta_key'      => 'archive',
-                                'meta_value'    => true
-                            );
-                            $query_archive = new WP_Query($args_archive);
-                            if ($query_archive->have_posts()): ?>
-                                <button class="btn btn-outline-gray btn-block archive_title mb-4">
-                                    Архивные оферы (<?= $query_archive->found_posts; ?>)
-                                </button>
-
-
-                                <div class="list_posts archive_list archive_hide">
-                                    <?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
-                                        <?php get_template_part('template-parts/filter-zaimy-posts'); ?>
-                                    <?php endwhile;
-                                    wp_reset_postdata(); ?>
-                                </div>
-                            <?php endif; ?>
-                            <!-- /archive posts -->
+                            
 
                         </div>
                     </div>

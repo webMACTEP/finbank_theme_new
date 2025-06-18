@@ -1,5 +1,5 @@
 :root[data-theme="dark"] {
-    .cld-common-wrap .cld-like-trigger{
+    .cld-common-wrap .cld-like-trigger {
         background: url("../img/like2.svg");
         transform: rotate(180deg);
     }
@@ -121,7 +121,6 @@
     display: flex !important;
 }
 .zaimy-new {
-    
     .quiz {
         #quizResult {
             //display: none;
@@ -2439,6 +2438,10 @@
                 }
                 .btn-block {
                     min-width: 170px;
+                    font-size: 14px;
+                    background-color: var(--card-bg);
+                    border-color: var(--btn-primary-border);
+                    color: var(--black) !important;
                 }
                 .open__dop-btn {
                     margin-right: auto;
@@ -2587,14 +2590,13 @@
 .present-icon {
     background: var(--btn-primary-border);
 }
-.new_mob{
+.new_mob {
     display: none;
 }
 /* Скрываем все комментарии после 10-го */
-.additional-comments-level-0 li:nth-child(n+21) {
+.additional-comments-level-0 li:nth-child(n + 21) {
     display: none;
-  }
-  
+}
 
 @media (max-width: 1090px) {
     .newlisting .new-calc-content,
@@ -2603,10 +2605,10 @@
     }
 }
 @media (max-width: 768px) {
-    .new_mob{
+    .new_mob {
         display: block;
     }
-    .new_dt{
+    .new_dt {
         display: none;
     }
     .newlisting .tabs-and-btns .tabs .tab-content {

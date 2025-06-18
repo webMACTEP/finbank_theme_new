@@ -1313,6 +1313,7 @@ function card_loadmore_ajax_handler()
 }
 
 
+// основной фильтр для листингов
 
 add_action('wp_ajax_cardfilter', 'card_filter_function');
 add_action('wp_ajax_nopriv_cardfilter', 'card_filter_function');
@@ -1477,15 +1478,34 @@ function card_filter_function()
 
 	// 3. Займы (zaimy)
 	if ($term === 'zaimy') {
+		// $args = [
+		// 	'post_type' => 'zaimy',
+		// 	'post_parent'    => 0,
+		// 	'post_status' => 'publish',
+		// 	'posts_per_page' => $ppp,
+		// 	'paged'          => $paged,
+		// 	'orderby' => 'name',
+		// 	'order' => $order_type,
+		// ];
 		$args = [
 			'post_type' => 'zaimy',
-			'post_parent'    => 0,
+			'post_parent' => 0,
 			'post_status' => 'publish',
 			'posts_per_page' => $ppp,
-			'paged'          => $paged,
-			'orderby' => 'name',
-			'order' => $order_type,
+			'paged' => $paged,
+			'orderby' => 'meta_value', // Сортировка по мета-полю
+			'order' => 'DESC', // Сначала выводим посты с заполненным полем card_bank_link
+			'meta_key' => 'card_bank_link', // Указание ключа для мета-поля
+			'meta_query' => [
+				'relation' => 'AND',
+				[
+					'key' => 'card_bank_link',
+					'value' => '',
+					'compare' => '!=', // Условие для того, чтобы выбирать только те посты, где поле card_bank_link не пустое
+				],
+			],
 		];
+
 		if ($order) {
 			$args['orderby'] = ['meta_value_num' => $order_type, 'name' => $order_type];
 			$args['meta_key'] = $order;
@@ -1548,6 +1568,9 @@ function card_filter_function()
 		$posts_html = '<p>Ничего не найдено по заданным фильтрам.</p>';
 	}
 
+
+
+
 	wp_send_json([
 		'query_vars'   => $wp_query->query_vars,
 		'max_page'     => $wp_query->max_num_pages,
@@ -1556,6 +1579,9 @@ function card_filter_function()
 		'item_count'   => $item_count,
 	]);
 }
+
+
+
 
 
 
@@ -1695,6 +1721,8 @@ function bank_filter_function()
 	else:
 		$posts_html = '<p style="padding: 0 14px">Ничего не найдено по заданым фильтрам.</p>';
 	endif;
+
+
 	echo json_encode(array(
 		'posts' => json_encode($wp_query->query_vars),
 		'max_page' => $wp_query->max_num_pages,

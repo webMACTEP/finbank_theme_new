@@ -50,7 +50,7 @@ $bank_id_field_name = isset($args['bank_id__field_name']) && !empty($args['bank_
 
         <?php if( isset($args['TYPE']) && $args['TYPE'] === 'zaimy' ): ?>
             <!-- Отзывы типа "zaimy" -->
-            <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item mt-4">
+            <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
 
                 <div class="reviews__item-body">
                     <div class="reviews__header d-flex align-items-center mb-2">
@@ -91,7 +91,7 @@ $bank_id_field_name = isset($args['bank_id__field_name']) && !empty($args['bank_
                         <p><?php echo wp_kses_post( $comment->comment_content ); ?></p>
                     </div>
                 </div>
-                <div class="reviews__item-footer mb-3 ml-3">
+                <div class="reviews__item-footer mb-2 ml-3">
                     <div class="reviews__author d-flex align-items-center mt-3">
                         <div class="reviews__author-img mr-3">
                             <img loading="lazy" src="<?php echo esc_url( get_avatar_url( $comment, array('size' => 60, 'default' => 'identicon') ) ); ?>" alt="<?php echo esc_attr( $author ); ?>">
@@ -134,7 +134,7 @@ $bank_id_field_name = isset($args['bank_id__field_name']) && !empty($args['bank_
 
         <?php if( isset($args['TYPE']) && $args['TYPE'] !== 'zaimy' ): ?>
             <!-- Отзывы других типов -->
-            <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item mt-4">
+            <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
 
                 <div class="reviews__item-body">
                     <div class="reviews__header d-flex align-items-center mb-2">
@@ -175,7 +175,7 @@ $bank_id_field_name = isset($args['bank_id__field_name']) && !empty($args['bank_
                         <p><?php echo wp_kses_post( $comment->comment_content ); ?></p>
                     </div>
                 </div>
-                <div class="reviews__item-footer mb-3 ml-3">
+                <div class="reviews__item-footer mb-2 ml-3">
                     <div class="reviews__author d-flex align-items-center mt-3">
                         <div class="reviews__author-img mr-3">
                             <img loading="lazy" src="<?php echo esc_url( get_avatar_url( $comment, array('size' => 60, 'default' => 'identicon') ) ); ?>" alt="<?php echo esc_attr( $author ); ?>">
