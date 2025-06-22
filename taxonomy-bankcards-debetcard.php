@@ -378,27 +378,84 @@
 
                     <?php
                     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                    $args = array(
-                        'paged'          => $paged,
-                        'orderby'        => 'name',
-                        'order'          => 'DESC',
+                    // $args = array(
+                    //     'paged'          => $paged,
+                    //     'orderby'        => 'name',
+                    //     'order'          => 'DESC',
+                    //     'post_type'      => 'bankcard',
+                    //     'posts_per_page' => 20, // Добавлено для вывода 12 материалов
+                    //     'tax_query'      => array(
+                    //         array(
+                    //             'taxonomy' => 'bankcards',
+                    //             'field'    => 'slug',
+                    //             'terms'    => 'debetcard',
+                    //         ),
+                    //     ),
+                    //     'post_status'    => 'publish',
+                    // );
+
+
+                    // $args['meta_query'][] = array(
+                    //     'key' => 'archive',
+                    //     'value' => '0'
+                    // );
+
+                    $args = [
                         'post_type'      => 'bankcard',
-                        'posts_per_page' => 20, // Добавлено для вывода 12 материалов
-                        'tax_query'      => array(
-                            array(
+                        'posts_per_page' => 20,   // сколько выводим за раз
+                        'paged'          => $paged,
+                        'post_status'    => 'publish',
+                    
+                        // привязка к термину creditcard таксономии bankcards
+                        'tax_query'      => [
+                            [
                                 'taxonomy' => 'bankcards',
                                 'field'    => 'slug',
                                 'terms'    => 'debetcard',
-                            ),
-                        ),
-                        'post_status'    => 'publish',
-                    );
-
-
-                    $args['meta_query'][] = array(
-                        'key' => 'archive',
-                        'value' => '0'
-                    );
+                            ],
+                        ],
+                    
+                        // сначала сортировка по order_priority, потом по наличию ссылки,
+                        // потом по дате публикации (DESC — новые выше)
+                        'orderby'        => [
+                            'priority_clause' => 'DESC',
+                            'link_clause'     => 'DESC',
+                            'date'            => 'DESC',
+                        ],
+                    
+                        // meta_query с общей связкой AND
+                        'meta_query'     => [
+                            'relation'         => 'AND',
+                    
+                            // 1) Приоритет (числовое поле)
+                            'priority_clause'  => [
+                                'key'     => 'order_priority',
+                                'type'    => 'NUMERIC',
+                                'compare' => 'EXISTS',
+                            ],
+                    
+                            // 2) Группа для проверки наличия/отсутствия ссылки
+                            [
+                                'relation'       => 'OR',
+                                'link_clause'    => [
+                                    'key'     => 'card_bank_link',
+                                    'compare' => 'EXISTS',
+                                ],
+                                'no_link_clause' => [
+                                    'key'     => 'card_bank_link',
+                                    'compare' => 'NOT EXISTS',
+                                ],
+                            ],
+                    
+                            // здесь можно добавить другие фильтры по $_POST, например:
+                            // сумма, процент, тип карты и т.д.
+                            // [
+                            //   'key'     => 'some_meta_key',
+                            //   'value'   => $some_value,
+                            //   'compare' => 'LIKE',
+                            // ],
+                        ],
+                    ];
 
                     $counter = 0;
                     $query = new WP_Query($args);
@@ -509,34 +566,7 @@
 
 
                             <!-- archive posts -->
-                            <?php
-                            $args_archive = array(
-                                'post_type'             => 'bankcard',
-                                'posts_per_page'        => -1,
-                                'meta_key'      => 'archive',
-                                'meta_value'    => true,
-                                'tax_query' => array(
-                                    array(
-                                        'taxonomy' => 'bankcards',
-                                        'field'    => 'slug',
-                                        'terms'    => 'debetcard',
-                                    ),
-                                )
-                            );
-                            $query_archive = new WP_Query($args_archive);
-                            if ($query_archive->have_posts()): ?>
-                                <button class="btn btn-outline-gray btn-block archive_title mb-4">
-                                    Архивные оферы (<?= $query_archive->found_posts; ?>)
-                                </button>
-
-
-                                <div class="list_posts archive_list archive_hide">
-                                    <?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
-                                        <?php get_template_part('template-parts/filter-debet-card-posts'); ?>
-                                    <?php endwhile;
-                                    wp_reset_postdata(); ?>
-                                </div>
-                            <?php endif; ?>
+                            
                             <!-- /archive posts -->
 
 
@@ -614,6 +644,8 @@
                                 ),
                             ),
                         );
+
+                        
 
                         $query = new WP_Query($args);
 

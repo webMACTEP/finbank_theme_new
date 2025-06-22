@@ -1,6 +1,6 @@
 <?php
 // Инициализация переменных
-$query__card = get_field('archive') != true ? 'query__card' : '';
+$query__card = get_field('archive') != true ? 'query__card' : 'archive__card';
 $bank_id = get_field('bank_choise');
 $terms = wp_get_post_terms(get_the_ID(), 'bankcards', array('fields' => 'all'));
 $term_slug = '';
@@ -183,8 +183,8 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     <div class="item-buttons-cont">
                         <span data-popap-apply-id="<?php echo esc_attr(get_the_ID()); ?>"
                             onclick="<?php echo (get_metrika_for_list($card_bank_link)); ?> return true;"
-                            class="apply_now_btm btn btn-primary btn-block">
-                            Оформить
+                            class="apply_now_btm btn btn-primary btn-block noref">
+                            Подобрать
                         </span>
                     </div>
                 <?php endif; ?>

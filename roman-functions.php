@@ -1513,3 +1513,114 @@ add_action('wp_enqueue_scripts', 'reviews_enqueue_scripts');
 //     // и в конце
 //     set_transient('filled_order_priority', 1, DAY_IN_SECONDS);
 // }
+
+
+// add_action( 'init', 'fill_default_order_priority_bankcards', 20 );
+// function fill_default_order_priority_bankcards() {
+//     // Запускаем один раз в сутки
+//     if ( get_transient( 'filled_order_priority_bankcards' ) ) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'bankcard',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//         'tax_query'      => [
+//             [
+//                 'taxonomy' => 'bankcards',
+//                 'field'    => 'slug',
+//                 'terms'    => 'creditcard',
+//             ],
+//         ],
+//     ];
+
+//     $q = new WP_Query( $args );
+//     if ( $q->have_posts() ) {
+//         foreach ( $q->posts as $post_id ) {
+//             // Если мета существует, но пусто — ставим -1
+//             $val = get_post_meta( $post_id, 'order_priority', true );
+//             if ( $val === '' ) {
+//                 update_post_meta( $post_id, 'order_priority', -1 );
+//             }
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг, чтобы не гонять этот цикл чаще, чем раз в сутки
+//     set_transient( 'filled_order_priority_bankcards', 1, DAY_IN_SECONDS );
+// }
+
+
+// add_action( 'init', 'fill_default_order_priority_bankcards', 20 );
+// function fill_default_order_priority_bankcards() {
+//     // Запускаем один раз в сутки
+//     if ( get_transient( 'filled_order_priority_bankcardsdebetcard' ) ) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'bankcard',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//         'tax_query'      => [
+//             [
+//                 'taxonomy' => 'bankcards',
+//                 'field'    => 'slug',
+//                 'terms'    => 'debetcard',
+//             ],
+//         ],
+//     ];
+
+//     $q = new WP_Query( $args );
+//     if ( $q->have_posts() ) {
+//         foreach ( $q->posts as $post_id ) {
+//             // Если мета существует, но пусто — ставим -1
+//             $val = get_post_meta( $post_id, 'order_priority', true );
+//             if ( $val === '' ) {
+//                 update_post_meta( $post_id, 'order_priority', -1 );
+//             }
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг, чтобы не гонять этот цикл чаще, чем раз в сутки
+//     set_transient( 'filled_order_priority_bankcardsdebetcard', 1, DAY_IN_SECONDS );
+// }
+
+
+// add_action( 'init', 'fill_default_order_priority_bankcards', 20 );
+// function fill_default_order_priority_bankcards() {
+//     // Запускаем один раз в сутки
+//     if ( get_transient( 'filled_order_priority_bankcardsinstallmentcard' ) ) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'bankcard',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//         'tax_query'      => [
+//             [
+//                 'taxonomy' => 'bankcards',
+//                 'field'    => 'slug',
+//                 'terms'    => 'installmentcard',
+//             ],
+//         ],
+//     ];
+
+//     $q = new WP_Query( $args );
+//     if ( $q->have_posts() ) {
+//         foreach ( $q->posts as $post_id ) {
+//             // Если мета существует, но пусто — ставим -1
+//             $val = get_post_meta( $post_id, 'order_priority', true );
+//             if ( $val === '' ) {
+//                 update_post_meta( $post_id, 'order_priority', -1 );
+//             }
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг, чтобы не гонять этот цикл чаще, чем раз в сутки
+//     set_transient( 'filled_order_priority_bankcardsinstallmentcard', 1, DAY_IN_SECONDS );
+// }
