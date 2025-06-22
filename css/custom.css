@@ -7598,6 +7598,8 @@ a.cld-like-dislike-trigger {
 .newlisting .list_posts.cards .card .btn-block {
   min-width: 170px;
   font-size: 14px;
+}
+.newlisting .list_posts.cards .card .btn-block.noref {
   background-color: var(--card-bg);
   border-color: var(--btn-primary-border);
   color: var(--black) !important;
@@ -7731,6 +7733,10 @@ a.cld-like-dislike-trigger {
 /* Скрываем все комментарии после 10-го */
 .additional-comments-level-0 li:nth-child(n+21) {
   display: none;
+}
+
+.newlisting .archive__card .card-container {
+  background: #b4fdff;
 }
 
 @media (max-width: 1090px) {

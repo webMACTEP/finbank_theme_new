@@ -2727,8 +2727,4 @@ jQuery(function ($) {
 
     $(".filter_v1 .submit-button").click();
   });
-
-
-  
-
 });

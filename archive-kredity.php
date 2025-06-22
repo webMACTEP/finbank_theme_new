@@ -439,17 +439,39 @@ else:
 					<?php
 					$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 					$args = array(
-						'orderby' => 'name',
-						'order' => 'DESC',
-						'post_type' => 'kredity',
-						'posts_per_page' => 20, // Добавлено для вывода 12 материалов
+						'post_type'      => 'kredity',
+						'post_parent' => 0,
 						'post_status' => 'publish',
-						'paged' => $paged,
+						'posts_per_page' => 20,
+						//'paged'          => $paged,
+
+						// 1) Определяем оба критерия в meta_query...
+						'meta_query' => [
+							'relation'         => 'AND',
+
+							// Клаузула для приоритета
+							'priority_clause' => [
+								'key'     => 'order_priority',
+								'type'    => 'NUMERIC',
+
+								// compare не обязателен: просто берём значение
+							],
+
+							// Клаузула для наличия ссылки
+							'link_clause'     => [
+								'key'     => 'card_bank_link',
+								'compare' => 'EXISTS',
+							],
+						],
+
+						// 2) Сортируем по ним в нужном порядке
+						'orderby' => [
+							'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
+							'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+							'date'            => 'DESC', // и, наконец, по дате публикации
+						],
 					);
-					$args['meta_query'][] = array(
-						'key' => 'archive',
-						'value' => '0'
-					);
+
 
 					$counter = 0;
 					$query = new WP_Query($args);
@@ -502,7 +524,7 @@ else:
 									<div class="credits__list-dropdown dropdown  px-0">
 										<select name="order" class="styledSelect cred-order-select">
 											<option value="" selected disabled>Сортировать</option>
-											<option value="">Сбросить сортировку</option>
+											<option value="card_bank_link">Сбросить сортировку</option>
 											<option value="ratings_average">По рейтингу</option>
 											<option value="views">По количеству заявок</option>
 											<option value="credit_max_sum">По сумме займа</option>
@@ -544,12 +566,7 @@ else:
 							</div>
 							<?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
 							wp_reset_query(); ?>
-							<!-- <div class="pagination__description mt-4">
-                                Показано <span class="count_view"><?php // echo $counter 
-																	?></span>
-                                продуктов из <span class="count_all"><?php // echo $query->found_posts; 
-																		?></span>
-                            </div> -->
+							
 							<!-- pagination -->
 							<div class="pagination flex-column mb-3">
 								<?php if ($paged < $max_pages): ?>
@@ -567,27 +584,7 @@ else:
 
 
 							<!-- archive posts -->
-							<?php
-							$args_archive = array(
-								'post_type' => 'kredity',
-								'posts_per_page' => -1,
-								'meta_key'      => 'archive',
-								'meta_value'    => true
-							);
-							$query_archive = new WP_Query($args_archive);
-							if ($query_archive->have_posts()): ?>
-								<button class="btn btn-outline-gray btn-block archive_title mb-4">
-									Архивные оферы (<?= $query_archive->found_posts; ?>)
-								</button>
-
-
-								<div class="list_posts archive_list archive_hide">
-									<?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
-										<?php get_template_part('template-parts/filter-kredity-posts'); ?>
-									<?php endwhile;
-									wp_reset_postdata(); ?>
-								</div>
-							<?php endif; ?>
+							
 							<!-- /archive posts -->
 
 						</div>

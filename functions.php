@@ -1230,8 +1230,8 @@ function card_loadmore_ajax_handler()
 
 		$params['orderby'] = array('meta_value_num' => 'desc', 'name' => 'desc');
 		$params['meta_query'][] = array(
-			'key' => 'archive',
-			'value' => '0'
+			// 'key' => 'archive',
+			// 'value' => '0'
 		);
 	}
 
@@ -1330,7 +1330,7 @@ function card_filter_function()
 	// Определяем, сколько записей выводить на страницу (по умолчанию 12)
 	$ppp = !empty($_POST['posts_per_page'])
 		? intval($_POST['posts_per_page'])
-		: 12;
+		: 20;
 
 
 	// Инициализируем args
@@ -1426,54 +1426,128 @@ function card_filter_function()
 
 	// 2. Кредиты (kredity)
 	if ($term === 'kredity') {
+
+		
+
+		// базовый запрос: сначала сортируем по наличию ссылки, потом по дате
 		$args = [
-			'post_type' => 'kredity',
-			'post_status' => 'publish',
+			'post_type'      => 'kredity',
+			'post_parent'    => 0,
+			'post_status'    => 'publish',
 			'posts_per_page' => $ppp,
 			'paged'          => $paged,
-			'orderby' => $order ? 'meta_value_num' : 'name',
-			'order' =>  $order ? $order_type : $order_type,
+	
+			'orderby'    => [
+				'meta_value' => 'DESC',
+				'date'       => 'ASC',
+			],
+			'meta_key'   => 'card_bank_link',
+	
+			'meta_query' => [
+				'relation'         => 'OR',
+				[
+					'key'     => 'card_bank_link',
+					'value'   => '',
+					'compare' => '!=',  // только записи с ненулевой ссылкой
+				],
+				[
+					'key'     => 'archive',
+					'value'   => true,  // или какие-то архивные, по вашему условию
+					'compare' => '=',
+				],
+			],
 		];
-		if ($order) $args['meta_key'] = $order;
-		if ($postarr) $args['post__in'] = $postarr;
-		$args['meta_query'] = ['relation' => 'AND'];
+	
+		// если есть пользовательская сортировка — переключаем
+		if ( $order ) {
+			$args['orderby']  = [
+				'meta_value_num' => $order_type,
+				'name'           => $order_type,
+			];
+			$args['meta_key'] = $order;
+		}
+	
+		// если передан список конкретных ID — фильтруем по ним
+		if ( $postarr ) {
+			$args['post__in'] = $postarr;
+		}
+	
+		// теперь задаём основную группу фильтров — AND
+		$args['meta_query'] = [ 'relation' => 'AND' ];
+	
 		// сумма кредита
-		if (!empty($_POST['summ_limit'])) {
-			$sl = json_decode(stripslashes($_POST['summ_limit']));
-			$args['meta_query'][] = ['key' => 'credit_max_sum', 'value' => $sl, 'type' => 'numeric', 'compare' => '>='];
+		if ( ! empty( $_POST['summ_limit'] ) ) {
+			$sl = json_decode( stripslashes( $_POST['summ_limit'] ), true );
+			$args['meta_query'][] = [
+				'key'     => 'credit_max_sum',
+				'value'   => $sl,
+				'type'    => 'numeric',
+				'compare' => '>=',
+			];
 		}
+	
 		// срок кредита
-		if (!empty($_POST['cred_summ_period'])) {
-			$sp = json_decode(stripslashes($_POST['cred_summ_period']));
-			$args['meta_query'][] = ['key' => 'credit_period_month', 'value' => $sp, 'type' => 'numeric', 'compare' => '>='];
+		if ( ! empty( $_POST['cred_summ_period'] ) ) {
+			$sp = json_decode( stripslashes( $_POST['cred_summ_period'] ), true );
+			$args['meta_query'][] = [
+				'key'     => 'credit_period_month',
+				'value'   => $sp,
+				'type'    => 'numeric',
+				'compare' => '>=',
+			];
 		}
+	
 		// банк кредита
-		if (!empty($_POST['kreditbank'])) {
-			$kb = json_decode(stripslashes($_POST['kreditbank']));
-			$args['meta_query'][] = ['key' => 'product_bank', 'value' => $kb, 'compare' => '='];
+		if ( ! empty( $_POST['kreditbank'] ) ) {
+			$kb = json_decode( stripslashes( $_POST['kreditbank'] ), true );
+			$args['meta_query'][] = [
+				'key'     => 'product_bank',
+				'value'   => $kb,
+				'compare' => '=',
+			];
 		}
+	
 		// цель кредита
-		if (!empty($_POST['kred_purpose'])) {
-			$args['meta_query'][] = ['key' => 'credit_porpose', 'value' => sanitize_text_field($_POST['kred_purpose']), 'compare' => 'LIKE'];
+		if ( ! empty( $_POST['kred_purpose'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'credit_porpose',
+				'value'   => sanitize_text_field( $_POST['kred_purpose'] ),
+				'compare' => 'LIKE',
+			];
 		}
+	
 		// категория заемщика
-		if (!empty($_POST['cat_zaim'])) {
-			$args['meta_query'][] = ['key' => 'credit_zaemshik', 'value' => sanitize_text_field($_POST['cat_zaim']), 'compare' => 'LIKE'];
+		if ( ! empty( $_POST['cat_zaim'] ) ) {
+			$args['meta_query'][] = [
+				'key'     => 'credit_zaemshik',
+				'value'   => sanitize_text_field( $_POST['cat_zaim'] ),
+				'compare' => 'LIKE',
+			];
 		}
+	
 		// тип получения (cgt1..cgt5)
-		for ($i = 1; $i <= 5; $i++) {
-			if (!empty($_POST['cgt' . $i]) && $_POST['cgt' . $i] === 'on') {
-				$args['meta_query'][] = ['key' => 'credit_get_type', 'value' => 'cgt' . $i, 'compare' => 'LIKE'];
+		for ( $i = 1; $i <= 5; $i++ ) {
+			if ( ! empty( $_POST[ 'cgt' . $i ] ) && $_POST[ 'cgt' . $i ] === 'on' ) {
+				$args['meta_query'][] = [
+					'key'     => 'credit_get_type',
+					'value'   => 'cgt' . $i,
+					'compare' => 'LIKE',
+				];
 			}
 		}
+	
 		// прочие условия (kos1..kos10)
-		for ($i = 1; $i <= 10; $i++) {
-			if (!empty($_POST['kos' . $i]) && $_POST['kos' . $i] === 'on') {
-				$args['meta_query'][] = ['key' => 'credit_other_statements', 'value' => 'kos' . $i, 'compare' => 'LIKE'];
+		for ( $i = 1; $i <= 10; $i++ ) {
+			if ( ! empty( $_POST[ 'kos' . $i ] ) && $_POST[ 'kos' . $i ] === 'on' ) {
+				$args['meta_query'][] = [
+					'key'     => 'credit_other_statements',
+					'value'   => 'kos' . $i,
+					'compare' => 'LIKE',
+				];
 			}
 		}
 		// архив
-		$args['meta_query'][] = ['key' => 'archive', 'value' => '0'];
+		//$args['meta_query'][] = ['key' => 'archive', 'value' => '0'];
 	}
 
 	// 3. Займы (zaimy)
@@ -1487,24 +1561,35 @@ function card_filter_function()
 		// 	'orderby' => 'name',
 		// 	'order' => $order_type,
 		// ];
+
+
 		$args = [
 			'post_type' => 'zaimy',
 			'post_parent' => 0,
 			'post_status' => 'publish',
 			'posts_per_page' => $ppp,
 			'paged' => $paged,
-			'orderby' => 'meta_value', // Сортировка по мета-полю
-			'order' => 'DESC', // Сначала выводим посты с заполненным полем card_bank_link
+			'orderby' => ['meta_value' => 'DESC', 'date' => 'ASC'], // Сортировка сначала по заполненности card_bank_link, затем по дате
 			'meta_key' => 'card_bank_link', // Указание ключа для мета-поля
 			'meta_query' => [
-				'relation' => 'AND',
+				'relation' => 'OR', // Используем 'OR' для комбинирования условий
 				[
 					'key' => 'card_bank_link',
 					'value' => '',
 					'compare' => '!=', // Условие для того, чтобы выбирать только те посты, где поле card_bank_link не пустое
 				],
+				[
+					'key' => 'archive', // Условие для архивных постов
+					'value' => true, // Архивные посты
+					'compare' => '=',
+				],
 			],
 		];
+
+
+
+
+
 
 		if ($order) {
 			$args['orderby'] = ['meta_value_num' => $order_type, 'name' => $order_type];
@@ -1541,7 +1626,7 @@ function card_filter_function()
 			$args['meta_query'][] = ['key' => 'z_other_statements', 'value' => $zos, 'compare' => 'LIKE'];
 		}
 		// архив
-		$args['meta_query'][] = ['key' => 'archive', 'value' => '0'];
+		//$args['meta_query'][] = ['key' => 'archive', 'value' => true];
 	}
 
 	// Выполняем запрос и формируем ответ

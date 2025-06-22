@@ -1382,16 +1382,16 @@ function load_more_reviews()
                     </div>
                     <div class="reviews__header-meta ml-3">
                         <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>" class="reviews__header-title h4 mb-2 stretched-link">
-                        <?php if ($taxonomy === 'zaimy'): ?>
-                            <?php echo esc_html(get_the_title($post_id)); ?>                         
-                        <?php elseif ($taxonomy === 'banks'): ?>
-                            <?php echo esc_html(get_the_title($post_id)); ?>
-                        <?php elseif ($taxonomy === 'kredity'): ?>
-                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
-                        <?php else: ?>
-                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
-                        <?php endif; ?>
-                           
+                            <?php if ($taxonomy === 'zaimy'): ?>
+                                <?php echo esc_html(get_the_title($post_id)); ?>
+                            <?php elseif ($taxonomy === 'banks'): ?>
+                                <?php echo esc_html(get_the_title($post_id)); ?>
+                            <?php elseif ($taxonomy === 'kredity'): ?>
+                                <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
+                            <?php else: ?>
+                                <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
+                            <?php endif; ?>
+
                         </a>
                         <div class="d-flex">
                             <div class="card__rating d-flex align-items-center mr-3">
@@ -1474,3 +1474,42 @@ function reviews_enqueue_scripts()
     ]);
 }
 add_action('wp_enqueue_scripts', 'reviews_enqueue_scripts');
+
+
+
+
+
+// add_action('init', 'fill_default_order_priority', 20);
+// function fill_default_order_priority()
+// {
+//     // Удаляем старый флаг — так мы гарантированно запустим цикл заново
+//     delete_transient('filled_order_priority');
+
+//     // Если у нас стоит флаг, выходим
+//     if (get_transient('filled_order_priority')) {
+//         return;
+//     }
+
+//     // Раз в сутки, чтобы не гонять каждый запрос
+//     if (get_transient('filled_order_priority')) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'kredity',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//     ];
+//     $q = new WP_Query($args);
+//     if ($q->have_posts()) {
+//         foreach ($q->posts as $post_id) {
+//             // именно пустая строка, а не отсутствие
+//             $val = get_post_meta($post_id, 'order_priority', true);
+//             if ($val === '') {
+//                 update_post_meta($post_id, 'order_priority', -1);
+//             }
+//         }
+//     }
+//     // и в конце
+//     set_transient('filled_order_priority', 1, DAY_IN_SECONDS);
+// }

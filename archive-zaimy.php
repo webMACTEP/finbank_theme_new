@@ -26,28 +26,62 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 //     )
 // );
 
-$items_args = array(
-    'paged' => $paged,
-    'post_type' => 'zaimy',
-    'posts_per_page' => 20,
+// $items_args = array(
+//     'paged' => $paged,
+//     'post_type' => 'zaimy',
+//     'posts_per_page' => 20,
+//     'post_status' => 'publish',
+//     'post_parent' => 0, // Только родительские записи
+//     'orderby' => 'meta_value', // Сортировка по мета-полю
+//     'order' => 'DESC', // Сначала выводим те записи, у которых есть card_bank_link
+//     'meta_query' => array(
+//         'relation' => 'AND', // Для объединения условий
+//         // array(
+//         //     'key' => 'archive',
+//         //     'value' => '0',
+//         //     'compare' => '=', // Условие для поля archive
+//         // ),
+//         array(
+//             'key' => 'card_bank_link', // Ключ мета-поля
+//             'value' => '', // Пропускаем пустые значения
+//             'compare' => '!=', // Значение не должно быть пустым
+//         ),
+//     ),
+// );
+
+$items_args = [
+    'post_type'      => 'zaimy',
+    'post_parent' => 0,
     'post_status' => 'publish',
-    'post_parent' => 0, // Только родительские записи
-    'orderby' => 'meta_value', // Сортировка по мета-полю
-    'order' => 'DESC', // Сначала выводим те записи, у которых есть card_bank_link
-    'meta_query' => array(
-        'relation' => 'AND', // Для объединения условий
-        array(
-            'key' => 'archive',
-            'value' => '0',
-            'compare' => '=', // Условие для поля archive
-        ),
-        array(
-            'key' => 'card_bank_link', // Ключ мета-поля
-            'value' => '', // Пропускаем пустые значения
-            'compare' => '!=', // Значение не должно быть пустым
-        ),
-    ),
-);
+    'posts_per_page' => 20,
+    //'paged'          => $paged,
+
+    // 1) Определяем оба критерия в meta_query...
+    'meta_query' => [
+        'relation'         => 'AND',
+
+        // Клаузула для приоритета
+        'priority_clause' => [
+            'key'     => 'order_priority',
+            'type'    => 'NUMERIC',
+            
+            // compare не обязателен: просто берём значение
+        ],
+
+        // Клаузула для наличия ссылки
+        'link_clause'     => [
+            'key'     => 'card_bank_link',
+            'compare' => 'EXISTS',
+        ],
+    ],
+
+    // 2) Сортируем по ним в нужном порядке
+    'orderby' => [
+        'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
+        'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+        'date'            => 'DESC', // и, наконец, по дате публикации
+    ],
+];
 
 
 
@@ -581,7 +615,9 @@ if (!$query_items->have_posts()) {
                             </div>
 
 
-                            
+                            <!-- archive posts -->
+
+                            <!-- /archive posts -->
 
                         </div>
                     </div>

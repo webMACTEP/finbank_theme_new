@@ -2437,11 +2437,13 @@
                     }
                 }
                 .btn-block {
+                    &.noref {
+                        background-color: var(--card-bg);
+                        border-color: var(--btn-primary-border);
+                        color: var(--black) !important;
+                    }
                     min-width: 170px;
                     font-size: 14px;
-                    background-color: var(--card-bg);
-                    border-color: var(--btn-primary-border);
-                    color: var(--black) !important;
                 }
                 .open__dop-btn {
                     margin-right: auto;
@@ -2596,6 +2598,11 @@
 /* Скрываем все комментарии после 10-го */
 .additional-comments-level-0 li:nth-child(n + 21) {
     display: none;
+}
+.newlisting .archive__card {
+    .card-container {
+        background: #b4fdff;
+    }
 }
 
 @media (max-width: 1090px) {
