@@ -111,3 +111,18 @@ function sitemap_exclude_authors($users)
 }
 
 add_filter('wpseo_sitemap_exclude_author', 'sitemap_exclude_authors');
+
+
+function exclude_posts_from_xml_sitemaps()
+{
+    // Убирает из sitemap страницы:
+    // https://finabank.ru/archive-zaimy/
+    // https://finabank.ru/archive-kredity/
+    // https://finabank.ru/archive-installmentcard/
+    // https://finabank.ru/archive-debetcard/
+    // https://finabank.ru/archive-creditcard/
+    // https://finabank.ru/archive-banks/
+    return [6272, 6281, 6274, 6276, 6270, 6278];
+}
+
+add_filter('wpseo_exclude_from_sitemap_by_post_ids', 'exclude_posts_from_xml_sitemaps');
