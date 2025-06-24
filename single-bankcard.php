@@ -508,7 +508,7 @@ switch ($term_slug) {
                                                         class="off_site_link">
                                                         <?= get_field('bank_email', $bank_id);  ?>
                                                     </span>
-                                                   
+
                                                 <?php endif; ?>
 
 
@@ -643,7 +643,7 @@ switch ($term_slug) {
                         </div>
 
                         <div class="article__news mb-5 p-4">
-                            <h3 class="article__news-title article__container-title mb-3">Статьи о <?= $title_term3; ?></h3>
+                            <div class="article__news-title article__container-title mb-3">Статьи о <?= $title_term3; ?></div>
                             <?php
                             $args = array(
                                 'posts_per_page' => 5,
