@@ -99,3 +99,15 @@ add_filter('wpseo_sitemap_index', function ($sitemap_index) {
     return $sitemap_index;
 });
 */
+
+
+function sitemap_exclude_authors($users)
+{
+    return array_filter($users, function ($user) {
+        if ($user) {
+            return false;
+        }
+    });
+}
+
+add_filter('wpseo_sitemap_exclude_author', 'sitemap_exclude_authors');
