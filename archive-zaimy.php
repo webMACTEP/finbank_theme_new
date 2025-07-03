@@ -9,52 +9,12 @@ $apply_now = get_field('apply_now_select_products', get_the_ID());
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 // Аргументы для WP_Query
-// $items_args = array(
-//     'paged' => $paged,
-//     'orderby' => 'name',
-//     'order' => 'DESC',
-//     'post_type' => 'zaimy',
-//     'posts_per_page' => 20,
-//     'post_status' => 'publish',
-//     'post_parent' => 0, // Только родительские записи
-//     'meta_query' => array(
-//         array(
-//             'key' => 'archive',
-//             'value' => '0',
-//             'compare' => '=', // Рекомендуется явно указать оператор сравнения
-//         )
-//     )
-// );
-
-// $items_args = array(
-//     'paged' => $paged,
-//     'post_type' => 'zaimy',
-//     'posts_per_page' => 20,
-//     'post_status' => 'publish',
-//     'post_parent' => 0, // Только родительские записи
-//     'orderby' => 'meta_value', // Сортировка по мета-полю
-//     'order' => 'DESC', // Сначала выводим те записи, у которых есть card_bank_link
-//     'meta_query' => array(
-//         'relation' => 'AND', // Для объединения условий
-//         // array(
-//         //     'key' => 'archive',
-//         //     'value' => '0',
-//         //     'compare' => '=', // Условие для поля archive
-//         // ),
-//         array(
-//             'key' => 'card_bank_link', // Ключ мета-поля
-//             'value' => '', // Пропускаем пустые значения
-//             'compare' => '!=', // Значение не должно быть пустым
-//         ),
-//     ),
-// );
-
-$items_args = [
+$items_args = array(
     'post_type'      => 'zaimy',
     'post_parent' => 0,
     'post_status' => 'publish',
-    'posts_per_page' => 20,
-    //'paged'          => $paged,
+    'posts_per_page' => 1000,
+    'paged'          => $paged,
 
     // 1) Определяем оба критерия в meta_query...
     'meta_query' => [
@@ -64,13 +24,16 @@ $items_args = [
         'priority_clause' => [
             'key'     => 'order_priority',
             'type'    => 'NUMERIC',
-            
-            // compare не обязателен: просто берём значение
         ],
 
         // Клаузула для наличия ссылки
         'link_clause'     => [
             'key'     => 'card_bank_link',
+            'compare' => 'EXISTS',
+        ],
+        // Клаузула для наличия ссылки
+        'archive_clause'     => [
+            'key'     => 'archive',
             'compare' => 'EXISTS',
         ],
     ],
@@ -79,11 +42,10 @@ $items_args = [
     'orderby' => [
         'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
         'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+        'archive_clause'     => 'ASC', // записи с card_bank_link (существует) выше тех, где его нет
         'date'            => 'DESC', // и, наконец, по дате публикации
     ],
-];
-
-
+);
 
 
 // Создание нового запроса
@@ -498,6 +460,7 @@ if (!$query_items->have_posts()) {
         <!-- / tags -->
 
         <div class="container">
+
             <!-- credits list -->
             <div class="credits section">
                 <div class="row">
@@ -542,6 +505,7 @@ if (!$query_items->have_posts()) {
                             <div class="d-flex flex-wrap justify-content-between align-items-center credits__list-header">
                                 <div class="credits__list-buttons d-flex flex-wrap justify-content-between align-items-center">
                                     <div class="mt-5 mb-4 mt-md-0 mb-md-0 variants_count-container"><span class="variants_count"><?php echo $query->found_posts; ?></span> варианта</div>
+
                                     <div class="filtr-butt">
                                         <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.25 3L10.25 3M10.25 3C10.25 4.24264 11.2574 5.25 12.5 5.25C13.7426 5.25 14.75 4.24264 14.75 3C14.75 1.75736 13.7426 0.75 12.5 0.75C11.2574 0.75 10.25 1.75736 10.25 3ZM5.75 9L14.75 9M5.75 9C5.75 10.2426 4.74264 11.25 3.5 11.25C2.25736 11.25 1.25 10.2426 1.25 9C1.25 7.75736 2.25736 6.75 3.5 6.75C4.74264 6.75 5.75 7.75736 5.75 9Z" stroke="#14B8AD" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
@@ -560,8 +524,9 @@ if (!$query_items->have_posts()) {
 
                                     <div class="credits__list-dropdown dropdown px-0">
                                         <select name="order" class="styledSelect cred-order-select">
-                                            <option value="" selected disabled>Сортировать</option>
+                                            <option value="" disabled selected>Сортировать</option>
                                             <option value="">Сбросить сортировку</option>
+
                                             <option value="ratings_average">По рейтингу</option>
                                             <option value="views">По количеству заявок</option>
                                             <option value="z_sum">По сумме займа</option>
@@ -601,18 +566,13 @@ if (!$query_items->have_posts()) {
                             wp_reset_query(); ?>
 
                             <div class="pagination flex-column mb-3">
-                                <?php if ($paged < $max_pages): ?>
-                                    <button
-                                        class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?= $max_pages ?>"
-                                        data-paged="<?= $paged ?>"
-                                        data-posts_per_page="<?= $ppp ?>">
-                                        Больше решений
-                                    </button>
+                                
 
-                                <?php endif; ?>
+                                <!-- Кнопка для загрузки еще -->
+                                <button class="load-daha btn btn-outline-gray btn-block">Больше решений</button>
 
                             </div>
+                            
 
 
                             <!-- archive posts -->

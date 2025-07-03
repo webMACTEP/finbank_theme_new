@@ -1,11 +1,4 @@
-<?php if ($_GET['change_template']): ?>
-
-    <?php get_template_part('template-parts/new-collection-kredity'); ?>
-
-<?php else: ?>
-
-
-    <?php get_header(); ?>
+<?php get_header(); ?>
     <?php $term = get_queried_object();
     //$percent_limit = 700000;
     //$cashback_number = 30;
@@ -378,31 +371,11 @@
 
                     <?php
                     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                    // $args = array(
-                    //     'paged'          => $paged,
-                    //     'orderby'        => 'name',
-                    //     'order'          => 'DESC',
-                    //     'post_type'      => 'bankcard',
-                    //     'posts_per_page' => 20, // Добавлено для вывода 12 материалов
-                    //     'tax_query'      => array(
-                    //         array(
-                    //             'taxonomy' => 'bankcards',
-                    //             'field'    => 'slug',
-                    //             'terms'    => 'debetcard',
-                    //         ),
-                    //     ),
-                    //     'post_status'    => 'publish',
-                    // );
-
-
-                    // $args['meta_query'][] = array(
-                    //     'key' => 'archive',
-                    //     'value' => '0'
-                    // );
+                    
 
                     $args = [
                         'post_type'      => 'bankcard',
-                        'posts_per_page' => 20,   // сколько выводим за раз
+                        'posts_per_page' => 1000,   // сколько выводим за раз
                         'paged'          => $paged,
                         'post_status'    => 'publish',
                     
@@ -415,46 +388,37 @@
                             ],
                         ],
                     
-                        // сначала сортировка по order_priority, потом по наличию ссылки,
-                        // потом по дате публикации (DESC — новые выше)
-                        'orderby'        => [
-                            'priority_clause' => 'DESC',
-                            'link_clause'     => 'DESC',
-                            'date'            => 'DESC',
-                        ],
-                    
-                        // meta_query с общей связкой AND
-                        'meta_query'     => [
-                            'relation'         => 'AND',
-                    
-                            // 1) Приоритет (числовое поле)
-                            'priority_clause'  => [
-                                'key'     => 'order_priority',
-                                'type'    => 'NUMERIC',
-                                'compare' => 'EXISTS',
-                            ],
-                    
-                            // 2) Группа для проверки наличия/отсутствия ссылки
-                            [
-                                'relation'       => 'OR',
-                                'link_clause'    => [
-                                    'key'     => 'card_bank_link',
-                                    'compare' => 'EXISTS',
-                                ],
-                                'no_link_clause' => [
-                                    'key'     => 'card_bank_link',
-                                    'compare' => 'NOT EXISTS',
-                                ],
-                            ],
-                    
-                            // здесь можно добавить другие фильтры по $_POST, например:
-                            // сумма, процент, тип карты и т.д.
-                            // [
-                            //   'key'     => 'some_meta_key',
-                            //   'value'   => $some_value,
-                            //   'compare' => 'LIKE',
-                            // ],
-                        ],
+                        // 1) Определяем оба критерия в meta_query...
+						'meta_query' => [
+							'relation'         => 'AND',
+
+							// Клаузула для приоритета
+							'priority_clause' => [
+								'key'     => 'order_priority',
+								'type'    => 'NUMERIC',
+
+								// compare не обязателен: просто берём значение
+							],
+
+							// Клаузула для наличия ссылки
+							'link_clause'     => [
+								'key'     => 'card_bank_link',
+								'compare' => 'EXISTS',
+							],
+							// Клаузула для наличия ссылки
+							'archive_clause'     => [
+								'key'     => 'archive',
+								'compare' => 'EXISTS',
+							],
+						],
+
+						// 2) Сортируем по ним в нужном порядке
+						'orderby' => [
+							'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
+							'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+							'archive_clause'     => 'ASC', // записи с card_bank_link (существует) выше тех, где его нет
+							'date'            => 'DESC', // и, наконец, по дате публикации
+						],
                     ];
 
                     $counter = 0;
@@ -543,24 +507,11 @@
                             </div>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
-                            <!-- <div class="pagination__description mt-4">
-                        Показано <span class="count_view"><?php // echo $counter 
-                                                            ?></span>
-                        продуктов из <span class="count_all"><?php // echo $query->found_posts; 
-                                                                ?></span>
-                    </div> -->
+                            
                             <!-- pagination -->
                             <div class="pagination flex-column mb-3">
-                                <?php if ($paged < $max_pages): ?>
-                                    <button
-                                        class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?= $max_pages ?>"
-                                        data-paged="<?= $paged ?>"
-                                        data-posts_per_page="<?= $ppp ?>">
-                                        Больше решений
-                                    </button>
-
-                                <?php endif; ?>
+                                <!-- Кнопка для загрузки еще -->
+                                <button class="load-daha btn btn-outline-gray btn-block">Больше решений</button>
 
                             </div>
 
@@ -589,7 +540,7 @@
                 </div>
                 <div class="section">
                     <div class="list-info">
-                        <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
+                        <?php $date_actually = get_the_modified_date('d.m.Y', get_the_ID()); ?>
                         <?php if ($date_actually): ?>
                             <p>Дата обновления информации: <?= $date_actually ?></p>
                         <?php endif; ?>
@@ -1396,7 +1347,7 @@
                     <?php echo the_field('type_desc', $term) ?>
                 </div>
                 <div class="type-desc-more">Раскрыть</div>
-                <?php $date_actually = get_the_modified_date('d.m.Y', $ID); ?>
+                <?php $date_actually = get_the_modified_date('d.m.Y', get_the_ID()); ?>
                 <?php if ($date_actually): ?>
                     <div class="date_actually-article mb-2">Обновлено: <?= $date_actually; ?></div>
                 <?php endif; ?>
@@ -1470,4 +1421,3 @@
 
     <?php get_footer(); ?>
 
-<?php endif; ?>

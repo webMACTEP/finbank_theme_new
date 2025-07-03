@@ -244,4 +244,83 @@ jQuery(function ($) {
     // 6) Триггерим клик на существующую кнопку фильтра (она же вызывает filter_main_start)
     //form.find(".submit-button").trigger("click");
   });
+
+  var itemsPerPage = 20; // Количество элементов, которые показываются за раз
+  var totalItems = $(".list_posts .card").length; // Общее количество элементов
+  var shownItems = itemsPerPage; // Сколько элементов показываем (начиная с 20)
+
+  // Скрываем все элементы, кроме первых 20
+  $(".list_posts .card").slice(itemsPerPage).hide();
+
+  // Показываем кнопку, если есть еще элементы для загрузки
+  if (shownItems < totalItems) {
+    $(".load-daha").show();
+  }
+
+  // Обработчик клика по кнопке
+  $(".load-daha").on("click", function () {
+    // Показать следующие 20 элементов
+    $(".list_posts .card")
+      .slice(shownItems, shownItems + itemsPerPage)
+      .fadeIn();
+
+    // Обновить количество отображаемых элементов
+    shownItems += itemsPerPage;
+
+    // Если все элементы показаны, скрыть кнопку
+    if (shownItems >= totalItems) {
+      $(this).hide();
+    }
+  });
+
+  // Функция для установки режима отображения
+  function setLayout(layout) {
+    const listPosts = $(".list_posts");
+
+    // Проверяем, какой режим активирован
+    if (layout === "horisont") {
+      $(".horisont-butt").addClass("active");
+      $(".cards-butt").removeClass("active");
+      listPosts.addClass("horisont").removeClass("cards");
+
+      // Убираем ограничение символов при горизонтальном режиме
+      $(".archive__card .font-weight-semibold").each(function () {
+        var text = $(this).text(); // Получаем исходный текст
+        $(this).text(text); // Восстанавливаем весь текст
+      });
+    } else if (layout === "cards") {
+      $(".cards-butt").addClass("active");
+      $(".horisont-butt").removeClass("active");
+      listPosts.addClass("cards").removeClass("horisont");
+
+      // Применяем ограничение по символам для карточного режима
+      $(".archive__card .font-weight-semibold").each(function () {
+        var text = $(this).text().trim(); // Получаем текст элемента и удаляем лишние пробелы
+
+        // Если текст длиннее 10 символов, обрезаем его
+        if (text.length > 10) {
+          text = text.substring(0, 10) + "..."; // Обрезаем и добавляем многоточие
+          $(this).text(text); // Обновляем текст в элементе
+        }
+      });
+    }
+  }
+
+  // При загрузке страницы проверяем сохранённый режим
+  var savedLayout = localStorage.getItem("layout");
+  if (savedLayout) {
+    setLayout(savedLayout);
+  }
+
+  // Обработчик для кнопки с классом horisont-butt
+  $(".horisont-butt").on("click", function () {
+    setLayout("horisont");
+    localStorage.setItem("layout", "horisont");
+  });
+
+  // Обработчик для кнопки с классом cards-butt
+  $(".cards-butt").on("click", function () {
+    setLayout("cards");
+    localStorage.setItem("layout", "cards");
+  });
 });

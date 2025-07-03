@@ -1,7 +1,7 @@
 <?php
 
 $query__card = get_field('archive') != true ? 'query__card' : 'archive__card';
-$terms = wp_get_post_terms(get_the_ID(), 'zaimy', array('fields' => 'all'));
+//$terms = wp_get_post_terms(get_the_ID(), 'zaimy', array('fields' => 'all'));
 $term_slug = '';
 
 if (!empty($terms) && !is_wp_error($terms)) {
@@ -12,11 +12,15 @@ $organization_phone = get_field('z_organization_phone');
 $organization_site = get_field('z_organization_site');
 //$card_bank_link = get_field('card_bank_link');
 $z_sum = get_field('z_sum');
-$z_history = get_field('z_history');
+
 $z_stavka = get_field('z_stavka');
-$z_oldness = get_field('z_oldness');
+
 $z_time = get_field('z_time');
-$z_answer = get_field('z_answer');
+
+
+$order_priority = get_field('order_priority');
+
+
 $z_organization_name = get_field('z_organization_name');
 $ratings_average = get_field('ratings_average');
 $views = get_post_meta(get_the_ID(), 'views', true);
@@ -24,8 +28,11 @@ $logo_id = get_field('card_logo', get_the_ID(), false);
 $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
 $date_actually = get_the_modified_date('d.m.Y', get_the_ID());
 
+$card_bank_link_var = get_field('card_bank_link');
+
 $encoded_link = get_field('card_bank_link');
 $card_bank_link = base64_encode($encoded_link);
+
 $card_other_state =  get_field('z_other_statements');
 
 // Функция YearTextArg должна быть определена ранее в коде
@@ -34,7 +41,7 @@ $card_other_state =  get_field('z_other_statements');
 ?>
 <div class="card mb-4 <?php echo esc_attr($query__card); ?>">
     <div class="card-container">
-       
+
         <div class="item-content">
             <div class="item-about">
                 <!-- Изображение -->
@@ -53,7 +60,7 @@ $card_other_state =  get_field('z_other_statements');
                 <div class="item-info">
 
                     <a href="<?php echo esc_url(get_permalink()); ?>" class="font-weight-semibold">
-                        <?php echo esc_html(get_the_title($bank_id)); ?>
+                        <?php echo esc_html(get_the_title()); ?>
                     </a>
                     <span class="item-title">
                         <?php
@@ -89,11 +96,7 @@ $card_other_state =  get_field('z_other_statements');
                                         </svg>
                                     </a>
                                 </div>
-                                <?php
-                                if ($comments_count && isset($comments_count->approved)) {
-                                    echo intval($comments_count->approved);
-                                }
-                                ?>
+                               
                             </div>
                             <div class="position-relative card__like d-flex align-items-center">
                                 <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
@@ -134,9 +137,9 @@ $card_other_state =  get_field('z_other_statements');
                             </a>
                         </div>
                         <?php
-                            $comments_count = wp_count_comments(get_the_ID());
-                            echo intval($comments_count->approved);
-                            ?>
+                        $comments_count = wp_count_comments(get_the_ID());
+                        echo intval($comments_count->approved);
+                        ?>
                     </div>
                     <div class="position-relative card__like d-flex align-items-center">
                         <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>
@@ -210,7 +213,7 @@ $card_other_state =  get_field('z_other_statements');
                     <?php
                     $ID = get_the_ID();
                     // Повторная инициализация переменных (можно оптимизировать)
-                    $about_item = get_field('about_item', $ID);
+                    $about_item = get_field('product_about_tabs', $ID);
                     $if_in_tab = get_field('if_in_tab', $ID);
                     $plus_and_minus_tab = get_field('plus_and_minus_tab', $ID);
                     $show_btn_detail = have_rows('product_tar', $ID) || $about_item || $if_in_tab || $plus_and_minus_tab;
@@ -239,60 +242,6 @@ $card_other_state =  get_field('z_other_statements');
 
 
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Функция для установки режима отображения
-            function setLayout(layout) {
-                const listPosts = document.querySelectorAll(".list_posts");
-                if (layout === "horisont") {
-                    document.querySelectorAll(".horisont-butt").forEach(function(el) {
-                        el.classList.add("active");
-                    });
-                    document.querySelectorAll(".cards-butt").forEach(function(el) {
-                        el.classList.remove("active");
-                    });
-                    listPosts.forEach(function(el) {
-                        el.classList.add("horisont");
-                        el.classList.remove("cards");
-                    });
-                } else if (layout === "cards") {
-                    document.querySelectorAll(".cards-butt").forEach(function(el) {
-                        el.classList.add("active");
-                    });
-                    document.querySelectorAll(".horisont-butt").forEach(function(el) {
-                        el.classList.remove("active");
-                    });
-                    listPosts.forEach(function(el) {
-                        el.classList.add("cards");
-                        el.classList.remove("horisont");
-                    });
-                }
-            }
-
-            // При загрузке страницы проверяем сохранённый режим
-            var savedLayout = localStorage.getItem("layout");
-            if (savedLayout) {
-                setLayout(savedLayout);
-            }
-
-            // Обработчик для кнопки с классом horisont-butt
-            var horisontButtons = document.querySelectorAll(".horisont-butt");
-            horisontButtons.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    setLayout("horisont");
-                    localStorage.setItem("layout", "horisont");
-                });
-            });
-
-            // Обработчик для кнопки с классом cards-butt
-            var cardsButtons = document.querySelectorAll(".cards-butt");
-            cardsButtons.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    setLayout("cards");
-                    localStorage.setItem("layout", "cards");
-                });
-            });
-        });
-    </script>
 
 </div>
+

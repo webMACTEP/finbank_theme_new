@@ -1872,6 +1872,11 @@
             flex-direction: row-reverse;
         }
         .btn-block {
+            &.noref {
+                background-color: var(--card-bg);
+                border-color: var(--btn-primary-border);
+                color: var(--black) !important;
+            }
             min-width: fit-content;
         }
         .item-info {
@@ -2599,12 +2604,57 @@
 .additional-comments-level-0 li:nth-child(n + 21) {
     display: none;
 }
-.newlisting .archive__card {
+.newlisting {
+    .cards {
+        .archive__card {
+            .item-about {
+                .item-info {
+                    //width: 100%;
+                    a {
+                        max-width: 100%;
+                        min-width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .archive__card {
+        margin-bottom: 0 !important;
+        .item-about {
+            .item-info {
+                a {
+                    padding: 0px 60px 0px 0px;
+                    position: relative;
+                    max-width: fit-content;
+                    &::after {
+                        content: "Архив";
+                        position: absolute;
+                        right: 0;
+                        top: 2px;
+                        font-size: 13px;
+                        padding: 0px 6px;
+                        border-radius: 46px;
+                        background: var(--gray-400);
+                    }
+                }
+            }
+        }
+    }
     .card-container {
-        background: #b4fdff;
+        padding: 16px;
+    }
+    .load-daha {
+        display: none;
     }
 }
 
+.newlisting .cards .archive__card .item-about .item-info a{
+    padding: 0px 0px 0px 0px;
+   
+}
+.newlisting .card .item-info{
+    width: 100%;
+}
 @media (max-width: 1090px) {
     .newlisting .new-calc-content,
     .newlisting .new-filter-modal-content {
@@ -2612,6 +2662,12 @@
     }
 }
 @media (max-width: 768px) {
+    .newlisting .archive__card .item-about .item-info a {
+        max-width: 100%;
+    }
+    .newlisting .card .item-info {
+        width: 100%;
+    }
     .new_mob {
         display: block;
     }

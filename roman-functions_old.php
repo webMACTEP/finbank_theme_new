@@ -837,12 +837,12 @@ add_filter('wp_calculate_image_srcset', function (array $sources): array {
 }, 10, 1);
 
 // Для фоновых изображений и прочих случаев, когда используется wp_get_attachment_image_src()
-// add_filter('wp_get_attachment_image_src', function ($image): array {
-//     if (is_array($image) && ! empty($image[0])) {
-//         $image[0] = remove_image_version_query($image[0]);
-//     }
-//     return $image;
-// }, 10, 1);
+add_filter('wp_get_attachment_image_src', function ($image): array {
+    if (is_array($image) && ! empty($image[0])) {
+        $image[0] = remove_image_version_query($image[0]);
+    }
+    return $image;
+}, 10, 1);
 
 
 /**
@@ -1257,6 +1257,9 @@ function load_more_comments()
 
 
 // Универсальный AJAX-обработчик "Загрузить ещё"
+// Универсальный AJAX-обработчик "Загрузить ещё"
+// Универсальный AJAX-обработчик "Загрузить ещё"
+// Универсальный AJAX-обработчик "Загрузить ещё"
 add_action('wp_ajax_load_more_reviews', 'load_more_reviews');
 add_action('wp_ajax_nopriv_load_more_reviews', 'load_more_reviews');
 function load_more_reviews()
@@ -1379,16 +1382,16 @@ function load_more_reviews()
                     </div>
                     <div class="reviews__header-meta ml-3">
                         <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>" class="reviews__header-title h4 mb-2 stretched-link">
-                        <?php if ($taxonomy === 'zaimy'): ?>
-                            <?php echo esc_html(get_the_title($post_id)); ?>                         
-                        <?php elseif ($taxonomy === 'banks'): ?>
-                            <?php echo esc_html(get_the_title($post_id)); ?>
-                        <?php elseif ($taxonomy === 'kredity'): ?>
-                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
-                        <?php else: ?>
-                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
-                        <?php endif; ?>
-                           
+                            <?php if ($taxonomy === 'zaimy'): ?>
+                                <?php echo esc_html(get_the_title($post_id)); ?>
+                            <?php elseif ($taxonomy === 'banks'): ?>
+                                <?php echo esc_html(get_the_title($post_id)); ?>
+                            <?php elseif ($taxonomy === 'kredity'): ?>
+                                <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
+                            <?php else: ?>
+                                <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
+                            <?php endif; ?>
+
                         </a>
                         <div class="d-flex">
                             <div class="card__rating d-flex align-items-center mr-3">
@@ -1474,3 +1477,178 @@ add_action('wp_enqueue_scripts', 'reviews_enqueue_scripts');
 
 
 
+
+
+// add_action('init', 'fill_default_order_priority', 20);
+// function fill_default_order_priority()
+// {
+//     // Удаляем старый флаг — так мы гарантированно запустим цикл заново
+//     delete_transient('filled_order_priority');
+
+//     // Если у нас стоит флаг, выходим
+//     if (get_transient('filled_order_priority')) {
+//         return;
+//     }
+
+//     // Раз в сутки, чтобы не гонять каждый запрос
+//     if (get_transient('filled_order_priority')) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'kredity',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//     ];
+//     $q = new WP_Query($args);
+//     if ($q->have_posts()) {
+//         foreach ($q->posts as $post_id) {
+//             // именно пустая строка, а не отсутствие
+//             $val = get_post_meta($post_id, 'order_priority', true);
+//             if ($val === '') {
+//                 update_post_meta($post_id, 'order_priority', -1);
+//             }
+//         }
+//     }
+//     // и в конце
+//     set_transient('filled_order_priority', 1, DAY_IN_SECONDS);
+// }
+
+
+// add_action( 'init', 'fill_default_order_priority_zaimyn', 20 );
+// function fill_default_order_priority_zaimyn() {
+//     // Запускаем один раз
+//     if ( get_transient( 'filled_order_priority_zaimynn' ) ) {
+//         return;
+//     }
+
+//     // Получаем все ID записей zaimy
+//     $zaimy = new WP_Query([
+//         'post_type'      => 'zaimy',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//     ]);
+
+//     if ( $zaimy->have_posts() ) {
+//         foreach ( $zaimy->posts as $post_id ) {
+//             // Проставляем -1 вне зависимости от текущего значения
+//             update_post_meta( $post_id, 'order_priority', -1 );
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг — чтобы не гонять каждый init
+//     set_transient( 'filled_order_priority_zaimynn', 1, DAY_IN_SECONDS );
+// }
+
+
+
+// add_action( 'init', 'fill_default_order_priority_bankcards', 20 );
+// function fill_default_order_priority_bankcards() {
+//     // Запускаем один раз в сутки
+//     if ( get_transient( 'filled_order_priority_bankcards' ) ) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'bankcard',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//         'tax_query'      => [
+//             [
+//                 'taxonomy' => 'bankcards',
+//                 'field'    => 'slug',
+//                 'terms'    => 'creditcard',
+//             ],
+//         ],
+//     ];
+
+//     $q = new WP_Query( $args );
+//     if ( $q->have_posts() ) {
+//         foreach ( $q->posts as $post_id ) {
+//             // Если мета существует, но пусто — ставим -1
+//             $val = get_post_meta( $post_id, 'order_priority', true );
+//             if ( $val === '' ) {
+//                 update_post_meta( $post_id, 'order_priority', -1 );
+//             }
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг, чтобы не гонять этот цикл чаще, чем раз в сутки
+//     set_transient( 'filled_order_priority_bankcards', 1, DAY_IN_SECONDS );
+// }
+
+
+// add_action( 'init', 'fill_default_order_priority_bankcards', 20 );
+// function fill_default_order_priority_bankcards() {
+//     // Запускаем один раз в сутки
+//     if ( get_transient( 'filled_order_priority_bankcardsdebetcard' ) ) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'bankcard',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//         'tax_query'      => [
+//             [
+//                 'taxonomy' => 'bankcards',
+//                 'field'    => 'slug',
+//                 'terms'    => 'debetcard',
+//             ],
+//         ],
+//     ];
+
+//     $q = new WP_Query( $args );
+//     if ( $q->have_posts() ) {
+//         foreach ( $q->posts as $post_id ) {
+//             // Если мета существует, но пусто — ставим -1
+//             $val = get_post_meta( $post_id, 'order_priority', true );
+//             if ( $val === '' ) {
+//                 update_post_meta( $post_id, 'order_priority', -1 );
+//             }
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг, чтобы не гонять этот цикл чаще, чем раз в сутки
+//     set_transient( 'filled_order_priority_bankcardsdebetcard', 1, DAY_IN_SECONDS );
+// }
+
+
+// add_action( 'init', 'fill_default_order_priority_bankcards', 20 );
+// function fill_default_order_priority_bankcards() {
+//     // Запускаем один раз в сутки
+//     if ( get_transient( 'filled_order_priority_bankcardsinstallmentcard' ) ) {
+//         return;
+//     }
+
+//     $args = [
+//         'post_type'      => 'bankcard',
+//         'posts_per_page' => -1,
+//         'fields'         => 'ids',
+//         'tax_query'      => [
+//             [
+//                 'taxonomy' => 'bankcards',
+//                 'field'    => 'slug',
+//                 'terms'    => 'installmentcard',
+//             ],
+//         ],
+//     ];
+
+//     $q = new WP_Query( $args );
+//     if ( $q->have_posts() ) {
+//         foreach ( $q->posts as $post_id ) {
+//             // Если мета существует, но пусто — ставим -1
+//             $val = get_post_meta( $post_id, 'order_priority', true );
+//             if ( $val === '' ) {
+//                 update_post_meta( $post_id, 'order_priority', -1 );
+//             }
+//         }
+//     }
+//     wp_reset_postdata();
+
+//     // Флаг, чтобы не гонять этот цикл чаще, чем раз в сутки
+//     set_transient( 'filled_order_priority_bankcardsinstallmentcard', 1, DAY_IN_SECONDS );
+// }

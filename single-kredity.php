@@ -174,11 +174,7 @@ $tags = get_the_tags($ID);
         </div>
         <!-- / card info -->
 
-        <? if ($_GET['danil_test']): ?>
-
-            <? get_template_part('all_template/podborki__list', null, 'кредитов'); ?>
-
-        <? endif; ?>
+       
 
 
         <?php

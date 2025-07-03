@@ -441,26 +441,48 @@ $type_collection = 'kredity';
 				$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 				$args = array(
 					'post_type' => array('kredity'),
-					'posts_per_page' => 20,
+					'posts_per_page' => 1000,
 					'paged' => $paged,
 					'post__in' => $allposts,
-					'orderby' => 'name',
-					'order' => 'DESC',
 					'post_status' => 'publish',
 					'paged' => $paged,
-					//'tax_query' => array(
-					//    array(
-					//        'taxonomy' => 'bankcards',
-					//        'field'    => 'slug',
-					//        'terms'    => 'debetcard',
-					//    ),
-					//)
+
+					// 1) Определяем оба критерия в meta_query...
+						'meta_query' => [
+							'relation'         => 'AND',
+
+							// Клаузула для приоритета
+							'priority_clause' => [
+								'key'     => 'order_priority',
+								'type'    => 'NUMERIC',
+							],
+
+							// Клаузула для наличия ссылки
+							'link_clause'     => [
+								'key'     => 'card_bank_link',
+								'compare' => 'EXISTS',
+							],
+							// Клаузула для наличия ссылки
+							'archive_clause'     => [
+								'key'     => 'archive',
+								'compare' => 'EXISTS',
+							],
+						],
+
+						// 2) Сортируем по ним в нужном порядке
+						'orderby' => [
+							'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
+							'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+							'archive_clause'     => 'ASC', // записи с card_bank_link (существует) выше тех, где его нет
+							'date'            => 'DESC', // и, наконец, по дате публикации
+						],
+					
 				);
 
-				$args['meta_query'][] = array(
-					'key' => 'archive',
-					'value' => '0'
-				);
+				// $args['meta_query'][] = array(
+				// 	'key' => 'archive',
+				// 	'value' => '0'
+				// );
 
 				$counter = 0;
 				$query = new WP_Query($args);
@@ -554,12 +576,7 @@ $type_collection = 'kredity';
 						</div>
 						<?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
 						wp_reset_query(); ?>
-						<!-- <div class="pagination__description mt-4">
-						Показано <span class="count_view"><?php // echo $counter 
-															?></span>
-						продуктов из <span class="count_all"><?php // echo $query->found_posts; 
-																?></span>
-					</div> -->
+						
 						<!-- pagination -->
 						<div class="pagination flex-column mb-3">
 							<?php if ($paged < $max_pages): ?>
@@ -573,29 +590,7 @@ $type_collection = 'kredity';
 						</div>
 
 
-						<!-- archive posts -->
-						<?php
-						$args_archive = array(
-							'post_type' => 'kredity',
-							'posts_per_page' => -1,
-							'meta_key'      => 'archive',
-							'meta_value'    => true
-						);
-						$query_archive = new WP_Query($args_archive);
-						if ($query_archive->have_posts()): ?>
-							<button class="btn btn-outline-gray btn-block archive_title mb-4">
-								Архивные оферы (<?= $query_archive->found_posts; ?>)
-							</button>
-
-
-							<div class="list_posts archive_list archive_hide">
-								<?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
-									<?php get_template_part('template-parts/filter-kredity-posts'); ?>
-								<?php endwhile;
-								wp_reset_postdata(); ?>
-							</div>
-						<?php endif; ?>
-						<!-- /archive posts -->
+						
 
 					</div>
 				</div>

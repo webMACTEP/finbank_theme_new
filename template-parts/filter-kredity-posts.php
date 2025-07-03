@@ -19,7 +19,7 @@ $bank_phone = get_field('bank_phone', $bank_id);
 $encoded_link = get_field('card_bank_link');
 $card_bank_link = base64_encode($encoded_link);
 
-$bank_choise_rel = get_field('product_bank', $ID);
+$bank_choise_rel = get_field('product_bank', $bank_id);
 $bank_email = get_field('bank_email', $bank_id);
 $bank_license = get_field('bank_license', $bank_id);
 $card_logo = get_field('card_logo');
@@ -37,7 +37,9 @@ $about_item = get_field('about_item', get_the_ID());
 $if_in_tab = get_field('if_in_tab', get_the_ID());
 $plus_and_minus_tab = get_field('plus_and_minus_tab', get_the_ID());
 //$card_other_state = get_field('card_other_state');
-$card_other_state =  get_field('credit_other_statements', $ID);
+$card_other_state =  get_field('credit_other_statements', get_the_ID());
+
+$order_priority = get_field('order_priority');
 
 
 
@@ -64,7 +66,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                 <div class="item-info">
 
                     <a href="<?php echo esc_url(get_permalink()); ?>" class="font-weight-semibold">
-                    <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
+                        <?php echo esc_html(get_the_title($bank_choise_rel)); ?>
                     </a>
                     <span class="item-title">
                         <?php
@@ -222,7 +224,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                     <?php
                     $ID = get_the_ID();
                     // Повторная инициализация переменных (можно оптимизировать)
-                    $about_item = get_field('about_item', $ID);
+                    $about_item = get_field('product_about_tabs', $ID);
                     $if_in_tab = get_field('if_in_tab', $ID);
                     $plus_and_minus_tab = get_field('plus_and_minus_tab', $ID);
                     $show_btn_detail = have_rows('product_tar', $ID) || $about_item || $if_in_tab || $plus_and_minus_tab;
@@ -251,60 +253,6 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
 
 
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Функция для установки режима отображения
-            function setLayout(layout) {
-                const listPosts = document.querySelectorAll(".list_posts");
-                if (layout === "horisont") {
-                    document.querySelectorAll(".horisont-butt").forEach(function(el) {
-                        el.classList.add("active");
-                    });
-                    document.querySelectorAll(".cards-butt").forEach(function(el) {
-                        el.classList.remove("active");
-                    });
-                    listPosts.forEach(function(el) {
-                        el.classList.add("horisont");
-                        el.classList.remove("cards");
-                    });
-                } else if (layout === "cards") {
-                    document.querySelectorAll(".cards-butt").forEach(function(el) {
-                        el.classList.add("active");
-                    });
-                    document.querySelectorAll(".horisont-butt").forEach(function(el) {
-                        el.classList.remove("active");
-                    });
-                    listPosts.forEach(function(el) {
-                        el.classList.add("cards");
-                        el.classList.remove("horisont");
-                    });
-                }
-            }
 
-            // При загрузке страницы проверяем сохранённый режим
-            var savedLayout = localStorage.getItem("layout");
-            if (savedLayout) {
-                setLayout(savedLayout);
-            }
-
-            // Обработчик для кнопки с классом horisont-butt
-            var horisontButtons = document.querySelectorAll(".horisont-butt");
-            horisontButtons.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    setLayout("horisont");
-                    localStorage.setItem("layout", "horisont");
-                });
-            });
-
-            // Обработчик для кнопки с классом cards-butt
-            var cardsButtons = document.querySelectorAll(".cards-butt");
-            cardsButtons.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    setLayout("cards");
-                    localStorage.setItem("layout", "cards");
-                });
-            });
-        });
-    </script>
 
 </div>

@@ -1224,14 +1224,14 @@ function card_loadmore_ajax_handler()
 		$view_type = $_POST['view_type'];
 	}
 
-	//$params['orderby'] = array( 'meta_value_num' => 'desc', 'name' => 'desc' );
+	$params['orderby'] = array('meta_value_num' => 'desc', 'name' => 'desc');
 
 	if ($term != "banks") {
 
 		$params['orderby'] = array('meta_value_num' => 'desc', 'name' => 'desc');
 		$params['meta_query'][] = array(
-			// 'key' => 'archive',
-			// 'value' => '0'
+			'key' => 'archive',
+			'value' => '0'
 		);
 	}
 
@@ -1258,10 +1258,10 @@ function card_loadmore_ajax_handler()
 	endif;
 
 
-	//$params['meta_query'][] = array(
+	// $params['meta_query'][] = array(
 	//    'key' => 'archive',
 	//    'value' => '0'
-	//);
+	// );
 
 	$params['post__not_in'] = array($_POST['exclude_post'],);
 	// it is always better to use WP_Query but not here
@@ -1313,7 +1313,7 @@ function card_loadmore_ajax_handler()
 }
 
 
-// основной фильтр для листингов
+// основной фильтр для листинги
 
 add_action('wp_ajax_cardfilter', 'card_filter_function');
 add_action('wp_ajax_nopriv_cardfilter', 'card_filter_function');
@@ -1328,271 +1328,164 @@ function card_filter_function()
 	$paged      = !empty($_POST['page'])       ? intval($_POST['page']) : 1;
 
 	// Определяем, сколько записей выводить на страницу (по умолчанию 12)
-	$ppp = !empty($_POST['posts_per_page'])
-		? intval($_POST['posts_per_page'])
-		: 20;
+	$ppp = 200;
 
 
 	// Инициализируем args
 	$args = [];
 
-	// 1. Карточки (creditcard, installmentcard, debetcard)
-	// if (in_array($term, ['creditcard', 'installmentcard', 'debetcard'], true)) {
-	// 	// Базовый запрос
-	// 	$args = [
-	// 		'post_type'   => 'bankcard',
-	// 		'post_status' => 'publish',
-	// 		'posts_per_page' => $ppp,
-	// 		'paged'          => $paged,
-	// 	];
-	// 	// Сортировка
-	// 	if ($order !== '') {
-	// 		$args['meta_key'] = $order;
-	// 		$args['orderby']  = ['meta_value_num' => 'DESC', 'title' => 'DESC'];
-	// 	} else {
-	// 		$args['orderby'] = 'name';
-	// 		$args['order']   = $order_type;
-	// 	}
-	// 	if ($postarr) {
-	// 		$args['post__in'] = $postarr;
-	// 	}
-	// 	// Таксономия bankcards
-	// 	$args['tax_query'] = [[
-	// 		'taxonomy' => 'bankcards',
-	// 		'field' => 'slug',
-	// 		'terms' => $term
-	// 	]];
-	// 	// meta_query
-	// 	$args['meta_query'] = ['relation' => 'AND'];
 
-	// 	// Фильтры ACF
-	// 	// кредитный лимит
-	// 	if (!empty($_POST['cred_limit'])) {
-	// 		$cl = json_decode(stripslashes($_POST['cred_limit']));
-	// 		$args['meta_query'][] = ['key' => 'card_cred_limit', 'value' => $cl, 'type' => 'numeric', 'compare' => '<='];
-	// 	}
-	// 	// процентный лимит
-	// 	if (!empty($_POST['percent_limit'])) {
-	// 		$pl = json_decode(stripslashes($_POST['percent_limit']));
-	// 		$args['meta_query'][] = ['key' => 'non_pecent_money', 'value' => $pl, 'type' => 'numeric', 'compare' => '<='];
-	// 	}
-	// 	// льготный период дней
-	// 	if (!empty($_POST['cred_day_period'])) {
-	// 		$cd = json_decode(stripslashes($_POST['cred_day_period']));
-	// 		$args['meta_query'][] = ['key' => 'card_day_period', 'value' => $cd, 'type' => 'numeric', 'compare' => '<'];
-	// 	}
-	// 	// банк
-	// 	if (!empty($_POST['bank'])) {
-	// 		$bank = json_decode(stripslashes($_POST['bank']));
-	// 		$args['meta_query'][] = ['key' => 'bank_choise', 'value' => $bank, 'compare' => '='];
-	// 	}
-	// 	// категория карты
-	// 	if (!empty($_POST['cat_cards'])) {
-	// 		$args['meta_query'][] = ['key' => 'card_category', 'value' => sanitize_text_field($_POST['cat_cards']), 'compare' => '='];
-	// 	}
-	// 	// льготный период (выбор)
-	// 	if (!empty($_POST['period'])) {
-	// 		$args['meta_query'][] = ['key' => 'card_period', 'value' => sanitize_text_field($_POST['period']), 'compare' => '='];
-	// 	}
-	// 	// кешбэк
-	// 	if (isset($_POST['cashback']) && $_POST['cashback'] !== '') {
-	// 		$args['meta_query'][] = ['key' => 'card_cashback', 'value' => sanitize_text_field($_POST['cashback']), 'compare' => '='];
-	// 	}
-	// 	// номер кешбэка
-	// 	if (!empty($_POST['cashback_number'])) {
-	// 		$cn = json_decode(stripslashes($_POST['cashback_number']));
-	// 		$args['meta_query'][] = ['key' => 'card_cashbak_number', 'value' => $cn, 'type' => 'numeric', 'compare' => '<='];
-	// 	}
-	// 	// платежная система
-	// 	if (!empty($_POST['ps'])) {
-	// 		$ps = sanitize_text_field($_POST['ps']);
-	// 		$args['meta_query'][] = ['key' => 'card_payment_sys', 'value' => $ps, 'compare' => 'LIKE'];
-	// 	}
-	// 	// дополнительные услуги (os1...os8)
-	// 	for ($i = 1; $i <= 8; $i++) {
-	// 		if (!empty($_POST['os' . $i]) && $_POST['os' . $i] === 'on') {
-	// 			$args['meta_query'][] = ['key' => 'card_other_state', 'value' => 'os' . $i, 'compare' => 'LIKE'];
-	// 		}
-	// 	}
-	// 	// способы доставки (cdt1...cdt4)
-	// 	for ($i = 1; $i <= 4; $i++) {
-	// 		if (!empty($_POST['cdt' . $i]) && $_POST['cdt' . $i] === 'on') {
-	// 			$args['meta_query'][] = ['key' => 'card_deliv_type', 'value' => 'cdt' . $i, 'compare' => 'LIKE'];
-	// 		}
-	// 	}
-	// 	// архив
-	// 	//$args['meta_query'][] = ['key' => 'archive', 'value' => '0'];
-	// }
 
 	// 1. Карточки (creditcard, installmentcard, debetcard)
-if ( in_array( $term, ['creditcard', 'installmentcard', 'debetcard'], true ) ) {
+	if (in_array($term, ['creditcard', 'installmentcard', 'debetcard'], true)) {
 
-  
 
-    $args = [
-        'post_type'      => 'bankcard',
-        'post_status'    => 'publish',
-        'posts_per_page' => $ppp,
-        'paged'          => $paged,
 
-        // таксономия bankcards
-        'tax_query'      => [
-            [
-                'taxonomy' => 'bankcards',
-                'field'    => 'slug',
-                'terms'    => $term,
-            ],
-        ],
+		$args = [
+			'post_type'      => 'bankcard',
+			'post_status'    => 'publish',
+			'posts_per_page' => $ppp,
+			'paged'          => $paged,
 
-        // сортировка: сначала по order_priority, потом по наличию card_bank_link, потом по дате
-        'orderby'        => [
-            'priority_clause' => 'DESC',
-            'link_clause'     => 'DESC',
-            'date'            => 'DESC',
-        ],
+			// таксономия bankcards
+			'tax_query'      => [
+				[
+					'taxonomy' => 'bankcards',
+					'field'    => 'slug',
+					'terms'    => $term,
+				],
+			],
 
-        // собираем все meta-фильтры
-        'meta_query'     => [
-            'relation'         => 'AND',
+			// Сортировка по order_priority (сначала записи с наибольшим значением)
+			'orderby' => [
+				'meta_value_num' => 'DESC',  // Сортировка по order_priority (по убыванию)
+				'date'           => 'DESC',  // Сортировка по дате публикации
+			],
 
-            // 1) Приоритет (числовое поле)
-            'priority_clause'  => [
-                'key'     => 'order_priority',
-                'type'    => 'NUMERIC',
-                'compare' => 'EXISTS',
-            ],
+			// Указываем мета-ключ для сортировки
+			'meta_key' => 'order_priority',
+		];
 
-            // 2) Наличие/отсутствие ссылки (внутренний OR-блок)
-            [
-                'relation'       => 'OR',
 
-                'link_clause'    => [
-                    'key'     => 'card_bank_link',
-                    'compare' => 'EXISTS',
-                ],
-                'no_link_clause' => [
-                    'key'     => 'card_bank_link',
-                    'compare' => 'NOT EXISTS',
-                ],
-            ],
-        ],
-    ];
+		// пользовательская сортировка по другому мета-полю?
+		if ($order) {
+			$args['orderby']  = [
+				'meta_value_num' => $order_type,
+				'title'          => $order_type,
+			];
+			$args['meta_key'] = $order;
+		}
 
-    // пользовательская сортировка по другому мета-полю?
-    if ( $order ) {
-        $args['orderby']  = [
-            'meta_value_num' => $order_type,
-            'title'          => $order_type,
-        ];
-        $args['meta_key'] = $order;
-    }
+		// фильтрация по конкретным ID
+		if ($postarr) {
+			$args['post__in'] = $postarr;
+		}
 
-    // фильтрация по конкретным ID
-    if ( $postarr ) {
-        $args['post__in'] = $postarr;
-    }
+		// дополнительные фильтры ACF (расширяем тот же AND-блок)
+		if (! empty($_POST['cred_limit'])) {
+			$cl = json_decode(stripslashes($_POST['cred_limit']), true);
+			$args['meta_query'][] = [
+				'key'     => 'card_cred_limit',
+				'value'   => $cl,
+				'type'    => 'NUMERIC',
+				'compare' => '<=',
+			];
+		}
+		if (! empty($_POST['percent_limit'])) {
+			$pl = json_decode(stripslashes($_POST['percent_limit']), true);
+			$args['meta_query'][] = [
+				'key'     => 'non_pecent_money',
+				'value'   => $pl,
+				'type'    => 'NUMERIC',
+				'compare' => '<=',
+			];
+		}
+		if (! empty($_POST['cred_day_period'])) {
+			$cd = json_decode(stripslashes($_POST['cred_day_period']), true);
+			$args['meta_query'][] = [
+				'key'     => 'card_day_period',
+				'value'   => $cd,
+				'type'    => 'NUMERIC',
+				'compare' => '<',
+			];
+		}
+		if (! empty($_POST['bank'])) {
+			$bank = json_decode(stripslashes($_POST['bank']), true);
+			$args['meta_query'][] = [
+				'key'     => 'bank_choise',
+				'value'   => $bank,
+				'compare' => '=',
+			];
+		}
+		if (! empty($_POST['cat_cards'])) {
+			$args['meta_query'][] = [
+				'key'     => 'card_category',
+				'value'   => sanitize_text_field($_POST['cat_cards']),
+				'compare' => '=',
+			];
+		}
+		if (! empty($_POST['period'])) {
+			$args['meta_query'][] = [
+				'key'     => 'card_period',
+				'value'   => sanitize_text_field($_POST['period']),
+				'compare' => '=',
+			];
+		}
+		if (isset($_POST['cashback']) && $_POST['cashback'] !== '') {
+			$args['meta_query'][] = [
+				'key'     => 'card_cashback',
+				'value'   => sanitize_text_field($_POST['cashback']),
+				'compare' => '=',
+			];
+		}
+		if (! empty($_POST['cashback_number'])) {
+			$cn = json_decode(stripslashes($_POST['cashback_number']), true);
+			$args['meta_query'][] = [
+				'key'     => 'card_cashbak_number',
+				'value'   => $cn,
+				'type'    => 'NUMERIC',
+				'compare' => '<=',
+			];
+		}
+		if (! empty($_POST['ps'])) {
+			$ps = sanitize_text_field($_POST['ps']);
+			$args['meta_query'][] = [
+				'key'     => 'card_payment_sys',
+				'value'   => $ps,
+				'compare' => 'LIKE',
+			];
+		}
+		for ($i = 1; $i <= 8; $i++) {
+			if (! empty($_POST['os' . $i]) && $_POST['os' . $i] === 'on') {
+				$args['meta_query'][] = [
+					'key'     => 'card_other_state',
+					'value'   => 'os' . $i,
+					'compare' => 'LIKE',
+				];
+			}
+		}
+		for ($i = 1; $i <= 4; $i++) {
+			if (! empty($_POST['cdt' . $i]) && $_POST['cdt' . $i] === 'on') {
+				$args['meta_query'][] = [
+					'key'     => 'card_deliv_type',
+					'value'   => 'cdt' . $i,
+					'compare' => 'LIKE',
+				];
+			}
+		}
+		// ЕРС
+		if (!empty($_POST['order_priority'])) {
+			$order_priority = sanitize_text_field($_POST['order_priority']);
+			$args['meta_query'][] = ['key' => 'order_priority', 'value' => $order_priority, 'compare' => 'LIKE'];
+		}
+		// архивных карт не учитываем – блок удалён
 
-    // дополнительные фильтры ACF (расширяем тот же AND-блок)
-    if ( ! empty( $_POST['cred_limit'] ) ) {
-        $cl = json_decode( stripslashes( $_POST['cred_limit'] ), true );
-        $args['meta_query'][] = [
-            'key'     => 'card_cred_limit',
-            'value'   => $cl,
-            'type'    => 'NUMERIC',
-            'compare' => '<=',
-        ];
-    }
-    if ( ! empty( $_POST['percent_limit'] ) ) {
-        $pl = json_decode( stripslashes( $_POST['percent_limit'] ), true );
-        $args['meta_query'][] = [
-            'key'     => 'non_pecent_money',
-            'value'   => $pl,
-            'type'    => 'NUMERIC',
-            'compare' => '<=',
-        ];
-    }
-    if ( ! empty( $_POST['cred_day_period'] ) ) {
-        $cd = json_decode( stripslashes( $_POST['cred_day_period'] ), true );
-        $args['meta_query'][] = [
-            'key'     => 'card_day_period',
-            'value'   => $cd,
-            'type'    => 'NUMERIC',
-            'compare' => '<',
-        ];
-    }
-    if ( ! empty( $_POST['bank'] ) ) {
-        $bank = json_decode( stripslashes( $_POST['bank'] ), true );
-        $args['meta_query'][] = [
-            'key'     => 'bank_choise',
-            'value'   => $bank,
-            'compare' => '=',
-        ];
-    }
-    if ( ! empty( $_POST['cat_cards'] ) ) {
-        $args['meta_query'][] = [
-            'key'     => 'card_category',
-            'value'   => sanitize_text_field( $_POST['cat_cards'] ),
-            'compare' => '=',
-        ];
-    }
-    if ( ! empty( $_POST['period'] ) ) {
-        $args['meta_query'][] = [
-            'key'     => 'card_period',
-            'value'   => sanitize_text_field( $_POST['period'] ),
-            'compare' => '=',
-        ];
-    }
-    if ( isset( $_POST['cashback'] ) && $_POST['cashback'] !== '' ) {
-        $args['meta_query'][] = [
-            'key'     => 'card_cashback',
-            'value'   => sanitize_text_field( $_POST['cashback'] ),
-            'compare' => '=',
-        ];
-    }
-    if ( ! empty( $_POST['cashback_number'] ) ) {
-        $cn = json_decode( stripslashes( $_POST['cashback_number'] ), true );
-        $args['meta_query'][] = [
-            'key'     => 'card_cashbak_number',
-            'value'   => $cn,
-            'type'    => 'NUMERIC',
-            'compare' => '<=',
-        ];
-    }
-    if ( ! empty( $_POST['ps'] ) ) {
-        $ps = sanitize_text_field( $_POST['ps'] );
-        $args['meta_query'][] = [
-            'key'     => 'card_payment_sys',
-            'value'   => $ps,
-            'compare' => 'LIKE',
-        ];
-    }
-    for ( $i = 1; $i <= 8; $i++ ) {
-        if ( ! empty( $_POST[ 'os' . $i ] ) && $_POST[ 'os' . $i ] === 'on' ) {
-            $args['meta_query'][] = [
-                'key'     => 'card_other_state',
-                'value'   => 'os' . $i,
-                'compare' => 'LIKE',
-            ];
-        }
-    }
-    for ( $i = 1; $i <= 4; $i++ ) {
-        if ( ! empty( $_POST[ 'cdt' . $i ] ) && $_POST[ 'cdt' . $i ] === 'on' ) {
-            $args['meta_query'][] = [
-                'key'     => 'card_deliv_type',
-                'value'   => 'cdt' . $i,
-                'compare' => 'LIKE',
-            ];
-        }
-    }
-    // архивных карт не учитываем – блок удалён
-
-}
+	}
 
 
 	// 2. Кредиты (kredity)
 	if ($term === 'kredity') {
 
-		// базовый запрос: сначала сортируем по наличию ссылки, потом по дате
 		$args = [
 			'post_type'      => 'kredity',
 			'post_parent'    => 0,
@@ -1600,21 +1493,14 @@ if ( in_array( $term, ['creditcard', 'installmentcard', 'debetcard'], true ) ) {
 			'posts_per_page' => $ppp,
 			'paged'          => $paged,
 
-			// сортировка сначала по заполненности ссылки, затем по дате
-			'orderby'  => [
-				'meta_value' => 'DESC',
-				'date'       => 'DESC',
+			// Сортировка по order_priority (сначала записи с наибольшим значением)
+			'orderby' => [
+				'meta_value_num' => 'DESC',  // Сортировка по order_priority (по убыванию)
+				'date'           => 'DESC',  // Сортировка по дате публикации
 			],
-			'meta_key' => 'card_bank_link',
 
-			'meta_query' => [
-				'relation' => 'OR',
-				[
-					'key'     => 'card_bank_link',
-					'value'   => '',
-					'compare' => '!=', // только записи с непустым card_bank_link
-				],
-			],
+			// Указываем мета-ключ для сортировки
+			'meta_key' => 'order_priority',
 		];
 
 		// если есть пользовательская сортировка — переключаем
@@ -1705,6 +1591,11 @@ if ( in_array( $term, ['creditcard', 'installmentcard', 'debetcard'], true ) ) {
 				];
 			}
 		}
+		// ЕРС
+		if (!empty($_POST['order_priority'])) {
+			$order_priority = sanitize_text_field($_POST['order_priority']);
+			$args['meta_query'][] = ['key' => 'order_priority', 'value' => $order_priority, 'compare' => 'LIKE'];
+		}
 		// архив
 		//$args['meta_query'][] = ['key' => 'archive', 'value' => '0'];
 	}
@@ -1720,26 +1611,15 @@ if ( in_array( $term, ['creditcard', 'installmentcard', 'debetcard'], true ) ) {
 			'posts_per_page' => $ppp,
 			'paged'          => $paged,
 
-			// сортировка сначала по заполненности ссылки, затем по дате
-			'orderby'  => [
-				'meta_value' => 'DESC',
-				'date'       => 'DESC',
+			// Сортировка по order_priority (сначала записи с наибольшим значением)
+			'orderby' => [
+				'meta_value_num' => 'DESC',  // Сортировка по order_priority (по убыванию)
+				'date'           => 'DESC',  // Сортировка по дате публикации
 			],
-			'meta_key' => 'card_bank_link',
 
-			'meta_query' => [
-				'relation' => 'OR',
-				[
-					'key'     => 'card_bank_link',
-					'value'   => '',
-					'compare' => '!=', // только записи с непустым card_bank_link
-				],
-			],
+			// Указываем мета-ключ для сортировки
+			'meta_key' => 'order_priority',
 		];
-
-
-
-
 
 
 
@@ -1777,14 +1657,21 @@ if ( in_array( $term, ['creditcard', 'installmentcard', 'debetcard'], true ) ) {
 			$zos = sanitize_text_field($_POST['zos']);
 			$args['meta_query'][] = ['key' => 'z_other_statements', 'value' => $zos, 'compare' => 'LIKE'];
 		}
+		// ЕРС
+		if (!empty($_POST['order_priority'])) {
+			$order_priority = sanitize_text_field($_POST['order_priority']);
+			$args['meta_query'][] = ['key' => 'order_priority', 'value' => $order_priority, 'compare' => 'LIKE'];
+		}
+
 		// архив
 		//$args['meta_query'][] = ['key' => 'archive', 'value' => true];
 	}
 
 	// Выполняем запрос и формируем ответ
 	query_posts($args);
-	global $wp_query;
 	$item_count = 0;
+	global $wp_query;
+
 	ob_start();
 	if (have_posts()) {
 		while (have_posts()) {
@@ -1816,6 +1703,7 @@ if ( in_array( $term, ['creditcard', 'installmentcard', 'debetcard'], true ) ) {
 		'item_count'   => $item_count,
 	]);
 }
+
 
 
 
@@ -3540,27 +3428,42 @@ function myown_comment($comment, $args, $depth)
 
 
 
-	function get_metrika_for_best_pages($field)
+	// function get_metrika_for_best_pages($field)
+	// {
+
+	// 	$arr_link = explode('/', $field);
+
+	// 	$with_referal = false;
+
+	// 	if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
+	// 		$with_referal = true;
+	// 	}
+
+	// 	if ($with_referal == true) {
+	// 		$metrika = "ym(35020350,'reachGoal','OFFERWALL_CLICK_OFFER');";
+	// 		$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');";
+	// 	} else {
+	// 		$metrika = "ym(35020350,'reachGoal','click_na_oformit_luchshee_bez_referalki');";
+	// 		$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
+	// 	}
+
+	// 	return $metrika;
+	// }
+
+	function get_metrika_for_best_pages($card_bank_link)
 	{
-
-		$arr_link = explode('/', $field);
-
-		$with_referal = false;
-
-		if (isset($arr_link[3]) && $arr_link[3] == 'recommends') {
-			$with_referal = true;
-		}
-
-		if ($with_referal == true) {
-			$metrika = "ym(35020350,'reachGoal','OFFERWALL_CLICK_OFFER');";
-			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');";
+		// Проверяем наличие card_bank_link
+		if (!empty($card_bank_link)) {
+			// Если ссылка есть, добавляем эти события
+			$metrika = "ym(35020350,'reachGoal','click_oformit_listing'); ym(35020350,'reachGoal','click_na_vse_oformit_s_referalkoy');";
 		} else {
-			$metrika = "ym(35020350,'reachGoal','click_na_oformit_luchshee_bez_referalki');";
-			$metrika .= " ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
+			// Если ссылки нет, добавляем другой набор событий
+			$metrika = "ym(35020350,'reachGoal','click_oformit_listing'); ym(35020350,'reachGoal','click_na_oformit_listing_bez_referalki'); ym(35020350,'reachGoal','click_na_vse_oformit_bez_referalki');";
 		}
 
 		return $metrika;
 	}
+
 
 	// function get_metrika_for_detail_page($field)
 	// {

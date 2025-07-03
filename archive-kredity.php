@@ -442,8 +442,8 @@ else:
 						'post_type'      => 'kredity',
 						'post_parent' => 0,
 						'post_status' => 'publish',
-						'posts_per_page' => 20,
-						//'paged'          => $paged,
+						'posts_per_page' => 1000,
+						'paged'          => $paged,
 
 						// 1) Определяем оба критерия в meta_query...
 						'meta_query' => [
@@ -453,13 +453,16 @@ else:
 							'priority_clause' => [
 								'key'     => 'order_priority',
 								'type'    => 'NUMERIC',
-
-								// compare не обязателен: просто берём значение
 							],
 
 							// Клаузула для наличия ссылки
 							'link_clause'     => [
 								'key'     => 'card_bank_link',
+								'compare' => 'EXISTS',
+							],
+							// Клаузула для наличия ссылки
+							'archive_clause'     => [
+								'key'     => 'archive',
 								'compare' => 'EXISTS',
 							],
 						],
@@ -468,6 +471,7 @@ else:
 						'orderby' => [
 							'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
 							'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+							'archive_clause'     => 'ASC', // записи с card_bank_link (существует) выше тех, где его нет
 							'date'            => 'DESC', // и, наконец, по дате публикации
 						],
 					);
@@ -524,11 +528,12 @@ else:
 									<div class="credits__list-dropdown dropdown  px-0">
 										<select name="order" class="styledSelect cred-order-select">
 											<option value="" selected disabled>Сортировать</option>
-											<option value="card_bank_link">Сбросить сортировку</option>
+											<option value="">Сбросить сортировку</option>
 											<option value="ratings_average">По рейтингу</option>
 											<option value="views">По количеству заявок</option>
 											<option value="credit_max_sum">По сумме займа</option>
 											<option value="credit_stavka">По процентной ставке</option>
+											<option value="order_priority">По ЕРС</option>
 										</select>
 										<!-- <select name="order" class="styledSelect cred-order-select">
 											<option value="" selected hidden>Сортировать</option>
@@ -566,25 +571,17 @@ else:
 							</div>
 							<?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
 							wp_reset_query(); ?>
-							
+
 							<!-- pagination -->
 							<div class="pagination flex-column mb-3">
-								<?php if ($paged < $max_pages): ?>
-									<button
-										class="btn btn-outline-gray btn-block load_more_btn"
-										data-max_pages="<?= $max_pages ?>"
-										data-paged="<?= $paged ?>"
-										data-posts_per_page="<?= $ppp ?>">
-										Больше решений
-									</button>
-
-								<?php endif; ?>
+								<!-- Кнопка для загрузки еще -->
+                                <button class="load-daha btn btn-outline-gray btn-block">Больше решений</button>
 
 							</div>
 
 
 							<!-- archive posts -->
-							
+
 							<!-- /archive posts -->
 
 						</div>

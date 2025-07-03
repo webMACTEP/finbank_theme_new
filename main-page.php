@@ -330,7 +330,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__header mb-2 d-flex">
                                                     <div class="card__header-img">
                                                         <img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
-                                   <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
+                                                            <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
                                                             alt="<?
                                                                     $bank_id = get_field('bank_logo', $bank_choise_rel, false);
                                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
@@ -608,7 +608,7 @@ $zaim_link =  '/zaimy/';
                                                 <div class="card__header mb-2 d-flex">
                                                     <div class="card__header-img">
                                                         <img loading="lazy" src="<?php $bank_choise_rel = get_field('bank_choise', get_the_ID()) ?>
-                                   <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
+                                                            <?php echo the_field('bank_logo', $bank_choise_rel) ?>"
                                                             alt="<?
                                                                     $bank_id = get_field('bank_logo', $bank_choise_rel, false);
                                                                     $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
@@ -777,11 +777,11 @@ $zaim_link =  '/zaimy/';
                                                     <img loading="lazy"
                                                         src="<?php echo the_field('card_logo') ?>"
                                                         alt="
-                                    <?
-                                        $bank_id = get_field('card_logo', false, false);
-                                        $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
-                                        echo $bank_alt;
-                                    ?>">
+                                                    <?
+                                                        $bank_id = get_field('card_logo', false, false);
+                                                        $bank_alt = get_post_meta($bank_id, '_wp_attachment_image_alt', true);
+                                                        echo $bank_alt;
+                                                    ?>">
                                                 </div>
                                                 <ul class="leaders">
                                                     <li class="leaders__item mb-1">

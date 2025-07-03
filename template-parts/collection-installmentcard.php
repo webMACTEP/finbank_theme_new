@@ -207,17 +207,17 @@ $type_collection = 'installmentcard';
 										</select>
 									</div>
 									<div class="col-12 col-md-4 card_cat_select">
-                                            <label class="form-label" for="bankTop">Категория карты</label>
-                                            <select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
-                                                <option value="">Все</option>
-                                                <option value="cc10">Электронная</option>
-                                                <option value="cc20">Классическая</option>
-                                                <option value="cc30">Золотая</option>
-                                                <option value="cc40">Премиальная</option>
-                                                <option value="cc50">Виртуальная</option>
+										<label class="form-label" for="bankTop">Категория карты</label>
+										<select name="cat_cards" id="bankTop" class="styledSelect" placeholder="">
+											<option value="">Все</option>
+											<option value="cc10">Электронная</option>
+											<option value="cc20">Классическая</option>
+											<option value="cc30">Золотая</option>
+											<option value="cc40">Премиальная</option>
+											<option value="cc50">Виртуальная</option>
 
-                                            </select>
-                                        </div>
+										</select>
+									</div>
 									<div class="col-12 col-md-4 grace_period_select">
 										<label class="form-label" for="gracePeriod">Льготный период</label>
 										<select name="period" id="gracePeriod" class="styledSelect" placeholder="">
@@ -454,27 +454,63 @@ $type_collection = 'installmentcard';
 
 				<?php
 				$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-				$args = array(
-					'post_type' => array('bankcard'),
-					'posts_per_page' => 20,
-					'post__in' => $allposts,
-					'orderby' => 'name',
-					'order' => 'DESC',
-					'post_status' => 'publish',
-					'paged' => $paged,
-					'tax_query' => array(
-						array(
+				
+
+				$args = [
+					'post_type'      => 'bankcard',
+					'posts_per_page' => 1000,   // сколько выводим за раз
+					'post__in'       => $allposts,
+
+					'paged'          => $paged,
+					'post_status'    => 'publish',
+
+					// привязка к термину creditcard таксономии bankcards
+					'tax_query'      => [
+						[
 							'taxonomy' => 'bankcards',
 							'field'    => 'slug',
 							'terms'    => 'installmentcard',
-						),
-					)
-				);
+						],
+					],
 
-				$args['meta_query'][] = array(
-					'key' => 'archive',
-					'value' => '0'
-				);
+					// 1) Определяем оба критерия в meta_query...
+					'meta_query' => [
+						'relation'         => 'AND',
+
+						// Клаузула для приоритета
+						'priority_clause' => [
+							'key'     => 'order_priority',
+							'type'    => 'NUMERIC',
+
+							// compare не обязателен: просто берём значение
+						],
+
+						// Клаузула для наличия ссылки
+						'link_clause'     => [
+							'key'     => 'card_bank_link',
+							'compare' => 'EXISTS',
+						],
+						// Клаузула для наличия ссылки
+						'archive_clause'     => [
+							'key'     => 'archive',
+							'compare' => 'EXISTS',
+						],
+					],
+
+					// 2) Сортируем по ним в нужном порядке
+					'orderby' => [
+						'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
+						'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+						'archive_clause'     => 'ASC', // записи с card_bank_link (существует) выше тех, где его нет
+						'date'            => 'DESC', // и, наконец, по дате публикации
+					],
+				];
+
+
+				// $args['meta_query'][] = array(
+				// 	'key' => 'archive',
+				// 	'value' => '0'
+				// );
 
 				$counter = 0;
 				$query = new WP_Query($args);
@@ -565,12 +601,7 @@ $type_collection = 'installmentcard';
 						</div>
 						<?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
 						wp_reset_query(); ?>
-						<!-- <div class="pagination__description mt-4">
-				Показано <span class="count_view"><?php // echo $counter 
-													?></span>
-				продуктов из <span class="count_all"><?php // echo $query->found_posts; 
-														?></span>
-			</div> -->
+
 						<!-- pagination -->
 						<div class="pagination flex-column mb-3">
 							<?php if ($paged < $max_pages): ?>
@@ -585,34 +616,7 @@ $type_collection = 'installmentcard';
 
 
 						<!-- archive posts -->
-						<?php
-						$args_archive = array(
-							'post_type'             => 'bankcard',
-							'posts_per_page'        => -1,
-							'meta_key'      => 'archive',
-							'meta_value'    => true,
-							'tax_query' => array(
-								array(
-									'taxonomy' => 'bankcards',
-									'field'    => 'slug',
-									'terms'    => 'debetcard',
-								),
-							)
-						);
-						$query_archive = new WP_Query($args_archive);
-						if ($query_archive->have_posts()): ?>
-							<button class="btn btn-outline-gray btn-block archive_title mb-4">
-								Архивные оферы (<?= $query_archive->found_posts; ?>)
-							</button>
 
-
-							<div class="list_posts archive_list archive_hide">
-								<?php while ($query_archive->have_posts()): $query_archive->the_post(); ?>
-									<?php get_template_part('template-parts/filter-debet-card-posts'); ?>
-								<?php endwhile;
-								wp_reset_postdata(); ?>
-							</div>
-						<?php endif; ?>
 						<!-- /archive posts -->
 
 

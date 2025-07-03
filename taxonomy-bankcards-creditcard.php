@@ -222,7 +222,7 @@ else:
                                                 <option value="ps2">MasterCard</option>
                                                 <option value="ps3">МИР</option>
                                                 <option value="ps4">UnionPay</option>
-                                                
+
 
 
                                             </select>
@@ -451,10 +451,10 @@ else:
                     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
                     $args = [
                         'post_type'      => 'bankcard',
-                        'posts_per_page' => 20,   // сколько выводим за раз
+                        'posts_per_page' => 1000,   // сколько выводим за раз
                         'paged'          => $paged,
                         'post_status'    => 'publish',
-                    
+
                         // привязка к термину creditcard таксономии bankcards
                         'tax_query'      => [
                             [
@@ -463,51 +463,43 @@ else:
                                 'terms'    => 'creditcard',
                             ],
                         ],
-                    
-                        // сначала сортировка по order_priority, потом по наличию ссылки,
-                        // потом по дате публикации (DESC — новые выше)
-                        'orderby'        => [
-                            'priority_clause' => 'DESC',
-                            'link_clause'     => 'DESC',
-                            'date'            => 'DESC',
-                        ],
-                    
-                        // meta_query с общей связкой AND
-                        'meta_query'     => [
+
+                        // 1) Определяем оба критерия в meta_query...
+                        'meta_query' => [
                             'relation'         => 'AND',
-                    
-                            // 1) Приоритет (числовое поле)
-                            'priority_clause'  => [
+
+                            // Клаузула для приоритета
+                            'priority_clause' => [
                                 'key'     => 'order_priority',
                                 'type'    => 'NUMERIC',
+
+                                // compare не обязателен: просто берём значение
+                            ],
+
+                            // Клаузула для наличия ссылки
+                            'link_clause'     => [
+                                'key'     => 'card_bank_link',
                                 'compare' => 'EXISTS',
                             ],
-                    
-                            // 2) Группа для проверки наличия/отсутствия ссылки
-                            [
-                                'relation'       => 'OR',
-                                'link_clause'    => [
-                                    'key'     => 'card_bank_link',
-                                    'compare' => 'EXISTS',
-                                ],
-                                'no_link_clause' => [
-                                    'key'     => 'card_bank_link',
-                                    'compare' => 'NOT EXISTS',
-                                ],
+                            // Клаузула для наличия ссылки
+                            'archive_clause'     => [
+                                'key'     => 'archive',
+                                'compare' => 'EXISTS',
                             ],
-                    
-                            // здесь можно добавить другие фильтры по $_POST, например:
-                            // сумма, процент, тип карты и т.д.
-                            // [
-                            //   'key'     => 'some_meta_key',
-                            //   'value'   => $some_value,
-                            //   'compare' => 'LIKE',
-                            // ],
+                        ],
+
+                        // 2) Сортируем по ним в нужном порядке
+                        'orderby' => [
+                            'priority_clause' => 'DESC',  // сначала по приоритету (меньше → выше)
+                            'link_clause'     => 'DESC', // записи с card_bank_link (существует) выше тех, где его нет
+                            'archive_clause'     => 'ASC', // записи с card_bank_link (существует) выше тех, где его нет
+                            'date'            => 'DESC', // и, наконец, по дате публикации
                         ],
                     ];
 
 
-                   
+
+
 
                     $counter = 0;
                     $query = new WP_Query($args);
@@ -596,25 +588,17 @@ else:
                             </div>
                             <?php // Возвращаем оригинальные данные поста. Сбрасываем $post.
                             wp_reset_query(); ?>
-                            
+
                             <!-- pagination -->
                             <div class="pagination flex-column mb-3">
-                                <?php if ($paged < $max_pages): ?>
-                                    <button
-                                        class="btn btn-outline-gray btn-block load_more_btn"
-                                        data-max_pages="<?= $max_pages ?>"
-                                        data-paged="<?= $paged ?>"
-                                        data-posts_per_page="<?= $ppp ?>">
-                                        Больше решений
-                                    </button>
-
-                                <?php endif; ?>
+                                <!-- Кнопка для загрузки еще -->
+                                <button class="load-daha btn btn-outline-gray btn-block">Больше решений</button>
 
                             </div>
 
 
                             <!-- archive posts -->
-                            
+
                             <!-- /archive posts -->
 
 
