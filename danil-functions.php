@@ -35,3 +35,94 @@ function get_clear_url(string $url = ''): string
 
     return $path;
 }
+
+/*
+// 1. Перехват запроса к /zaimy-comments-sitemap.xml
+add_action('template_redirect', function () {
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (preg_match('#/zaimy-comments-sitemap\.xml$#', $uri)) {
+        render_zaimy_comments_sitemap();
+    }
+});
+
+// 2. Генерация sitemap с пагинацией комментариев для zaimy
+function render_zaimy_comments_sitemap()
+{
+    header('Content-Type: application/xml; charset=' . get_bloginfo('charset'), true);
+    echo '<?xml version="1.0" encoding="' . get_bloginfo('charset') . "\"?>\n";
+    // Добавляем XSLT-стилизацию как у Yoast SEO
+    echo '<?xml-stylesheet type="text/xsl" href="' . esc_url(plugins_url('wordpress-seo/css/main-sitemap.xsl')) . '"?>' . "\n";
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+    $args = [
+        'post_type'      => 'zaimy',
+        'post_status'    => 'publish',
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+    ];
+    $posts = get_posts($args);
+
+    foreach ($posts as $post_id) {
+        $comments_count = get_comments_number($post_id);
+        $comments_per_page = get_option('comments_per_page');
+        $pages = max(1, ceil($comments_count / $comments_per_page));
+
+        for ($i = 1; $i <= $pages; $i++) {
+            $url = get_permalink($post_id) . 'comments/';
+            if ($i > 1) {
+                $url .= 'page/' . $i . '/';
+            }
+            // Убираем возможные анкоры из URL
+            $url_parts = wp_parse_url($url);
+            $clean_url = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'];
+            if (isset($url_parts['query'])) {
+                $clean_url .= '?' . $url_parts['query'];
+            }
+            $lastmod = get_post_modified_time('c', true, $post_id);
+            echo "  <url>\n";
+            echo "    <loc>" . esc_url($clean_url) . "</loc>\n";
+            echo "    <lastmod>{$lastmod}</lastmod>\n";
+            echo "  </url>\n";
+        }
+    }
+
+    echo '</urlset>';
+    exit;
+}
+
+// 3. Добавить ссылку на этот sitemap в индекс Yoast SEO
+add_filter('wpseo_sitemap_index', function ($sitemap_index) {
+    $sitemap_index .= "\n<sitemap>\n";
+    $sitemap_index .= "<loc>" . esc_url(home_url('/zaimy-comments-sitemap.xml')) . "</loc>\n";
+    $sitemap_index .= "<lastmod>" . date('c') . "</lastmod>\n";
+    $sitemap_index .= "</sitemap>\n";
+    return $sitemap_index;
+});
+*/
+
+
+function sitemap_exclude_authors($users)
+{
+    return array_filter($users, function ($user) {
+        if ($user) {
+            return false;
+        }
+    });
+}
+
+add_filter('wpseo_sitemap_exclude_author', 'sitemap_exclude_authors');
+
+
+function exclude_posts_from_xml_sitemaps()
+{
+    // Убирает из sitemap страницы:
+    // https://finabank.ru/archive-zaimy/
+    // https://finabank.ru/archive-kredity/
+    // https://finabank.ru/archive-installmentcard/
+    // https://finabank.ru/archive-debetcard/
+    // https://finabank.ru/archive-creditcard/
+    // https://finabank.ru/archive-banks/
+    return [6272, 6281, 6274, 6276, 6270, 6278];
+}
+
+add_filter('wpseo_exclude_from_sitemap_by_post_ids', 'exclude_posts_from_xml_sitemaps');

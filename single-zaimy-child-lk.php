@@ -681,9 +681,7 @@ $card_bank_link = base64_encode($encoded_link);
                 <div id="content-lk" class="content-block content-lk col-12 col-md-9 col-lg-8 order-md-1 active">
                     <div class="section">
                         <div class="block-bg p-4">
-                            <div class="section__header d-flex justify-content-between align-items-center">
-                                <h2 class="title mb-4">Как войти в личный кабинет <?php echo $parent_title ?></h2>
-                            </div>
+                            
                             <?php echo the_field('about_lk', $parent_id) ?>
                         </div>
                     </div>

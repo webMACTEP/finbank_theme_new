@@ -7778,6 +7778,11 @@ a.cld-like-dislike-trigger {
   width: 100%;
 }
 
+h3 a,
+p a {
+  color: var(--primary);
+}
+
 @media (max-width: 1090px) {
   .newlisting .new-calc-content,
   .newlisting .new-filter-modal-content {

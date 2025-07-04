@@ -2648,12 +2648,17 @@
     }
 }
 
-.newlisting .cards .archive__card .item-about .item-info a{
+.newlisting .cards .archive__card .item-about .item-info a {
     padding: 0px 0px 0px 0px;
-   
 }
-.newlisting .card .item-info{
+.newlisting .card .item-info {
     width: 100%;
+}
+h3,
+p {
+    a {
+        color: var(--primary);
+    }
 }
 @media (max-width: 1090px) {
     .newlisting .new-calc-content,
