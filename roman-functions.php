@@ -1406,13 +1406,18 @@ function load_more_reviews()
                         <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>"
                             class="reviews__header-title h4 mb-2 stretched-link">
                             <?php
-                            // === 2) ЗАГОЛОВОК ===
-                            // Если несколько источников — соединяем через « / », иначе просто один
+                            // Получаем уникальные заголовки
                             $titles = array_map(function ($pid) {
-                                return esc_html(get_the_title($pid));
+                                return get_the_title($pid);
                             }, array_unique($title_sources));
 
-                            echo implode(' / ', $titles);
+                            // Если есть более одного заголовка — удаляем первый
+                            if (count($titles) > 1) {
+                                array_shift($titles);
+                            }
+
+                            // Экранируем и соединяем через " / "
+                            echo esc_html(implode(' / ', $titles));
                             ?>
                         </a>
 
