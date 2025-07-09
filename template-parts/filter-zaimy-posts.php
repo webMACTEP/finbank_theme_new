@@ -96,7 +96,7 @@ $card_other_state =  get_field('z_other_statements');
                                         </svg>
                                     </a>
                                 </div>
-                               
+
                             </div>
                             <div class="position-relative card__like d-flex align-items-center">
                                 <?php echo do_shortcode('[wp_ulike button_type="image" style="wpulike-heart"]'); ?>

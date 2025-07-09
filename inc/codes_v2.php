@@ -175,7 +175,7 @@ function code_type_5v2($atts)
 
         // Получаем ссылку на пост
         $url = get_the_permalink($atts['id']);
-        
+
 
         // Формируем кнопки
         $oform = '<a href="' . esc_url($url) . '" class="oform" onclick="ym(35020350,\'reachGoal\',\'click_shortcode_CTA_product\'); return true;">Оформить</a>';
@@ -924,6 +924,7 @@ function code_type_4v2($atts)
 
         // Ссылка "Подробнее"
         $url = get_permalink($id);
+
         $html .= '<a class="code4v2-butt" target="_blank" href="' . esc_url($url) . '" onclick="ym(35020350,\'reachGoal\',\'click_shortcode_showcase\'); return true;">' . esc_html__('Подробнее', 'text-domain') . '</a>';
 
         $html .= '</div>'; // Закрытие code4block

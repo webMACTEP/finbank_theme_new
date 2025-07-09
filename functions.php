@@ -2815,16 +2815,22 @@ function myown_comment($comment, $args, $depth)
 								'posts_per_page' => -1,
 								'post_type' => $type,
 								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
+								//'meta_key' => 'ratings_average',
 								'orderby' => 'meta_value_num',
 								'order' => 'DESC',
 								'post_status' => 'publish',
-								'meta_query' => array(
+								'meta_query'     => array(
+									array(
+										'key'     => 'card_bank_link',
+										'value'   => '',
+										'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+									),
 									array(
 										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
+										'value' => '0',
+										'compare' => '=', // Рекомендуется явно указать оператор сравнения
+									)
+								),
 							)
 						);
 
@@ -2878,16 +2884,22 @@ function myown_comment($comment, $args, $depth)
 								'posts_per_page' => -1,
 								'post_type' => $type,
 								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
+								//'meta_key' => 'ratings_average',
 								'orderby' => 'meta_value_num',
 								'order' => 'DESC',
 								'post_status' => 'publish',
-								'meta_query' => array(
+								'meta_query'     => array(
+									array(
+										'key'     => 'card_bank_link',
+										'value'   => '',
+										'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+									),
 									array(
 										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
+										'value' => '0',
+										'compare' => '=', // Рекомендуется явно указать оператор сравнения
+									)
+								),
 							)
 						);
 						$counter_prod = 1;
@@ -2957,16 +2969,22 @@ function myown_comment($comment, $args, $depth)
 								'posts_per_page' => -1,
 								'post_type' => array('bankcard'),
 								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
+								//'meta_key' => 'ratings_average',
 								'orderby' => 'meta_value_num',
 								'order' => 'DESC',
 								'post_status' => 'publish',
-								'meta_query' => array(
+								'meta_query'     => array(
+									array(
+										'key'     => 'card_bank_link',
+										'value'   => '',
+										'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+									),
 									array(
 										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
+										'value' => '0',
+										'compare' => '=', // Рекомендуется явно указать оператор сравнения
+									)
+								),
 							)
 						);
 
@@ -3041,16 +3059,22 @@ function myown_comment($comment, $args, $depth)
 								'posts_per_page' => -1,
 								'post_type' => array('bankcard'),
 								'post__in' => $allposts_collection,
-								'meta_key' => 'ratings_average',
+								//'meta_key' => 'ratings_average',
 								'orderby' => 'meta_value_num',
 								'order' => 'DESC',
 								'post_status' => 'publish',
-								'meta_query' => array(
+								'meta_query'     => array(
+									array(
+										'key'     => 'card_bank_link',
+										'value'   => '',
+										'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
+									),
 									array(
 										'key' => 'archive',
-										'value'    => '0'
-									),
-								)
+										'value' => '0',
+										'compare' => '=', // Рекомендуется явно указать оператор сравнения
+									)
+								),
 							)
 						);
 

@@ -735,17 +735,17 @@ function prefix_filter_description_example($description)
 add_filter('wpseo_metadesc', 'prefix_filter_description_example');
 
 // Фильтр для изменения метатега robots
-add_filter('wpseo_robots', 'custom_robots_for_child_zaimy');
-function custom_robots_for_child_zaimy($robots)
-{
-    if (is_singular('zaimy')) {
-        $parent_id = wp_get_post_parent_id(get_the_ID());
-        if ($parent_id && get_field('archive', $parent_id)) {
-            $robots = 'noindex, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
-        }
-    }
-    return $robots;
-}
+// add_filter('wpseo_robots', 'custom_robots_for_child_zaimy');
+// function custom_robots_for_child_zaimy($robots)
+// {
+//     if (is_singular('zaimy')) {
+//         $parent_id = wp_get_post_parent_id(get_the_ID());
+//         if ($parent_id && get_field('archive', $parent_id)) {
+//             $robots = 'noindex, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+//         }
+//     }
+//     return $robots;
+// }
 
 // Фильтр для исключения из карты сайта Yoast SEO (принимаем второй параметр — объект записи)
 add_filter('wpseo_sitemap_exclude_post', 'custom_exclude_from_sitemap', 10, 2);
@@ -1338,58 +1338,84 @@ function load_more_reviews()
         <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
             <div class="reviews__item-body">
                 <div class="reviews__header d-flex align-items-center mb-2">
+
                     <div class="reviews__header-logo">
-                        <?php if ($taxonomy === 'zaimy'): ?>
-                            <!-- Логотип для займов -->
-                            <img src="<?php echo esc_url(get_field('z_organization_logo', $comm->comment_post_ID)); ?>"
-                                alt="<?php
-                                        $logo_id = get_field('z_organization_logo', $comm->comment_post_ID, false);
-                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                        echo esc_attr($logo_alt);
-                                        ?>">
-                        <?php elseif ($taxonomy === 'banks'): ?>
-                            <!-- Логотип для банков -->
-                            <img src="<?php echo esc_url(get_field('bank_logo', $comm->comment_post_ID)); ?>"
-                                alt="<?php
-                                        $logo_id = get_field('bank_logo', $comm->comment_post_ID, false);
-                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                        echo esc_attr($logo_alt);
-                                        ?>">
-                        <?php elseif ($taxonomy === 'kredity'): ?>
-                            <!-- Логотип для кредиты -->
-                            <?php $bank_choise_rel = get_field('product_bank', $comm->comment_post_ID) ?>
-                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>"
-                                alt="<?php
-                                        $logo_id = get_field('bank_logo', $bank_choise_rel, false);
-                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                        echo esc_attr($logo_alt);
-                                        ?>
-                            ">
-                        <?php else: ?>
-                            <?php $bank_choise_rel = get_field('bank_choise', $comm->comment_post_ID) ?>
-                            <img src="<?php echo esc_url(get_field('bank_logo', $bank_choise_rel)); ?>"
-                                alt="<?php
-                                        $logo_id = get_field('bank_logo', $bank_choise_rel, false);
-                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                        echo esc_attr($logo_alt);
-                                        ?>">
-                        <?php endif; ?>
+                        <?php
+                        // === 1) ЛОГОТИПЫ ===
+                        $logo_sources = [];
+                        $title_sources = []; // сюда попадут post_id-ы для заголовка
 
+                        switch ($taxonomy) {
+                            case 'zaimy':
+                                $logo_sources[]  = 'z_organization_logo';
+                                $title_sources[] = $comm->comment_post_ID;
+                                break;
 
+                            case 'banks':
+                                $logo_sources[]  = 'bank_logo';
+                                $title_sources[] = $comm->comment_post_ID;
+                                break;
+
+                            case 'kredity':
+                                $bank_id = get_field('product_bank', $comm->comment_post_ID);
+                                if ($bank_id) {
+                                    $logo_sources[]  = ['relation' => $bank_id, 'meta' => 'bank_logo'];
+                                    $title_sources[] = $bank_id;
+                                } else {
+                                    // fallback на сам пост
+                                    $title_sources[] = $comm->comment_post_ID;
+                                }
+                                break;
+
+                            default:
+                                // «Все»: выводим оба логотипа и оба заголовка
+                                $logo_sources[]  = 'z_organization_logo';
+                                $logo_sources[]  = 'bank_logo';
+
+                                $title_sources[] = $comm->comment_post_ID;       // для займов/банков
+                                $pb = get_field('product_bank', $comm->comment_post_ID);
+                                if ($pb) {
+                                    $logo_sources[]  = ['relation' => $pb, 'meta' => 'bank_logo'];
+                                    $title_sources[] = $pb;
+                                }
+                                $bc = get_field('bank_choise', $comm->comment_post_ID);
+                                if ($bc) {
+                                    $logo_sources[]  = ['relation' => $bc, 'meta' => 'bank_logo'];
+                                    $title_sources[] = $bc;
+                                }
+                                break;
+                        }
+
+                        // выводим лого
+                        foreach ($logo_sources as $src) {
+                            if (is_array($src)) {
+                                $img_id  = get_field($src['meta'], $src['relation'], false);
+                            } else {
+                                $img_id  = get_field($src, $comm->comment_post_ID, false);
+                            }
+                            if ($img_id) {
+                                $img_url = wp_get_attachment_url($img_id);
+                                $alt     = get_post_meta($img_id, '_wp_attachment_image_alt', true);
+                                echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($alt) . '">';
+                            }
+                        }
+                        ?>
                     </div>
+
                     <div class="reviews__header-meta ml-3">
-                        <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>" class="reviews__header-title h4 mb-2 stretched-link">
-                        <?php if ($taxonomy === 'zaimy'): ?>
-                            <?php echo esc_html(get_the_title($post_id)); ?>                         
-                        <?php elseif ($taxonomy === 'banks'): ?>
-                            <?php echo esc_html(get_the_title($post_id)); ?>
-                        <?php elseif ($taxonomy === 'kredity'): ?>
-                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
-                        <?php else: ?>
-                            <?php echo esc_html( get_the_title($bank_choise_rel) ); ?>
-                        <?php endif; ?>
-                           
+                        <a href="<?php echo esc_url(get_comment_link($comm->comment_ID)); ?>"
+                            class="reviews__header-title h4 mb-2 stretched-link">
+                            <?php
+                            // === 2) ЗАГОЛОВОК ===
+                            // Если несколько источников — соединяем через « / », иначе просто один
+                            $titles = array_map(function ($pid) {
+                                return esc_html(get_the_title($pid));
+                            }, array_unique($title_sources));
+
+                            echo implode(' / ', $titles);
+                            ?>
                         </a>
+
                         <div class="d-flex">
                             <div class="card__rating d-flex align-items-center mr-3">
                                 <div class="mr-2">
@@ -1413,6 +1439,7 @@ function load_more_reviews()
                         </div>
                     </div>
                 </div>
+
                 <div class="reviews__item-content">
                     <p><?php echo $content; ?></p>
                 </div>
@@ -1474,3 +1501,4 @@ add_action('wp_enqueue_scripts', 'reviews_enqueue_scripts');
 
 
 
+// для всех отзывов

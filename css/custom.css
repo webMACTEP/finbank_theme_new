@@ -6754,19 +6754,10 @@ a.cld-like-dislike-trigger {
   margin: 1rem 0px;
 }
 .newlisting .type-desc-more {
+  display: none;
   margin: 1rem 0px;
-  display: flex;
   color: var(--primary);
   cursor: pointer;
-}
-.newlisting .type-desc {
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  overflow: hidden;
-}
-.newlisting .type-desc.active {
-  -webkit-line-clamp: 500;
 }
 .newlisting .credits__list-header {
   margin: 0px 0px 20px 0px;
@@ -7747,13 +7738,13 @@ a.cld-like-dislike-trigger {
 .newlisting .archive__card {
   margin-bottom: 0 !important;
 }
-.newlisting .archive__card .item-about .item-info a {
+.newlisting .archive__card .item-about .item-info .font-weight-semibold {
   padding: 0px 60px 0px 0px;
   position: relative;
   max-width: -moz-fit-content;
   max-width: fit-content;
 }
-.newlisting .archive__card .item-about .item-info a::after {
+.newlisting .archive__card .item-about .item-info .font-weight-semibold::after {
   content: "Архив";
   position: absolute;
   right: 0;
@@ -7781,6 +7772,14 @@ a.cld-like-dislike-trigger {
 h3 a,
 p a {
   color: var(--primary);
+}
+
+.footer__btnShow ~ .row {
+  display: flex;
+}
+
+.footer__btnShow {
+  display: none;
 }
 
 @media (max-width: 1090px) {

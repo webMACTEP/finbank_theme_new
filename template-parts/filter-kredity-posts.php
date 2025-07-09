@@ -256,3 +256,4 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
 
 
 </div>
+

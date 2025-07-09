@@ -1727,58 +1727,41 @@ if ($TAX == '' && $ID == ''): ?>
             <div class="section">
                 <div class="row reviews-page-list" id="reviews">
                     <?php
+                    global $wpdb;
 
+                    $per_page = 15;
+                    $page     = 1;  // первая загрузка
 
-
-                    $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-                    $post_per_page = 15;
-                    $offset = ($paged - 1) * $post_per_page;
-
-
-                    $args = array(
-                        'posts_per_page' => 15,
-                        'paged' => $paged
-                    );
-
-                    $custom_query = new WP_Query($args);
-
-                    //print_r2($custom_query);
-
-
-                    //wp_reset_postdata();
-
-
-                    // fetch posts in all those categories
-                    $posts = get_cpt_ids('banks');
+                    // собираем ID всех CPT
+                    $posts  = get_cpt_ids('banks');
                     $posts2 = get_cpt_ids('bankcard');
                     $posts3 = get_cpt_ids('kredity');
-                    $posts_merge =  array_merge($posts, $posts2, $posts3);
+                    $in     = implode(',', array_map('intval', array_merge($posts, $posts2, $posts3)));
 
-                    //$sql = "SELECT SQL_CALC_FOUND_ROWS, comment_ID, comment_date, comment_content, comment_post_ID
-                    // FROM {$wpdb->comments} WHERE
-                    // comment_post_ID in (".implode(',', $posts_merge).") AND comment_approved = 1 AND comment_parent = 0
-                    // ORDER by comment_date DESC LIMIT $offset, $post_per_page ";
+                    // SQL только для первых 15
+                    $sql = "
+          SELECT comment_ID, comment_post_ID 
+          FROM {$wpdb->comments}
+          WHERE comment_post_ID IN ({$in})
+            AND comment_approved = 1
+            AND comment_parent  = 0
+          ORDER BY comment_date DESC
+          LIMIT {$per_page} OFFSET 0
+        ";
+                    $comments = $wpdb->get_results($sql);
 
-                    $sql = "SELECT comment_ID, comment_date, comment_content, comment_post_ID
- FROM {$wpdb->comments} WHERE
- comment_post_ID in (" . implode(',', $posts_merge) . ") AND comment_approved = 1 AND comment_parent = 0
- ORDER by comment_date DESC LIMIT $offset, $post_per_page ";
+                    // общее число всех отзывов (без лимита)
+                    $total = (int) $wpdb->get_var("
+          SELECT COUNT(*) 
+          FROM {$wpdb->comments} 
+          WHERE comment_post_ID IN ({$in})
+            AND comment_approved = 1
+            AND comment_parent  = 0
+        ");
+                    ?>
 
-                    $sql_posts_total = $wpdb->get_var("SELECT  COUNT(*) FROM {$wpdb->comments} WHERE
- comment_post_ID in (" . implode(',', $posts_merge) . ") AND comment_approved = 1 AND comment_parent = 0
- ORDER by comment_date DESC LIMIT 0, 15");
-
-
-
-
-                    $max_num_pages = ceil($sql_posts_total / $post_per_page);
-                    //$_SESSION['glob_max_num_pages'] = $custom_query->max_num_pages;
-
-                    $comments_list = $wpdb->get_results($sql);
-
-                    if (count($comments_list) > 0) {
-                        foreach ($comments_list as $comm) {
-
+                    <?php if ($comments): ?>
+                        <?php foreach ($comments as $comm):
                             $comment_id = $comm->comment_ID;
                             $comment = get_comment($comment_id);
                             $comment_post_id = $comment->comment_post_ID;
@@ -1788,143 +1771,122 @@ if ($TAX == '' && $ID == ''): ?>
                             $author = get_comment_author($comment_id);
                             $user_role = $user->roles;
                             $city = get_comment_meta($comment_id, 'city', true);
-                            $post_type = get_post_type($comment_post_id); ?>
-                            <?php if ($parent_comment == 0): ?>
-                                <!-- item -->
-                                <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
-                                    <div class="reviews__item-body">
-                                        <div class="reviews__header d-flex align-items-center mb-2">
-                                            <div class="reviews__header-logo">
-                                                <?php if ($post_type == 'banks'): ?>
-                                                    <img src="<?php echo the_field('bank_logo', $comment_post_id) ?>" alt="<?
-                                                                                                                            $logo_id = get_field('bank_logo', $comment_post_id, false);
-                                                                                                                            $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                                                                                            echo $logo_alt;
-                                                                                                                            ?>">
-                                                <?php endif; ?>
-                                                <?php if ($post_type == 'bankcard'):
-                                                    $bank_id = get_field('bank_choise', $comment_post_id) ?>
-                                                    <img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt="<?
-                                                                                                                    $logo_id = get_field('bank_logo', $bank_id, false);
-                                                                                                                    $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                                                                                    echo $logo_alt;
-                                                                                                                    ?>">
-                                                <?php endif; ?>
-                                                <?php if ($post_type == 'kredity'):
-                                                    $bank_id = get_field('product_bank', $comment_post_id) ?>
-                                                    <img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt="<?
-                                                                                                                    $logo_id = get_field('bank_logo', $bank_id, false);
-                                                                                                                    $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
-                                                                                                                    echo $logo_alt;
-                                                                                                                    ?>">
-                                                <?php endif; ?>
-                                            </div>
-                                            <div class="reviews__header-meta ml-3">
-                                                <a href="<?php echo get_comment_link($comment_id) ?>" class="reviews__header-title h4 mb-2 stretched-link"><?php echo get_the_title($comment_post_id) ?></a>
-                                                <div class="d-flex">
-                                                    <div class="card__rating d-flex align-items-center mr-3">
-                                                        <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
-                                                            </svg></div>
-                                                        <?php echo the_field('ratings_average', $comment_post_id); ?>
-                                                    </div>
-                                                    <div class="card__icon d-flex align-items-center">
-                                                        <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
-                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
-                                                            </svg></div>
-                                                        <?php if ($post_type == 'banks'): ?>
-                                                            <?php echo comments_number('0', '1', '%', $comment_post_id); ?>
-                                                        <?php endif; ?>
-                                                        <?php if ($post_type == 'bankcard'):
-                                                            $bank_id = get_field('bank_choise', $comment_post_id) ?>
-                                                            <?php echo comments_number('0', '1', '%', $bank_id); ?>
-                                                        <?php endif; ?>
-                                                        <?php if ($post_type == 'kredity'):
-                                                            $bank_id = get_field('product_bank', $comment_post_id) ?>
-                                                            <?php echo comments_number('0', '1', '%', $bank_id); ?>
-                                                        <?php endif; ?>
-
-                                                    </div>
-                                                    <div class="card__date d-none d-sm-block ml-auto"><?php echo  get_comment_date('d.m.y'); ?> / <?php echo get_comment_date('H:i') ?></div>
-                                                </div>
-                                            </div>
+                            $post_type = get_post_type($comment_post_id);
+                        ?>
+                            <div class="reviews__item col-12 col-md-6 col-lg-4 mb-5 reviews__page-item">
+                                <div class="reviews__item-body">
+                                    <div class="reviews__header d-flex align-items-center mb-2">
+                                        <div class="reviews__header-logo">
+                                            <?php if ($post_type == 'banks'): ?>
+                                                <img src="<?php echo the_field('bank_logo', $comment_post_id) ?>" alt="<?
+                                                                                                                        $logo_id = get_field('bank_logo', $comment_post_id, false);
+                                                                                                                        $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                                                                                                        echo $logo_alt;
+                                                                                                                        ?>">
+                                            <?php endif; ?>
+                                            <?php if ($post_type == 'bankcard'):
+                                                $bank_id = get_field('bank_choise', $comment_post_id) ?>
+                                                <img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt="<?
+                                                                                                                $logo_id = get_field('bank_logo', $bank_id, false);
+                                                                                                                $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                                                                                                echo $logo_alt;
+                                                                                                                ?>">
+                                            <?php endif; ?>
+                                            <?php if ($post_type == 'kredity'):
+                                                $bank_id = get_field('product_bank', $comment_post_id) ?>
+                                                <img src="<?php echo the_field('bank_logo', $bank_id) ?>" alt="<?
+                                                                                                                $logo_id = get_field('bank_logo', $bank_id, false);
+                                                                                                                $logo_alt = get_post_meta($logo_id, '_wp_attachment_image_alt', true);
+                                                                                                                echo $logo_alt;
+                                                                                                                ?>">
+                                            <?php endif; ?>
                                         </div>
-                                        <div class="reviews__item-content">
-                                            <p><?php echo $comment->comment_content; ?></p>
+                                        <div class="reviews__header-meta ml-3">
+                                            <a href="<?php echo get_comment_link($comment_id) ?>" class="reviews__header-title h4 mb-2 stretched-link"><?php echo get_the_title($comment_post_id) ?></a>
+                                            <div class="d-flex">
+                                                <div class="card__rating d-flex align-items-center mr-3">
+                                                    <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#starLine" x="0" y="0"></use>
+                                                        </svg></div>
+                                                    <?php echo the_field('ratings_average', $comment_post_id); ?>
+                                                </div>
+                                                <div class="card__icon d-flex align-items-center">
+                                                    <div class="mr-2"><svg width="18" height="17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" xml:space="preserve">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#commentLine" x="0" y="0"></use>
+                                                        </svg></div>
+                                                    <?php if ($post_type == 'banks'): ?>
+                                                        <?php echo comments_number('0', '1', '%', $comment_post_id); ?>
+                                                    <?php endif; ?>
+                                                    <?php if ($post_type == 'bankcard'):
+                                                        $bank_id = get_field('bank_choise', $comment_post_id) ?>
+                                                        <?php echo comments_number('0', '1', '%', $bank_id); ?>
+                                                    <?php endif; ?>
+                                                    <?php if ($post_type == 'kredity'):
+                                                        $bank_id = get_field('product_bank', $comment_post_id) ?>
+                                                        <?php echo comments_number('0', '1', '%', $bank_id); ?>
+                                                    <?php endif; ?>
+
+                                                </div>
+                                                <div class="card__date d-none d-sm-block ml-auto"><?php echo  get_comment_date('d.m.y'); ?> / <?php echo get_comment_date('H:i') ?></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="reviews__item-footer">
-                                        <div class="reviews__author d-flex align-items-center mt-3">
-                                            <div class="reviews__author-img mr-3"><img src="<?php echo get_avatar_url($comment, array(
-                                                                                                'size' => 60,
-                                                                                                'default' => 'identicon',
-                                                                                            )); ?>" alt="<?php echo $author; ?>"></div>
-                                            <div class="reviews__author-content">
-                                                <a href="" class="reviews__author-title mb-2 d-block stretched-link"><?php echo $author; ?></a>
-                                                <div class="reviews__author-info d-flex">
-                                                    <div class="card__icon d-flex align-items-center mr-3">
-                                                        <div class="mr-2"><svg width="14" height="19" viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
-                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person" x="0" y="0"></use>
-                                                            </svg></div>
-                                                        <?php if ($user_role[0] == ''):
-                                                            echo 'Гость';
-                                                        endif;
-                                                        if ($user_role[0] != ''):
-                                                            echo $user_role[0];
-                                                        endif; ?>
-                                                    </div>
-                                                    <?php if ($city != ''): ?>
-                                                        <div class="card__icon d-flex align-items-center">
-                                                            <div class="mr-2"><svg width="16" height="20" viewBox="0 0 16 20" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
-                                                                    <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#pointer" x="0" y="0"></use>
-                                                                </svg></div>
-                                                            <?php echo $city ?>
-                                                        </div>
-                                                    <?php endif; ?>
+                                    <div class="reviews__item-content">
+                                        <p><?php echo $comment->comment_content; ?></p>
+                                    </div>
+                                </div>
+                                <div class="reviews__item-footer">
+                                    <div class="reviews__author d-flex align-items-center mt-3">
+                                        <div class="reviews__author-img mr-3"><img src="<?php echo get_avatar_url($comment, array(
+                                                                                            'size' => 60,
+                                                                                            'default' => 'identicon',
+                                                                                        )); ?>" alt="<?php echo $author; ?>"></div>
+                                        <div class="reviews__author-content">
+                                            <a href="" class="reviews__author-title mb-2 d-block stretched-link"><?php echo $author; ?></a>
+                                            <div class="reviews__author-info d-flex">
+                                                <div class="card__icon d-flex align-items-center mr-3">
+                                                    <div class="mr-2"><svg width="14" height="19" viewBox="0 0 16 21" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+                                                            <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#person" x="0" y="0"></use>
+                                                        </svg></div>
+                                                    <?php if ($user_role[0] == ''):
+                                                        echo 'Гость';
+                                                    endif;
+                                                    if ($user_role[0] != ''):
+                                                        echo $user_role[0];
+                                                    endif; ?>
                                                 </div>
+                                                <?php if ($city != ''): ?>
+                                                    <div class="card__icon d-flex align-items-center">
+                                                        <div class="mr-2"><svg width="16" height="20" viewBox="0 0 16 20" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+                                                                <use xlink:href="<?php bloginfo('template_url'); ?>/img/icons.svg#pointer" x="0" y="0"></use>
+                                                            </svg></div>
+                                                        <?php echo $city ?>
+                                                    </div>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- / item -->
-                            <?php endif; ?>
-
-
-
-
-
-                        <?php }
-                    } else { ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
                         <p class="col-12">Пока нет отзывов.</p>
-                    <?php } ?>
+                    <?php endif; ?>
                 </div>
 
-
-
-
-                <!-- pagination -->
+                <!-- кнопка и счётчики -->
                 <button
                     id="load-more-reviews"
                     class="btn btn-outline-gray btn-block mt-5"
                     data-page="1"
-                    data-per-page="<?php echo $ppp; ?>"
-                    data-total="<?php echo $sql_posts_total; ?>"
-                    data-taxonomy="all_reviews"
-                    data-term-id=""
-                    data-field-name="bank_choise">
+                    data-per-page="<?php echo $per_page; ?>"
+                    data-total="<?php echo $total; ?>">
                     Загрузить ещё
                 </button>
-                <div class="pagination flex-column mb-5 mb-md-0">
-                    <div class="pagination__container d-sm-flex justify-content-between align-items-center">
-                        <div class="pagination__description mt-4 mt-sm-0">
-                            Показано <span class="reviews-shown"><?php echo $count_items; ?></span> отзывов из <span class="reviews-total"><?php echo $sql_posts_total; ?></span>
-                        </div>
-                    </div>
+                <div class="pagination__description mt-4">
+                    Показано <span class="reviews-shown"><?php echo count($comments); ?></span>
+                    из <span class="reviews-total"><?php echo $total; ?></span>
                 </div>
-                <!-- / pagination -->
-
-
-
             </div>
         </div>
     </main>

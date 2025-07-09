@@ -545,7 +545,7 @@ $type_collection = 'zaimy';
 									<select name="order" class="styledSelect cred-order-select">
 										<option value="" selected disabled>Сортировать</option>
 										<option value="">Сбросить сортировку</option>
-										
+
 										<option value="ratings_average">По рейтингу</option>
 										<option value="views">По количеству заявок</option>
 										<option value="z_sum">По сумме займа</option>
@@ -554,14 +554,15 @@ $type_collection = 'zaimy';
 									</select>
 								</div>
 								<div class="views-buttons">
-									<div class="horisont-butt active">
+									<?php $mode = get_field('display_mode', 'option'); ?>
+									<div class="horisont-butt <?= $mode === 'horisont' ? 'active' : '' ?>">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M15.8 8C16.9201 8 17.4802 8 17.908 7.78201C18.2843 7.59027 18.5903 7.28431 18.782 6.90798C19 6.48016 19 5.92011 19 4.8V4.2C19 3.0799 19 2.51984 18.782 2.09202C18.5903 1.7157 18.2843 1.40973 17.908 1.21799C17.4802 1 16.9201 1 15.8 1L4.2 1C3.0799 1 2.51984 1 2.09202 1.21799C1.71569 1.40973 1.40973 1.71569 1.21799 2.09202C1 2.51984 1 3.07989 1 4.2L1 4.8C1 5.9201 1 6.48016 1.21799 6.90798C1.40973 7.28431 1.71569 7.59027 2.09202 7.78201C2.51984 8 3.07989 8 4.2 8L15.8 8Z" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
 											<path d="M15.8 19C16.9201 19 17.4802 19 17.908 18.782C18.2843 18.5903 18.5903 18.2843 18.782 17.908C19 17.4802 19 16.9201 19 15.8V15.2C19 14.0799 19 13.5198 18.782 13.092C18.5903 12.7157 18.2843 12.4097 17.908 12.218C17.4802 12 16.9201 12 15.8 12L4.2 12C3.0799 12 2.51984 12 2.09202 12.218C1.71569 12.4097 1.40973 12.7157 1.21799 13.092C1 13.5198 1 14.0799 1 15.2L1 15.8C1 16.9201 1 17.4802 1.21799 17.908C1.40973 18.2843 1.71569 18.5903 2.09202 18.782C2.51984 19 3.07989 19 4.2 19H15.8Z" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
 										</svg>
 
 									</div>
-									<div class="cards-butt">
+									<div class="cards-butt <?= $mode === 'cards' ? 'active' : '' ?>">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M6.4 1H2.6C2.03995 1 1.75992 1 1.54601 1.10899C1.35785 1.20487 1.20487 1.35785 1.10899 1.54601C1 1.75992 1 2.03995 1 2.6V6.4C1 6.96005 1 7.24008 1.10899 7.45399C1.20487 7.64215 1.35785 7.79513 1.54601 7.89101C1.75992 8 2.03995 8 2.6 8H6.4C6.96005 8 7.24008 8 7.45399 7.89101C7.64215 7.79513 7.79513 7.64215 7.89101 7.45399C8 7.24008 8 6.96005 8 6.4V2.6C8 2.03995 8 1.75992 7.89101 1.54601C7.79513 1.35785 7.64215 1.20487 7.45399 1.10899C7.24008 1 6.96005 1 6.4 1Z" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
 											<path d="M17.4 1H13.6C13.0399 1 12.7599 1 12.546 1.10899C12.3578 1.20487 12.2049 1.35785 12.109 1.54601C12 1.75992 12 2.03995 12 2.6V6.4C12 6.96005 12 7.24008 12.109 7.45399C12.2049 7.64215 12.3578 7.79513 12.546 7.89101C12.7599 8 13.0399 8 13.6 8H17.4C17.9601 8 18.2401 8 18.454 7.89101C18.6422 7.79513 18.7951 7.64215 18.891 7.45399C19 7.24008 19 6.96005 19 6.4V2.6C19 2.03995 19 1.75992 18.891 1.54601C18.7951 1.35785 18.6422 1.20487 18.454 1.10899C18.2401 1 17.9601 1 17.4 1Z" stroke="#1B2636" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
@@ -574,7 +575,7 @@ $type_collection = 'zaimy';
 							</div>
 						</div>
 
-						<div data-json='<?= json_encode($args); ?>' class="list_posts list_posts-horisontal" id="response-cred-card">
+						<div data-json='<?= json_encode($args); ?>' class="list_posts list_posts-horisontal <?= get_field('display_mode', 'option'); ?>" id="response-cred-card">
 							<?
 							echo $posts_html;
 							?>
@@ -583,8 +584,8 @@ $type_collection = 'zaimy';
 						wp_reset_query(); ?>
 
 						<div class="pagination flex-column mb-3">
-							 <!-- Кнопка для загрузки еще -->
-                                <button class="load-daha btn btn-outline-gray btn-block">Загрузить еще</button>
+							<!-- Кнопка для загрузки еще -->
+							<button class="load-daha btn btn-outline-gray btn-block">Больше решений</button>
 
 						</div>
 
@@ -771,6 +772,11 @@ $type_collection = 'zaimy';
 								'value'   => '',
 								'compare' => '!=',  // выбираем только те записи, у которых в postmeta card_bank_link не пустая строка
 							),
+							array(
+								'key' => 'archive',
+								'value' => '0',
+								'compare' => '=', // Рекомендуется явно указать оператор сравнения
+							)
 						),
 
 					);

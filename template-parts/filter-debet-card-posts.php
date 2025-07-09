@@ -158,7 +158,7 @@ $show_btn_detail = have_rows('product_tar', get_the_ID()) || $about_item || $if_
                 </div>
             </div>
 
-           
+
             <div class="item-column">
                 <span class="card__field-title">Стоимость:</span>
                 <span class="card__field-num">от <?php echo esc_html($card_cost); ?> ₽</span>

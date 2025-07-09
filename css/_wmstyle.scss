@@ -1500,20 +1500,21 @@
         margin: 1rem 0px;
     }
     .type-desc-more {
+        display: none;
         margin: 1rem 0px;
-        display: flex;
+        //display: flex;
         //justify-content: flex-end;
         color: var(--primary);
         cursor: pointer;
     }
     .type-desc {
-        &.active {
-            -webkit-line-clamp: 500;
-        }
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        display: -webkit-box;
-        overflow: hidden;
+        // &.active {
+        //     -webkit-line-clamp: 500;
+        // }
+        // -webkit-line-clamp: 2;
+        // -webkit-box-orient: vertical;
+        // display: -webkit-box;
+        // overflow: hidden;
     }
     .credits__list-header {
         margin: 0px 0px 20px 0px;
@@ -2622,7 +2623,7 @@
         margin-bottom: 0 !important;
         .item-about {
             .item-info {
-                a {
+                .font-weight-semibold {
                     padding: 0px 60px 0px 0px;
                     position: relative;
                     max-width: fit-content;
@@ -2659,6 +2660,12 @@ p {
     a {
         color: var(--primary);
     }
+}
+.footer__btnShow ~ .row {
+    display: flex;
+}
+.footer__btnShow {
+    display: none;
 }
 @media (max-width: 1090px) {
     .newlisting .new-calc-content,
